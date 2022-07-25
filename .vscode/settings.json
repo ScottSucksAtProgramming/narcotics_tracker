@@ -7,5 +7,32 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+    "vsicons.associations.folders": [
+        {
+            "icon": "test",
+            "extensions": [
+                "unit",
+                "tests",
+                ".tests",
+                "test",
+                ".test",
+                "__tests__",
+                "__test__",
+                "spec",
+                ".spec",
+                "specs",
+                ".specs",
+                "integration"
+            ],
+            "format": "svg",
+            "overrides": "test"
+        },
+        {
+            "icon": "src",
+            "extensions": ["src", "source", "narcotics_tracker"],
+            "forma;t": "svg",
+            "overrides": "src"
+        }
+    ]
 }
