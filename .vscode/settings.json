@@ -6,9 +6,10 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        "venv": true
+        "venv": true,
+        ".vscode": true
     },
-    "hide-files.files": ["venv"],
+    "hide-files.files": ["venv", ".vscode"],
     "vsicons.associations.folders": [
         {
             "icon": "test",
