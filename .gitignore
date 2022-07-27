@@ -68,3 +68,4 @@ GitCommitMessage.*
 ScrapPaper.*
 TokenIdRangesByImageNumber.*
 VMWalletAddressesForTesting.*
+/venv/*
