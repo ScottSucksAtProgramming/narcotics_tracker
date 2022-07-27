@@ -1,7 +1,7 @@
 #
 # * ----------------------------- Documentation ------------------------------ #
 # Module:  medication.py
-# Contains the Medication class, as well as other related classes.
+# Contains the Medication class, and related classes.
 #
 #
 # Modification History
@@ -20,6 +20,14 @@ class Container(Enum):
     PRE_MIXED_BAG = "Pre-mixed Bag"
 
 
+class DoseUnit(Enum):
+    """Enum of dose units."""
+
+    MG = "mg"
+    MCG = "mcg"
+    G = "G"
+
+
 class Medication:
     """Model of a medication."""
 
@@ -32,7 +40,7 @@ class Medication:
         container_type: Container,
         fill_amount_in_milliliters: float,
         strength_in_mg: float,
-        dose_unit: str,
+        dose_unit: DoseUnit,
         concentration: float,
     ):
         """Initialize a medication."""
@@ -57,6 +65,18 @@ class Medication:
         if container_type not in Container:
             raise TypeError("Incorrect container type.")
         self._container_type = container_type
+
+    @property
+    def dose_unit(self) -> DoseUnit:
+        """Gets the dose unit."""
+        return self._dose_unit
+
+    @dose_unit.setter
+    def dose_unit(self, dose_unit: DoseUnit):
+        """Sets the dose unit."""
+        if dose_unit not in DoseUnit:
+            raise TypeError("Incorrect dose unit.")
+        self._dose_unit = dose_unit
 
 
 """

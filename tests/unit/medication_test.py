@@ -10,7 +10,7 @@
 
 import pytest
 
-from narcotics_tracker import Medication, Container
+from narcotics_tracker import Medication, Container, DoseUnit
 
 
 class TestMedication:
@@ -29,7 +29,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert isinstance(fentanyl, Medication)
@@ -45,7 +45,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.name == "Fentanyl"
@@ -61,7 +61,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.manufacturer == "Umbrella Corp"
@@ -77,7 +77,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.ndc_number == "123456789"
@@ -93,7 +93,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.box_quantity == 25
@@ -109,7 +109,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.container_type == Container.VIAL
@@ -125,7 +125,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.fill_amount_in_milliliters == 2
@@ -141,7 +141,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.strength_in_mg == 0.1
@@ -157,10 +157,10 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
-        assert fentanyl.dose_unit == "mcg"
+        assert fentanyl.dose_unit == DoseUnit.MCG
 
     def test_can_get_concentration(self):
         """Check to see if concentration can be retrieved."""
@@ -173,7 +173,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_mg=0.1,
-            dose_unit="mcg",
+            dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
         assert fentanyl.concentration == 0.05
@@ -190,6 +190,46 @@ class TestMedication:
                 container_type="Vial",
                 fill_amount_in_milliliters=2,
                 strength_in_mg=0.1,
-                dose_unit="mcg",
+                dose_unit=DoseUnit.MCG,
                 concentration=0.05,
             )
+
+    def test_can_restrict_dose_unit_to_DoseUnit_enum(self):
+        """Check that incorrect dose units raise an exception."""
+
+        with pytest.raises(TypeError):
+            fentanyl = Medication(
+                name="Fentanyl",
+                manufacturer="Umbrella Corp",
+                ndc_number="123456789",
+                box_quantity=25,
+                container_type=Container.VIAL,
+                fill_amount_in_milliliters=2,
+                strength_in_mg=0.1,
+                dose_unit="grain",
+                concentration=0.05,
+            )
+
+
+class TestContainer:
+    """Test the Container class."""
+
+    def test_VIAL_returns_correct_string(self):
+        """Check that VIAL returns the correct string."""
+
+        assert Container.VIAL.value == "Vial"
+
+    def test_AMPULE_returns_correct_string(self):
+        """Check that AMPULE returns the correct string."""
+
+        assert Container.AMPULE.value == "Ampule"
+
+    def test_PRE_FILLED_SYRINGE_returns_correct_string(self):
+        """Check that PRE_FILLED_SYRINGE returns the correct string."""
+
+        assert Container.PRE_FILLED_SYRINGE.value == "Pre-filled Syringe"
+
+    def test_PRE_MIXED_BAG_returns_correct_string(self):
+        """Check that PRE_MIXED_BAG returns the correct string."""
+
+        assert Container.PRE_MIXED_BAG.value == "Pre-mixed Bag"
