@@ -1,7 +1,7 @@
 """Defines the medication class."""
 
 
-class Medications:
+class Medication:
     """Model of a medication."""
 
     def __init__(self, name, manufacturer, ndc_number, container_type, box_quantity, fill_amount_in_milliliters, dosage_in_mg, dose_unit, concentration):
@@ -17,5 +17,5 @@ class Medications:
         self.concentration = concentration
 
 
-fentanyl = Medications("Fentanyl", "Hamdani", "123456789",
-                       "Vial", 25, 2, 0.1, "mcg", 0.05)
+fentanyl = Medication("Fentanyl", "Umbrella Corp", "123456789",
+                      "Vial", 25, 2, 0.1, "mcg", 0.05)
