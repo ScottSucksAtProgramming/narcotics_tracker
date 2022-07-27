@@ -1,4 +1,23 @@
-"""Defines the medication class."""
+#
+# * ----------------------------- Documentation ------------------------------ #
+# Module:  medication.py
+# Contains the Medication class, as well as other related classes.
+#
+#
+# Modification History
+# 07-27-2022 | SRK | Module Created
+
+
+from enum import Enum
+
+
+class Container(Enum):
+    """Enum of medication container types."""
+
+    VIAL = "Vial"
+    AMPULE = "Ampule"
+    PRE_FILLED_SYRINGE = "Pre-filled Syringe"
+    PRE_MIXED_BAG = "Pre-mixed Bag"
 
 
 class Medication:
@@ -10,9 +29,9 @@ class Medication:
         manufacturer: str,
         ndc_number: str,
         box_quantity: int,
-        container_type: str,
+        container_type: Container,
         fill_amount_in_milliliters: float,
-        dosage_in_mg: float,
+        strength_in_mg: float,
         dose_unit: str,
         concentration: float,
     ):
@@ -23,11 +42,32 @@ class Medication:
         self.box_quantity = box_quantity
         self.container_type = container_type
         self.fill_amount_in_milliliters = fill_amount_in_milliliters
-        self.dosage_in_mg = dosage_in_mg
+        self.strength_in_mg = strength_in_mg
         self.dose_unit = dose_unit
         self.concentration = concentration
 
+    @property
+    def container_type(self) -> Container:
+        """Gets the container type."""
+        return self._container_type
 
-fentanyl = Medication(
-    "Fentanyl", "Umbrella Corp", "123456789", "Vial", 25, 2, 0.1, "mcg", 0.05
-)
+    @container_type.setter
+    def container_type(self, container_type: Container):
+        """Sets the container type."""
+        if container_type not in Container:
+            raise TypeError("Incorrect container type.")
+        self._container_type = container_type
+
+
+"""
+What can I do with a medication?
+- I can create a new medication.
+- I can delete a medication.
+- I can update a medication.
+- I can retrieve a medication's properties.
+
+Inventory Management - This like likely going to be a different class.
+- I can order a medication.
+- I can waste a medication.
+- I can destroy a medication.
+"""
