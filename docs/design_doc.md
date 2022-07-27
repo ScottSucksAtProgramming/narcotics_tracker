@@ -61,13 +61,17 @@ I will need a class to handle medication objects which stores the various
 properties related to each medication.
 
 -   Properties
+
     -   Name
-    -   Concentration
-    -   Container Type
-    -   Fill Size
-    -   Dosage
-    -   Box Amount
-    -   NDC Number
     -   Manufacturer
+    -   NDC Number
+    -   Container Type
+    -   Box Quantity
+    -   Fill Amount
+    -   Dosage
+    -   Concentration
+    -   Unit
+
 -   Methods
+
     -   I'm not sure what methods should go here.
