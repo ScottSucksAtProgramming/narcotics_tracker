@@ -55,5 +55,6 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestPath": "/Users/scottkostolni/Programming Projects/narcotics_tracker/venv/bin/pytest",
-    "python.testing.pytestArgs": ["tests"]
+    "python.testing.pytestArgs": ["tests"],
+    "python.testing.autoTestDiscoverOnSaveEnabled": true
 }
