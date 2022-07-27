@@ -7,9 +7,24 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "venv": true,
-        ".vscode": true
+        ".vscode": true,
+        "__pycache__": true,
+        ".pytest_cache": true,
+        "narcotics_tracker/.pytest_cache": true,
+        "narcotics_tracker/__pycache__": true,
+        "tests/.pytest_cache": true,
+        "tests/unit/__pycache__": true
     },
-    "hide-files.files": ["venv", ".vscode"],
+    "hide-files.files": [
+        "venv",
+        ".vscode",
+        "__pycache__",
+        ".pytest_cache",
+        "narcotics_tracker/.pytest_cache",
+        "narcotics_tracker/__pycache__",
+        "tests/.pytest_cache",
+        "tests/unit/__pycache__"
+    ],
     "vsicons.associations.folders": [
         {
             "icon": "test",
@@ -36,5 +51,9 @@
             "forma;t": "svg",
             "overrides": "src"
         }
-    ]
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "/Users/scottkostolni/Programming Projects/narcotics_tracker/venv/bin/pytest",
+    "python.testing.pytestArgs": ["tests"]
 }
