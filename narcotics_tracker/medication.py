@@ -35,7 +35,6 @@ class Medication:
         self,
         name: str,
         manufacturer: str,
-        ndc_number: str,
         box_quantity: int,
         container_type: Container,
         fill_amount_in_milliliters: float,
@@ -46,7 +45,6 @@ class Medication:
         """Initialize a medication."""
         self.name = name
         self.manufacturer = manufacturer
-        self.ndc_number = ndc_number
         self.box_quantity = box_quantity
         self.container_type = container_type
         self.fill_amount_in_milliliters = fill_amount_in_milliliters
