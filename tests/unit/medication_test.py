@@ -24,7 +24,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -40,7 +39,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -56,7 +54,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -66,29 +63,12 @@ class TestMedication:
         )
         assert fentanyl.manufacturer == "Umbrella Corp"
 
-    def test_can_get_ndc_number(self):
-        """Check to see if ndc_number can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            ndc_number="123456789",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
-            dose_unit=DoseUnit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.ndc_number == "123456789"
-
     def test_can_get_box_quantity(self):
         """Check to see if box_quantity can be retrieved."""
 
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -104,7 +84,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -120,7 +99,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -136,7 +114,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -152,7 +129,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -168,7 +144,6 @@ class TestMedication:
         fentanyl = Medication(
             name="Fentanyl",
             manufacturer="Umbrella Corp",
-            ndc_number="123456789",
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
@@ -185,7 +160,6 @@ class TestMedication:
             fentanyl = Medication(
                 name="Fentanyl",
                 manufacturer="Umbrella Corp",
-                ndc_number="123456789",
                 box_quantity=25,
                 container_type="Vial",
                 fill_amount_in_milliliters=2,
@@ -201,7 +175,6 @@ class TestMedication:
             fentanyl = Medication(
                 name="Fentanyl",
                 manufacturer="Umbrella Corp",
-                ndc_number="123456789",
                 box_quantity=25,
                 container_type=Container.VIAL,
                 fill_amount_in_milliliters=2,
