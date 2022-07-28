@@ -27,7 +27,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -42,7 +42,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -57,7 +57,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -72,7 +72,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -87,7 +87,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -102,7 +102,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -117,7 +117,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -132,7 +132,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -147,7 +147,7 @@ class TestMedication:
             box_quantity=25,
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
-            strength_in_mg=0.1,
+            strength_in_milligrams=0.1,
             dose_unit=DoseUnit.MCG,
             concentration=0.05,
         )
@@ -163,7 +163,7 @@ class TestMedication:
                 box_quantity=25,
                 container_type="Vial",
                 fill_amount_in_milliliters=2,
-                strength_in_mg=0.1,
+                strength_in_milligrams=0.1,
                 dose_unit=DoseUnit.MCG,
                 concentration=0.05,
             )
@@ -178,7 +178,7 @@ class TestMedication:
                 box_quantity=25,
                 container_type=Container.VIAL,
                 fill_amount_in_milliliters=2,
-                strength_in_mg=0.1,
+                strength_in_milligrams=0.1,
                 dose_unit="grain",
                 concentration=0.05,
             )

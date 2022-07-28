@@ -38,7 +38,7 @@ class Medication:
         box_quantity: int,
         container_type: Container,
         fill_amount_in_milliliters: float,
-        strength_in_mg: float,
+        strength_in_milligrams: float,
         dose_unit: DoseUnit,
         concentration: float,
     ):
@@ -48,7 +48,7 @@ class Medication:
         self.box_quantity = box_quantity
         self.container_type = container_type
         self.fill_amount_in_milliliters = fill_amount_in_milliliters
-        self.strength_in_mg = strength_in_mg
+        self.strength_in_mg = strength_in_milligrams
         self.dose_unit = dose_unit
         self.concentration = concentration
 
