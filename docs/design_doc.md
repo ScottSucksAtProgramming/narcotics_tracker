@@ -2,13 +2,11 @@
 
 ## Summary
 
----
-
 The Narcotics Tracker is a python project designed to assist controlled
 substance agents for EMS organizations in New York State with controlled
 substance inventory tracking, and reporting.
 
-### Goal
+## Goal
 
 To create an easy to use program which tracks an EMS agency's controlled
 substance inventory, performs conversions between different units of weight
@@ -18,8 +16,6 @@ purchases, destruction via reverse distribution, medication waste, and
 restocking of stock and sub-stocks. Reports can be generated as needed
 
 ## Motivation
-
----
 
 I work as a controlled substance agent for a New York State Ambulance company.
 While there have never been a concern of lost or diverted medications at my
@@ -39,13 +35,11 @@ going forward as well.
 
 ## Screenshots
 
----
-
-## Design Discussion and Alternatives
+# Design Discussion and Alternatives
 
 ---
 
-### Design Questions and Problems
+## Design Questions and Problems
 
 #### Development Roadmap / Progress
 
@@ -55,23 +49,68 @@ trial and error. Here is my imagined development Path.
 
 -   [ ] Store and return medication related information.
 
-#### Medication Class
+# Medication Class
 
 I will need a class to handle medication objects which stores the various
 properties related to each medication.
 
--   Properties
+### Properties
 
     -   Name
     -   Manufacturer
-    -   NDC Number
-    -   Container Type
     -   Box Quantity
-    -   Fill Amount
-    -   Dosage
+    -   Container Type
+    -   Fill Amount (in ml)
+    -   Strength (in mg)
     -   Concentration
-    -   Unit
+    -   Dose Unit
 
--   Methods
+### Behaviors
 
-    -   I'm not sure what methods should go here.
+    -   Create new Medications
+    -   Delete Medications
+    -   Updated Medications
+    -   Store Medications
+    -   Return Medication Properties
+
+## Medication Class Discussion
+
+**NDC Number**
+
+This was removed. It fits better in an inventory or Medication Lot class which
+will be used to track physical medications, as opposed to just medication
+properties which are handled in this class.
+
+---
+
+**Box Quantity**
+
+I'm unsure if this needs to stay here. I'm going to leave it for now, but it's
+more related to inventory tracking than just the medication. Right now this
+class has a lot of arguments and I don't know if I want there to be so many.
+
+---
+
+## Container Enum
+
+The Container class specifies the acceptable types of containers which
+medication can come in.
+
+```python
+Container.VIAL = "Vial"
+Container.AMPULE = "Ampule"
+Container.PRE_FILLED_SYRINGE = "Pre-filled Syringe"
+Container.PRE_MIXED_BAG = "Pre-mixed Bag"
+```
+
+Other container types exist, but are unlikely to be used in EMS agencies.
+
+## DoseUnit Enum
+
+The DoseUnit class specifies the acceptable types of units for the medications.
+
+```python
+Container.MG = "mg"
+Container.MCG = "mcg"
+Container.G = "G"
+```
