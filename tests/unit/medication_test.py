@@ -183,6 +183,26 @@ class TestMedication:
                 concentration=0.05,
             )
 
+    def test_printing_a_Medication_object_returns_correct_string(self):
+        """Check to see if printing a Medication object returns a string."""
+
+        fentanyl = Medication(
+            name="Fentanyl",
+            manufacturer="Umbrella Corp",
+            box_quantity=25,
+            container_type=Container.VIAL,
+            fill_amount_in_milliliters=2,
+            strength_in_milligrams=0.1,
+            dose_unit=DoseUnit.MCG,
+            concentration=0.05,
+        )
+        assert (
+            str(fentanyl)
+            == "Fentanyl - Manufacturer: Umbrella Corp; Box Quantity: 25; "
+            "Container Type: Vial; Fill Amount: 2; Strength: 0.1 mg; Dose "
+            "Unit: mcg; Concentration: 0.05 mg/ml."
+        )
+
 
 class TestContainer:
     """Test the Container class."""
@@ -206,3 +226,37 @@ class TestContainer:
         """Check that PRE_MIXED_BAG returns the correct string."""
 
         assert Container.PRE_MIXED_BAG.value == "Pre-mixed Bag"
+
+
+class TestDoseUnit:
+    """Test the DoseUnit class."""
+
+    def test_MCG_returns_correct_string(self):
+        """Check that MCG returns the correct string."""
+
+        assert DoseUnit.MCG.value == "mcg"
+
+    def test_MG_returns_correct_string(self):
+        """Check that MG returns the correct string."""
+
+        assert DoseUnit.MG.value == "mg"
+
+    def test_G_returns_correct_string(self):
+        """Check that G returns the correct string."""
+
+        assert DoseUnit.G.value == "G"
+
+    def test_can_restrict_dose_unit_to_DoseUnit_enum(self):
+        """Check that incorrect dose units raise an exception."""
+
+        with pytest.raises(TypeError):
+            fentanyl = Medication(
+                name="Fentanyl",
+                manufacturer="Umbrella Corp",
+                box_quantity=25,
+                container_type=Container.VIAL,
+                fill_amount_in_milliliters=2,
+                strength_in_milligrams=0.1,
+                dose_unit="grain",
+                concentration=0.05,
+            )

@@ -52,6 +52,16 @@ class Medication:
         self.dose_unit = dose_unit
         self.concentration = concentration
 
+    def __repr__(self) -> str:
+        return (
+            f"{self.name} - Manufacturer: {self.manufacturer}; Box "
+            f"Quantity: {self.box_quantity}; Container Type: "
+            f"{self.container_type.value}; Fill Amount: "
+            f"{self.fill_amount_in_milliliters}; Strength: "
+            f"{self.strength_in_mg} mg; Dose Unit: {self.dose_unit.value}; "
+            f"Concentration: {self.concentration} mg/ml."
+        )
+
     @property
     def container_type(self) -> Container:
         """Gets the container type."""
