@@ -154,3 +154,5 @@ questions. Version one of the design located in the docs folder. Instead of
 designing from the top down, I'm going to start designing from the user
 interface up which I think will clear up the tasks and processes and inform the
 database design.
+
+[Database Design v1](https://github.com/ScottSucksAtProgramming/narcotics_tracker/blob/master/docs/database_design_v1.pdf)
