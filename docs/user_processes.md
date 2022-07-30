@@ -5,9 +5,13 @@
 ### Table of Contents
 - Processes
 	- [Orders](#orders)
+    	- [Data Points](#orders-dp)
 	- [Lot Tracking](#lots)
+    	- [Data Points](#lots-dp)
 	- [Destroy Medications](#destruction)
+    	- [Data Points](#destruction-dp)
 	- [Move Medications](#move)
+    	- [Data Points](#move-dp)
 	- [Waste Medications](#waste)
 	- [Administer Medications](#administer)
 	- [Lose Medications](#lose)
@@ -27,10 +31,10 @@ Medications are primarily ordered from BoundTree Medical, though can be ordered 
         6. 222 Form Number (If Used)
         7. Date Ordered
         8. Medications and amount ordered.
-    9. Any paperwork is signed, scanned, filed
+    9. Any paperwork is signed, scanned, filed.
 2. Medication is received
     4. Medications are verified.
-    5. Order Packing Slip is signed, scaned, filed
+    5. Order Packing Slip is signed, scaned, filed.
     5. Controlled Substance Orders spreadsheet updated:
         6. Date Medications Received
         7. Number of Packages (Boxes)
@@ -52,33 +56,46 @@ Medications are primarily ordered from BoundTree Medical, though can be ordered 
 * Multiple boxes of the same medication will likely have the same Lot Number - but not always.
 * Different Medications will never have the same lot number.
 
+<a name="orders-dp"></a>
 ### Data Points
-#### Order Information
-Orders are their own object. Once the order is received and verified it's technically close
-* Order Number `int`
-* 222 Form Number `str`
-* Date Ordered `Date Obj. / str`
+Orders are their own object. Once the order is received and verified it's technically closed
+* Order Number | `int`
+* 222 Form Number | `str`
+* Date Ordered | `Date Obj. / str`
 * Medication's Ordered
-    * Amount ordered per medication in vials `int`
-    * Date Received `Date Obj. / str`
-    * Number of Packages `int`
-* Agent `Agent Obj. / str`
-* Date Updated `Date obj. / str`
-* Order Status `str`
+    * Amount ordered per medication in vials | `int`
+    * Date Received | `Date Obj. / str`
+    * Number of Packages | `int`
+* Agent | `Agent Obj. / str`
+* Date Updated | `Date obj. / str`
+* Order Status | `str`
 
 <a name="lots"></a>
 ## Lot Tracking
+
+**Lots do not contribute to the overall inventory**
+
 Medications are tracked in Lots with a shared Lot Number. Dispersements of those medications are subtracted from the total balance. Dispersements may be moved to a sub-stock or for destruction at a reverse distributor. When the balance is depleted the Lot is closed. 
 
 1. Medication is physically moved.
 2. Stock Inventory Sheet (DOH-3850) for that Lot Number is updated.
-    3. Date `Date Obj. / str`
-    4. Quantity in mg `float`
-    5. Location `Sub-Stock Obj / str`
-    6. Agent `Agent Obj. / str`
+    3. Date
+    4. Quantity (in mg)
+    5. Location
+    6. Agent
 7. Stock Safe Entry Form and Sub-Stock Safe Entry Form filled out. (These will **not** be part of this application.)
 
 
+<a name="lots-dp"></a>
+### Data Points
+* Entry Date | `Date Obj. / str`
+* Entry Event | `str`
+* Quantity in mg | `float`
+* Location | `Sub-Stock Obj. / str`
+* Lot Status | `str`
+* Agent | `Agent Obj. / str`
+* Date Created | `Date Obj. / str`
+* Date Modified | `Date Obj. / str`
 
 <a name="destruction"></a>
 ## Destroy Medications
@@ -100,6 +117,9 @@ Medications that are expired are sent to a reverse distributor for destruction.
 13. Medications are shipped out and a receipt of destruction  is provided.
 14. Recipt of desctruction is signed, scanned, filed.
 
+<a name="destruction-dp"></a>
+### Data Points
+
 <a name="move"></a>
 ## Move Medications
 Medicationas have to be moved between different locations frequently. 
@@ -118,6 +138,9 @@ Sub stocks: It would be useful to have users specify the different sub stock loc
 		- 293 B
 		- 2999 A
 		- 2999 B
+
+<a name="move-dp"></a>
+### Data Points
 
 
 <a name="waste"></a>
