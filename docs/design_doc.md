@@ -1,10 +1,21 @@
 # Narcotics Tracker Design Document
 
+# Table of Contents
+
+1. [Summary](#summary)
+2. [Goal](#goal)
+3. [Motivation](#motivation)
+4. [Screen Shots](#screenshots)
+
+<a name="summary"></a>
+
 ## Summary
 
 The Narcotics Tracker is a python project designed to assist controlled
 substance agents for EMS organizations in New York State with controlled
 substance inventory tracking, and reporting.
+
+<a name="goal"></a>
 
 ## Goal
 
@@ -14,6 +25,8 @@ substance inventory, performs conversions between different units of weight
 (mg/mcg to mL), track inventory totals throughout controlled substance
 purchases, destruction via reverse distribution, medication waste, and
 restocking of stock and sub-stocks. Reports can be generated as needed
+
+<a name="motivation"></a>
 
 ## Motivation
 
@@ -31,13 +44,17 @@ learning goals for this project are to increased my knowledge and experience
 with Python; Learn about Object Oriented Programming; Practice and gain
 experience with Test Driven Development; Gain knowledge on the storage, and
 manipulation, of data. Opportunities to learn front-end development may arise
-going forward as well.
+going forward as well. <a name="screenshots"></a>
 
 ## Screenshots
+
+<a name="discussion"></a>
 
 # Design Discussion and Alternatives
 
 ---
+
+<a name="problems"></a>
 
 ## Design Questions and Problems
 
@@ -91,6 +108,9 @@ class has a lot of arguments and I don't know if I want there to be so many.
 
 ---
 
+**Container Type** Considering also moving this to another class. Maybe an
+'Order' class or 'Lot' class which would be a building block for the inventory.
+
 ## Container Enum
 
 The Container class specifies the acceptable types of containers which
@@ -114,3 +134,23 @@ Container.MG = "mg"
 Container.MCG = "mcg"
 Container.G = "G"
 ```
+
+# Database
+
+I'm going to use SQLite3 for this project. It's built into Python, it is simple
+enough to get started, it seems to be able to handle everything I'll need, and
+I already watched a FreeCodeCamp course about SQLite3 on my drive home from
+work tonight.
+
+**Medication Library** Medications are going to need a place to live and be
+stored.
+
+**Inventory** The whole point is
+
+## Database Design
+
+Started sketching out the database design which helped clear up some of my
+questions. Version one of the design located in the docs folder. Instead of
+designing from the top down, I'm going to start designing from the user
+interface up which I think will clear up the tasks and processes and inform the
+database design.
