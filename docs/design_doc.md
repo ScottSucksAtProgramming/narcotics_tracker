@@ -156,3 +156,8 @@ interface up which I think will clear up the tasks and processes and inform the
 database design.
 
 [Database Design v1](https://github.com/ScottSucksAtProgramming/narcotics_tracker/blob/master/docs/database_design_v1.pdf)
+
+
+
+# Questions
+1. Can I track items that are removed or changed in the database? 
