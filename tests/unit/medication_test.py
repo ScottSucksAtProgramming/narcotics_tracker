@@ -10,7 +10,7 @@
 
 import pytest
 
-from narcotics_tracker import Medication, Container, DoseUnit
+from narcotics_tracker import Medication, Container, Unit
 
 
 class TestMedication:
@@ -28,7 +28,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert isinstance(fentanyl, Medication)
@@ -43,7 +43,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.name == "Fentanyl"
@@ -58,7 +58,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.manufacturer == "Umbrella Corp"
@@ -73,7 +73,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.box_quantity == 25
@@ -88,7 +88,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.container_type == Container.VIAL
@@ -103,7 +103,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.fill_amount_in_milliliters == 2
@@ -118,7 +118,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.strength_in_mg == 0.1
@@ -133,10 +133,10 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
-        assert fentanyl.dose_unit == DoseUnit.MCG
+        assert fentanyl.dose_unit == Unit.MCG
 
     def test_can_get_concentration(self):
         """Check to see if concentration can be retrieved."""
@@ -148,7 +148,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert fentanyl.concentration == 0.05
@@ -164,7 +164,7 @@ class TestMedication:
                 container_type="Vial",
                 fill_amount_in_milliliters=2,
                 strength_in_milligrams=0.1,
-                dose_unit=DoseUnit.MCG,
+                dose_unit=Unit.MCG,
                 concentration=0.05,
             )
 
@@ -193,7 +193,7 @@ class TestMedication:
             container_type=Container.VIAL,
             fill_amount_in_milliliters=2,
             strength_in_milligrams=0.1,
-            dose_unit=DoseUnit.MCG,
+            dose_unit=Unit.MCG,
             concentration=0.05,
         )
         assert (
@@ -234,17 +234,17 @@ class TestDoseUnit:
     def test_MCG_returns_correct_string(self):
         """Check that MCG returns the correct string."""
 
-        assert DoseUnit.MCG.value == "mcg"
+        assert Unit.MCG.value == "mcg"
 
     def test_MG_returns_correct_string(self):
         """Check that MG returns the correct string."""
 
-        assert DoseUnit.MG.value == "mg"
+        assert Unit.MG.value == "mg"
 
     def test_G_returns_correct_string(self):
         """Check that G returns the correct string."""
 
-        assert DoseUnit.G.value == "G"
+        assert Unit.G.value == "G"
 
     def test_can_restrict_dose_unit_to_DoseUnit_enum(self):
         """Check that incorrect dose units raise an exception."""
