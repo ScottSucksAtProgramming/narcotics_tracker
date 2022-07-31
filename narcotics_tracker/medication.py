@@ -8,11 +8,11 @@
 # 07-27-2022 | SRK | Module Created
 
 # ------------------------------ Tasks ------------------------------ #
-# I can create a new medication.
-# I can save medication to a database.
-# I can delete a medication.
-# I can update a medication.
-# I can retrieve a medication's properties.
+# Todo: I can create a new medication.
+# Todo: I can save medication to a database.
+# Todo: I can delete a medication.
+# Todo: I can update a medication.
+# Todo: I can retrieve a medication's properties.
 
 from enum import Enum
 
