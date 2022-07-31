@@ -7,6 +7,12 @@
 # Modification History
 # 07-27-2022 | SRK | Module Created
 
+# ------------------------------ Tasks ------------------------------ #
+# I can create a new medication.
+# I can save medication to a database.
+# I can delete a medication.
+# I can update a medication.
+# I can retrieve a medication's properties.
 
 from enum import Enum
 
@@ -85,17 +91,3 @@ class Medication:
         if dose_unit not in DoseUnit:
             raise TypeError("Incorrect dose unit.")
         self._dose_unit = dose_unit
-
-
-"""
-What can I do with a medication?
-- I can create a new medication.
-- I can delete a medication.
-- I can update a medication.
-- I can retrieve a medication's properties.
-
-Inventory Management - This like likely going to be a different class.
-- I can order a medication.
-- I can waste a medication.
-- I can destroy a medication.
-"""
