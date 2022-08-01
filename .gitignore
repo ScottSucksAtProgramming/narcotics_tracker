@@ -69,3 +69,4 @@ ScrapPaper.*
 TokenIdRangesByImageNumber.*
 VMWalletAddressesForTesting.*
 /venv/*
+/docs/blog/
