@@ -10,7 +10,9 @@
 
 import pytest
 
-from narcotics_tracker import Medication, Container, Unit
+from narcotics_tracker.containers.containers import Container
+from narcotics_tracker.units.units import Unit
+from narcotics_tracker.medication.medication import Medication
 
 
 class TestMedication:

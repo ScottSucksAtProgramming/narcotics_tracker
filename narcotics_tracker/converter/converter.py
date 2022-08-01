@@ -8,10 +8,9 @@
 # 07-30-2022 | SRK | Module Created
 
 # ------------------------------ Tasks ------------------------------------- #
+# Todo: We're gonna switch the program to always think in mcg. Allowing us to represent the values as integers, and use the converter to just move the decimal for the user.
 
-from enum import Enum
-
-from narcotics_tracker import Unit
+from narcotics_tracker.units.units import Unit
 
 
 class UnitConverter:

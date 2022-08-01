@@ -7,7 +7,7 @@
 # Modification History
 # 07-30-2022 | SRK | Module Created
 
-from narcotics_tracker import UnitConverter
+from narcotics_tracker.converter.converter import UnitConverter
 
 
 class TestUnitConverter:

@@ -14,24 +14,8 @@
 # Todo: I can update a medication.
 # Todo: I can retrieve a medication's properties.
 
-from enum import Enum
-
-
-class Unit(Enum):
-    """Enum of dose units."""
-
-    MG = "mg"
-    MCG = "mcg"
-    G = "G"
-
-
-class Container(Enum):
-    """Enum of medication container types."""
-
-    VIAL = "Vial"
-    AMPULE = "Ampule"
-    PRE_FILLED_SYRINGE = "Pre-filled Syringe"
-    PRE_MIXED_BAG = "Pre-mixed Bag"
+from narcotics_tracker.containers.containers import Container
+from narcotics_tracker.units.units import Unit
 
 
 class Medication:
