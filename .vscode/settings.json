@@ -14,7 +14,12 @@
         "narcotics_tracker/__pycache__": true,
         "tests/.pytest_cache": true,
         "tests/unit/__pycache__": true,
-        "tests/unit/.pytest_cache": true
+        "tests/unit/.pytest_cache": true,
+        "narcotics_tracker/container/__pycache__": true,
+        "narcotics_tracker/units/__pycache__": true,
+        "narcotics_tracker/medication/__pycache__": true,
+        "narcotics_tracker/converter/__pycache__": true,
+        "narcotics_tracker/containers/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -25,7 +30,12 @@
         "narcotics_tracker/__pycache__",
         "tests/.pytest_cache",
         "tests/unit/__pycache__",
-        "tests/unit/.pytest_cache"
+        "tests/unit/.pytest_cache",
+        "narcotics_tracker/container/__pycache__",
+        "narcotics_tracker/units/__pycache__",
+        "narcotics_tracker/medication/__pycache__",
+        "narcotics_tracker/converter/__pycache__",
+        "narcotics_tracker/containers/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -60,5 +70,6 @@
     "python.testing.pytestArgs": ["tests"],
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "cSpell.words": ["unitconverter"]
 }
