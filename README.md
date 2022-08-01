@@ -190,7 +190,8 @@ Project Link:
 
 ## Acknowledgments
 
--   []()
+-   [My Mom](https://eileenk.com) - Thanks for re-explaining how databases work
+    until it finally got through my thick skull.
 -   []()
 -   []()
 
