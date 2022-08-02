@@ -10,10 +10,8 @@
 
 import pytest
 
-from narcotics_tracker.medication.containers import Container
-from narcotics_tracker.units.units import Unit
-from narcotics_tracker.medication.medication import Medication
-from narcotics_tracker.medication.medication_status import MedicationStatus
+from narcotics_tracker.medication import medication_status, medication, containers
+from narcotics_tracker.units import units
 
 
 class TestMedication:
@@ -23,14 +21,13 @@ class TestMedication:
 
     def test_can_see_Medication_class(self):
         """Checks to see if Medication class is defined."""
-        assert type(Medication) == type(object)
 
     def test_can_instantiate_Medication_object(self, test_med):
         """Check to see if Medication object can be instantiated."""
 
         test_med = test_med
 
-        assert isinstance(test_med, Medication)
+        assert isinstance(test_med, medication.Medication)
 
     def test_can_get_name(self, test_med):
         """Check to see if name can be retrieved."""
@@ -51,7 +48,7 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.container_type == Container.VIAL
+        assert test_med.container_type == containers.Container.VIAL
 
     def test_can_get_fill_amount(self, test_med):
         """Check to see if fill_amount can be retrieved."""
@@ -72,7 +69,7 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.unit == Unit.MCG
+        assert test_med.unit == units.Unit.MCG
 
     def test_can_get_concentration(self, test_med):
         """Check to see if concentration can be retrieved."""
@@ -85,15 +82,15 @@ class TestMedication:
         """Check that incorrect container types raise an exception."""
 
         with pytest.raises(AttributeError):
-            fentanyl = Medication(
+            fentanyl = medication.Medication(
                 name="Fentanyl",
                 code="Fe-100-2",
-                container_type=Container.BOTTLE,
+                container_type=containers.Container.BOTTLE,
                 fill_amount=2,
                 dose=100,
-                unit=Unit.MCG,
+                unit=units.Unit.MCG,
                 concentration=50,
-                status=MedicationStatus.ACTIVE,
+                status=medication_status.MedicationStatus.ACTIVE,
                 created_date="08-01-2022",
                 modified_date="08-01-2022",
                 modified_by="test",
@@ -103,15 +100,15 @@ class TestMedication:
         """Check that incorrect units raise an exception."""
 
         with pytest.raises(AttributeError):
-            fentanyl = Medication(
+            fentanyl = medication.Medication(
                 name="Fentanyl",
                 code="Fe-100-2",
-                container_type=Container.VIAL,
+                container_type=containers.Container.VIAL,
                 fill_amount=2,
                 dose=100,
-                unit=Unit.KG,
+                unit=units.Unit.KG,
                 concentration=50,
-                status=MedicationStatus.ACTIVE,
+                status=medication_status.MedicationStatus.ACTIVE,
                 created_date="08-01-2022",
                 modified_date="08-01-2022",
                 modified_by="test",
@@ -124,5 +121,17 @@ class TestMedication:
 
         assert (
             str(test_med)
-            == "Un-69420-9001: Unobtanium - 69420mcg in a 9001ml Vial (69mcg/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
+            == "Medication Object for Un-69420-9001: Unobtanium - 69420mcg in a 9001ml Vial (69mcg/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
+        )
+
+    def test_mediation_can_be_edited(self, test_med):
+        """Check to see if Medication object can be edited."""
+
+        test_med = test_med
+
+        test_med.unit = units.Unit.G
+
+        assert (
+            str(test_med)
+            == "Medication Object for Un-69420-9001: Unobtanium - 69420G in a 9001ml Vial (69G/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
         )

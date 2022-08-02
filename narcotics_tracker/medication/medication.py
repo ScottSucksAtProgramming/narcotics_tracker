@@ -3,9 +3,9 @@
 # ------------------------------ Tasks ------------------------------------- #
 
 
-from narcotics_tracker.medication.containers import Container
-from narcotics_tracker.units.units import Unit
-from narcotics_tracker.medication.medication_status import MedicationStatus
+from narcotics_tracker.medication import containers
+from narcotics_tracker.units import units
+from narcotics_tracker.medication import medication_status
 
 
 class Medication:
@@ -41,12 +41,12 @@ class Medication:
         self,
         name: str,
         code: str,
-        container_type: Container,
+        container_type: containers.Container,
         fill_amount: float,
         dose: float,
-        unit: Unit,
+        unit: units.Unit,
         concentration: float,
-        status: MedicationStatus,
+        status: medication_status.MedicationStatus,
         created_date: str,
         modified_date: str,
         modified_by: str,
@@ -67,46 +67,47 @@ class Medication:
 
     def __repr__(self) -> str:
         return (
-            f"{self.code}: {self.name} - {self.dose}{self.unit.value} "
-            f"in a {self.fill_amount}ml {self.container_type.value} "
-            f"({self.concentration}{self.unit.value}/ml) - Status: "
-            f"{self.status.value} - Created on: {self.created_date} - Last "
-            f"Modified on: {self.modified_date} by {self.modified_by}."
+            f"Medication Object for {self.code}: {self.name} - {self.dose}"
+            f"{self.unit.value} in a {self.fill_amount}ml "
+            f"{self.container_type.value} ({self.concentration}"
+            f"{self.unit.value}/ml) - Status: {self.status.value} - Created "
+            f"on: {self.created_date} - Last Modified on: "
+            f"{self.modified_date} by {self.modified_by}."
         )
 
     @property
-    def container_type(self) -> Container:
+    def container_type(self) -> containers.Container:
         """Gets the container type."""
         return self._container_type
 
     @container_type.setter
-    def container_type(self, container_type: Container):
+    def container_type(self, container_type: containers.Container):
         """Sets the medication's container type. Ensures that the container
         type is valid."""
-        if container_type not in Container:
+        if container_type not in containers.Container:
             raise TypeError("Incorrect container type.")
         self._container_type = container_type
 
     @property
-    def unit(self) -> Unit:
+    def unit(self) -> units.Unit:
         """Gets the dose unit."""
         return self._unit
 
     @unit.setter
-    def unit(self, unit: Unit):
+    def unit(self, unit: units.Unit):
         """Sets the medication's unit. Ensures that the unit is valid."""
-        if unit not in Unit:
+        if unit not in units.Unit:
             raise TypeError("Incorrect dose unit.")
         self._unit = unit
 
     @property
-    def status(self) -> MedicationStatus:
+    def status(self) -> medication_status.MedicationStatus:
         """Gets the medication' status."""
         return self._status
 
     @status.setter
-    def status(self, status: MedicationStatus):
+    def status(self, status: medication_status.MedicationStatus):
         """Sets the medication's status. Ensures that the status is valid."""
-        if status not in MedicationStatus:
+        if status not in medication_status.MedicationStatus:
             raise TypeError("Incorrect medication status entered.")
         self._status = status
