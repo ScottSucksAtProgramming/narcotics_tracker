@@ -37,14 +37,14 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.name == "Fentanyl"
+        assert test_med.name == "Unobtanium"
 
     def test_can_get_code(self, test_med):
         """Check to see if code can be retrieved."""
 
         test_med = test_med
 
-        assert test_med.code == "Fe-100-2"
+        assert test_med.code == "Un-69420-9001"
 
     def test_can_get_container_type(self, test_med):
         """Check to see if container_type can be retrieved."""
@@ -58,14 +58,14 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.fill_amount == 2
+        assert test_med.fill_amount == 9_001
 
     def test_can_get_dose(self, test_med):
         """Check to see if dose can be retrieved."""
 
         test_med = test_med
 
-        assert test_med.dose == 100
+        assert test_med.dose == 69_420
 
     def test_can_get_unit(self, test_med):
         """Check to see if unit can be retrieved."""
@@ -79,7 +79,7 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.concentration == 50
+        assert test_med.concentration == 69
 
     def test_can_restrict_container_type_to_Containers_enum(self):
         """Check that incorrect container types raise an exception."""
@@ -124,5 +124,5 @@ class TestMedication:
 
         assert (
             str(test_med)
-            == "Fe-100-2: Fentanyl - 100mcg in a 2ml Vial (50mcg/ml) - Status: Active - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by test."
+            == "Un-69420-9001: Unobtanium - 69420mcg in a 9001ml Vial (69mcg/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
         )

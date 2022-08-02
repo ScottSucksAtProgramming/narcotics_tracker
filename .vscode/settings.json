@@ -21,7 +21,8 @@
         "narcotics_tracker/converter/__pycache__": true,
         "narcotics_tracker/containers/__pycache__": true,
         "tests/unit/medication_tests/__pycache__": true,
-        "tests/unit/units/__pycache__": true
+        "tests/unit/units/__pycache__": true,
+        "tests/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -39,7 +40,8 @@
         "narcotics_tracker/converter/__pycache__",
         "narcotics_tracker/containers/__pycache__",
         "tests/unit/medication_tests/__pycache__",
-        "tests/unit/units/__pycache__"
+        "tests/unit/units/__pycache__",
+        "tests/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -75,5 +77,5 @@
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
-    "cSpell.words": ["unitconverter"]
+    "cSpell.words": ["unitconverter", "Unobtanium"]
 }

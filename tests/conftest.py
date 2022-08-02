@@ -15,15 +15,15 @@ def test_med():
     """Return a Medication object for testing."""
 
     return Medication(
-        name="Fentanyl",
-        code="Fe-100-2",
+        name="Unobtanium",
+        code="Un-69420-9001",
         container_type=Container.VIAL,
-        fill_amount=2,
-        dose=100,
+        fill_amount=9_001,
+        dose=69_420,
         unit=Unit.MCG,
-        concentration=50,
-        status=MedicationStatus.ACTIVE,
+        concentration=69,
+        status=MedicationStatus.DISCONTINUED,
         created_date="08-01-2022",
         modified_date="08-01-2022",
-        modified_by="test",
+        modified_by="Michael Meyers",
     )
