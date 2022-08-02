@@ -1,55 +1,98 @@
-#
-# * ------------------------- Documentation -------------------------------- #
-# Module:  medication.py
-# Contains the Medication class, and related classes.
-#
-#
-# Modification History
-# 07-27-2022 | SRK | Module Created
+"""Contains the Medication class."""
 
 # ------------------------------ Tasks ------------------------------------- #
-# Todo: I can create a new medication.
-# Todo: I can save medication to a database.
-# Todo: I can delete a medication.
-# Todo: I can update a medication.
-# Todo: I can retrieve a medication's properties.
 
-from narcotics_tracker.containers.containers import Container
+
+from narcotics_tracker.medication.containers import Container
 from narcotics_tracker.units.units import Unit
+from narcotics_tracker.medication.medication_status import MedicationStatus
 
 
 class Medication:
-    """Model of a medication."""
+    """The Medication Class contains templates for an agency's medications.
+
+    Each EMS agency will have a set of controlled substance medications they
+    use as part of their narcotics program. This class will create medication
+    objects for each medication allowing them to be edited, retrieved, and
+    interacted with. It will also allow for medications to be saved to a the
+    database.
+
+    Attributes:
+        name (str): The name of the medication.
+        code (str): Unique identifier for the specific medication
+            object.
+        container_type (Container): The type of container the medication comes
+            in.
+        fill_amount (float): The amount of milliliters the medication is
+            dissolved in. Always specified in milliliters.
+        dose (float): The total amount of the medication in the container.
+            Always represented in micrograms.
+        unit (Unit): The unit in which the medication is described.
+        concentration (float): The concentration of the medication within the
+            container.
+        status (MedicationStatus): The stats of the medication.
+        created_date (str): The date the medication was added to the database.
+        modified_date (str): The date the medication was last modified in the
+            database.
+        modified_by (str): The user that last modified the medication.
+    """
 
     def __init__(
         self,
         name: str,
-        manufacturer: str,
-        box_quantity: int,
+        code: str,
         container_type: Container,
-        fill_amount_in_milliliters: float,
-        strength_in_milligrams: float,
-        dose_unit: Unit,
+        fill_amount: float,
+        dose: float,
+        unit: Unit,
         concentration: float,
+        status: MedicationStatus,
+        created_date: str,
+        modified_date: str,
+        modified_by: str,
     ):
-        """Initialize a medication."""
+        """Initialize a medication.
+
+        Args:
+            name (str): The name of the medication.
+            code (str): Unique identifier for the specific medication
+                object.
+            container_type (Container): The type of container the medication
+                comes in.
+            fill_amount (float): The amount of milliliters the medication is
+                dissolved in. Always specified in milliliters.
+            dose (float): The total amount of the medication in the
+                container. Always represented in micrograms.
+            unit (Unit): The unit in which the medication is described.
+            concentration (float): The concentration of the medication within
+                the container.
+            status (MedicationStatus): The stats of the medication.
+            created_date (str): The date the medication was added to the
+                database.
+            modified_date (str): The date the medication was last modified in
+                the database.
+            modified_by (str): The user that last modified the medication.
+        """
+
         self.name = name
-        self.manufacturer = manufacturer
-        self.box_quantity = box_quantity
+        self.code = code
         self.container_type = container_type
-        self.fill_amount_in_milliliters = fill_amount_in_milliliters
-        self.strength_in_mg = strength_in_milligrams
-        self.dose_unit = dose_unit
+        self.fill_amount = fill_amount
+        self.dose = dose
+        self.unit = unit
         self.concentration = concentration
+        self.status = status
+        self.created_date = created_date
+        self.modified_date = modified_date
+        self.modified_by = modified_by
 
     def __repr__(self) -> str:
         return (
-            f"{self.name} - Manufacturer: {self.manufacturer}; Box "
-            f"Quantity: {self.box_quantity}; Container Type: "
-            f"{self.container_type.value}; Fill Amount: "
-            f"{self.fill_amount_in_milliliters}; Strength: "
-            f"{self.strength_in_mg} mg; Dose Unit: {self.dose_unit.value}; "
-            f"Concentration: {self.concentration} mg/ml."
+            f"{self.code}: {self.name} - {self.dose}{self.unit.value} "
+            f"in a {self.fill_amount}ml {self.container_type.value} "
+            f"({self.concentration}{self.unit.value}/ml) - Status: "
+            f"{self.status.value} - Created on: {self.created_date} - Last Modified on: "
+            f"{self.modified_date} by {self.modified_by}."
         )
 
     @property
@@ -65,13 +108,13 @@ class Medication:
         self._container_type = container_type
 
     @property
-    def dose_unit(self) -> Unit:
+    def unit(self) -> Unit:
         """Gets the dose unit."""
-        return self._dose_unit
+        return self._unit
 
-    @dose_unit.setter
-    def dose_unit(self, dose_unit: Unit):
+    @unit.setter
+    def unit(self, unit: Unit):
         """Sets the dose unit."""
-        if dose_unit not in Unit:
+        if unit not in Unit:
             raise TypeError("Incorrect dose unit.")
-        self._dose_unit = dose_unit
+        self._unit = unit
