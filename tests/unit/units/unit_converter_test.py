@@ -1,16 +1,11 @@
-#
-# * ------------------------ Documentation --------------------------------- #
-# Module:  unit_converter_test.py
-# Contains tests for the unit_converter.py module.
-#
-#
-# Modification History
-# 07-30-2022 | SRK | Module Created
+"""Contains the TestUnitConverter class."""
 
-from narcotics_tracker.converter.converter import UnitConverter
+from narcotics_tracker.units.converter import UnitConverter
 
 
 class TestUnitConverter:
+    """Tests the UnitConverter class."""
+
     def test_convert_mg_to_mcg(self):
         """Check to see if mg to mcg conversion works."""
 
@@ -44,7 +39,7 @@ class TestUnitConverter:
 
         assert UnitConverter.to_G(1, "mcg") == 0.000001
 
-    def test_convert_mg_to_G(self):
+    def test_convert_mg_to_D(self):
         """
         Test that mg is converted to G.
         """
