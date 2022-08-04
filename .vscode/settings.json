@@ -77,5 +77,5 @@
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
-    "cSpell.words": ["unitconverter", "Unobtanium"]
+    "cSpell.words": ["fent", "midaz", "unitconverter", "Unobtanium"]
 }

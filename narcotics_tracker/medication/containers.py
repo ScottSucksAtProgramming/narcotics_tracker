@@ -11,7 +11,18 @@ from enum import Enum
 
 
 class Container(Enum):
-    """Enum of medication container types."""
+    """Enum of medication container types.
+
+    Available container types:
+
+    VIAL
+
+    AMPULE
+
+    PRE_FILLED_SYRINGE
+
+    PRE_MIXED_BAG
+    """
 
     VIAL = "Vial"
     AMPULE = "Ampule"

@@ -76,7 +76,7 @@ class TestMedication:
 
         test_med = test_med
 
-        assert test_med.concentration == 69
+        assert test_med.concentration == 7.712476391512054
 
     def test_can_restrict_container_type_to_Containers_enum(self):
         """Check that incorrect container types raise an exception."""
@@ -118,10 +118,14 @@ class TestMedication:
         """Check to see if printing a Medication object returns a string."""
 
         test_med = test_med
-
-        assert (
-            str(test_med)
-            == "Medication Object for Un-69420-9001: Unobtanium - 69420mcg in a 9001ml Vial (69mcg/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
+        print(str(test_med))
+        assert str(test_med) == (
+            f"Medication Object for Unobtanium with code Un-69420-9001."
+            f"Container type: Vial"
+            f"Fill amount: 9001 ml"
+            f"Dose: 69420 mcg"
+            f"Concentration: 7.712476391512054"
+            f"Status: Discontinued"
         )
 
     def test_mediation_can_be_edited(self, test_med):
@@ -131,7 +135,11 @@ class TestMedication:
 
         test_med.unit = units.Unit.G
 
-        assert (
-            str(test_med)
-            == "Medication Object for Un-69420-9001: Unobtanium - 69420G in a 9001ml Vial (69G/ml) - Status: Discontinued - Created on: 08-01-2022 - Last Modified on: 08-01-2022 by Michael Meyers."
+        assert str(test_med) == (
+            f"Medication Object for Unobtanium with code Un-69420-9001."
+            f"Container type: Vial"
+            f"Fill amount: 9001 ml"
+            f"Dose: 69420 G"
+            f"Concentration: 7.712476391512054"
+            f"Status: Discontinued"
         )

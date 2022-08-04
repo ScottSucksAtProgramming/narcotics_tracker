@@ -9,9 +9,9 @@ class MedicationStatus(Enum):
     Medications may be come unavailable, or discontinued. The medication
     status is used to determine if the medication is available for use.
 
-    Attributes:
-        AVAILABLE: Medication is available for use.
-        UNAVAILABLE: Medication is unavailable for use.
+    Available Statuses:
+        ACTIVE: Medication is available for use.
+        INACTIVE: Medication is unavailable for use.
         DISCONTINUED: Medication is discontinued.
     """
 

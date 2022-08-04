@@ -18,7 +18,15 @@ from enum import Enum
 
 
 class Unit(Enum):
-    """Enum of dose units."""
+    """Enum of dose units.
+
+    Available units:
+
+    MCG
+
+    MG
+
+    G"""
 
     MG = "mg"
     MCG = "mcg"
