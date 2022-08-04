@@ -1,8 +1,7 @@
 """Contains the TestMedicationBuilder class."""
 
 from narcotics_tracker.medication import (
-    abstract_builder,
-    concrete_builder,
+    builder,
     containers,
     medication_status,
     medication,
@@ -16,7 +15,7 @@ class TestMedicationBuilder:
 
 def test_medication_builder_sets_name():
     """Tests that the medication builder sets the name"""
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_name("Aspirin")
 
@@ -25,7 +24,7 @@ def test_medication_builder_sets_name():
 
 def test_medication_builder_sets_code():
     """Tests that the medication builder sets the codes"""
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_code("ASA")
 
@@ -34,7 +33,7 @@ def test_medication_builder_sets_code():
 
 def test_medication_builder_sets_container_type():
     """Tests that the medication builder sets the container type"""
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_container_type(containers.Container.AMPULE)
     assert medication_builder.container_type.value == "Ampule"
@@ -42,7 +41,7 @@ def test_medication_builder_sets_container_type():
 
 def test_medication_builder_sets_dose():
     """Tests that the medication builder sets the dose and unit"""
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_container_type(containers.Container.AMPULE)
 
@@ -56,7 +55,7 @@ def test_medication_builder_sets_dose():
 def test_medication_builder_sets_unit():
     """Tests that the medication builder sets the dose and unit"""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_dose_and_unit(10, units.Unit.MG)
 
@@ -66,7 +65,7 @@ def test_medication_builder_sets_unit():
 def test_medication_builder_sets_fill_amount():
     """Tests that the medication builder sets the fill amount"""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_fill_amount(10)
 
@@ -76,7 +75,7 @@ def test_medication_builder_sets_fill_amount():
 def test_medication_builder_calculates_concentration():
     """Tests that the medication builder sets the concentration"""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
     medication_builder.set_dose_and_unit(10, units.Unit.MCG)
     medication_builder.set_fill_amount(10)
 
@@ -88,7 +87,7 @@ def test_medication_builder_calculates_concentration():
 def test_medication_builders_set_status():
     """Tests that the medication builder sets the status"""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_status(medication_status.MedicationStatus.ACTIVE)
 
@@ -98,7 +97,7 @@ def test_medication_builders_set_status():
 def test_medication_builder_creates_medication_object():
     """Tests that the medication builder creates a medication object"""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
     medication_builder.set_name("Aspirin")
     medication_builder.set_code("ASA")
     medication_builder.set_container_type(containers.Container.AMPULE)

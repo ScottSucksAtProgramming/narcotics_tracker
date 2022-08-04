@@ -3,7 +3,7 @@
 # ------------------------------ Tasks ------------------------------------- #
 
 from narcotics_tracker.medication import containers
-from narcotics_tracker.units import units, unit_converter
+from narcotics_tracker.units import units
 from narcotics_tracker.medication import medication_status
 
 """The Medication Class contains templates for an agency's medications.

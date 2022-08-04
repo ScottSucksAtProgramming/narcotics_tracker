@@ -4,10 +4,10 @@ from pytest import fixture
 
 from narcotics_tracker.units import units
 from narcotics_tracker.medication import (
+    builder,
     containers,
     medication_status,
     medication,
-    concrete_builder,
 )
 
 
@@ -15,7 +15,7 @@ from narcotics_tracker.medication import (
 def test_med():
     """Return a Medication object for testing."""
 
-    medication_builder = concrete_builder.MedicationBuilder()
+    medication_builder = builder.MedicationBuilder()
     medication_builder.set_name("Unobtanium")
     medication_builder.set_code("Un-69420-9001")
     medication_builder.set_container_type(containers.Container.VIAL)
