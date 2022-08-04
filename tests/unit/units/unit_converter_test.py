@@ -1,6 +1,6 @@
 """Contains the TestUnitConverter class."""
 
-from narcotics_tracker.units.converter import UnitConverter
+from narcotics_tracker.units.unit_converter import UnitConverter
 
 
 class TestUnitConverter:
