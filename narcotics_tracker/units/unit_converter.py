@@ -1,14 +1,4 @@
-#
-# * ------------------------ Documentation --------------------------------- #
-# Module:  unit_converter.py
-# This module will convert units of measurement.
-#
-#
-# Modification History
-# 07-30-2022 | SRK | Module Created
-
-# ------------------------------ Tasks ------------------------------------- #
-# Todo: We're gonna switch the program to always think in mcg. Allowing us to represent the values as integers, and use the converter to just move the decimal for the user.
+"""Contains the UnitConverter class."""
 
 from narcotics_tracker.units.units import Unit
 
