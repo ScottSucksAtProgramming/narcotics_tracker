@@ -23,7 +23,8 @@
         "tests/unit/medication_tests/__pycache__": true,
         "tests/unit/units/__pycache__": true,
         "tests/__pycache__": true,
-        "tests/unit/medication_tests/.pytest_cache": true
+        "tests/unit/medication_tests/.pytest_cache": true,
+        "narcotics_tracker/database_writer/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -43,7 +44,8 @@
         "tests/unit/medication_tests/__pycache__",
         "tests/unit/units/__pycache__",
         "tests/__pycache__",
-        "tests/unit/medication_tests/.pytest_cache"
+        "tests/unit/medication_tests/.pytest_cache",
+        "narcotics_tracker/database_writer/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
