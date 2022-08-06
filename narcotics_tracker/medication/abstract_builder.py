@@ -4,7 +4,7 @@
 from abc import ABC, abstractmethod
 
 
-class Builder(ABC):
+class MedicationBuilder(ABC):
     """The MedicationBuilder interface defines methods to build a medication."""
 
     @property

@@ -12,7 +12,7 @@ from narcotics_tracker.medication import (
 from narcotics_tracker.units import units, unit_converter
 
 
-class MedicationBuilder(abstract_builder.Builder):
+class MedicationBuilder(abstract_builder.MedicationBuilder):
     """The MedicationBuilder class builds a medication."""
 
     def __init__(self) -> None:
