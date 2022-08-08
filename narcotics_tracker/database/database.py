@@ -21,10 +21,7 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
-    def update_table(self, sql_query):
-        """Writes to the database."""
-        cursor = self.database_connection.cursor()
-        cursor.execute(sql_query)
+    # Todo: Add Method to update a table.
 
     def read_database(self, sql_query):
         """Reads from the database."""
