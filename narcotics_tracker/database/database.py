@@ -1,9 +1,9 @@
-"""Contains the DatabaseWriter class."""
+"""Contains the Database class."""
 
 import sqlite3
 
 
-class DatabaseWriter:
+class Database:
     """Reads and writes to the inventory database."""
 
     def __init__(self):

@@ -1,15 +1,15 @@
-"""Contains the TestDatabaseWriter class."""
+"""Contains the TestDatabase class."""
 
-from narcotics_tracker.database_writer import writer
+from narcotics_tracker.database import database
 
 
-class TestWriter:
+class TestDatabase:
     """Tests the behaviors of the Database Writer"""
 
     def test_writer_can_connect_to_database(self):
         """Tests that the writer can connect to the database"""
 
-        db_writer = writer.DatabaseWriter()
+        db_writer = database.Database()
 
         db_writer.connect("narcotics_tracker/data/test_database.db")
 
@@ -20,9 +20,11 @@ class TestWriter:
 
         If the table already exists, it will be deleted and recreated."""
 
+        table_name = "test_table"
+
         sql_query = """SELECT name FROM sqlite_master WHERE type='table';"""
 
-        db_writer = writer.DatabaseWriter()
+        db_writer = database.Database()
         db_writer.connect("narcotics_tracker/data/test_database.db")
         tables = db_writer.read_database(sql_query)
         if "test_table" in tables:
@@ -34,7 +36,7 @@ class TestWriter:
 
         tables = db_writer.read_database(sql_query)
 
-        assert [("test_table",)] == tables
+        assert (table_name,) in tables
 
     def test_writer_can_delete_table(self):
         """Tests that the writer can delete a table.
@@ -46,7 +48,7 @@ class TestWriter:
             """CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)"""
         )
 
-        db_writer = writer.DatabaseWriter()
+        db_writer = database.Database()
         db_writer.connect("narcotics_tracker/data/test_database.db")
 
         tables = db_writer.read_database(sql_find_table)
@@ -57,4 +59,4 @@ class TestWriter:
 
         tables = db_writer.read_database(sql_find_table)
 
-        assert [] == tables
+        assert ("test_table",) not in tables
