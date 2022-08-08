@@ -10,9 +10,11 @@ class Database:
         """Initializes the database connection."""
         self.database_connection = None
 
-    def connect(self, database_file_path):
+    def connect(self, database_file):
         """Connects to the database."""
-        self.database_connection = sqlite3.connect(database_file_path)
+        self.database_connection = sqlite3.connect(
+            "narcotics_tracker/data/" + database_file
+        )
 
     def create_table(self, sql_query):
         """Writes to the database."""

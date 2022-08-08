@@ -11,7 +11,7 @@ class TestDatabase:
 
         db_writer = database.Database()
 
-        db_writer.connect("narcotics_tracker/data/test_database.db")
+        db_writer.connect("test_database.db")
 
         assert db_writer.database_connection is not None
 
@@ -25,7 +25,7 @@ class TestDatabase:
         sql_query = """SELECT name FROM sqlite_master WHERE type='table';"""
 
         db_writer = database.Database()
-        db_writer.connect("narcotics_tracker/data/test_database.db")
+        db_writer.connect("test_database.db")
         tables = db_writer.read_database(sql_query)
         if "test_table" in tables:
             db_writer.delete_table("DROP TABLE IF EXISTS test_table")
@@ -49,7 +49,7 @@ class TestDatabase:
         )
 
         db_writer = database.Database()
-        db_writer.connect("narcotics_tracker/data/test_database.db")
+        db_writer.connect("test_database")
 
         tables = db_writer.read_database(sql_find_table)
         if "test_table" not in tables:
