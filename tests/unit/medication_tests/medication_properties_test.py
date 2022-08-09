@@ -14,10 +14,8 @@ from narcotics_tracker.medication import medication_status, medication, containe
 from narcotics_tracker.units import units
 
 
-class TestMedication:
-    """Unit Tests for the Medication Class."""
-
-    # TODO: Test repr.
+class TestMedicationProperties:
+    """Unit Tests for the properties of the Medication class."""
 
     def test_can_see_Medication_class(self):
         """Checks to see if Medication class is defined."""
@@ -29,12 +27,12 @@ class TestMedication:
 
         assert isinstance(test_med, medication.Medication)
 
-    def test_can_get_name(self, test_med):
-        """Check to see if name can be retrieved."""
+    def test_can_get_medication_id(self, test_med):
+        """Check to see if medication id can be retrieved."""
 
         test_med = test_med
 
-        assert test_med.name == "Unobtanium"
+        assert medication.Medication.medication_id == None
 
     def test_can_get_code(self, test_med):
         """Check to see if code can be retrieved."""
@@ -42,6 +40,13 @@ class TestMedication:
         test_med = test_med
 
         assert test_med.code == "Un-69420-9001"
+
+    def test_can_get_name(self, test_med):
+        """Check to see if name can be retrieved."""
+
+        test_med = test_med
+
+        assert test_med.name == "Unobtanium"
 
     def test_can_get_container_type(self, test_med):
         """Check to see if container_type can be retrieved."""
@@ -113,20 +118,6 @@ class TestMedication:
                 modified_date="08-01-2022",
                 modified_by="test",
             )
-
-    def test_printing_a_Medication_object_returns_correct_string(self, test_med):
-        """Check to see if printing a Medication object returns a string."""
-
-        test_med = test_med
-        print(str(test_med))
-        assert str(test_med) == (
-            f"Medication Object for Unobtanium with code Un-69420-9001."
-            f"Container type: Vial"
-            f"Fill amount: 9001 ml"
-            f"Dose: 69420 mcg"
-            f"Concentration: 7.712476391512054"
-            f"Status: Discontinued"
-        )
 
     def test_mediation_can_be_edited(self, test_med):
         """Check to see if Medication object can be edited."""
