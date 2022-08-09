@@ -4,12 +4,10 @@ from narcotics_tracker.database import database
 from narcotics_tracker.medication import medication
 
 
-def create_medication_table():
+def create_medication_table(db_connection) -> None:
     """This function will create the medication table."""
-    db = database.Database()
-    db.connect("inventory.db")
 
-    db.create_table(medication.Medication.return_table_creation_query())
+    db_connection.create_table(medication.Medication.return_table_creation_query())
 
 
 if __name__ == "__main__":
