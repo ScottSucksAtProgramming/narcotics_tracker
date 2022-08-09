@@ -32,14 +32,18 @@ Attributes:
 
 
 class Medication:
-    name: str = None
+    medication_id: int = None
     code: str = None
+    name: str = None
     container_type: containers.Container = None
     fill_amount: float = None
     dose: float = None
     unit: units.Unit = None
     concentration: float = None
     status: medication_status.MedicationStatus = None
+    created_date: str = None
+    modified_date: str = None
+    modified_by: str = None
 
     def __init__(
         self,
@@ -63,6 +67,19 @@ class Medication:
             f"Concentration: {self.concentration}"
             f"Status: {self.status.value}"
         )
+
+    def return_table_creation_query():
+        return """CREATE TABLE IF NOT EXISTS medication (
+                NAME TEXT,
+                CODE TEXT,
+                CONTAINER_TYPE TEXT,
+                FILL_AMOUNT REAL,
+                DOSE REAL,
+                UNIT TEXT,
+                CONCENTRATION REAL,
+                STATUS TEXT,
+                PRIMARY KEY (CODE)
+                )"""
 
     # def calculate_standard_dose(self, dose: int, unit: units.Unit) -> float:
     #     """Calculates the standard dose of the medication.
