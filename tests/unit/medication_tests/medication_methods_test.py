@@ -7,10 +7,13 @@
 # Modification History
 # 07-27-2022 | SRK | Module Created
 
-
-import pytest
-
-from narcotics_tracker.medication import medication_status, medication, containers
+from narcotics_tracker.database import database
+from narcotics_tracker.medication import (
+    containers,
+    medication,
+    medication_status,
+    builder,
+)
 from narcotics_tracker.units import units
 
 
@@ -21,7 +24,6 @@ class TestMedicationMethods:
         """Check to see if printing a Medication object returns a string."""
 
         test_med = test_med
-        print(str(test_med))
         assert str(test_med) == (
             f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
             f"Container type: Vial. "
@@ -37,6 +39,7 @@ class TestMedicationMethods:
 
         assert medication.Medication.return_table_creation_query() == (
             """CREATE TABLE IF NOT EXISTS medication (
+                MEDICATION_ID INTEGER,
                 NAME TEXT,
                 CODE TEXT,
                 CONTAINER_TYPE TEXT,
@@ -45,6 +48,44 @@ class TestMedicationMethods:
                 UNIT TEXT,
                 CONCENTRATION REAL,
                 STATUS TEXT,
+                CREATED_DATE TEXT,
+                MODIFIED_DATE TEXT,
+                MODIFIED_BY TEXT,
                 PRIMARY KEY (CODE)
                 )"""
         )
+
+    def test_return_properties(self, test_med):
+        """Checks to see if the medication data is correctly returned."""
+
+        test_med = test_med
+        assert test_med.return_properties() == (
+            1,
+            "Un-69420-9001",
+            "Unobtanium",
+            "Vial",
+            9001,
+            69420,
+            "mcg",
+            7.712476391512054,
+            "Discontinued",
+            "08-01-2022",
+            "08-09-2022",
+            "SRK",
+        )
+
+    def test_save_to_database(self, test_med):
+        """Checks to see if the medication data is correctly written to
+        database."""
+
+        test_med = test_med
+        values = test_med.return_properties()
+        db = database.Database()
+        db.connect("inventory.db")
+
+        test_med.save_to_database(
+            """INSERT INTO medication VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            values,
+        )
+
+        assert db.read_database("""SELECT * FROM medication""") == None
