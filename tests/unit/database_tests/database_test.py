@@ -60,3 +60,23 @@ class TestDatabase:
         tables = db_writer.read_database(sql_find_table)
 
         assert ("test_table",) not in tables
+
+    def test_write_data(self):
+        """Tests that the writer can write data to a table."""
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(
+            """
+                CREATE TABLE IF NOT EXISTS test_table (
+                data TEXT,
+                PRIMARY KEY (data)
+                )
+            """
+        )
+        values = ["test"]
+        sql = """INSERT INTO test_table (data) VALUES(?)"""
+
+        db.write_data(sql, values)
+
+        assert db.read_database("""SElECT * FROM test_table""") == [("test",)]
