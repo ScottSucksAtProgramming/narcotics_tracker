@@ -4,7 +4,7 @@ import sqlite3
 
 
 class Database:
-    """Reads and writes to the inventory database."""
+    """Interacts directly with the database."""
 
     def __init__(self):
         """Initializes the database object and sets connection to None."""
@@ -14,11 +14,16 @@ class Database:
         """Connects to the database file.
 
         Args:
-            database_file (str): The name of the database file. (File must be
+            database_file (str): Database file. (File must be
                 in the data/ directory.)"""
-        self.database_connection = sqlite3.connect(
-            "narcotics_tracker/data/" + database_file
-        )
+        try:
+            self.database_connection = sqlite3.connect(
+                "narcotics_tracker/data/" + database_file
+            )
+        except sqlite3.Error as e:
+            print(e)
+
+        return self.database_connection
 
     def create_table(self, sql_query):
         """Creates a table in the database.
@@ -30,9 +35,55 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
-    # Todo: Add Method to update a table.
+    def read_table(self, sql_query, table_name: list[str]):
+        """Returns a list of tables in the database.
 
-    def read_database(self, sql_query):
+        Args:
+            sql_query (str): The SQL query to read from the database. i.e.
+                SELECT * FROM table_name
+            table_name (list[str]): The name of the table to read from. Must
+                be provided as a list.
+
+        """
+        cursor = self.database_connection.cursor()
+        cursor.execute(sql_query, table_name)
+        return cursor.fetchall()
+
+    def get_columns(self, sql_query):
+        """Returns the column names.
+
+        Args:
+            sql_query (str): The SQL query to read from the database. i.e.
+                SELECT * FROM table_name
+        """
+        cursor = self.database_connection.cursor()
+        columns = cursor.execute(sql_query)
+        return columns.description
+
+    def delete_table(self, sql_query):
+        """Deletes a table from the database."""
+        cursor = self.database_connection.cursor()
+        cursor.execute(sql_query)
+        self.database_connection.commit()
+
+    def update_table(self, sql_query):
+        """Updates a table using the ALTER TABLE statement.
+
+        Args:
+            sql_query (str): The SQL query to update the table.
+
+        Options:
+            Rename Table: ALTER TABLE table_name RENAME TO new_table_name
+            Add Column: ALTER TABLE table_name ADD column_name data_type
+            Rename Column: ALTER TABLE table_name RENAME COLUMN column_name
+                TO new_column_name
+        """
+
+        cursor = self.database_connection.cursor()
+        cursor.execute(sql_query)
+        self.database_connection.commit()
+
+    def read_database(self, sql_query: str) -> list:
         """Reads from the database.
 
         Args:
@@ -42,11 +93,6 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
         return cursor.fetchall()
-
-    def delete_table(self, sql_query):
-        """Deletes a table from the database."""
-        cursor = self.database_connection.cursor()
-        cursor.execute(sql_query)
 
     def write_data(self, sql_query, values):
         """Writes to the database.
