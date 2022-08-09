@@ -5,6 +5,8 @@
 from narcotics_tracker.medication import containers
 from narcotics_tracker.units import units
 from narcotics_tracker.medication import medication_status
+from narcotics_tracker.database import database
+
 
 """The Medication Class contains templates for an agency's medications.
 
@@ -71,6 +73,7 @@ class Medication:
 
     def return_table_creation_query():
         return """CREATE TABLE IF NOT EXISTS medication (
+                MEDICATION_ID INTEGER,
                 NAME TEXT,
                 CODE TEXT,
                 CONTAINER_TYPE TEXT,
@@ -79,5 +82,29 @@ class Medication:
                 UNIT TEXT,
                 CONCENTRATION REAL,
                 STATUS TEXT,
+                CREATED_DATE TEXT,
+                MODIFIED_DATE TEXT,
+                MODIFIED_BY TEXT,
                 PRIMARY KEY (CODE)
                 )"""
+
+    def return_properties(self) -> tuple:
+        return (
+            self.medication_id,
+            self.code,
+            self.name,
+            self.container_type.value,
+            self.fill_amount,
+            self.dose,
+            self.unit.value,
+            self.concentration,
+            self.status.value,
+            self.created_date,
+            self.modified_date,
+            self.modified_by,
+        )
+
+    def save_to_database(self, sql_query, values):
+        db = database.Database()
+        db.connect("inventory.db")
+        db.write_data(sql_query, values)
