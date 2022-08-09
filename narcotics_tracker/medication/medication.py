@@ -60,12 +60,13 @@ class Medication:
 
     def __repr__(self) -> str:
         return (
-            f"Medication Object for {self.name} with code {self.code}."
-            f"Container type: {self.container_type.value}"
-            f"Fill amount: {self.fill_amount} ml"
-            f"Dose: {self.dose} {self.unit.value}"
-            f"Concentration: {self.concentration}"
-            f"Status: {self.status.value}"
+            f"Medication Object {self.medication_id} for {self.name} with "
+            f"code {self.code}. Container type: {self.container_type.value}. "
+            f"Fill amount: {self.fill_amount} ml. "
+            f"Dose: {self.dose} {self.unit.value}. "
+            f"Concentration: {self.concentration}. "
+            f"Status: {self.status.value}. Created on {self.created_date}. "
+            f"Last modified on {self.modified_date} by {self.modified_by}."
         )
 
     def return_table_creation_query():
