@@ -49,7 +49,7 @@ class TestDatabase:
         )
 
         db_writer = database.Database()
-        db_writer.connect("test_database")
+        db_writer.connect("test_database.db")
 
         tables = db_writer.read_database(sql_find_table)
         if "test_table" not in tables:
