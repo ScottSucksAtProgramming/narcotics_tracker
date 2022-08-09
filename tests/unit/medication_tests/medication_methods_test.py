@@ -23,12 +23,13 @@ class TestMedicationMethods:
         test_med = test_med
         print(str(test_med))
         assert str(test_med) == (
-            f"Medication Object for Unobtanium with code Un-69420-9001."
-            f"Container type: Vial"
-            f"Fill amount: 9001 ml"
-            f"Dose: 69420 mcg"
-            f"Concentration: 7.712476391512054"
-            f"Status: Discontinued"
+            f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
+            f"Container type: Vial. "
+            f"Fill amount: 9001 ml. "
+            f"Dose: 69420 mcg. "
+            f"Concentration: 7.712476391512054. "
+            f"Status: Discontinued. Created on 08-01-2022. "
+            f"Last modified on 08-09-2022 by SRK."
         )
 
     def test_medication_table_query_returns_correct_string(self):
