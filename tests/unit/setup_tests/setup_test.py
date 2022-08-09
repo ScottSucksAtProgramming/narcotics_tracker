@@ -3,7 +3,6 @@
 import os
 
 from narcotics_tracker.setup import setup
-from narcotics_tracker.medication import medication
 from narcotics_tracker.database import database
 
 
