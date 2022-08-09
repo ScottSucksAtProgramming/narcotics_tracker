@@ -33,7 +33,12 @@ class Database:
     # Todo: Add Method to update a table.
 
     def read_database(self, sql_query):
-        """Reads from the database."""
+        """Reads from the database.
+
+        Args:
+            sql_query (str): The SQL query to read from the database. i.e.
+                SELECT * FROM table_name
+        """
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
         return cursor.fetchall()
@@ -42,3 +47,13 @@ class Database:
         """Deletes a table from the database."""
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
+
+    def write_data(self, sql_query, values):
+        """Writes to the database.
+
+        Args:
+            sql_query (str): The SQL query to write to the database. i.e.
+                INSERT INTO table_name (column_name) VALUES (value)"""
+        cursor = self.database_connection.cursor()
+        cursor.execute(sql_query, values)
+        self.database_connection.commit()
