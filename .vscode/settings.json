@@ -35,7 +35,8 @@
         "tests/unit/units_tests/__pycache__": true,
         "tests/unit/units_tests/.pytest_cache": true,
         "tests/unit/database_tests/.pytest_cache": true,
-        "scripts/__pycache__": true
+        "scripts/__pycache__": true,
+        "narcotics_tracker/date/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -67,7 +68,8 @@
         "tests/unit/units_tests/__pycache__",
         "tests/unit/units_tests/.pytest_cache",
         "tests/unit/database_tests/.pytest_cache",
-        "scripts/__pycache__"
+        "scripts/__pycache__",
+        "narcotics_tracker/date/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
