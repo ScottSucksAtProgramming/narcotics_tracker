@@ -101,6 +101,12 @@
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
-    "cSpell.words": ["fent", "midaz", "unitconverter", "Unobtanium"],
+    "cSpell.words": [
+        "fent",
+        "midaz",
+        "MIDAZOLAM",
+        "unitconverter",
+        "Unobtanium"
+    ],
     "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/"
 }
