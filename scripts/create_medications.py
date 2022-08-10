@@ -61,25 +61,19 @@ def build_medication(medication_properties: list) -> medication.Medication:
     return medication_builder.build
 
 
-def set_medication_dates(medication: medication.Medication) -> medication.Medication:
-    """Sets the medication dates."""
-    today = datetime.date.today().strftime("%m-%d-%Y")
-    medication.created_date = today
-    medication.modified_date = today
-    medication.modified_by = "SRK"
-
-    return medication
-
-
 def main():
 
     fentanyl = build_medication(FENTANYL_PROPERTIES)
-    morphine = build_medication(MORPHINE_PROPERTIES)
-    midazolam = build_medication(MIDAZOLAM_PROPERTIES)
+    fentanyl.created_date = "08-08-2022"
+    fentanyl.modified_by = "SRK"
 
-    fentanyl = set_medication_dates(fentanyl)
-    morphine = set_medication_dates(morphine)
-    midazolam = set_medication_dates(midazolam)
+    morphine = build_medication(MORPHINE_PROPERTIES)
+    morphine.created_date = "08-08-2022"
+    morphine.modified_by = "SRK"
+
+    midazolam = build_medication(MIDAZOLAM_PROPERTIES)
+    midazolam.created_date = "08-08-2022"
+    midazolam.modified_by = "SRK"
 
     db = database.Database()
     db.connect("inventory.db")
