@@ -3,6 +3,7 @@
 from narcotics_tracker.medication import containers
 from narcotics_tracker.units import units
 from narcotics_tracker.medication import medication_status
+from narcotics_tracker.date import date
 
 
 class Medication:
@@ -104,6 +105,17 @@ class Medication:
             self.modified_by,
         )
 
+    def created_date_is_none(self) -> bool:
+        """Return whether the created date is None.
+
+        Returns:
+            bool: Returns True if the created date is None.
+        """
+        if self.created_date is None:
+            return True
+        else:
+            return False
+
     def save(self, db_connection):
         """Write the medication to the database.
 
@@ -114,5 +126,9 @@ class Medication:
         """
 
         sql_query = """INSERT OR IGNORE INTO medication VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        if self.created_date_is_none():
+            self.created_date = date.get_date_as_string()
+        self.modified_date = date.get_date_as_string()
+
         values = self.return_properties()
         db_connection.write_data(sql_query, values)

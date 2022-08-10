@@ -7,6 +7,7 @@
 # Modification History
 # 07-27-2022 | SRK | Module Created
 
+
 from narcotics_tracker.database import database
 from narcotics_tracker.medication import (
     containers,
@@ -15,6 +16,7 @@ from narcotics_tracker.medication import (
     builder,
 )
 from narcotics_tracker.units import units
+from narcotics_tracker.date import date
 
 
 class TestMedicationMethods:
@@ -105,3 +107,32 @@ class TestMedicationMethods:
                 MODIFIED_BY TEXT
                 )"""
         )
+
+    def test_created_date_is_none(self, test_med):
+        """Checks to see if the created date is None."""
+
+        test_med = test_med
+
+        test_med.created_date = None
+
+        assert test_med.created_date_is_none() == True
+
+    def test_created_date_has_value(self, test_med):
+        """Checks to see if the created date is None."""
+
+        test_med = test_med
+
+        assert test_med.created_date_is_none() == False
+
+    def test_created_date_set_if_none(self, test_med):
+        """Checks to see if the created date is initially set to none it is replaced with current date."""
+
+        test_med = test_med
+        db = database.Database()
+        db.connect("test_database.db")
+
+        test_med.created_date = None
+
+        test_med.save(db)
+
+        assert test_med.created_date == date.get_date_as_string()
