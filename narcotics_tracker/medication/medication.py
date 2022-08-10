@@ -41,8 +41,8 @@ class Medication:
         self,
         builder=None,
     ) -> None:
-        self.name = builder.name
         self.code = builder.code
+        self.name = builder.name
         self.container_type = builder.container_type
         self.fill_amount = builder.fill_amount
         self.dose = builder.dose
@@ -69,9 +69,9 @@ class Medication:
     def return_table_creation_query():
         """Return the query to create the medication table."""
         return """CREATE TABLE IF NOT EXISTS medication (
-                MEDICATION_ID INTEGER,
+                MEDICATION_ID INTEGER PRIMARY KEY,
                 NAME TEXT,
-                CODE TEXT,
+                CODE TEXT UNIQUE,
                 CONTAINER_TYPE TEXT,
                 FILL_AMOUNT REAL,
                 DOSE REAL,
@@ -80,8 +80,7 @@ class Medication:
                 STATUS TEXT,
                 CREATED_DATE TEXT,
                 MODIFIED_DATE TEXT,
-                MODIFIED_BY TEXT,
-                PRIMARY KEY (CODE)
+                MODIFIED_BY TEXT
                 )"""
 
     def return_properties(self) -> tuple:
@@ -105,7 +104,7 @@ class Medication:
             self.modified_by,
         )
 
-    def save(self, db_connection, sql_query, values):
+    def save(self, db_connection):
         """Write the medication to the database.
 
         Args:
@@ -113,4 +112,7 @@ class Medication:
             sql_query (str): The query to be executed.
             values (tuple): The values to be inserted into the query.
         """
+
+        sql_query = """INSERT OR IGNORE INTO medication VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        values = self.return_properties()
         db_connection.write_data(sql_query, values)

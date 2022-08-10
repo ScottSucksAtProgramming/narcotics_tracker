@@ -39,9 +39,9 @@ class TestMedicationMethods:
 
         assert medication.Medication.return_table_creation_query() == (
             """CREATE TABLE IF NOT EXISTS medication (
-                MEDICATION_ID INTEGER,
+                MEDICATION_ID INTEGER PRIMARY KEY,
                 NAME TEXT,
-                CODE TEXT,
+                CODE TEXT UNIQUE,
                 CONTAINER_TYPE TEXT,
                 FILL_AMOUNT REAL,
                 DOSE REAL,
@@ -50,8 +50,7 @@ class TestMedicationMethods:
                 STATUS TEXT,
                 CREATED_DATE TEXT,
                 MODIFIED_DATE TEXT,
-                MODIFIED_BY TEXT,
-                PRIMARY KEY (CODE)
+                MODIFIED_BY TEXT
                 )"""
         )
 
@@ -79,13 +78,11 @@ class TestMedicationMethods:
         database."""
 
         test_med = test_med
-        values = test_med.return_properties()
         db = database.Database()
         db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS test_table")
 
-        sql_query = """INSERT OR IGNORE INTO medication VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-
-        test_med.save_to_database(db, sql_query, values)
+        test_med.save(db)
         data = db.read_table(
             """SELECT * FROM sqlite_master WHERE type='table' AND name=(?)""",
             ["medication"],
@@ -94,9 +91,9 @@ class TestMedicationMethods:
         assert (
             data
             == """CREATE TABLE medication (
-                MEDICATION_ID INTEGER,
+                MEDICATION_ID INTEGER PRIMARY KEY,
                 NAME TEXT,
-                CODE TEXT,
+                CODE TEXT UNIQUE,
                 CONTAINER_TYPE TEXT,
                 FILL_AMOUNT REAL,
                 DOSE REAL,
@@ -105,7 +102,6 @@ class TestMedicationMethods:
                 STATUS TEXT,
                 CREATED_DATE TEXT,
                 MODIFIED_DATE TEXT,
-                MODIFIED_BY TEXT,
-                PRIMARY KEY (CODE)
+                MODIFIED_BY TEXT
                 )"""
         )
