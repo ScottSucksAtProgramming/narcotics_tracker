@@ -6,16 +6,17 @@ import sqlite3
 class Database:
     """Interacts directly with the database."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initializes the database object and sets connection to None."""
         self.database_connection = None
 
     def connect(self, database_file):
-        """Connects to the database file.
+        """Creates a connection to the database.
 
         Args:
-            database_file (str): Database file. (File must be
-                in the data/ directory.)"""
+            database_file (str): The database file located in the data/
+                directory."""
+
         try:
             self.database_connection = sqlite3.connect(
                 "narcotics_tracker/data/" + database_file
@@ -32,6 +33,7 @@ class Database:
             sql_query (str): The SQL query to create the table. i.e.
                 "CREATE TABLE table_name (column_name column_type)"
         """
+
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
@@ -61,7 +63,12 @@ class Database:
         return columns.description
 
     def delete_table(self, sql_query):
-        """Deletes a table from the database."""
+        """Deletes a table from the database.
+
+        Args:
+            sql_query (str): The SQL query to delete the table. i.e. DROP
+                TABLE IF EXISTS table_name"""
+
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
         self.database_connection.commit()
@@ -90,6 +97,7 @@ class Database:
             sql_query (str): The SQL query to read from the database. i.e.
                 SELECT * FROM table_name
         """
+
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
         return cursor.fetchall()
@@ -100,6 +108,7 @@ class Database:
         Args:
             sql_query (str): The SQL query to write to the database. i.e.
                 INSERT INTO table_name (column_name) VALUES (value)"""
+
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query, values)
         self.database_connection.commit()
