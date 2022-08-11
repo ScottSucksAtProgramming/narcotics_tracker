@@ -3,14 +3,13 @@ writes them to the table."""
 
 import datetime
 from subprocess import DEVNULL
+from narcotics_tracker.enums import containers, medication_statuses
 
 from narcotics_tracker.medication import (
     builder,
-    containers,
-    medication_status,
     medication,
 )
-from narcotics_tracker.units import units
+from narcotics_tracker.enums import units
 from narcotics_tracker.database import database
 from narcotics_tracker.setup import setup
 
@@ -21,7 +20,7 @@ FENTANYL_PROPERTIES = [
     100,
     units.Unit.MCG,
     2,
-    medication_status.MedicationStatus.ACTIVE,
+    medication_statuses.MedicationStatus.ACTIVE,
 ]
 
 MIDAZOLAM_PROPERTIES = [
@@ -31,7 +30,7 @@ MIDAZOLAM_PROPERTIES = [
     10,
     units.Unit.MG,
     2,
-    medication_status.MedicationStatus.ACTIVE,
+    medication_statuses.MedicationStatus.ACTIVE,
 ]
 
 MORPHINE_PROPERTIES = [
@@ -41,13 +40,13 @@ MORPHINE_PROPERTIES = [
     10,
     units.Unit.MG,
     1,
-    medication_status.MedicationStatus.ACTIVE,
+    medication_statuses.MedicationStatus.ACTIVE,
 ]
 
 
 def build_medication(medication_properties: list) -> medication.Medication:
     """Uses the MedicationBuilder to create medication objects."""
-    medication_builder = builder.MedicationBuilder()
+    medication_builder = builder.ObjectBuilder()
 
     medication_builder.set_name(medication_properties[0])
     medication_builder.set_code(medication_properties[1])
