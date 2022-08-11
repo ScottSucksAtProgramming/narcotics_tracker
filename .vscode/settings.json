@@ -36,7 +36,8 @@
         "tests/unit/units_tests/.pytest_cache": true,
         "tests/unit/database_tests/.pytest_cache": true,
         "scripts/__pycache__": true,
-        "narcotics_tracker/date/__pycache__": true
+        "narcotics_tracker/date/__pycache__": true,
+        "narcotics_tracker/builders/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -69,7 +70,8 @@
         "tests/unit/units_tests/.pytest_cache",
         "tests/unit/database_tests/.pytest_cache",
         "scripts/__pycache__",
-        "narcotics_tracker/date/__pycache__"
+        "narcotics_tracker/date/__pycache__",
+        "narcotics_tracker/builders/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -110,6 +112,7 @@
         "midaz",
         "MIDAZOLAM",
         "unitconverter",
+        "Unobtainium",
         "Unobtanium"
     ],
     "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/"

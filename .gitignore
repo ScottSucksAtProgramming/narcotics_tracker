@@ -70,4 +70,4 @@ TokenIdRangesByImageNumber.*
 VMWalletAddressesForTesting.*
 /venv/*
 /docs/blog/
-narcotics_tracker/data/*
+data/*
