@@ -1,9 +1,8 @@
 """Configuration for pytest."""
 
 from pytest import fixture
-from narcotics_tracker.enums import containers, medication_statuses
 
-from narcotics_tracker.enums import units
+from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import builder
 
 
