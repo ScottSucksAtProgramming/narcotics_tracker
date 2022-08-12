@@ -127,6 +127,6 @@ class Database:
 
         medication_builder = builder.ObjectBuilder()
         medication_builder.set_all_properties(medication_data)
-        loaded_med = medication_builder.build
+        loaded_med = medication_builder.build()
 
         return loaded_med

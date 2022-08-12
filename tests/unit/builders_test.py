@@ -133,6 +133,6 @@ class Test_Builder:
         medication_builder.set_dose_and_unit(10, units.Unit.MCG)
         medication_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
 
-        aspirin = medication_builder.build
+        aspirin = medication_builder.build()
 
         assert isinstance(aspirin, medication.Medication)

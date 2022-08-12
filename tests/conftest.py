@@ -18,7 +18,7 @@ def test_med():
     medication_builder.set_fill_amount(9_001)
     medication_builder.set_status(medication_statuses.MedicationStatus.DISCONTINUED)
 
-    test_med = medication_builder.build
+    test_med = medication_builder.build()
     test_med.medication_id = 1
     test_med.created_date = "08-01-2022"
     test_med.modified_date = "08-09-2022"
