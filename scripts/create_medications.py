@@ -46,7 +46,7 @@ MORPHINE_PROPERTIES = [
 
 def build_medication(medication_properties: list) -> medication.Medication:
     """Uses the MedicationBuilder to create medication objects."""
-    medication_builder = builder.ObjectBuilder()
+    medication_builder = builder.MedicationBuilder()
 
     medication_builder.set_name(medication_properties[0])
     medication_builder.set_code(medication_properties[1])
