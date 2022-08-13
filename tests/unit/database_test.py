@@ -31,7 +31,7 @@ class Test_DatabaseClass:
 
         assert (table_name,) in tables
 
-    def test_read_table(self):
+    def test_get_tables(self):
         """Tests that the writer can read data from a table."""
 
         db = database.Database()
@@ -52,12 +52,34 @@ class Test_DatabaseClass:
         db.write_data(sql_write_data, values)
         table_name = ["test_read_table"]
 
-        data = db.read_table(
+        data = db.get_tables(
             """SELECT * FROM sqlite_master WHERE type='table' and name=(?) """,
             table_name,
         )[0][4]
 
         assert values[0] in data
+
+    def test_get_columns(self):
+        """Tests that the writer can get the columns in a table."""
+
+        # Arrange
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS test_get_columns_table")
+
+        sql_create_table = """
+                CREATE TABLE IF NOT EXISTS test_get_columns_table (
+                data TEXT,
+                PRIMARY KEY (data)
+                )
+            """
+        db.create_table(sql_create_table)
+
+        # Act
+        columns = db.get_columns("""SElECT * FROM test_get_columns_table""")
+
+        # Assert
+        assert "data" == columns[0][0]
 
     def test_delete_table(self):
         """Tests that the writer can delete a table."""

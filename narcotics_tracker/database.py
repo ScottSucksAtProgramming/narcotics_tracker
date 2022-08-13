@@ -38,29 +38,32 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
-    def read_table(self, sql_query, table_name: list[str]):
+    def get_tables(self, sql_query, table_name: list[str]):
         """Returns a list of tables in the database.
 
         Args:
             sql_query (str): The SQL query to read from the database. i.e.
                 SELECT * FROM table_name
+
             table_name (list[str]): The name of the table to read from. Must
                 be provided as a list.
 
         """
+
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query, table_name)
         return cursor.fetchall()
 
     def get_columns(self, sql_query):
-        """Returns the column names.
+        """Returns the column names from a table.
 
         Args:
             sql_query (str): The SQL query to read from the database. i.e.
-                SELECT * FROM table_name
+                SELECT * FROM sqlite_master WHERE type = 'table' AND name = (?)
         """
         cursor = self.database_connection.cursor()
         columns = cursor.execute(sql_query)
+
         return columns.description
 
     def delete_table(self, sql_query):
@@ -124,7 +127,7 @@ class Database:
         result = self.read_data(sql_query, values)
         medication_data = medication.Medication.parse_medication_data(result)
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
         medication_builder.set_all_properties(medication_data)
         loaded_med = medication_builder.build()
 
