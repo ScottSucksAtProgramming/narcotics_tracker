@@ -10,7 +10,7 @@ from narcotics_tracker.builders import builder
 def test_med():
     """Return a Medication object for testing."""
 
-    medication_builder = builder.ObjectBuilder()
+    medication_builder = builder.MedicationBuilder()
     medication_builder.set_name("Unobtanium")
     medication_builder.set_code("Un-69420-9001")
     medication_builder.set_container(containers.Container.VIAL)

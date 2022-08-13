@@ -12,10 +12,10 @@ class Medication:
         medication_id (int): Numeric identifier for the medication.
         code (str): Unique identifier for the specific medication.
         name (str): Name of the medication.
-        container_type (containers.ContainerType): The type of container.
+        container_type (containers.Container): The type of container.
         fill_amount (float): Amount of the solvent in the container.
         dose (float): Amount of medication in the container.
-        unit (units.Unit): The unit of the medication.
+        preferred_unit (units.Unit): The unit the medication is referred by.
         concentration (float): The concentration of the medication.
         status (medication_status.MedicationStatus): The status of the
             medication.
@@ -30,7 +30,7 @@ class Medication:
     container_type: containers.Container = None
     fill_amount: float = None
     dose: float = None
-    unit: units.Unit = None
+    preferred_unit: units.Unit = None
     concentration: float = None
     status: medication_statuses.MedicationStatus = None
     created_date: str = None
@@ -43,7 +43,7 @@ class Medication:
         self.container_type = builder.container_type
         self.fill_amount = builder.fill_amount
         self.dose = builder.dose
-        self.unit = builder.unit
+        self.preferred_unit = builder.unit
         self.concentration = builder.concentration
         self.status = builder.status
 
@@ -58,7 +58,7 @@ class Medication:
             f"Medication Object {self.medication_id} for {self.name} with "
             f"code {self.code}. Container type: {self.container_type.value}. "
             f"Fill amount: {self.fill_amount} ml. "
-            f"Dose: {self.dose} {self.unit.value}. "
+            f"Dose: {self.dose} {self.preferred_unit.value}. "
             f"Concentration: {self.concentration}. "
             f"Status: {self.status.value}. Created on {self.created_date}. "
             f"Last modified on {self.modified_date} by {self.modified_by}."
@@ -92,12 +92,12 @@ class Medication:
 
         return (
             self.medication_id,
-            self.name,
             self.code,
+            self.name,
             self.container_type.value,
             self.fill_amount,
             self.dose,
-            self.unit.value,
+            self.preferred_unit.value,
             self.concentration,
             self.status.value,
             self.created_date,
@@ -135,7 +135,7 @@ class Medication:
         values = self.return_properties()
         db_connection.write_data(sql_query, values)
 
-    def parse_medication_data(medication_data: list) -> dict:
+    def parse_medication_data(medication_data) -> dict:
         """Converts the medication data from a sql query to a dictionary which
         can be used to load a new medication object.
 
@@ -145,6 +145,8 @@ class Medication:
         Returns:
             properties (dict): Dictionary objects contains the properties of
                 the medication."""
+
+        print(medication_data)
 
         properties = {}
 
@@ -168,3 +170,16 @@ class Medication:
         properties["modified_by"] = medication_data[0][11]
 
         return properties
+
+    def delete(self, db_connection):
+        """Delete the medication from the database.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the database.
+            sql_query (str): The query to be executed.
+            values (tuple): The values to be inserted into the query.
+        """
+
+        sql_query = """DELETE FROM medication WHERE medication_id = ?"""
+        values = (self.medication_id,)
+        db_connection.write_data(sql_query, values)

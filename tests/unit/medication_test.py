@@ -58,12 +58,12 @@ class Test_MedicationClassProperties:
 
         assert test_med.dose == 69_420
 
-    def test__unit(self, test_med):
+    def test_preferred_unit(self, test_med):
         """Check to see if the medication's unit can be retrieved."""
 
         test_med = test_med
 
-        assert test_med.unit == units.Unit.MCG
+        assert test_med.preferred_unit == units.Unit.MCG
 
     def test_unit_restriction(self):
         """Checks that a medication with an incorrect unit type raises an
@@ -140,7 +140,7 @@ class Test_MedicationClassProperties:
 
         test_med = test_med
 
-        test_med.unit = units.Unit.G
+        test_med.preferred_unit = units.Unit.G
 
         assert str(test_med) == (
             f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
@@ -193,8 +193,8 @@ class Test_MedicationClassMethods:
         test_med = test_med
         assert test_med.return_properties() == (
             1,
-            "Unobtanium",
             "Un-69420-9001",
+            "Unobtanium",
             "Vial",
             9001,
             69420,
@@ -216,7 +216,7 @@ class Test_MedicationClassMethods:
         db.delete_table("DROP TABLE IF EXISTS test_table")
 
         test_med.save(db)
-        data = db.read_table(
+        data = db.get_tables(
             """SELECT * FROM sqlite_master WHERE type='table' AND name=(?)""",
             ["medication"],
         )[0][4]
@@ -225,8 +225,8 @@ class Test_MedicationClassMethods:
             data
             == """CREATE TABLE medication (
                 MEDICATION_ID INTEGER PRIMARY KEY,
+                CODE TEXT UNIQUE,                
                 NAME TEXT,
-                CODE TEXT UNIQUE,
                 CONTAINER_TYPE TEXT,
                 FILL_AMOUNT REAL,
                 DOSE REAL,
@@ -267,3 +267,19 @@ class Test_MedicationClassMethods:
         test_med.save(db)
 
         assert test_med.created_date == date.get_date_as_string()
+
+    def test_delete_medication(self, test_med):
+        """Checks to see if the medication can be deleted from the database."""
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medication")
+        db.create_table(medication.Medication.return_table_creation_query())
+
+        test_med = test_med
+        test_med.save(db)
+        test_med.delete(db)
+
+        data = db.read_data("""SELECT * FROM medication""")
+
+        assert data == []

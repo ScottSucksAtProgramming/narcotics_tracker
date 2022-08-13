@@ -57,7 +57,7 @@ def build_medication(medication_properties: list) -> medication.Medication:
     medication_builder.set_fill_amount(medication_properties[5])
     medication_builder.set_status(medication_properties[6])
 
-    return medication_builder.build
+    return medication_builder.build()
 
 
 def main():
