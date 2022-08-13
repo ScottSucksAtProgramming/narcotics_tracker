@@ -66,6 +66,7 @@ class Medication:
             f"Last modified on {self.modified_date} by {self.modified_by}."
         )
 
+    @staticmethod
     def return_table_creation_query():
         """Return the query to create the medication table."""
         return """CREATE TABLE IF NOT EXISTS medication (
@@ -124,7 +125,8 @@ class Medication:
             values (tuple): The values to be inserted into the query.
         """
 
-        sql_query = """INSERT OR IGNORE INTO medication VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        sql_query = """INSERT OR IGNORE INTO medication VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
         if self.created_date_is_none():
             self.created_date = date.get_date_as_string()
         self.modified_date = date.get_date_as_string()
