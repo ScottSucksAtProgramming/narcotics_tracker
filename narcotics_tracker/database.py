@@ -122,7 +122,6 @@ class Database:
         sql_query = """SELECT * FROM medication WHERE CODE = ?"""
         values = (code,)
         result = self.read_data(sql_query, values)
-
         medication_data = medication.Medication.parse_medication_data(result)
 
         medication_builder = builder.ObjectBuilder()

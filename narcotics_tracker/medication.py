@@ -37,10 +37,7 @@ class Medication:
     modified_date: str = None
     modified_by: str = None
 
-    def __init__(
-        self,
-        builder=None,
-    ) -> None:
+    def __init__(self, builder=None) -> None:
         self.code = builder.code
         self.name = builder.name
         self.container_type = builder.container_type
@@ -51,11 +48,12 @@ class Medication:
         self.status = builder.status
 
     def __repr__(self) -> str:
-        """Return a string representation of the medication.
+        """Returns a string representation of the medication.
 
         Returns:
             str: The string representation of the medication.
         """
+
         return (
             f"Medication Object {self.medication_id} for {self.name} with "
             f"code {self.code}. Container type: {self.container_type.value}. "
@@ -68,7 +66,8 @@ class Medication:
 
     @staticmethod
     def return_table_creation_query():
-        """Return the query to create the medication table."""
+        """Returns the sql query needed to create the medication table."""
+
         return """CREATE TABLE IF NOT EXISTS medication (
                 MEDICATION_ID INTEGER PRIMARY KEY,
                 CODE TEXT UNIQUE,                
@@ -85,11 +84,12 @@ class Medication:
                 )"""
 
     def return_properties(self) -> tuple:
-        """Return the properties of the medication.
+        """Returns the properties of the medication as a tuple.
 
         Returns:
             tuple: The properties of the medication.
         """
+
         return (
             self.medication_id,
             self.name,
@@ -106,11 +106,12 @@ class Medication:
         )
 
     def created_date_is_none(self) -> bool:
-        """Return whether the created date is None.
+        """Utility functions which returns true if the created date is none.
 
         Returns:
             bool: Returns True if the created date is None.
         """
+
         if self.created_date is None:
             return True
         else:
@@ -134,7 +135,16 @@ class Medication:
         values = self.return_properties()
         db_connection.write_data(sql_query, values)
 
-    def parse_medication_data(medication_data) -> dict:
+    def parse_medication_data(medication_data: list) -> dict:
+        """Converts the medication data from a sql query to a dictionary which
+        can be used to load a new medication object.
+
+        Args:
+            medication_data (list): The medication data
+
+        Returns:
+            properties (dict): Dictionary objects contains the properties of
+                the medication."""
 
         properties = {}
 
