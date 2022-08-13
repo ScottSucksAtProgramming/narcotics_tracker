@@ -118,21 +118,24 @@ class Medication:
             return False
 
     def save(self, db_connection):
-        """Write the medication to the database.
+        """Writes the medication to the database.
+
+        Will only write the medication if it does not already exist. Use the
+            update method to update the medication.
 
         Args:
             db_connection (sqlite3.Connection): The connection to the database.
-            sql_query (str): The query to be executed.
-            values (tuple): The values to be inserted into the query.
         """
 
         sql_query = """INSERT OR IGNORE INTO medication VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+
         if self.created_date_is_none():
             self.created_date = date.get_date_as_string()
         self.modified_date = date.get_date_as_string()
 
         values = self.return_properties()
+
         db_connection.write_data(sql_query, values)
 
     def parse_medication_data(medication_data) -> dict:
