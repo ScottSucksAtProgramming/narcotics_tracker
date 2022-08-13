@@ -1,10 +1,10 @@
-"""Contains the MedicationBuilder class."""
+"""Contains the templates for the builder classes."""
 
 
 from abc import ABC, abstractmethod
 
 
-class MedicationBuilder(ABC):
+class Medication(ABC):
     """The MedicationBuilder interface defines methods to build a medication."""
 
     @abstractmethod
