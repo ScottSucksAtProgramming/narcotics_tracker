@@ -13,8 +13,9 @@ class UnitConverter:
             amount (float)
 
         Returns:
-            float: amount in mcg
+            amount (float): The amount in mcg.
         """
+
         if unit == Unit.MG.value:
             return amount * 10**3
 
@@ -33,6 +34,7 @@ class UnitConverter:
         Returns:
             float: amount in milligrams.
         """
+
         if unit == Unit.G.value:
             return amount * 10**3
 
@@ -51,6 +53,7 @@ class UnitConverter:
         Returns:
             float: amount in Grams.
         """
+
         if unit == Unit.MG.value:
             return amount / 10**3
 
