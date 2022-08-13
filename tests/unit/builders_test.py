@@ -11,7 +11,7 @@ class Test_Builder:
 
     def test_set_medication_id(self):
         """Tests that the medication builder sets the medication id"""
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_medication_id(1)
 
@@ -19,7 +19,7 @@ class Test_Builder:
 
     def test_set_name(self):
         """Tests that the medication builder sets the name"""
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_name("Aspirin")
 
@@ -28,7 +28,7 @@ class Test_Builder:
     def test_set_code(self):
         """Tests that the medication builder sets the code"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_code("ASA")
 
@@ -36,7 +36,7 @@ class Test_Builder:
 
     def test_set_container(self):
         """Tests that the medication builder sets the container type"""
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_container(containers.Container.AMPULE)
         assert medication_builder.container_type.value == "Ampule"
@@ -44,7 +44,7 @@ class Test_Builder:
     def test_set_fill_amount(self):
         """Tests that the medication builder sets the fill amount"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_fill_amount(10)
 
@@ -52,7 +52,7 @@ class Test_Builder:
 
     def test_sets_dose_correctly(self):
         """Tests that the medication builder sets the dose and unit"""
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_dose_and_unit(10, units.Unit.MG)
 
@@ -61,7 +61,7 @@ class Test_Builder:
     def test_sets_unit_correctly(self):
         """Tests that the medication builder sets the dose and unit"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_dose_and_unit(10, units.Unit.MG)
 
@@ -70,7 +70,7 @@ class Test_Builder:
     def test_set_concentration(self):
         """Tests that the medication builder sets the concentration"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
         medication_builder.set_concentration(10)
 
         assert medication_builder.concentration == 10
@@ -78,7 +78,7 @@ class Test_Builder:
     def test_set_status(self):
         """Tests that the medication builder sets the status"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
 
@@ -87,7 +87,7 @@ class Test_Builder:
     def test_set_created_date(self):
         """Tests that the medication builder sets the created date"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_created_date("01/01/2019")
 
@@ -96,7 +96,7 @@ class Test_Builder:
     def test_set_modified_date(self):
         """Tests that the medication builder sets the modified date"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_modified_date("01/01/2019")
 
@@ -105,7 +105,7 @@ class Test_Builder:
     def test_set_modified_by(self):
         """Tests that the medication builder sets the modified by"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
 
         medication_builder.set_modified_by("John Doe")
 
@@ -114,7 +114,7 @@ class Test_Builder:
     def test_medication_builder_calculates_concentration(self):
         """Tests that the medication builder sets the concentration"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
         medication_builder.set_dose_and_unit(10, units.Unit.MCG)
         medication_builder.set_fill_amount(10)
 
@@ -125,7 +125,7 @@ class Test_Builder:
     def test_medication_builder_creates_medication_object(self):
         """Tests that the medication builder creates a medication object"""
 
-        medication_builder = builder.ObjectBuilder()
+        medication_builder = builder.MedicationBuilder()
         medication_builder.set_name("Aspirin")
         medication_builder.set_code("ASA")
         medication_builder.set_fill_amount(10)

@@ -4,10 +4,10 @@
 from narcotics_tracker import medication
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import unit_converter
-from narcotics_tracker.builders import abstract_builder
+from narcotics_tracker.builders import builder_templates
 
 
-class ObjectBuilder(abstract_builder.MedicationBuilder):
+class MedicationBuilder(builder_templates.Medication):
     """Builds an object using the specified abstract builder."""
 
     def __init__(self) -> None:
