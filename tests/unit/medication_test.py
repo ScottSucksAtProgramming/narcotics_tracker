@@ -20,8 +20,9 @@ class Test_MedicationClassProperties:
         """Check to see if the medication's id can be retrieved."""
 
         test_med = test_med
+        test_med.medication_id = None
 
-        assert medication.Medication.medication_id == None
+        assert test_med.medication_id == None
 
     def test_code(self, test_med):
         """Check to see if medication's unique code can be retrieved."""
@@ -213,7 +214,8 @@ class Test_MedicationClassMethods:
         test_med = test_med
         db = database.Database()
         db.connect("test_database.db")
-        db.delete_table("DROP TABLE IF EXISTS test_table")
+        db.delete_table("DROP TABLE IF EXISTS medication")
+        db.create_table(medication.Medication.return_table_creation_query())
 
         test_med.save(db)
         data = db.get_tables(
@@ -290,3 +292,26 @@ class Test_MedicationClassMethods:
         new_med = medication.Medication.load(db, medication_code)
 
         assert isinstance(new_med, medication.Medication)
+
+    def test_update(self, test_med):
+        """Tests to see if a medication's attributes can be updated in the
+        database."""
+
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medication")
+        db.create_table(medication.Medication.return_table_creation_query())
+        test_med.modified_by = "SRK"
+        test_med.save(db)
+
+        med_code = "Un-69420-9001"
+        loaded_med = medication.Medication.load(db, med_code)
+        loaded_med.status = medication_statuses.MedicationStatus.ACTIVE
+        loaded_med.update(db, med_code)
+
+        sql_query = """SELECT status FROM medication WHERE CODE=(?)"""
+        data = db.read_data(sql_query, [med_code])
+
+        assert data[0][0] == medication_statuses.MedicationStatus.ACTIVE.value

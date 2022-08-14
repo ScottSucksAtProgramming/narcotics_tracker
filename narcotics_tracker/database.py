@@ -2,9 +2,6 @@
 
 import sqlite3
 
-# from narcotics_tracker import medication
-from narcotics_tracker.builders import builder
-
 
 class Database:
     """Interacts directly with the database."""

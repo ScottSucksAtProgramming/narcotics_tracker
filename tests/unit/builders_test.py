@@ -125,12 +125,16 @@ class Test_Builder:
         """Tests that the medication builder creates a medication object"""
 
         medication_builder = builder.MedicationBuilder()
+        medication_builder.set_medication_id(None)
         medication_builder.set_name("Aspirin")
         medication_builder.set_code("ASA")
         medication_builder.set_fill_amount(10)
         medication_builder.set_container(containers.Container.AMPULE)
         medication_builder.set_dose_and_unit(10, units.Unit.MCG)
         medication_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
+        medication_builder.set_created_date(None)
+        medication_builder.set_modified_date(None)
+        medication_builder.set_modified_by("SRK")
 
         aspirin = medication_builder.build()
 

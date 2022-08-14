@@ -25,20 +25,8 @@ class Medication:
         modified_by (str): The user who last modified the medication.
     """
 
-    medication_id: int = None
-    code: str = None
-    name: str = None
-    container_type: containers.Container = None
-    fill_amount: float = None
-    dose: float = None
-    preferred_unit: units.Unit = None
-    concentration: float = None
-    status: medication_statuses.MedicationStatus = None
-    created_date: str = None
-    modified_date: str = None
-    modified_by: str = None
-
     def __init__(self, builder=None) -> None:
+        self.medication_id = builder.medication_id
         self.code = builder.code
         self.name = builder.name
         self.container_type = builder.container_type
@@ -47,6 +35,9 @@ class Medication:
         self.preferred_unit = builder.unit
         self.concentration = builder.concentration
         self.status = builder.status
+        self.created_date = builder.created_date
+        self.modified_date = builder.modified_date
+        self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
         """Returns a string representation of the medication.
@@ -106,6 +97,41 @@ class Medication:
             self.modified_by,
         )
 
+    @staticmethod
+    def parse_medication_data(medication_data) -> dict:
+        """Converts the medication data from a sql query to a dictionary which
+        can be used to load a new medication object.
+
+        Args:
+            medication_data (list): The medication data
+
+        Returns:
+            properties (dict): Dictionary objects contains the properties of
+                the medication."""
+
+        properties = {}
+
+        properties["medication_id"] = medication_data[0][0]
+        properties["name"] = medication_data[0][2]
+        properties["code"] = medication_data[0][1]
+        properties["container_type"] = utilities.Utilities.enum_from_string(
+            containers.Container, medication_data[0][3]
+        )
+        properties["fill_amount"] = medication_data[0][4]
+        properties["dose"] = medication_data[0][5]
+        properties["unit"] = utilities.Utilities.enum_from_string(
+            units.Unit, medication_data[0][6]
+        )
+        properties["concentration"] = medication_data[0][7]
+        properties["status"] = utilities.Utilities.enum_from_string(
+            medication_statuses.MedicationStatus, medication_data[0][8]
+        )
+        properties["created_date"] = medication_data[0][9]
+        properties["modified_date"] = medication_data[0][10]
+        properties["modified_by"] = medication_data[0][11]
+
+        return properties
+
     def save(self, db_connection):
         """Writes the medication to the database.
 
@@ -126,41 +152,6 @@ class Medication:
         values = self.return_attributes()
 
         db_connection.write_data(sql_query, values)
-
-    @staticmethod
-    def parse_medication_data(medication_data) -> dict:
-        """Converts the medication data from a sql query to a dictionary which
-        can be used to load a new medication object.
-
-        Args:
-            medication_data (list): The medication data
-
-        Returns:
-            properties (dict): Dictionary objects contains the properties of
-                the medication."""
-
-        properties = {}
-
-        properties["medication_id"] = medication_data[0][0]
-        properties["name"] = medication_data[0][1]
-        properties["code"] = medication_data[0][2]
-        properties["container_type"] = utilities.Utilities.enum_from_string(
-            containers.Container, medication_data[0][3]
-        )
-        properties["fill_amount"] = medication_data[0][4]
-        properties["dose"] = medication_data[0][5]
-        properties["unit"] = utilities.Utilities.enum_from_string(
-            units.Unit, medication_data[0][6]
-        )
-        properties["concentration"] = medication_data[0][7]
-        properties["status"] = utilities.Utilities.enum_from_string(
-            medication_statuses.MedicationStatus, medication_data[0][8]
-        )
-        properties["created_date"] = medication_data[0][9]
-        properties["modified_date"] = medication_data[0][10]
-        properties["modified_by"] = medication_data[0][11]
-
-        return properties
 
     def delete(self, db_connection):
         """Delete the medication from the database.
@@ -188,3 +179,36 @@ class Medication:
         loaded_med = medication_builder.build()
 
         return loaded_med
+
+    def update(self, db_connection, code):
+        """Updates new medication data to an existing medication.
+
+        Will overwrite the medication if it already exists. Use the save
+        method to create a new medication.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the database.
+        """
+
+        sql_query = """UPDATE medication 
+            SET MEDICATION_ID = ?, 
+                CODE = ?, 
+                NAME = ?, 
+                CONTAINER_TYPE = ?, 
+                FILL_AMOUNT = ?, 
+                DOSE = ?, 
+                UNIT = ?, 
+                CONCENTRATION = ?, 
+                STATUS = ?, 
+                CREATED_DATE = ?, 
+                MODIFIED_DATE = ?, 
+                MODIFIED_BY = ? 
+            WHERE CODE = ?"""
+
+        if database.Database.created_date_is_none(self):
+            self.created_date = date.get_date_as_string()
+        self.modified_date = date.get_date_as_string()
+
+        values = self.return_attributes() + (code,)
+
+        db_connection.write_data(sql_query, values)

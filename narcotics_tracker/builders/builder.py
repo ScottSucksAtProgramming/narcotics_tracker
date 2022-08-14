@@ -13,7 +13,7 @@ class MedicationBuilder(builder_templates.Medication):
     def __init__(self) -> None:
         pass
 
-    def set_medication_id(self, medication_id: int) -> None:
+    def set_medication_id(self, medication_id: int = None) -> None:
         """Sets the medication's id number.
 
         Args:
