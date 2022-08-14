@@ -124,6 +124,9 @@ class Database:
     def created_date_is_none(object) -> bool:
         """Utility functions which returns true if the created date is none.
 
+        Args:
+            object (Object): The object which is being tested.
+
         Returns:
             bool: Returns True if the created date is None.
         """
