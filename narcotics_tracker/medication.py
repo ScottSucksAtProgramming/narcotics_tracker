@@ -1,6 +1,7 @@
 """Contains the Medication class."""
 
-from narcotics_tracker import date
+from narcotics_tracker import database, date
+from narcotics_tracker.builders import builder
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import utilities
 
@@ -83,11 +84,11 @@ class Medication:
                 MODIFIED_BY TEXT
                 )"""
 
-    def return_properties(self) -> tuple:
-        """Returns the properties of the medication as a tuple.
+    def return_attributes(self) -> tuple:
+        """Returns the attributes of the medication as a tuple.
 
         Returns:
-            tuple: The properties of the medication.
+            tuple: The attributes of the medication.
         """
 
         return (
@@ -105,18 +106,6 @@ class Medication:
             self.modified_by,
         )
 
-    def created_date_is_none(self) -> bool:
-        """Utility functions which returns true if the created date is none.
-
-        Returns:
-            bool: Returns True if the created date is None.
-        """
-
-        if self.created_date is None:
-            return True
-        else:
-            return False
-
     def save(self, db_connection):
         """Writes the medication to the database.
 
@@ -130,14 +119,15 @@ class Medication:
         sql_query = """INSERT OR IGNORE INTO medication VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 
-        if self.created_date_is_none():
+        if database.Database.created_date_is_none(self):
             self.created_date = date.get_date_as_string()
         self.modified_date = date.get_date_as_string()
 
-        values = self.return_properties()
+        values = self.return_attributes()
 
         db_connection.write_data(sql_query, values)
 
+    @staticmethod
     def parse_medication_data(medication_data) -> dict:
         """Converts the medication data from a sql query to a dictionary which
         can be used to load a new medication object.
@@ -148,8 +138,6 @@ class Medication:
         Returns:
             properties (dict): Dictionary objects contains the properties of
                 the medication."""
-
-        print(medication_data)
 
         properties = {}
 
@@ -186,3 +174,17 @@ class Medication:
         sql_query = """DELETE FROM medication WHERE medication_id = ?"""
         values = (self.medication_id,)
         db_connection.write_data(sql_query, values)
+
+    def load(db_connection, code):
+
+        sql_query = """SELECT * FROM medication WHERE CODE = ?"""
+        values = (code,)
+
+        result = db_connection.read_data(sql_query, values)
+        medication_data = Medication.parse_medication_data(result)
+
+        medication_builder = builder.MedicationBuilder()
+        medication_builder.set_all_properties(medication_data)
+        loaded_med = medication_builder.build()
+
+        return loaded_med

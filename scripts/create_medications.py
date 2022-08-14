@@ -2,16 +2,10 @@
 writes them to the table."""
 
 import datetime
-from subprocess import DEVNULL
-from narcotics_tracker.enums import containers, medication_statuses
 
-from narcotics_tracker.medication import (
-    builder,
-    medication,
-)
-from narcotics_tracker.enums import units
-from narcotics_tracker.database import database
-from narcotics_tracker.setup import setup
+from narcotics_tracker import database, medication
+from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.builders import builder
 
 FENTANYL_PROPERTIES = [
     "Fent1",
@@ -48,9 +42,9 @@ def build_medication(medication_properties: list) -> medication.Medication:
     """Uses the MedicationBuilder to create medication objects."""
     medication_builder = builder.MedicationBuilder()
 
-    medication_builder.set_name(medication_properties[0])
-    medication_builder.set_code(medication_properties[1])
-    medication_builder.set_container_type(medication_properties[2])
+    medication_builder.set_code(medication_properties[0])
+    medication_builder.set_name(medication_properties[1])
+    medication_builder.set_container(medication_properties[2])
     medication_builder.set_dose_and_unit(
         medication_properties[3], medication_properties[4]
     )
@@ -77,7 +71,8 @@ def main():
     db = database.Database()
     db.connect("inventory.db")
 
-    setup.create_medication_table(db)
+    sql_query = medication.Medication.return_table_creation_query()
+    db.create_table(sql_query)
 
     fentanyl.save(db)
     morphine.save(db)

@@ -2,7 +2,7 @@
 
 import sqlite3
 
-from narcotics_tracker import medication
+# from narcotics_tracker import medication
 from narcotics_tracker.builders import builder
 
 
@@ -120,15 +120,15 @@ class Database:
         cursor.execute(sql_query, values)
         self.database_connection.commit()
 
-    def load_medication_from_database(self, code) -> medication.Medication:
+    @staticmethod
+    def created_date_is_none(object) -> bool:
+        """Utility functions which returns true if the created date is none.
 
-        sql_query = """SELECT * FROM medication WHERE CODE = ?"""
-        values = (code,)
-        result = self.read_data(sql_query, values)
-        medication_data = medication.Medication.parse_medication_data(result)
+        Returns:
+            bool: Returns True if the created date is None.
+        """
 
-        medication_builder = builder.MedicationBuilder()
-        medication_builder.set_all_properties(medication_data)
-        loaded_med = medication_builder.build()
-
-        return loaded_med
+        if object.created_date is None:
+            return True
+        else:
+            return False

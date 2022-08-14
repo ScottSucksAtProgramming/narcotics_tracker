@@ -3,7 +3,6 @@
 from narcotics_tracker import medication
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import builder
-from narcotics_tracker.utils import utilities
 
 
 class Test_Builder:

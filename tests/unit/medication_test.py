@@ -187,11 +187,11 @@ class Test_MedicationClassMethods:
                 )"""
         )
 
-    def test_return_properties(self, test_med):
+    def test_return_attributes(self, test_med):
         """Checks to see if the medication data is correctly returned."""
 
         test_med = test_med
-        assert test_med.return_properties() == (
+        assert test_med.return_attributes() == (
             1,
             "Un-69420-9001",
             "Unobtanium",
@@ -239,35 +239,6 @@ class Test_MedicationClassMethods:
                 )"""
         )
 
-    def test_created_date_is_none(self, test_med):
-        """Checks to see if the created date is None."""
-
-        test_med = test_med
-
-        test_med.created_date = None
-
-        assert test_med.created_date_is_none() == True
-
-    def test_created_date_has_value(self, test_med):
-        """Checks to see if the created date is None."""
-
-        test_med = test_med
-
-        assert test_med.created_date_is_none() == False
-
-    def test_created_date_set_if_none(self, test_med):
-        """Checks to see if the created date is initially set to none it is replaced with current date."""
-
-        test_med = test_med
-        db = database.Database()
-        db.connect("test_database.db")
-
-        test_med.created_date = None
-
-        test_med.save(db)
-
-        assert test_med.created_date == date.get_date_as_string()
-
     def test_delete_medication(self, test_med):
         """Checks to see if the medication can be deleted from the database."""
 
@@ -283,3 +254,39 @@ class Test_MedicationClassMethods:
         data = db.read_data("""SELECT * FROM medication""")
 
         assert data == []
+
+    def test_load(self, test_med):
+        """Checks to see if the medication data is correctly loaded from
+        database."""
+
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medications")
+        db.create_table(medication.Medication.return_table_creation_query())
+        test_med.save(db)
+
+        medication_code = "Un-69420-9001"
+
+        new_med = medication.Medication.load(db, medication_code)
+
+        assert new_med.concentration == 7.712476391512054
+
+    def test_loaded_med_has_type_Medication(self, test_med):
+        """Checks to see if the medication data is correctly loaded from
+        database."""
+
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medications")
+        db.create_table(medication.Medication.return_table_creation_query())
+        test_med.save(db)
+
+        medication_code = "Un-69420-9001"
+
+        new_med = medication.Medication.load(db, medication_code)
+
+        assert isinstance(new_med, medication.Medication)
