@@ -65,7 +65,6 @@ def main():
     morphine.modified_by = "SRK"
 
     midazolam = build_medication(MIDAZOLAM_PROPERTIES)
-    midazolam.created_date = "08-08-2022"
     midazolam.modified_by = "SRK"
 
     db = database.Database()
