@@ -1,15 +1,15 @@
-# Files and Directories
+# 5 - Files and Directories
 
 | File Version | Project Version | Created On | Modified On |
 |:--|:--|:--|:--|
-| 1.0.0 | 0.0.0 | 08/15/2022 | 08/15/2022
+| 0.0.0 | 0.0.0 | 08/15/2022 | 08/15/2022
 
 {{TOC}}
 
 A well organized directory structure makes it easier to work with the code base. Here is the directory structure and important files used for the **Narcotics Tracker** project.
 
 
-## Directory Structure
+##  5.1 - Directory Structure
 
 ###### Directory Tree
 ```
@@ -32,7 +32,7 @@ A well organized directory structure makes it easier to work with the code base.
 └── venv
 ```
  
-### `root/`
+### 5.1.1 - `root/`
 The root directory for the project.
 
 ###### Files
@@ -60,7 +60,7 @@ The `narcotics_tracker/` directory contains the python modules and packages for 
 * Simplicity and ease of navigation is the guiding principle when creating packages.
 * Use the naming structure defined in the [[naming]] portion of this style guide.
 
-### `tests/`
+### 5.1.2 - `tests/`
 The `tests/` directory contains all tests for the **Narcotics Tracker**. Tests are split into sub-directories related to their type. For organizational purposes it is recommended to put all tests related to a module or package into a single test module. A test module may contain multiple classes.
 
 ###### Packages
@@ -69,21 +69,21 @@ The `tests/` directory contains all tests for the **Narcotics Tracker**. Tests a
 ###### Files
 `conftest.py` - Configuration file for pytest.
 
-### `scripts/`
+### 5.1.3 - `scripts/`
 The `scripts/` directory contains python modules which can be run on their own to excecute parts of the **Narcotics Tracker**.
 
 ###### Modules
 * `create_medications.py` - Builds sample medications and writes them to the database.
 * `setup.py` - Creates the tables used by the project in the database.
 
-### `data/`
+### 5.1.4 - `data/`
 The `data/` directory contains the database files used for the project.
 
 ###### Database Files
 * `inventory.db` - The main database file housing all tables and data for the **Narcotics Tracker**.
 * `test_database.db` - The database files used to run the tests.
 
-### `docs/`
+### 5.1.5 - `docs/`
 The `docs/` directory contains all documentation and developer resources for the project.
 
 ###### Sub-directories
@@ -97,8 +97,8 @@ The `docs/` directory contains all documentation and developer resources for the
 `requirements.txt` - The modules and packages required for the **Narcotics Tracker**.
 
 
-### `assets/`
+### 5.1.6 - `assets/`
 The `assests` directory contains images, videos and other media which are used as part of the project.
 
-### `venv/`
+### 5.1.7 - `venv/`
 The `venv/` directory contains the virtual environment used when buliding this project. For more information look at `docs/requirements.txt`.
