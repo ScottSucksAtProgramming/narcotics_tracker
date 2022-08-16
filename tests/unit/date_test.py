@@ -2,7 +2,7 @@
 
 import time_machine
 
-from narcotics_tracker import date
+from narcotics_tracker.utils import date
 
 
 class Test_DateClass:

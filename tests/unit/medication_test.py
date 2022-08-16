@@ -2,8 +2,9 @@
 
 import pytest
 
-from narcotics_tracker import database, date, medication
+from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.utils import date
 
 
 class Test_MedicationClassProperties:

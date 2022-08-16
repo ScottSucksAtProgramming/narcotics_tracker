@@ -1,7 +1,7 @@
 """Contains tests for the database module."""
 
 from narcotics_tracker import database, medication
-from narcotics_tracker import date
+from narcotics_tracker.utils import date
 
 
 class Test_DatabaseClass:
