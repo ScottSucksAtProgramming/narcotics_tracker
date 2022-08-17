@@ -2,6 +2,9 @@
 
 import sqlite3
 
+from narcotics_tracker import medication
+from narcotics_tracker.builders import builder
+
 
 class Database:
     """Interacts directly with the database."""
@@ -132,3 +135,17 @@ class Database:
             return True
         else:
             return False
+
+    def load_medication(self, code):
+
+        sql_query = """SELECT * FROM medication WHERE CODE = ?"""
+        values = (code,)
+
+        result = self.read_data(sql_query, values)
+        medication_data = medication.parse_medication_data(result)
+
+        medication_builder = builder.MedicationBuilder()
+        medication_builder.set_all_properties(medication_data)
+        loaded_med = medication_builder.build()
+
+        return loaded_med

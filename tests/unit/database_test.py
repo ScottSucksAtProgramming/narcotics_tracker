@@ -229,3 +229,39 @@ class Test_DatabaseClass:
         test_med.save(db)
 
         assert test_med.created_date == date.get_date_as_string()
+
+    def test_load_medication(self, test_med):
+        """Checks to see if the medication data is correctly loaded from
+        database."""
+
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medications")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
+
+        medication_code = "Un-69420-9001"
+
+        new_med = db.load_medication(medication_code)
+
+        assert new_med.concentration == 7.712476391512054
+
+    def test_loaded_med_has_type_Medication(self, test_med):
+        """Checks to see if the medication data is correctly loaded from
+        database."""
+
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medications")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
+
+        medication_code = "Un-69420-9001"
+
+        new_med = db.load_medication(medication_code)
+
+        assert isinstance(new_med, medication.Medication)
