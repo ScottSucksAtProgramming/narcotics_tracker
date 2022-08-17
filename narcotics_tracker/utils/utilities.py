@@ -1,11 +1,17 @@
 """Contains various utility functions."""
 
 
+from enum import Enum
+
+
 class Utilities:
     """Contains various utility functions."""
 
     @staticmethod
-    def enum_from_string(enum_class, string):
+    def enum_from_string(
+        enum_class: type[Enum],
+        string: str,
+    ) -> Enum:
         """Returns the enum value from a string.
 
         Args:
