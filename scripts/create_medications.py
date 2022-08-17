@@ -4,7 +4,7 @@ writes them to the table."""
 
 from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
-from . import builder
+from narcotics_tracker.builders import medication_builder
 
 FENTANYL_PROPERTIES = [
     "Fent1",
@@ -39,18 +39,16 @@ MORPHINE_PROPERTIES = [
 
 def build_medication(medication_properties: list):
     """Uses the MedicationBuilder to create medication objects."""
-    medication_builder = builder.MedicationBuilder()
+    med_builder = medication_builder.MedicationBuilder()
 
-    medication_builder.set_code(medication_properties[0])
-    medication_builder.set_name(medication_properties[1])
-    medication_builder.set_container(medication_properties[2])
-    medication_builder.set_dose_and_unit(
-        medication_properties[3], medication_properties[4]
-    )
-    medication_builder.set_fill_amount(medication_properties[5])
-    medication_builder.set_status(medication_properties[6])
+    med_builder.set_code(medication_properties[0])
+    med_builder.set_name(medication_properties[1])
+    med_builder.set_container(medication_properties[2])
+    med_builder.set_dose_and_unit(medication_properties[3], medication_properties[4])
+    med_builder.set_fill_amount(medication_properties[5])
+    med_builder.set_status(medication_properties[6])
 
-    return medication_builder.build()
+    return med_builder.build()
 
 
 def main():
