@@ -22,7 +22,9 @@ Functions:
 """
 
 
+import sqlite3
 from narcotics_tracker import database
+from narcotics_tracker.builders import medication_builder
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import date, utilities
 
@@ -203,7 +205,7 @@ class Medication:
             f"Last modified on {self.modified_date} by {self.modified_by}."
         )
 
-    def save(self, db_connection) -> None:
+    def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new medication to the database.
 
         The save method will only write the medication into the table if it
@@ -228,7 +230,7 @@ class Medication:
 
         db_connection.write_data(sql_query, values)
 
-    def update(self, db_connection, code) -> None:
+    def update(self, db_connection: sqlite3.Connection, code: str) -> None:
         """Updates an existing medication in the database.
 
         The update method will overwrite the medication data if it already
@@ -267,7 +269,7 @@ class Medication:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection):
+    def delete(self, db_connection: sqlite3.Connection):
         """Delete the medication from the database.
 
         The delete will delete the medication from the database entirely.
