@@ -50,5 +50,4 @@ Planned Features:
     Console Interface (v0.8.0)
 
     GUI Interface (v1.0.0)
-
 """
