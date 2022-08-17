@@ -22,7 +22,6 @@ Motivation:
     need.
 
 Current Completed Features:
-
     Medication Module - Creates and stores medication objects in the database.
 
     Database Module - Handles communication with the SQLite3 database.
@@ -34,7 +33,6 @@ Current Completed Features:
     Utils Package - Contains utility functions used in the software.
 
 Planned Features:
-
     Inventory Tracking (v0.2.0)
 
     Lot Tracking (v0.3.0)
@@ -50,4 +48,16 @@ Planned Features:
     Console Interface (v0.8.0)
 
     GUI Interface (v1.0.0)
+
+Packages:
+    Builders: Assists with the building of complex objects.
+
+    Enums: Contains the enumerated types used in the software.
+
+    Utils: Contains utility functions used in the software.
+
+Modules:
+    Database: Handles communication with the SQLite3 database.
+
+    Medication: Creates and stores medication objects in the database.
 """
