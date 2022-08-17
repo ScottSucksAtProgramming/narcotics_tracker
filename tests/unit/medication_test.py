@@ -219,9 +219,9 @@ class Test_MedicationClassMethods:
         db.create_table(medication.return_table_creation_query())
 
         test_med.save(db)
-        data = db.read_data("""SELECT * FROM medication WHERE CODE='Un-69420-9001'""")[
-            0
-        ][2]
+        data = db.return_data(
+            """SELECT * FROM medication WHERE CODE='Un-69420-9001'"""
+        )[0][2]
 
         assert data == "Unobtanium"
 
@@ -237,7 +237,7 @@ class Test_MedicationClassMethods:
         test_med.save(db)
         test_med.delete(db)
 
-        data = db.read_data("""SELECT * FROM medication""")
+        data = db.return_data("""SELECT * FROM medication""")
 
         assert data == []
 
@@ -260,6 +260,6 @@ class Test_MedicationClassMethods:
         loaded_med.update(db, med_code)
 
         sql_query = """SELECT status FROM medication WHERE CODE=(?)"""
-        data = db.read_data(sql_query, [med_code])
+        data = db.return_data(sql_query, [med_code])
 
         assert data[0][0] == medication_statuses.MedicationStatus.ACTIVE.value

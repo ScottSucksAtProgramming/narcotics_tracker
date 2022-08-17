@@ -28,7 +28,7 @@ class Test_DatabaseClass:
 
         db.create_table("""CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)""")
 
-        tables = db.read_data(sql_query)
+        tables = db.return_data(sql_query)
 
         assert (table_name,) in tables
 
@@ -53,7 +53,7 @@ class Test_DatabaseClass:
         db.write_data(sql_write_data, values)
         table_name = ["test_read_table"]
 
-        data = db.get_tables(
+        data = db.return_tables(
             """SELECT * FROM sqlite_master WHERE type='table' and name=(?) """,
             table_name,
         )[0][4]
@@ -77,7 +77,7 @@ class Test_DatabaseClass:
         db.create_table(sql_create_table)
 
         # Act
-        columns = db.get_columns("""SElECT * FROM test_get_columns_table""")
+        columns = db.return_columns("""SElECT * FROM test_get_columns_table""")
 
         # Assert
         assert "data" == columns[0][0]
@@ -99,7 +99,7 @@ class Test_DatabaseClass:
 
         # Act
         db.delete_table("DROP TABLE IF EXISTS test_delete_table")
-        tables = db.read_data(sql_find_table)
+        tables = db.return_data(sql_find_table)
 
         # Assert
         assert ("test_delete_table",) not in tables
@@ -130,7 +130,7 @@ class Test_DatabaseClass:
         db.update_table(sql_rename_table)
 
         # Assert
-        assert db.read_data("""SElECT * FROM new_table""") == [("test",)]
+        assert db.return_data("""SElECT * FROM new_table""") == [("test",)]
 
     def test_update_table_add_column(self):
         """Tests that the writer can add a column to a table."""
@@ -153,7 +153,7 @@ class Test_DatabaseClass:
             """ALTER TABLE test_add_column_table ADD COLUMN new_column REAL"""
         )
         db.update_table(sql_add_column)
-        columns = db.get_columns("""SElECT * FROM test_add_column_table""")
+        columns = db.return_columns("""SElECT * FROM test_add_column_table""")
 
         # Assert
         assert "new_column" == columns[1][0]
@@ -181,7 +181,9 @@ class Test_DatabaseClass:
         db.update_table(sql_rename_column)
 
         # Assert
-        column_name = db.get_columns("""SElECT * FROM test_rename_column_table""")[0][0]
+        column_name = db.return_columns("""SElECT * FROM test_rename_column_table""")[
+            0
+        ][0]
         assert column_name == "new_data"
 
     def test_write_data(self):
@@ -206,7 +208,7 @@ class Test_DatabaseClass:
 
         db.write_data(sql, values)
 
-        assert db.read_data("""SElECT * FROM test_write_data_table""") == [("test",)]
+        assert db.return_data("""SElECT * FROM test_write_data_table""") == [("test",)]
 
     def test_created_date_has_value(self, test_med):
         """Checks to see if the created date is None."""

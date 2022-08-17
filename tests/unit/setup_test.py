@@ -21,7 +21,7 @@ class Test_SetupClass:
 
         setup.create_medication_table(db)
 
-        data = db.read_data("SELECT * FROM sqlite_master WHERE type='table';")[0][4]
+        data = db.return_data("SELECT * FROM sqlite_master WHERE type='table';")[0][4]
 
         assert (
             data
