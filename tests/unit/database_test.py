@@ -225,6 +225,8 @@ class Test_DatabaseClass:
         test_med = test_med
         db = database.Database()
         db.connect("test_database.db")
+        db.delete_table("DROP TABLE IF EXISTS medication")
+        db.create_table(medication.return_table_creation_query())
 
         test_med.created_date = None
 

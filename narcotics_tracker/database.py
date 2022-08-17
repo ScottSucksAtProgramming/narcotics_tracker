@@ -16,7 +16,7 @@ Classes:
 import sqlite3
 
 from narcotics_tracker import medication
-from narcotics_tracker.builders import builder
+from narcotics_tracker.builders import medication_builder
 
 
 class Database:
@@ -206,8 +206,8 @@ class Database:
         result = self.return_data(sql_query, values)
         medication_data = medication.parse_medication_data(result)
 
-        medication_builder = builder.MedicationBuilder()
-        medication_builder.set_all_properties(medication_data)
-        loaded_med = medication_builder.build()
+        med_builder = medication_builder.MedicationBuilder()
+        med_builder.set_all_properties(medication_data)
+        loaded_med = med_builder.build()
 
         return loaded_med

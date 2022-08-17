@@ -4,7 +4,7 @@ writes them to the table."""
 
 from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import builder
+from . import builder
 
 FENTANYL_PROPERTIES = [
     "Fent1",
