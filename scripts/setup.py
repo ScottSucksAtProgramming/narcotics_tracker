@@ -6,7 +6,7 @@ from narcotics_tracker import medication
 def create_medication_table(db_connection) -> None:
     """This function will create the medication table."""
 
-    db_connection.create_table(medication.Medication.return_table_creation_query())
+    db_connection.create_table(medication.return_table_creation_query())
 
 
 if __name__ == "__main__":
