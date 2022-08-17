@@ -13,10 +13,14 @@ Classes:
     Database: Interacts with the SQLite3 database.
 """
 
+from typing import TYPE_CHECKING
 import sqlite3
 
 from narcotics_tracker import medication
 from narcotics_tracker.builders import medication_builder
+
+if TYPE_CHECKING:
+    from narcotics_tracker import medications
 
 
 class Database:
@@ -55,7 +59,7 @@ class Database:
         """Initializes the database object and sets connection to None."""
         self.database_connection = None
 
-    def connect(self, database_file) -> sqlite3.Connection:
+    def connect(self, database_file: str) -> sqlite3.Connection:
         """Creates a connection to the database.
 
         Args:
@@ -73,7 +77,7 @@ class Database:
 
         return self.database_connection
 
-    def create_table(self, sql_query) -> None:
+    def create_table(self, sql_query: str) -> None:
         """Creates a table in the database.
 
         Args:
@@ -83,7 +87,7 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
-    def return_tables(self, sql_query, table_name: list[str]) -> list:
+    def return_tables(self, sql_query: str, table_name: list[str]) -> list:
         """Returns a list of tables in the database.
 
         Args:
@@ -101,7 +105,7 @@ class Database:
         cursor.execute(sql_query, table_name)
         return cursor.fetchall()
 
-    def return_columns(self, sql_query) -> tuple:
+    def return_columns(self, sql_query: str) -> tuple:
         """Returns the column names from a table as a tuple.
 
         Args:
@@ -117,7 +121,7 @@ class Database:
 
         return columns.description
 
-    def delete_table(self, sql_query) -> None:
+    def delete_table(self, sql_query: str) -> None:
         """Deletes a table from the database.
 
         Args:
@@ -128,7 +132,7 @@ class Database:
         cursor.execute(sql_query)
         self.database_connection.commit()
 
-    def update_table(self, sql_query) -> None:
+    def update_table(self, sql_query: str) -> None:
         """Updates a table using the ALTER TABLE statement.
 
         Args:
@@ -163,7 +167,7 @@ class Database:
             cursor.execute(sql_query, values)
         return cursor.fetchall()
 
-    def write_data(self, sql_query, values) -> None:
+    def write_data(self, sql_query: str, values: str) -> None:
         """Writes data to the database.
 
         Args:
@@ -191,7 +195,7 @@ class Database:
         else:
             return False
 
-    def load_medication(self, code):  # ? Circular import when importing medication.py
+    def load_medication(self, code: str) -> "medication.Medication":
         """Create a medication object from data in the database.
 
         Args:
