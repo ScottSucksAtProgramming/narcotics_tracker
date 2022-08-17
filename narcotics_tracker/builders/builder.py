@@ -2,16 +2,27 @@
 
 
 from narcotics_tracker import medication
+from narcotics_tracker.builders import builder_templates
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import unit_converter
-from narcotics_tracker.builders import builder_templates
 
 
 class MedicationBuilder(builder_templates.Medication):
     """Builds an object using the specified abstract builder."""
 
     def __init__(self) -> None:
-        pass
+        self.medication_id = None
+        self.code = None
+        self.name = None
+        self.container_type = None
+        self.fill_amount = None
+        self.dose = None
+        self.preferred_unit = None
+        self.concentration = None
+        self.status = None
+        self.created_date = None
+        self.modified_date = None
+        self.modified_by = None
 
     def set_medication_id(self, medication_id: int = None) -> None:
         """Sets the medication's id number.
