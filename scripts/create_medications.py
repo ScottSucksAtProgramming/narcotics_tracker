@@ -1,7 +1,6 @@
 """This script will creates the medications which I use at my agency and 
 writes them to the table."""
 
-import datetime
 
 from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
@@ -38,7 +37,7 @@ MORPHINE_PROPERTIES = [
 ]
 
 
-def build_medication(medication_properties: list) -> medication.Medication:
+def build_medication(medication_properties: list):
     """Uses the MedicationBuilder to create medication objects."""
     medication_builder = builder.MedicationBuilder()
 
@@ -70,7 +69,7 @@ def main():
     db = database.Database()
     db.connect("inventory.db")
 
-    sql_query = medication.Medication.return_table_creation_query()
+    sql_query = medication.return_table_creation_query()
     db.create_table(sql_query)
 
     fentanyl.save(db)
