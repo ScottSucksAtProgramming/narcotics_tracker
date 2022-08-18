@@ -1,28 +1,18 @@
-"""Contains various utility functions."""
-
-
+"""Contains miscellaneous utility functions."""
 from enum import Enum
 
 
-class Utilities:
-    """Contains various utility functions."""
+def enum_from_string(enum_class: type[Enum], enum_literal: str) -> Enum:
+    """Returns the object from a string.
 
-    @staticmethod
-    def enum_from_string(
-        enum_class: type[Enum],
-        string: str,
-    ) -> Enum:
-        """Returns the enum value from a string.
+    Args:
+        enum_class (type[Enum]): The enum class to use.
+        enum_literal (stg): The string to convert to an enum object.
 
-        Args:
-            enum_class: The enum class to use.
-            string: The string to convert to an enum value.
+    Returns:
+        Enum: The enum object.
+    """
+    enum_literal = enum_literal.replace(" ", "_")
+    enum_literal = enum_literal.replace("-", "_")
 
-            Returns:
-                The enum value.
-        """
-
-        string = string.replace(" ", "_")
-        string = string.replace("-", "_")
-
-        return enum_class[string.upper()]
+    return enum_class[enum_literal.upper()]
