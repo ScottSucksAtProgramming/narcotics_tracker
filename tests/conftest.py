@@ -1,8 +1,8 @@
 """Contains the fixtures and configuration for the tests.
 
 Fixtures:
-    test_med: Return's a medication object for testing."""
-
+    test_med: Return's a medication object for testing.
+"""
 from pytest import fixture
 from typing import TYPE_CHECKING
 
@@ -23,8 +23,8 @@ def test_med() -> "medication.Medication":
     be valid for a medication in a real system.
 
     Returns:
-        test_med (medication.Medication): A medication object for testing."""
-
+        test_med (medication.Medication): A medication object for testing.
+    """
     med_builder = medication_builder.MedicationBuilder()
     med_builder.set_medication_id(1)
     med_builder.set_name("Unobtanium")
