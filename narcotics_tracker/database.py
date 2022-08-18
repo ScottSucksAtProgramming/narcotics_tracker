@@ -20,7 +20,7 @@ from narcotics_tracker import medication
 from narcotics_tracker.builders import medication_builder
 
 if TYPE_CHECKING:
-    from narcotics_tracker import medications
+    from narcotics_tracker import medication
 
 
 class Database:

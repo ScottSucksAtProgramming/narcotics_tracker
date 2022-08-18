@@ -55,9 +55,7 @@ class Test_UtilitiesClass:
         """Check that from_string returns the correct enum value."""
 
         assert (
-            utilities.Utilities.enum_from_string(
-                containers.Container, "Pre-filled Syringe"
-            )
+            utilities.enum_from_string(containers.Container, "Pre-filled Syringe")
             == containers.Container.PRE_FILLED_SYRINGE
         )
 
@@ -65,7 +63,7 @@ class Test_UtilitiesClass:
         """Check that from_string returns the correct enum value."""
 
         assert (
-            utilities.Utilities.enum_from_string(
+            utilities.enum_from_string(
                 medication_statuses.MedicationStatus, "disConTinueD"
             )
             == medication_statuses.MedicationStatus.DISCONTINUED
@@ -74,4 +72,4 @@ class Test_UtilitiesClass:
     def test_from_string_for_Unit(self):
         """Check that from_string returns the correct enum value."""
 
-        assert utilities.Utilities.enum_from_string(units.Unit, "mg") == units.Unit.MG
+        assert utilities.enum_from_string(units.Unit, "mg") == units.Unit.MG

@@ -148,7 +148,7 @@ class Test_MedicationClassProperties:
             f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
             f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420 G. "
             f"Concentration: 7.712476391512054. Status: Discontinued. "
-            f"Created on 08-01-2022. Last modified on 08-09-2022 by SRK."
+            f"Created on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
         )
 
 
@@ -161,12 +161,9 @@ class Test_MedicationClassMethods:
         test_med = test_med
         assert str(test_med) == (
             f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            f"Container type: Vial. "
-            f"Fill amount: 9001 ml. "
-            f"Dose: 69420 mcg. "
-            f"Concentration: 7.712476391512054. "
-            f"Status: Discontinued. Created on 08-01-2022. "
-            f"Last modified on 08-09-2022 by SRK."
+            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420 mcg. "
+            f"Concentration: 7.712476391512054. Status: Discontinued. Created "
+            f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
         )
 
     def test_medication_table_query_returns_correct_string(self):
@@ -203,9 +200,9 @@ class Test_MedicationClassMethods:
             "mcg",
             7.712476391512054,
             "Discontinued",
-            "08-01-2022",
+            "01-02-1986",
             "08-09-2022",
-            "SRK",
+            "Kvothe",
         )
 
     def test_save_to_database(self, test_med):
