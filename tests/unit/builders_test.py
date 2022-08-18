@@ -35,7 +35,7 @@ class Test_Builder:
     def test_set_medication_id(self):
         """Tests that MedicationBuilder sets the medication id correctly.
 
-        Asserts that the medication id is the expected value.
+        Asserts that the medication id returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = 69420
@@ -47,7 +47,7 @@ class Test_Builder:
     def test_set_name(self):
         """Tests that the medication builder sets the name.
 
-        Asserts the medication name is the expected value.
+        Asserts the medication name returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "Aspirin"
@@ -59,7 +59,7 @@ class Test_Builder:
     def test_set_code(self):
         """Tests that the medication builder sets the code.
 
-        Asserts that the medication code is the expected value.
+        Asserts that the medication code returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "ASA"
@@ -71,7 +71,7 @@ class Test_Builder:
     def test_set_container(self):
         """Tests that the medication builder sets the container type.
 
-        Asserts that the medication container is the expected value.
+        Asserts that the medication container returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "Ampule"
@@ -82,7 +82,7 @@ class Test_Builder:
     def test_set_container_raises_exception_if_invalid(self):
         """Tests that the medication builder raises an exception if invalid.
 
-        Passes if a AttributeError exception is raised."""
+        Passes if an AttributeError exception is raised."""
 
         med_builder = medication_builder.MedicationBuilder()
 
@@ -92,7 +92,7 @@ class Test_Builder:
     def test_set_fill_amount(self):
         """Tests that the medication builder sets the fill amount.
 
-        Asserts that the medication fill amount is the expected value.
+        Asserts that the medication fill amount returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = 10_000
@@ -104,7 +104,7 @@ class Test_Builder:
     def test_set_dose(self):
         """Tests that the medication builder sets the dose and unit.
 
-        Asserts that the medication dose is the expected value.
+        Asserts that the medication dose returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = 10_000
@@ -116,7 +116,7 @@ class Test_Builder:
     def test_set_unit(self):
         """Tests that the medication builder sets the dose and unit.
 
-        Asserts that the medication dose is the expected value.
+        Asserts that the medication dose returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "mg"
@@ -128,7 +128,7 @@ class Test_Builder:
     def test_set_unit_raises_exception_if_invalid(self):
         """Tests that the medication builder raises an exception if invalid.
 
-        Passes if a AttributeError exception is raised.
+        Passes if an AttributeError exception is raised.
         """
         med_builder = medication_builder.MedicationBuilder()
 
@@ -138,7 +138,7 @@ class Test_Builder:
     def test_set_concentration(self):
         """Tests that the medication builder sets the concentration.
 
-        Asserts that the medication concentration is the expected value.
+        Asserts that the medication concentration returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = 45
@@ -150,7 +150,7 @@ class Test_Builder:
     def test_set_status(self):
         """Tests that the medication builder sets the status.
 
-        Asserts that the medication status is the expected value.
+        Asserts that the medication status returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
 
@@ -162,7 +162,7 @@ class Test_Builder:
     def test_set_status_raises_exception_if_invalid(self):
         """Tests that the medication builder raises an exception if invalid.
 
-        Passes if a AttributeError exception is raised.
+        Passes if an AttributeError exception is raised.
         """
         med_builder = medication_builder.MedicationBuilder()
 
@@ -172,7 +172,7 @@ class Test_Builder:
     def test_set_created_date(self):
         """Tests that the medication builder sets the created date.
 
-        Asserts that the medication created date is the expected value.
+        Asserts that the medication created date returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "01/01/2019"
@@ -184,7 +184,7 @@ class Test_Builder:
     def test_set_modified_date(self):
         """Tests that the medication builder sets the modified date.
 
-        Asserts that the medication modified date is the expected value.
+        Asserts that the medication modified date returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "08/21/1986"
@@ -196,7 +196,7 @@ class Test_Builder:
     def test_set_modified_by(self):
         """Tests that the medication builder sets the modified by.
 
-        Asserts that the medication modified by is the expected value.
+        Asserts that the medication modified by returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = "John Doe"
@@ -208,7 +208,7 @@ class Test_Builder:
     def test_calculate_concentration(self):
         """Tests that the medication builder sets the concentration.
 
-        Asserts that the medication concentration is the expected value.
+        Asserts that the medication concentration returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = 1
@@ -223,7 +223,7 @@ class Test_Builder:
     def test_med_builder_creates_medication_object(self):
         """Tests that the medication builder creates a medication object.
 
-        Asserts that the medication object is a Medication object.
+        Asserts that the medication object returns a Medication object.
         """
         med_builder = medication_builder.MedicationBuilder()
         expected = medication.Medication
