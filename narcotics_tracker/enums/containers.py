@@ -1,27 +1,22 @@
-#
-# * ------------------------- Documentation -------------------------------- #
-# Module:  medication.py
-# Contains the Medication class, and related classes.
-#
-#
-# Modification History
-# 07-27-2022 | SRK | Module Created
+"""Contains the class defining controlled substance container types.
 
+Classes:
+    Containers: Defines the acceptable values for the container type.
+"""
 from enum import Enum
 
 
 class Container(Enum):
-    """Enum of medication container types.
+    """Defines the acceptable values for the container type.
+
+    Each medication comes in a variety of containers. The medications dose,
+    fill amount and concentration are present in each container.
 
     Available container types:
-
-    VIAL
-
-    AMPULE
-
-    PRE_FILLED_SYRINGE
-
-    PRE_MIXED_BAG
+        - VIAL
+        - AMPULE
+        - PRE_FILLED_SYRINGE
+        - PRE_MIXED_BAG
     """
 
     VIAL = "Vial"

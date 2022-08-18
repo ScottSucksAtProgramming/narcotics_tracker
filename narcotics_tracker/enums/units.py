@@ -1,32 +1,23 @@
-#
-# * ------------------------- Documentation -------------------------------- #
-# Module:  units.py
-# Contains the Unit class, and related classes.
-#
-#
-# Modification History
-# 07-30-2022 | SRK | Module Created
+"""Contains the class defining a medications preferred unit of measurement.
 
-# ------------------------------ Tasks ------------------------------------- #
-# Todo: I can create a new medication.
-# Todo: I can save medication to a database.
-# Todo: I can delete a medication.
-# Todo: I can update a medication.
-# Todo: I can retrieve a medication's properties.
-
+Classes:
+    Unit: Defines the acceptable values for the units of measurement.
+"""
 from enum import Enum
 
 
 class Unit(Enum):
-    """Enum of dose units.
+    """Defines the acceptable values for the units of measurement.
+
+    Medications come in various units of measurement. The preferred dose is
+    the dose which the controlled substance agents and providers use to
+    describe the amount administered to a patient.
 
     Available units:
-
-    MCG
-
-    MG
-
-    G"""
+        - MCG
+        - MG
+        - G
+    """
 
     MG = "mg"
     MCG = "mcg"
