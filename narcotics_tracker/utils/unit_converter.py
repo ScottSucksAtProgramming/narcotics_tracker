@@ -1,21 +1,29 @@
-"""Contains the UnitConverter class."""
+"""Contains the UnitConverter class which converts between units.
 
+Classes:
+    UnitConverter: Converts between different units of measurement.
+"""
 from narcotics_tracker.enums.units import Unit
 
 
 class UnitConverter:
-    """Utility to convert between units of medication dosages."""
+    """Converts between different units of measurement.
+
+    Methods:
+        to_mcg: Converts from a specified unit to micrograms.
+        to_mg: Converts from a specified unit to milligrams.
+        to_G: Converts from a specified unit to grams.
+    """
 
     def to_mcg(amount: float, unit: Unit) -> float:
-        """Converts dose to micrograms.
+        """Converts from a specified unit to micrograms.
 
         Args:
-            amount (float)
+            amount (float): The amount to convert.
 
         Returns:
-            amount (float): The amount in mcg.
+            amount (float): The amount converted to micrograms.
         """
-
         if unit == Unit.MG.value:
             return amount * 10**3
 
@@ -26,15 +34,14 @@ class UnitConverter:
             return amount
 
     def to_mg(amount: float, unit: Unit) -> float:
-        """Converts dose to milligrams.
+        """Converts from a specified unit to milligrams.
 
         Args:
-            amount (float)
+            amount (float): The amount to convert.
 
         Returns:
-            float: amount in milligrams.
+            float: The amount converted to milligrams.
         """
-
         if unit == Unit.G.value:
             return amount * 10**3
 
@@ -45,15 +52,14 @@ class UnitConverter:
             return amount
 
     def to_G(amount: float, unit: Unit) -> float:
-        """Converts dose to Grams.
+        """Converts from a specified unit to grams.
 
         Args:
-            amount (float)
+            amount (float): The amount to convert.
 
         Returns:
-            float: amount in Grams.
+            float: The amount converted to Grams.
         """
-
         if unit == Unit.MG.value:
             return amount / 10**3
 
