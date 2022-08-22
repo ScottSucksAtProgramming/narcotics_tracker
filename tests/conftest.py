@@ -6,7 +6,7 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-
+from narcotics_tracker import database
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
@@ -40,3 +40,24 @@ def test_med() -> "medication.Medication":
     test_med = med_builder.build()
 
     return test_med
+
+
+@fixture
+def test_db() -> str:
+    """Return the name of the testing database file.
+
+    The test_db fixture returns the name of the testing database file.
+    This is used in the tests to connect to the database.
+
+    Returns:
+        test_db (str): The path to the database file.
+    """
+    return "test_database.db"
+
+
+@fixture
+def database_test_set_up():
+    """Resets test_database.db"""
+    db = database.Database()
+    db.connect("test_database.db")
+    db.delete_database("test_database.db")

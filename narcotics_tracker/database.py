@@ -13,6 +13,7 @@ Classes:
     Database: Interacts with the SQLite3 database.
 """
 
+import os
 from typing import TYPE_CHECKING
 import sqlite3
 
@@ -37,7 +38,7 @@ class Database:
 
         return_tables: Returns a list of tables as a list.
 
-        return_columns: Returns the column names from a table as a tuple.
+        return_columns: Returns the column names from a table as a list.
 
         delete_table: Deletes a table from the database.
 
@@ -77,6 +78,20 @@ class Database:
 
         return self.database_connection
 
+    def delete_database(self, database_file: str) -> None:
+        """Deletes a database from the data/ directory.
+
+        Args:
+            database_file (str): The database file located in the data/
+                directory.
+        """
+        try:
+            self.database_connection.close()
+            os.remove("data/" + database_file)
+            self.database_connection = None
+        except sqlite3.Error as e:
+            print(e)
+
     def create_table(self, sql_query: str) -> None:
         """Creates a table in the database.
 
@@ -87,39 +102,30 @@ class Database:
         cursor = self.database_connection.cursor()
         cursor.execute(sql_query)
 
-    def return_tables(self, sql_query: str, table_name: list[str]) -> list:
+    def return_table_names(self) -> list:
         """Returns a list of tables in the database.
-
-        Args:
-            sql_query (str): The SQL query to read from the database. i.e.
-                SELECT * FROM table_name
-
-            table_name (list[str]): The name of the table to read from. Must
-                be provided as a list.
 
         Returns:
             table_list (list): The list of tables in the database.
-
         """
         cursor = self.database_connection.cursor()
-        cursor.execute(sql_query, table_name)
-        return cursor.fetchall()
+        cursor.execute(
+            """SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name"""
+        )
+        raw_data = cursor.fetchall()
 
-    def return_columns(self, sql_query: str) -> tuple:
-        """Returns the column names from a table as a tuple.
+        return [name[0] for name in raw_data]
+
+    def return_columns(self, sql_query: str) -> list:
+        """Returns the column names from a table as a list.
 
         Args:
-            sql_query (str): The SQL query to read from the database. i.e.
-                SELECT * FROM sqlite_master WHERE type = 'table' AND
-                name = (?)
-
-        Returns:
-            column_names (tuple): The column names from the table.
+            sql_query (str): The SQL query to return the column names. i.e.
+                'SELECT * FROM table_name'
         """
         cursor = self.database_connection.cursor()
-        columns = cursor.execute(sql_query)
-
-        return columns.description
+        cursor.execute(sql_query)
+        return [description[0] for description in cursor.description]
 
     def delete_table(self, sql_query: str) -> None:
         """Deletes a table from the database.
@@ -165,7 +171,7 @@ class Database:
             cursor.execute(sql_query)
         else:
             cursor.execute(sql_query, values)
-        return cursor.fetchall()
+        return cursor.fetchall()[0]
 
     def write_data(self, sql_query: str, values: str) -> None:
         """Writes data to the database.

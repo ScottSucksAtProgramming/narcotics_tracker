@@ -60,23 +60,24 @@ def parse_medication_data(medication_data) -> dict:
             the medication."""
 
     properties = {}
+    print(medication_data)
 
-    properties["medication_id"] = medication_data[0][0]
-    properties["name"] = medication_data[0][2]
-    properties["code"] = medication_data[0][1]
+    properties["medication_id"] = medication_data[0]
+    properties["name"] = medication_data[2]
+    properties["code"] = medication_data[1]
     properties["container_type"] = utilities.enum_from_string(
-        containers.Container, medication_data[0][3]
+        containers.Container, medication_data[3]
     )
-    properties["fill_amount"] = medication_data[0][4]
-    properties["dose"] = medication_data[0][5]
-    properties["unit"] = utilities.enum_from_string(units.Unit, medication_data[0][6])
-    properties["concentration"] = medication_data[0][7]
+    properties["fill_amount"] = medication_data[4]
+    properties["dose"] = medication_data[5]
+    properties["unit"] = utilities.enum_from_string(units.Unit, medication_data[6])
+    properties["concentration"] = medication_data[7]
     properties["status"] = utilities.enum_from_string(
-        medication_statuses.MedicationStatus, medication_data[0][8]
+        medication_statuses.MedicationStatus, medication_data[8]
     )
-    properties["created_date"] = medication_data[0][9]
-    properties["modified_date"] = medication_data[0][10]
-    properties["modified_by"] = medication_data[0][11]
+    properties["created_date"] = medication_data[9]
+    properties["modified_date"] = medication_data[10]
+    properties["modified_by"] = medication_data[11]
 
     return properties
 
