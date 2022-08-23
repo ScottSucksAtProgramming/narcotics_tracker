@@ -1,4 +1,9 @@
-"""Contains Test_MedicationProperties and Test_MedicationMethods classes."""
+"""Contains Test_MedicationProperties and Test_MedicationMethods classes.
+
+Classes:
+    Test_MedicationProperties: Contains all unit tests for the properties of the Medication Class.
+    
+    Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
 
 import pytest
 
@@ -175,7 +180,7 @@ class Test_MedicationProperties:
 
 
 class Test_MedicationMethods:
-    """Contains all unit tests for the properties of the Medication Class.
+    """Contains all unit tests for the methods of the Medication Class.
 
     Behaviors Tested:
         - return_table_creation_query returns correct string.
