@@ -222,8 +222,8 @@ class Medication:
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.get_date_as_string()
-        self.modified_date = date.get_date_as_string()
+            self.created_date = date.return_date_as_string()
+        self.modified_date = date.return_date_as_string()
 
         values = self.return_attributes()
 
@@ -261,8 +261,8 @@ class Medication:
             WHERE CODE = ?"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.get_date_as_string()
-        self.modified_date = date.get_date_as_string()
+            self.created_date = date.return_date_as_string()
+        self.modified_date = date.return_date_as_string()
 
         values = self.return_attributes() + (code,)
 
