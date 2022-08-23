@@ -1,4 +1,7 @@
-"""Contains tests for the setup module."""
+"""Contains the Test_Setup class and all tests for the setup module.
+
+Classes:
+    Test_Setup: Contains all unit tests for the setup module."""
 
 import os
 
@@ -6,38 +9,39 @@ from narcotics_tracker import database
 from scripts import setup
 
 
-class Test_SetupClass:
-    def test_create_database_file(self):
-        """Tests to see if the medication table can be created."""
+class Test_Setup:
+    """Contains all unit tests for the setup module.
+
+    Behaviors Tested:
+        - Setup can create database file.
+        - Setup can create medication table.
+    """
+
+    def test_setup_can_create_database_file(self, database_test_set_up):
+        """Tests to see if the database file can be created.
+
+        Connects to 'test_database.db'.
+
+        Asserts that 'data/test_database.db' exists.
+        """
         db = database.Database()
         db.connect("test_database.db")
-        setup.create_medication_table(db)
+
         assert os.path.exists("data/test_database.db")
 
-    def test_create_medication_table(self):
-        """Tests to see if the medication table can be created."""
+    def test_setup_can_create_medication_table(self, database_test_set_up):
+        """Tests to see if the medication table can be created.
+
+        Connects to 'test_database.db'. Creates medication table. Returns
+        table names.
+
+        Asserts that 'medication' is in list of table names.
+        """
         db = database.Database()
         db.connect("test_database.db")
 
         setup.create_medication_table(db)
 
-        data = db.return_data("SELECT * FROM sqlite_master WHERE type='table';")[0][4]
+        data = db.return_table_names()
 
-        assert (
-            data
-            != """medication (
-                MEDICATION_ID INTEGER,
-                NAME TEXT,
-                CODE TEXT,
-                CONTAINER_TYPE TEXT,
-                FILL_AMOUNT REAL,
-                DOSE REAL,
-                UNIT TEXT,
-                CONCENTRATION REAL,
-                STATUS TEXT,
-                CREATED_DATE TEXT,
-                MODIFIED_DATE TEXT,
-                MODIFIED_BY TEXT,
-                PRIMARY KEY (CODE)
-                )"""
-        )
+        assert "medication" in data
