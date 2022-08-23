@@ -222,7 +222,7 @@ class Test_Database:
 
         data = db.return_data("""SElECT * FROM test_table""")
 
-        assert "This is the data" in data
+        assert "This is the data" in data[0]
 
     def test_created_date_is_none_returns_false_if_created_date_is_set(self, test_med):
         """Tests if the function returns false when created date is set.

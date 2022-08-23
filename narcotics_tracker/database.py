@@ -171,7 +171,7 @@ class Database:
             cursor.execute(sql_query)
         else:
             cursor.execute(sql_query, values)
-        return cursor.fetchall()[0]
+        return cursor.fetchall()
 
     def write_data(self, sql_query: str, values: str) -> None:
         """Writes data to the database.

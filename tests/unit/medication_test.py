@@ -222,7 +222,7 @@ class Test_MedicationClassMethods:
 
         assert data == "Unobtanium"
 
-    def test_delete_medication(self, test_med):
+    def test_delete_medication(self, test_med, database_test_set_up):
         """Checks to see if the medication can be deleted from the database."""
 
         db = database.Database()
@@ -235,10 +235,9 @@ class Test_MedicationClassMethods:
         test_med.delete(db)
 
         data = db.return_data("""SELECT * FROM medication""")
-
         assert data == []
 
-    def test_update(self, test_med):
+    def test_update(self, test_med, database_test_set_up):
         """Tests to see if a medication's attributes can be updated in the
         database."""
 
@@ -246,7 +245,6 @@ class Test_MedicationClassMethods:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.delete_table("DROP TABLE IF EXISTS medication")
         db.create_table(medication.return_table_creation_query())
         test_med.modified_by = "SRK"
         test_med.save(db)
@@ -256,7 +254,8 @@ class Test_MedicationClassMethods:
         loaded_med.status = medication_statuses.MedicationStatus.ACTIVE
         loaded_med.update(db, med_code)
 
-        sql_query = """SELECT status FROM medication WHERE CODE=(?)"""
-        data = db.return_data(sql_query, [med_code])
+        data = db.return_data(
+            """SELECT status FROM medication WHERE CODE=(?)""", [med_code]
+        )
 
         assert data[0][0] == medication_statuses.MedicationStatus.ACTIVE.value
