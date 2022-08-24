@@ -31,7 +31,9 @@ set up the suppliers they order from.
    (PO Number). 
 4. Controlled Substance Orders spread sheet filled out: 
     5. Order Number 
-    6. 222 Form Number (If Used) 7. Date Ordered 8. Medications and amount ordered. 
+    6. 222 Form Number (If Used)
+    7. Date Ordered
+    8. Medications and amount ordered. 
     7. Any paperwork is signed, scanned, filed.
 2. Medication is received
     3. Medications are verified. 
@@ -49,7 +51,7 @@ set up the suppliers they order from.
     15. Lot Number 
     16. Total Amount Received in mg 
 17. Stock Safe Entry Log is filled out.
-3. Medications are entered into the
+18. Medications are entered into the inventory.
 
 ### Notes
 
