@@ -1,162 +1,200 @@
 # Narcotics Tracker Design Document
 
-# Table of Contents
+| Version | Created    | Updated    |
+| :------ | :--------- | :--------- |
+| 0.1.0   | 08/01/2022 | 08/24/2022 |
 
-1. [Summary](#summary)
-2. [Goal](#goal)
-3. [Motivation](#motivation)
-4. [Screen Shots](#screenshots)
-
-<a name="summary"></a>
+{{TOC}}
 
 ## Summary
 
-The Narcotics Tracker is a python project designed to assist controlled
-substance agents for EMS organizations in New York State with controlled
-substance inventory tracking, and reporting.
+Welcome to the **Narcotics Tracker**! This software is designed to assist controlled substance agents working at EMS agencies with inventory tracking and periodic reporting of controlled substance activities to their governing agencies.
 
-<a name="goal"></a>
+#### Motivation
+I am a controlled substance agent working in New York State. The tracking of controlled substances is complicated and requires multiple forms and processes. I have wished for a single place where all of that information can be stored and easily accessed. This software is intended to fill that need.
 
-## Goal
+### Goals
 
-To create an easy to use program which tracks an EMS agency's controlled
-substance inventory, performs conversions between different units of weight
-(i.e. mcg to mg), conversion between units of weight and units of volume
-(mg/mcg to mL), track inventory totals throughout controlled substance
-purchases, destruction via reverse distribution, medication waste, and
-restocking of stock and sub-stocks. Reports can be generated as needed
+The **Narcotics Tracker** will provide a single place to enter all changes to an agencies controlled substance inventory. Each change in the inventory can be entered peridoically where the data can be queried to return information requried for reporting and compliance with tracking specifications.
 
-<a name="motivation"></a>
+##### Project Specifications
+    1. Inventory tracking of all controlled substances used by an EMS agency.
+    2. Ability to create agency specific medications.
+    3. Tracking of medication lots as they as disbursed to sub-stocks.
+    4. Tracking of medication orders.
+    5. Tracking of medication destruction.
+    6. Tracking of medication administration.
+    7. Tracking of medication waste.
+    8. Built in reports which can be generated at the users request which fulfill the New York State and DEA requirements.
+    9. A simple but powerful console user interface.
+    10. A graphical user interface.
 
-## Motivation
+I am a self-taught programmer looking to improve my knowledge and experience in soft-ware design by building projects which have practical applications.
 
-I work as a controlled substance agent for a New York State Ambulance company.
-While there have never been a concern of lost or diverted medications at my
-agency the reporting, and license renewals which needs to be performed
-periodically are always a source of stress. Documentation issues, incorrectly
-stored paperwork, unit conversions and simple math mistakes are the most common
-causes of reporting discrepancies. A simple software solution which can handle
-those problems without human error will be personally useful.
+##### Personal Learning Goals 
+    1. Increase my knowledge and experience with Python.
+    2. Learn about Object Oriented Programming.
+    3. Practice and gain experience with Test Driven Development
+    4. Gain knowledge on the storage, and manipulation, of data and the use of databases.
+    5. Potentially branch out into GUI development with Python or different languages as necessary.
+    6. To put out a product which I may be able to use to help generate extra income though licensing and service contracts.
 
-I am also a self-taught programmer looking to increase my knowledge by building
-out projects which are practical and can make my life easier. My personal
-learning goals for this project are to increased my knowledge and experience
-with Python; Learn about Object Oriented Programming; Practice and gain
-experience with Test Driven Development; Gain knowledge on the storage, and
-manipulation, of data. Opportunities to learn front-end development may arise
-going forward as well. <a name="screenshots"></a>
-
-## Screenshots
-
-<a name="discussion"></a>
-
-# Design Discussion and Alternatives
+## Design Discussion and Alternatives
 
 ---
 
-<a name="problems"></a>
-
-## Design Questions and Problems
-
-#### Development Roadmap / Progress
+### Development Roadmap / Progress
 
 I'm not entirely sure where the best place to begin is. I do not have a enough
 experience to know how to design this kind of software. I'll be using a lot of
 trial and error. Here is my imagined development Path.
 
--   [ ] Store and return medication related information.
+-   [x] Medication Creation and Management
+  -   [x] Builder Pattern
+-   [x] Communication with a Database.
+-   [ ] Order Management.
+-   [ ] Lot Management.
+-   [ ] Destruction Management.
+-   [ ] Medication Use and Waste Management.
+-   [ ] Inventory Management
+-   [ ] Controlled Substance Agent Account Management.
+-   [ ] Report Generation
+-   [ ] Console User Interface
+-   [ ] Graphical User Interface
 
-# Medication Class
+### Medication Creation and Management
+In order to track the inventory of controlled substance medications a model of the medications has to be built within the program. I decided to start the probject by building a module to handle the creation and implementation of medications. 
 
-I will need a class to handle medication objects which stores the various
-properties related to each medication.
+Medications will be similar across EMS agencies but the specific dosages, concentrations and other attributes of the meds will vary. There are many specifics for controlled substance medications but I narrowed it down to 7 medication specific attributes and 5 which will be important to working with the medication as part of the database.
+    
+###### Medication Facing Attributes
+    
+    - name (str): The name of the medication.
 
-### Properties
+    - container_type (containers.Container): The type of container the medication comes in.
 
-    -   Name
-    -   Manufacturer
-    -   Box Quantity
-    -   Container Type
-    -   Fill Amount (in ml)
-    -   Strength (in mg)
-    -   Concentration
-    -   Dose Unit
+    - fill_amount (float): The amount of the solvent in the container. Measured in milliliters (ml).
 
-### Behaviors
+    - dose (float): The amount of medication in the container.
 
-    -   Create new Medications
-    -   Delete Medications
-    -   Updated Medications
-    -   Store Medications
-    -   Return Medication Properties
+    - preferred_unit (units.Unit): The unit of measurement the medication is commonly measured in.
 
-## Medication Class Discussion
+    - concentration (float): The concentration of the medication to its solvent.
+    
+    - status (medication_status.MedicationStatus): The status of the medication.
+    
+    
+###### Database Facing Attributes
+    
+    - medication_id (int): The numeric identifier of the medication in the database.
 
-**NDC Number**
+    - code (str): The unique identifier for the specific medication. 
 
-This was removed. It fits better in an inventory or Medication Lot class which
-will be used to track physical medications, as opposed to just medication
-properties which are handled in this class.
+    - created_date (str): The date the medication was first entered into the database.
 
----
+    - modified_date (str): The date the medication was last modified in the database
 
-**Box Quantity**
+    - modified_by (str): The user who last modified the medication in the database.
+ 
+ 
+A list of five main requirements for controlled substance medications were identified.
+###### Medication Behaviors
+     1. Creation of new medications by users.
+     2. Saving of medications within the database.
+     3. Loading of saved medications.
+     4. Updating of saved medications.
+     5. Deletion of medications from the database.
+ 
+#### Discussion
+##### Attributes
 
-I'm unsure if this needs to stay here. I'm going to leave it for now, but it's
-more related to inventory tracking than just the medication. Right now this
-class has a lot of arguments and I don't know if I want there to be so many.
+**The NDC Number was removed from the list of attributes.** The NDC number is only important for medication destruction. NDC Numbers change between manufacturers and concentrations for the same medication. NDC Numbers may not be tracked at all within the Narcotics Tracker, if they are going to be tracked they will be part of a different module.
 
----
+- - -
 
-**Container Type** Considering also moving this to another class. Maybe an
-'Order' class or 'Lot' class which would be a building block for the inventory.
+**The Box Quantity was removed from the list of attributes.** Box Quantity (how many containers come in the box) will be important for Orders and Lot Management but not as part of the medication module.
 
-## Container Enum
+##### Medication Data Structures
+There were tons of ways to represent medications within the **Narcotics Tracker**. Ordered lists and dictionaries are simple and would fulfill most of the requirements. As of version 0.1.0 dictionaries are used to load medications as objects from data stored in the database and lists are used in a script to quickly create the medications I personally use at my agency. **I decided that using classes and objects would be the best way for me to achieve the results I wanted with this project and help me improve my object oriented programming skills.** 
 
-The Container class specifies the acceptable types of containers which
-medication can come in.
+##### The Builder Pattern
+Since I decided to go with objects as the data structure for medications I needed a way to simplify the creation of medications for myself as the developer and for the users. With twelve total attributes it would be easy to assign values to the wrong attributes, forget attributes and potentiall build medications which would be unusable. 
 
-```python
-Container.VIAL = "Vial"
-Container.AMPULE = "Ampule"
-Container.PRE_FILLED_SYRINGE = "Pre-filled Syringe"
-Container.PRE_MIXED_BAG = "Pre-mixed Bag"
-```
+**I employed the builder pattern to separate to separate the creation of medications into smaller, easier to understand steps. Using the builder pattern does add complexity to the code it also adds the flexibility to use the same approach to different objects used later within the Narcotics Tracker.**
 
-Other container types exist, but are unlikely to be used in EMS agencies.
+##### Enums vs. Vocabulary Control Tables
+There are limited options for the types of containers a controlled substance medication might come in. The status of each medication and it’s preferred dosage unit also have limited options. 
 
-## DoseUnit Enum
+As of the version 0.1.0 release Enums were created for each of those three attributes and are handled through Python and it’s objects. It was brought to my attention that this will limit the flexibility for users who may need to create custom options for these attributes. 
 
-The DoseUnit class specifies the acceptable types of units for the medications.
+**In a future release these Enums will be converted in vocabulary control tables within the datbase. This will allow for users to create new statuses, containers, and units as needed for their agency.**
 
-```python
-Container.MG = "mg"
-Container.MCG = "mcg"
-Container.G = "G"
-```
+##### Medication Deletion
+It’s likely that deleting medications will cause issues in long term record keeping. Attributes for medications which are no longer in use are important when pulling records from previous periods when they were in use. Deletion of medication is likely not going to be a feature that the users will have access to. **Deleting Medications is important enough for this option to be available during development of the Narcotics Tracker that I have chosen to build it.** It can be removed later if deemed unnecessary.
 
-# Database
+### Communication with a Database
+Databases are used everywhere in software and I’ve never worked with one. The **Narcotics Tracker** is an ideal project for me to dip my toes in and build my understanding of databases. Other method for storing data were considered such as writing to JSON Files, CSV Files and Pickle Files but the strengths of using a database made it an obvious choice.
 
-I'm going to use SQLite3 for this project. It's built into Python, it is simple
-enough to get started, it seems to be able to handle everything I'll need, and
-I already watched a FreeCodeCamp course about SQLite3 on my drive home from
-work tonight.
+The only attribute required for the database is the connection to the database file. A 
 
-**Medication Library** Medications are going to need a place to live and be
-stored.
+###### Database Attributes
+    - database_connection (sqlite3.Connection): The connection to the database file.
+    
+###### Database Behaviors
+    1. Creation and connection with a database file.
+    2. Creation of tables within the database.
+    3. Querying of table names from the database file.
+    4. Querying of columns names from database tables.
+    5. Updating tables within the database.
+    6. Deleting tables from the database.
+    7. Writing data to the database.
+    8. Reading data from the database.
+    9. Loading objects from data saved in the database.
+    10. Setting of the dates when saving objects to the database.
 
-**Inventory** The whole point is
+#### Discussion
+##### Attributes
+There were not many other attributes I thought would be important to store within the database objects. **One attribute which may be added later is the path to the data directory.** Currently the path is hard coded into the methods, but it might make sense to give users an option on where they want their database files to be stored.
 
-## Database Design
+##### Database Choice
+**I decided to use SQLite3 for this project.** SQLite3 is built into Python. It requires no configuration or external services, and I already watched a course on using it, so there!
 
-Started sketching out the database design which helped clear up some of my
-questions. Version one of the design located in the docs folder. Instead of
-designing from the top down, I'm going to start designing from the user
-interface up which I think will clear up the tasks and processes and inform the
-database design.
+##### Database Tables
+Multiple tables will be required for the inventory tracking portion of this project:
 
-[Database Design v1](https://github.com/ScottSucksAtProgramming/narcotics_tracker/blob/master/docs/database_design_v1.pdf)
+    1. Medication Table
+    2. Order Table
+    3. Lot Table
+    4. Destruction Table
+    5. Administration Table
+    6. Inventory Table
+    7. User / Agent Table
 
-# Questions
+In addition vocabulary control tables will be required to help set the specific types of data and events in the project:
 
-1. Can I track items that are removed or changed in the database?
+    1. Containers Table
+    2. Medication Statuses Table
+    3. Dosage Units Table
+    4. Events Table
+
+Additional tables may be identified as the project progresses.
+
+### Tracking of Controlled Substance Orders
+
+
+### Lot Management
+To Be Written.
+### Destruction Management
+To Be Written.
+### Medication Use and Waste Management
+To Be Written.
+### Inventory Management
+To Be Written.
+### Controlled Substance Agent Account Management
+To Be Written.
+### Report Generation
+To Be Written.
+### Console User Interface
+To Be Written.
+### Graphical User Interface
+To Be Written.

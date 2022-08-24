@@ -33,13 +33,16 @@ Current Completed Features:
     Utils Package - Contains utility functions used in the software.
 
 Planned Features:
-    Inventory Tracking (v0.2.0)
+
+    Medication Tracking (0.1.0) - Complete
+
+    Order Tracking (v0.2.0)
 
     Lot Tracking (v0.3.0)
 
-    Order Tracking (v0.4.0)
+    Destruction Tracking (v0.4.0)
 
-    Destruction Tracking (v0.5.0)
+    Inventory Tracking (v0.5.0)
 
     User and Agent Management (v0.6.0)
 

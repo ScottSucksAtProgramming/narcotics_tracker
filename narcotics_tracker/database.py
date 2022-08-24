@@ -31,6 +31,10 @@ class Database:
         __init__(self) -> None:
         Initializes the database object and sets connection to None.
 
+    Attributes:
+
+        database_connection (sqlite3.Connection): Connection to the database.
+
     Instance Methods:
         connect: Creates a connection to the database.
 
