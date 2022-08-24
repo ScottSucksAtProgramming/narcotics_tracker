@@ -1,264 +1,381 @@
-#
-# * ----------------------------- Documentation ------------------------------ #
-# Module:  medication_test.py
-# Contains tests for the Medication class, as well as other related classes.
-#
-#
-# Modification History
-# 07-27-2022 | SRK | Module Created
+"""Contains Test_MedicationProperties and Test_MedicationMethods classes.
 
+Classes:
+    Test_MedicationProperties: Contains all unit tests for the properties of the Medication Class.
+    
+    Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
 
 import pytest
 
-from narcotics_tracker.containers.containers import Container
-from narcotics_tracker.units.units import Unit
-from narcotics_tracker.medication.medication import Medication
+from narcotics_tracker import database, medication
+from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.utils import date
 
 
-class TestMedication:
-    def test_can_see_Medication_class(self):
-        """Checks to see if Medication class is defined."""
-        assert type(Medication) == type(object)
+class Test_MedicationProperties:
+    """Contains all unit tests for the properties of the Medication Class.
 
-    def test_can_instantiate_Medication_object(self):
-        """Check to see if Medication object can be instantiated."""
+    Behaviors Tested:
+        - Medications can be created.
+        - Medications return expected medication_ID.
+        - Medications return expected code.
+        - Medications return expected name.
+        - Medications return expected container_type.
+        - Medications return expected fill_amount.
+        - Medications return expected dose.
+        - Medications return expected preferred_unit.
+        - Medications return expected concentration.
+        - Medications return expected created_date.
+        - Medications return expected modified_date.
+        - Medications return expected modified_by.
+        - Medications can be edited.
+    """
 
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
+    def test_medications_can_be_created(self, test_med):
+        """Tests that Medication object can be created.
+
+        Loads test_med.
+
+        Asserts that test_med is an instance of the medication.Medication
+        Class.
+        """
+        test_med = test_med
+
+        assert isinstance(test_med, medication.Medication)
+
+    def test_medications_return_expected_medication_id(self, test_med):
+        """Tests that the medication_id is returned as expected.
+
+        Loads test_med.
+
+        Asserts that test_med.medication_id equals '1'.
+        """
+        test_med = test_med
+
+        assert test_med.medication_id == 1
+
+    def test_medications_return_expected_code(self, test_med):
+        """Tests that the medication's code is returned as expected.
+
+        Loads test_med.
+
+        Asserts that test_med.code equals 'Un-69420-9001'.
+        """
+        test_med = test_med
+
+        assert test_med.code == "Un-69420-9001"
+
+    def test_medications_return_expected_name(self, test_med):
+        """Tests that the medication's code is returned as expected.
+
+        Loads test_med.
+
+        Asserts that test_med.name equals 'Unobtanium'.
+        """
+        test_med = test_med
+
+        assert test_med.name == "Unobtanium"
+
+    def test_medications_return_expected_container_type(self, test_med):
+        """Tests that the medication's code is returned as expected.
+
+        Loads test_med.
+
+        Asserts that test_med.container_type equals
+        'containers.Container.VIAL'.
+        """
+        test_med = test_med
+
+        assert test_med.container_type == containers.Container.VIAL
+
+    def test_medications_return_expected_fill_amount(self, test_med):
+        """Tests that the medication's fill amount is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.fill_amount equals '9001'.
+        """
+        test_med = test_med
+
+        assert test_med.fill_amount == 9_001
+
+    def test_medications_return_expected_dose(self, test_med):
+        """Tests that the medication's dose is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.dose equals '69420'.
+        """
+        test_med = test_med
+
+        assert test_med.dose == 69_420
+
+    def test_medications_return_expected_preferred_unit(self, test_med):
+        """Tests that the medication's preferred unit is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.preferred_unit equals 'units.Unit.MCG'.
+        """
+        test_med = test_med
+
+        assert test_med.preferred_unit == units.Unit.MCG
+
+    def test_medications_return_expected_concentration(self, test_med):
+        """Tests that the medication's concentration is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.concentration equals '7.712476391512054'.
+        """
+        test_med = test_med
+
+        assert test_med.concentration == 7.712476391512054
+
+    def test_medications_return_expected_created_date(self, test_med):
+        """Tests that the medication's created_date is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.created_date equals '01-02-1986'.
+        """
+        test_med = test_med
+
+        assert test_med.created_date == "01-02-1986"
+
+    def test_medications_return_expected_modified_date(self, test_med):
+        """Tests that the medication's modified_date is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.modified_date equals '08-09-2022'.
+        """
+        test_med = test_med
+
+        assert test_med.modified_date == "08-09-2022"
+
+    def test_medications_return_expected_modified_by(self, test_med):
+        """Tests that the medication's modified_by is returned correctly.
+
+        Loads test_med.
+
+        Asserts that test_med.modified_by equals 'Kvothe'.
+        """
+        test_med = test_med
+
+        assert test_med.modified_by == "Kvothe"
+
+    def test_medications_can_be_edited(self, test_med):
+        """Tests that the medication's properties and be changed.
+
+        Loads test_med. Changes preferred_unit to 'units.Unit.G'.
+
+        Asserts that test_med.preferred unit is 'units.Unit.G'.
+        """
+        test_med = test_med
+
+        test_med.preferred_unit = units.Unit.G
+
+        assert test_med.preferred_unit == units.Unit.G
+
+
+class Test_MedicationMethods:
+    """Contains all unit tests for the methods of the Medication Class.
+
+    Behaviors Tested:
+        - return_table_creation_query returns correct string.
+        - parse_medication_data creates dictionary with correct vales.
+        - __repr__ returns the correct string.
+        - Medication data can be saved to the database.
+        - Medication data can be updated in the database.
+        - Medication data can be deleted from the database.
+        - return_attributes returns the correct information.
+    """
+
+    def test_medication_table_query_returns_correct_string(self):
+        """Tests that return_table_creation_query returns correct string.
+
+        Calls medication.return_table_creation_query
+
+        Asserts that return_table_create_query is
+        'CREATE TABLE IF NOT EXISTS medication (
+            MEDICATION_ID INTEGER PRIMARY KEY,
+            CODE TEXT UNIQUE,
+            NAME TEXT,
+            CONTAINER_TYPE TEXT,
+            FILL_AMOUNT REAL,
+            DOSE REAL,
+            UNIT TEXT,
+            CONCENTRATION REAL,
+            STATUS TEXT,
+            CREATED_DATE TEXT,
+            MODIFIED_DATE TEXT,
+            MODIFIED_BY TEXT
+        )'
+        """
+        assert medication.return_table_creation_query() == (
+            """CREATE TABLE IF NOT EXISTS medication (
+            MEDICATION_ID INTEGER PRIMARY KEY,
+            CODE TEXT UNIQUE,                
+            NAME TEXT,
+            CONTAINER_TYPE TEXT,
+            FILL_AMOUNT REAL,
+            DOSE REAL,
+            UNIT TEXT,
+            CONCENTRATION REAL,
+            STATUS TEXT,
+            CREATED_DATE TEXT,
+            MODIFIED_DATE TEXT,
+            MODIFIED_BY TEXT
+            )"""
         )
-        assert isinstance(fentanyl, Medication)
 
-    def test_can_get_name(self):
-        """Check to see if name can be retrieved."""
+    def test_parse_medication_data_creates_dictionary_with_correct_values(
+        self, test_med
+    ):
+        """Tests that parse_medication_data returns correct dictionary data.
 
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.name == "Fentanyl"
+        Loads test_med and saves to database. Retrieves medication data from
+        database and parses it.
 
-    def test_can_get_manufacturer(self):
-        """Check to see if manufacturer can be retrieved."""
+        Asserts that the data returned matches ALL expected values.
+        """
+        test_med = test_med
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
 
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.manufacturer == "Umbrella Corp"
+        code = ["Un-69420-9001"]
+        raw_data = db.return_data("""SELECT * FROM medication WHERE code=(?)""", code)
 
-    def test_can_get_box_quantity(self):
-        """Check to see if box_quantity can be retrieved."""
+        med_data = medication.parse_medication_data(raw_data)
 
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.box_quantity == 25
-
-    def test_can_get_container_type(self):
-        """Check to see if container_type can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.container_type == Container.VIAL
-
-    def test_can_get_fill_amount_in_milliliters(self):
-        """Check to see if fill_amount_in_milliliters can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.fill_amount_in_milliliters == 2
-
-    def test_can_get_strength_in_mg(self):
-        """Check to see if strength_in_mg can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.strength_in_mg == 0.1
-
-    def test_can_get_dose_unit(self):
-        """Check to see if dose_unit can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.dose_unit == Unit.MCG
-
-    def test_can_get_concentration(self):
-        """Check to see if concentration can be retrieved."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
-        assert fentanyl.concentration == 0.05
-
-    def test_can_restrict_container_type_to_Containers_enum(self):
-        """Check that incorrect container types raise an exception."""
-
-        with pytest.raises(TypeError):
-            fentanyl = Medication(
-                name="Fentanyl",
-                manufacturer="Umbrella Corp",
-                box_quantity=25,
-                container_type="Vial",
-                fill_amount_in_milliliters=2,
-                strength_in_milligrams=0.1,
-                dose_unit=Unit.MCG,
-                concentration=0.05,
-            )
-
-    def test_can_restrict_dose_unit_to_DoseUnit_enum(self):
-        """Check that incorrect dose units raise an exception."""
-
-        with pytest.raises(TypeError):
-            fentanyl = Medication(
-                name="Fentanyl",
-                manufacturer="Umbrella Corp",
-                box_quantity=25,
-                container_type=Container.VIAL,
-                fill_amount_in_milliliters=2,
-                strength_in_milligrams=0.1,
-                dose_unit="grain",
-                concentration=0.05,
-            )
-
-    def test_printing_a_Medication_object_returns_correct_string(self):
-        """Check to see if printing a Medication object returns a string."""
-
-        fentanyl = Medication(
-            name="Fentanyl",
-            manufacturer="Umbrella Corp",
-            box_quantity=25,
-            container_type=Container.VIAL,
-            fill_amount_in_milliliters=2,
-            strength_in_milligrams=0.1,
-            dose_unit=Unit.MCG,
-            concentration=0.05,
-        )
         assert (
-            str(fentanyl)
-            == "Fentanyl - Manufacturer: Umbrella Corp; Box Quantity: 25; "
-            "Container Type: Vial; Fill Amount: 2; Strength: 0.1 mg; Dose "
-            "Unit: mcg; Concentration: 0.05 mg/ml."
+            med_data["medication_id"] == 1
+            and med_data["name"] == "Unobtanium"
+            and med_data["code"] == "Un-69420-9001"
+            and med_data["container_type"] == containers.Container.VIAL
+            and med_data["fill_amount"] == 9_001.0
+            and med_data["dose"] == 69_420.0
+            and med_data["unit"] == units.Unit.MCG
+            and med_data["concentration"] == 7.712476391512054
+            and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
+            and med_data["created_date"] == "01-02-1986"
+            and med_data["modified_date"] == date.return_date_as_string()
+            and med_data["modified_by"] == "Kvothe"
         )
 
+    def test__repr___returns_correct_string(self, test_med):
+        """Tests that __repr__ returns correct string.
 
-class TestContainer:
-    """Test the Container class."""
-
-    def test_VIAL_returns_correct_string(self):
-        """Check that VIAL returns the correct string."""
-
-        assert Container.VIAL.value == "Vial"
-
-    def test_AMPULE_returns_correct_string(self):
-        """Check that AMPULE returns the correct string."""
-
-        assert Container.AMPULE.value == "Ampule"
-
-    def test_PRE_FILLED_SYRINGE_returns_correct_string(self):
-        """Check that PRE_FILLED_SYRINGE returns the correct string."""
-
-        assert Container.PRE_FILLED_SYRINGE.value == "Pre-filled Syringe"
-
-    def test_PRE_MIXED_BAG_returns_correct_string(self):
-        """Check that PRE_MIXED_BAG returns the correct string."""
-
-        assert Container.PRE_MIXED_BAG.value == "Pre-mixed Bag"
+        Loads test_med. Calls str(test_med).
 
 
-class TestDoseUnit:
-    """Test the DoseUnit class."""
+        Asserts that str(test_med) returns:
+            "Medication Object 1 for Unobtanium with code Un-69420-9001. "
+            "Container type: Vial. Fill amount: 9001 ml. Dose: 69420 mcg. "
+            "Concentration: 7.712476391512054. Status: Discontinued. Created "
+            "on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
+        """
+        test_med = test_med
+        assert str(test_med) == (
+            f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
+            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420 mcg. "
+            f"Concentration: 7.712476391512054. Status: Discontinued. Created "
+            f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
+        )
 
-    def test_MCG_returns_correct_string(self):
-        """Check that MCG returns the correct string."""
+    def test_return_attributes(self, test_med):
+        """Tests that the medication data is correctly returned.
 
-        assert Unit.MCG.value == "mcg"
+        Loads test_med. Calls test_med.return_attributes().
 
-    def test_MG_returns_correct_string(self):
-        """Check that MG returns the correct string."""
+        Asserts values returned are expected values.
+        """
+        test_med = test_med
+        assert test_med.return_attributes() == (
+            1,
+            "Un-69420-9001",
+            "Unobtanium",
+            "Vial",
+            9001,
+            69420,
+            "mcg",
+            7.712476391512054,
+            "Discontinued",
+            "01-02-1986",
+            "08-09-2022",
+            "Kvothe",
+        )
 
-        assert Unit.MG.value == "mg"
+    def test_save_to_database(self, test_med, database_test_set_up):
+        """Tests that the medication data is correctly written to
+        database.
 
-    def test_G_returns_correct_string(self):
-        """Check that G returns the correct string."""
+        Loads test_med. Saves to database. Calls db.return_data() on
+        medication.
 
-        assert Unit.G.value == "G"
+        Asserts data return has name 'Unobtanium'.
+        """
+        test_med = test_med
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
 
-    def test_can_restrict_dose_unit_to_DoseUnit_enum(self):
-        """Check that incorrect dose units raise an exception."""
+        data = db.return_data(
+            """SELECT * FROM medication WHERE CODE='Un-69420-9001'"""
+        )[0][2]
 
-        with pytest.raises(TypeError):
-            fentanyl = Medication(
-                name="Fentanyl",
-                manufacturer="Umbrella Corp",
-                box_quantity=25,
-                container_type=Container.VIAL,
-                fill_amount_in_milliliters=2,
-                strength_in_milligrams=0.1,
-                dose_unit="grain",
-                concentration=0.05,
-            )
+        assert data == "Unobtanium"
+
+    def test_delete_medication(self, test_med, database_test_set_up):
+        """Tests that the medication can be deleted from the database.
+
+        Loads test_med. Saves it to database. Then deletes it. Gets data from
+        medication table.
+
+        Asserts data is empty.
+        """
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+
+        test_med.save(db)
+        test_med.delete(db)
+
+        data = db.return_data("""SELECT * FROM medication""")
+        assert data == []
+
+    def test_update(self, test_med, database_test_set_up):
+        """Tests that a medication's attributes can be updated in the
+        database.
+
+        Loads test_med and saves to database. Loads medication info from
+        database to loaded_med. Changes loaded_med status to
+        'medication_statuses.MedicationStatus.ACTIVE'. Updates medication in
+        database.
+
+        Asserts medication status is
+        'Active'.
+        """
+        test_med = test_med
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
+
+        med_code = "Un-69420-9001"
+        loaded_med = db.load_medication(med_code)
+        loaded_med.status = medication_statuses.MedicationStatus.ACTIVE
+        loaded_med.update(db, med_code)
+
+        data = db.return_data(
+            """SELECT status FROM medication WHERE CODE=(?)""", [med_code]
+        )
+
+        assert data[0][0] == "Active"

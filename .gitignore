@@ -70,3 +70,5 @@ TokenIdRangesByImageNumber.*
 VMWalletAddressesForTesting.*
 /venv/*
 /docs/blog/
+data/*
+narcotics_tracker/data/inventory.db

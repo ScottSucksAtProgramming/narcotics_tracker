@@ -19,7 +19,27 @@
         "narcotics_tracker/units/__pycache__": true,
         "narcotics_tracker/medication/__pycache__": true,
         "narcotics_tracker/converter/__pycache__": true,
-        "narcotics_tracker/containers/__pycache__": true
+        "narcotics_tracker/containers/__pycache__": true,
+        "tests/unit/medication_tests/__pycache__": true,
+        "tests/unit/units/__pycache__": true,
+        "tests/__pycache__": true,
+        "tests/unit/medication_tests/.pytest_cache": true,
+        "narcotics_tracker/database_writer/__pycache__": true,
+        "tests/unit/database_writer_tests/__pycache__": true,
+        "tests/unit/units/.pytest_cache": true,
+        "tests/unit/database_tests/__pycache__": true,
+        "tests/unit/setup_tests/.pytest_cache": true,
+        "tests/unit/setup_tests/__pycache__": true,
+        "narcotics_tracker/setup/__pycache__": true,
+        "narcotics_tracker/database/__pycache__": true,
+        "tests/unit/units_tests/__pycache__": true,
+        "tests/unit/units_tests/.pytest_cache": true,
+        "tests/unit/database_tests/.pytest_cache": true,
+        "scripts/__pycache__": true,
+        "narcotics_tracker/date/__pycache__": true,
+        "narcotics_tracker/builders/__pycache__": true,
+        "narcotics_tracker/enums/__pycache__": true,
+        "narcotics_tracker/utils/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -35,7 +55,27 @@
         "narcotics_tracker/units/__pycache__",
         "narcotics_tracker/medication/__pycache__",
         "narcotics_tracker/converter/__pycache__",
-        "narcotics_tracker/containers/__pycache__"
+        "narcotics_tracker/containers/__pycache__",
+        "tests/unit/medication_tests/__pycache__",
+        "tests/unit/units/__pycache__",
+        "tests/__pycache__",
+        "tests/unit/medication_tests/.pytest_cache",
+        "narcotics_tracker/database_writer/__pycache__",
+        "tests/unit/database_writer_tests/__pycache__",
+        "tests/unit/units/.pytest_cache",
+        "tests/unit/database_tests/__pycache__",
+        "tests/unit/setup_tests/.pytest_cache",
+        "tests/unit/setup_tests/__pycache__",
+        "narcotics_tracker/setup/__pycache__",
+        "narcotics_tracker/database/__pycache__",
+        "tests/unit/units_tests/__pycache__",
+        "tests/unit/units_tests/.pytest_cache",
+        "tests/unit/database_tests/.pytest_cache",
+        "scripts/__pycache__",
+        "narcotics_tracker/date/__pycache__",
+        "narcotics_tracker/builders/__pycache__",
+        "narcotics_tracker/enums/__pycache__",
+        "narcotics_tracker/utils/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -67,9 +107,18 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestPath": "/Users/scottkostolni/Programming Projects/narcotics_tracker/venv/bin/pytest",
-    "python.testing.pytestArgs": ["tests"],
+    "python.testing.pytestArgs": ["tests", "-vvs"],
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
-    "cSpell.words": ["unitconverter"]
+    "cSpell.words": [
+        "fent",
+        "Kvothe",
+        "midaz",
+        "MIDAZOLAM",
+        "unitconverter",
+        "Unobtainium",
+        "Unobtanium"
+    ],
+    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/"
 }
