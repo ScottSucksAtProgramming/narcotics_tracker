@@ -1,6 +1,8 @@
 """Contains Test_MedicationProperties and Test_MedicationMethods classes.
 
 Classes:
+    Test_MedicationModule: Contains all unit tests for the medication module.
+    
     Test_MedicationProperties: Contains all unit tests for the properties of the Medication Class.
     
     Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
@@ -12,7 +14,7 @@ from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import date
 
 
-class Test_medication_Module:
+class Test_MedicationModule:
     """Contains all unit tests for the medication module.
 
     Behaviors Tested:
