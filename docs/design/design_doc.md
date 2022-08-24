@@ -23,20 +23,20 @@ and easily accessed. This software is intended to fill that need.
 ### Goals
 
 The **Narcotics Tracker** will provide a single place to enter all changes to
-an agencies controlled substance inventory. Each change in the inventory can be
-entered peridoically where the data can be queried to return information
-requried for reporting and compliance with tracking specifications.
+an agency's controlled substance inventory. Each change in the inventory can be
+entered periodically where the data can be queried to return information
+required for reporting and compliance with tracking specifications.
 
 ##### Project Specifications
 
     1. Inventory tracking of all controlled substances used by an EMS agency.
-    2. Ability to create agency specific medications.
+    2. Ability to create agency-specific medications.
     3. Tracking of medication lots as they as disbursed to sub-stocks.
     4. Tracking of medication orders.
     5. Tracking of medication destruction.
     6. Tracking of medication administration.
     7. Tracking of medication waste.
-    8. Built in reports which can be generated at the users request which fulfill the New York State and DEA requirements.
+    8. Built-in reports which can be generated at the users' request and fulfill the New York State and DEA requirements.
     9. A simple but powerful console user interface.
     10. A graphical user interface.
 
@@ -50,7 +50,7 @@ soft-ware design by building projects which have practical applications.
     3. Practice and gain experience with Test Driven Development
     4. Gain knowledge on the storage, and manipulation, of data and the use of databases.
     5. Potentially branch out into GUI development with Python or different languages as necessary.
-    6. To put out a product which I may be able to use to help generate extra income though licensing and service contracts.
+    6. To put out a product that I may be able to use to help generate extra income through licensing and service contracts.
 
 ## Design Discussion and Alternatives
 
@@ -58,9 +58,9 @@ soft-ware design by building projects which have practical applications.
 
 ### Development Roadmap / Progress
 
-I'm not entirely sure where the best place to begin is. I do not have a enough
+I'm not entirely sure where the best place to begin is. I do not have enough
 experience to know how to design this kind of software. I'll be using a lot of
-trial and error. Here is my imagined development Path.
+trial and error. Here is my imagined Development Path.
 
 -   [x] Medication Creation and Management
 -   [x] Builder Pattern
@@ -77,18 +77,18 @@ trial and error. Here is my imagined development Path.
 
 ### Medication Creation and Management
 
-In order to track the inventory of controlled substance medications a model of
+To track the inventory of controlled substance medications a model of
 the medications has to be built within the program. I decided to start the
-probject by building a module to handle the creation and implementation of
+project by building a module to handle the creation and implementation of
 medications.
 
 Medications will be similar across EMS agencies but the specific dosages,
 concentrations and other attributes of the meds will vary. There are many
 specifics for controlled substance medications but I narrowed it down to 7
-medication specific attributes and 5 which will be important to working with
+medication-specific attributes and 5 which will be important to work with
 the medication as part of the database.
 
-###### Medication Facing Attributes
+###### Medication-Specific Attributes
 
     - name (str): The name of the medication.
 
@@ -104,7 +104,7 @@ the medication as part of the database.
 
     - status (medication_status.MedicationStatus): The status of the medication.
 
-###### Database Facing Attributes
+###### Database-Specific Attributes
 
     - medication_id (int): The numeric identifier of the medication in the database.
 
@@ -116,13 +116,13 @@ the medication as part of the database.
 
     - modified_by (str): The user who last modified the medication in the database.
 
-A list of five main requirements for controlled substance medications were
+Five main requirements for controlled substance medications were
 identified.
 
 ###### Medication Behaviors
 
      1. Creation of new medications by users.
-     2. Saving of medications within the database.
+     2. Saving medications within the database.
      3. Loading of saved medications.
      4. Updating of saved medications.
      5. Deletion of medications from the database.
@@ -149,55 +149,55 @@ There were tons of ways to represent medications within the **Narcotics
 Tracker**. Ordered lists and dictionaries are simple and would fulfill most of
 the requirements. As of version 0.1.0 dictionaries are used to load medications
 as objects from data stored in the database and lists are used in a script to
-quickly create the medications I personally use at my agency. **I decided that
+quickly create the medications I use at my agency. **I decided that
 using classes and objects would be the best way for me to achieve the results I
-wanted with this project and help me improve my object oriented programming
+wanted with this project and help me improve my object-oriented programming
 skills.**
 
 ##### The Builder Pattern
 
 Since I decided to go with objects as the data structure for medications I
 needed a way to simplify the creation of medications for myself as the
-developer and for the users. With twelve total attributes it would be easy to
-assign values to the wrong attributes, forget attributes and potentiall build
-medications which would be unusable.
+developer and for the users. With twelve total attributes, it would be easy to
+assign values to the wrong attributes, forget attributes, and potentially build
+medications that would be unusable.
 
-**I employed the builder pattern to separate to separate the creation of
-medications into smaller, easier to understand steps. Using the builder pattern
+**I employed the builder pattern to separate the creation of
+medications into smaller, easier-to-understand steps. Using the builder pattern
 does add complexity to the code it also adds the flexibility to use the same
 approach to different objects used later within the Narcotics Tracker.**
 
 ##### Enums vs. Vocabulary Control Tables
 
 There are limited options for the types of containers a controlled substance
-medication might come in. The status of each medication and it’s preferred
+medication might come in. The status of each medication and its preferred
 dosage unit also have limited options.
 
 As of the version 0.1.0 release Enums were created for each of those three
-attributes and are handled through Python and it’s objects. It was brought to
+attributes and are handled through Python and its objects. It was brought to
 my attention that this will limit the flexibility for users who may need to
 create custom options for these attributes.
 
-**In a future release these Enums will be converted in vocabulary control
-tables within the datbase. This will allow for users to create new statuses,
+**In a future release these Enums will be converted into vocabulary control
+tables within the database. This will allow users to create new statuses,
 containers, and units as needed for their agency.**
 
 ##### Medication Deletion
 
-It’s likely that deleting medications will cause issues in long term record
-keeping. Attributes for medications which are no longer in use are important
+Deleting medications will likely cause issues in long-term record
+keeping. Attributes for medications that are no longer in use are important
 when pulling records from previous periods when they were in use. Deletion of
 medication is likely not going to be a feature that the users will have access
 to. **Deleting Medications is important enough for this option to be available
-during development of the Narcotics Tracker that I have chosen to build it.**
+during the development of the Narcotics Tracker that I have chosen to build it.**
 It can be removed later if deemed unnecessary.
 
 ### Communication with a Database
 
 Databases are used everywhere in software and I’ve never worked with one. The
 **Narcotics Tracker** is an ideal project for me to dip my toes in and build my
-understanding of databases. Other method for storing data were considered such
-as writing to JSON Files, CSV Files and Pickle Files but the strengths of using
+understanding of databases. Other methods for storing data were considered such
+as writing to JSON Files, CSV Files, and Pickle Files but the strengths of using
 a database made it an obvious choice.
 
 The only attribute required for the database is the connection to the database
@@ -211,8 +211,8 @@ file. A
 
     1. Creation and connection with a database file.
     2. Creation of tables within the database.
-    3. Querying of table names from the database file.
-    4. Querying of columns names from database tables.
+    3. Querying table names from the database file.
+    4. Querying column names from database tables.
     5. Updating tables within the database.
     6. Deleting tables from the database.
     7. Writing data to the database.
@@ -249,7 +249,7 @@ project:
     6. Inventory Table
     7. User / Agent Table
 
-In addition vocabulary control tables will be required to help set the specific
+In addition, vocabulary control tables will be required to help set the specific
 types of data and events in the project:
 
     1. Containers Table
