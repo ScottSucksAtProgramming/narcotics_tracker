@@ -25,7 +25,6 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import database
-from narcotics_tracker.builders import medication_builder
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import date, utilities
 
@@ -244,7 +243,6 @@ class Medication:
 
             code (str): The unique identifier for the medication.
         """
-
         sql_query = """UPDATE medication 
             SET MEDICATION_ID = ?, 
                 CODE = ?, 
