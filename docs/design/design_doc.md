@@ -162,15 +162,27 @@ There were not many other attributes I thought would be important to store withi
 ##### Database Tables
 Multiple tables will be required for the inventory tracking portion of this project:
 
+**Inventory Tables**
+
     1. Medication Table
     2. Order Table
     3. Lot Table
-    4. Destruction Table
-    5. Administration Table
-    6. Inventory Table
-    7. User / Agent Table
+    4. Administration Table
+    5. Inventory Table
+    6. User / Agent Table
 
 In addition vocabulary control tables will be required to help set the specific types of data and events in the project:
+
+**Vocabulary Control Tables**
+
+    1. Medication Containers
+    2. Medication Statuses
+    3. Medication Units
+    4. Order Statuses
+    5. Order Suppliers
+    6. Inventory Events
+
+
 
     1. Containers Table
     2. Medication Statuses Table
@@ -180,6 +192,112 @@ In addition vocabulary control tables will be required to help set the specific 
 Additional tables may be identified as the project progresses.
 
 ### Tracking of Controlled Substance Orders
+Ordering controlled substance medications are one of the only ways new stock gets added into the inventory. They are integral to this project and are next up on my list of features to add.
+
+
+##### Order Attributes
+    - order_id (int): The numeric identifier of the order in the database.
+    
+    - po_number (str): The unique identifier for the specific order.
+    
+    - date_ordered (str): Date the order was placed.
+    
+    - medication_code (str): `medication.Medication.code` of medications ordered.
+    
+    - containers_ordered (int): The number of containers for the medication ordered.
+    
+    - supplier (Enum): The name of the supplier.
+    
+    - supplier_order_number (str): The suppliers order number for reference.
+    
+    - 222_form_number (str): The number of the 222 form used to order Class II medications. (Optional)
+    
+    - date_received (str): Date a package is received.
+    
+    - number_packages (int): Number of packages of a specific medication received.
+    
+    - comments (str): Any comments or additional details for the order.
+    
+    - status (Enum): The status of the order.
+    
+    - created_date (str): The date the order was first entered into the narcotics tracker.
+    
+    - modified_date (str): The date the order was last modified.
+    
+    - modified_by (str): The user who last modified the order.
+
+##### Order Behaviors
+    - Creation of new orders.
+    - Saving of orders to the database.
+    - Loading of orders from data.
+    - Updating orders.
+    - Deleting orders.
+
+
+
+
+#### Discussion
+##### Attributes
+Currently my controlled substance orders are tracked in a spread sheet. The following attributes are tracked.
+
+Row Number, Purchase Order Number, Date Ordered, Medications and Amount Ordered, Supplier, Supplier Order Number, 222 Form Number, Dates Received, Packaged Received, Comments / Notes.
+
+The Purchase Order Number will be the user-facing unique identifier for the order. 
+
+Because medications can be received in different shipments a compound or composite primary key (Purchase Order Number AND Medication) need to be used to ensure that this can be acommodated.
+
+##### Behaviors
+The process for ordering medications is located in `docs/design/user_processes.md`
+
+**New Orders**
+* Orders have to be created.
+* PO Number is assigned.
+* Spreadsheet is filled out with initial info: 
+  * Purchase Order Number, 
+  * 222 Form Number, 
+  * Date Ordered, 
+  * Medications and Amounts Ordered
+* Order Status is set to ‘Open’.
+
+**Shipment is Received**
+* Spreadsheet is updated:
+    * Date Shipment Received
+    * Medications and Amounts in shipment
+        * Lot number of Medications.
+* Stock Inventory Sheet (DOH-3850) created for each Lot.
+* Medications are added to the inventory.
+* Repeated for any additional shipments.
+* When all medications are received the Status is set to ‘Closed’.
+
+What would This look Like?
+1. USER: Places and order with the supplier. Forms are filled out and all paperwork is filed.
+2. USER: Creates a New Order.
+3. USER: Fills in attributes.
+  4. PO Number
+  5. Date Ordered
+  6. Medication Ordered
+    7. Amount Ordered
+  8. 222 Form Number (if applicable)
+  9. Status set to ‘Open’.
+10. USER: Receives medications. Forms a filled out and filed. Medications are placed in safe.
+11. USER: Loads Order via PO Number.
+12. USER: Updates Order:
+    13. Date Received
+    14. Medication Received
+        15. Amount Received
+16. NARCOTICS TRACKER: Creates an Add event in the Inventory Table sending the Medication info, date received, amount in mcg, and the PO Number.
+17. NARCOTICS TRACKER: Creates a new Lot Table passing the Lot Number, Amount of Medication, Date, and PO Number for reference.
+18. USER: Sets Medication Order to ‘Closed’
+
+##### Tables Needed
+* Order Table
+* Order Status Table (Vocabulary Control Table)
+  * Open; Closed; Delayed; Cancelled
+* Supplier Table (Vocabluary Control Table)
+  * BoundTree Medical;
+* * Lot Table (To be implemented in a future update)
+* Inventory Table (To be implemented in a future update)
+* Events Table (To be implemented in a future update)
 
 
 ### Lot Management
@@ -189,7 +307,12 @@ To Be Written.
 ### Medication Use and Waste Management
 To Be Written.
 ### Inventory Management
-To Be Written.
+##### Events
+- Import (Add)
+- Add (Add)
+- Administer (Subtract)
+- Waste (Subtract)
+- Destroy (Subtract)
 ### Controlled Substance Agent Account Management
 To Be Written.
 ### Report Generation
