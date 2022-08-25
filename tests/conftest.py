@@ -72,7 +72,6 @@ def test_order() -> "order.Order":
     ord_builder.set_modified_by("Navi")
 
     test_order = ord_builder.build()
-    print(test_order.order_id)
 
     return test_order
 
