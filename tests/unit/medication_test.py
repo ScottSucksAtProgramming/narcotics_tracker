@@ -1,9 +1,9 @@
-"""Contains Test_MedicationProperties and Test_MedicationMethods classes.
+"""Contains Test_Medicationattributes and Test_MedicationMethods classes.
 
 Classes:
     Test_MedicationModule: Contains all unit tests for the medication module.
     
-    Test_MedicationProperties: Contains all unit tests for the properties of the Medication Class.
+    Test_Medicationattributes: Contains all unit tests for the attributes of the Medication Class.
     
     Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
 
@@ -97,8 +97,8 @@ class Test_MedicationModule:
         )
 
 
-class Test_MedicationProperties:
-    """Contains all unit tests for the properties of the Medication Class.
+class Test_MedicationAttributes:
+    """Contains all unit tests for the attributes of the Medication Class.
 
     Behaviors Tested:
         - Medications can be created.
@@ -251,7 +251,7 @@ class Test_MedicationProperties:
         assert test_med.modified_by == "Kvothe"
 
     def test_medications_can_be_edited(self, test_med):
-        """Tests that the medication's properties and be changed.
+        """Tests that the medication's attributes and be changed.
 
         Loads test_med. Changes preferred_unit to 'units.Unit.G'.
 
