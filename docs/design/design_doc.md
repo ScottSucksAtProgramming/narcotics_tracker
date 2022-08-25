@@ -204,17 +204,17 @@ Ordering controlled substance medications are one of the only ways new stock get
     
     - medication_code (str): `medication.Medication.code` of medications ordered.
     
-    - containers_ordered (int): The number of containers for the medication ordered.
+    - containers_amount (int): The number of containers for the medication ordered.
     
     - supplier (Enum): The name of the supplier.
     
     - supplier_order_number (str): The suppliers order number for reference.
     
-    - 222_form_number (str): The number of the 222 form used to order Class II medications. (Optional)
+    - dea_form_number (str): The number of the 222 form used to order Class II medications. (Optional)
     
     - date_received (str): Date a package is received.
     
-    - number_packages (int): Number of packages of a specific medication received.
+    - packages_received (int): Number of packages of a specific medication received.
     
     - comments (str): Any comments or additional details for the order.
     
