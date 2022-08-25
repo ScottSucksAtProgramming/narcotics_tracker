@@ -6,7 +6,7 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import database
+from narcotics_tracker import database, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
@@ -53,6 +53,22 @@ def test_db() -> str:
         test_db (str): The path to the database file.
     """
     return "test_database.db"
+
+
+@fixture
+def test_period() -> periods.ReportingPeriod:
+    """Creates a test object from the Period Class.
+
+    Returns:
+        test_period (period.Period): A period object for testing.
+    """
+    test_period = periods.ReportingPeriod("02-29-0001", "01-35-0000")
+
+    test_period.created_date = "08-26-2022"
+    test_period.modified_date = "08-01-2022"
+    test_period.modified_by = "Cinder"
+
+    return test_period
 
 
 @fixture
