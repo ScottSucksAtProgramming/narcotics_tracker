@@ -216,7 +216,7 @@ Ordering controlled substance medications are one of the only ways new stock get
     
     - packages_received (int): Number of packages of a specific medication received.
     
-    - comments (str): Any comments or additional details for the order.
+    - comment (str): Any comments or additional details for the order.
     
     - status (Enum): The status of the order.
     

@@ -54,7 +54,7 @@ class Order(ABC):
         pass
 
     @abstractmethod
-    def set_comments(self) -> None:
+    def set_comment(self) -> None:
         pass
 
     @abstractmethod

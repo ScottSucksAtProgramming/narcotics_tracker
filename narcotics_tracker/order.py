@@ -85,21 +85,21 @@ class Order:
             builder (builder.MedicationBuilder): The builder used to
             construct the medication object.
         """
-        self.order_id = None
-        self.po_number = None
-        self.date_ordered = None
-        self.medication_code = None
-        self.containers_amount = None
-        self.supplier = None
-        self.supplier_order_number = None
-        self.dea_form_number = None
-        self.date_received = None
-        self.packages_received = None
-        self.comments = None
-        self.status = None
-        self.created_date = None
-        self.modified_date = None
-        self.modified_by = None
+        self.order_id = builder.order_id
+        self.po_number = builder.po_number
+        self.date_ordered = builder.date_ordered
+        self.medication_code = builder.medication_code
+        self.containers_amount = builder.containers_amount
+        self.supplier = builder.supplier
+        self.supplier_order_number = builder.supplier_order_number
+        self.dea_form_number = builder.dea_form_number
+        self.date_received = builder.date_received
+        self.packages_received = builder.packages_received
+        self.comment = builder.comment
+        self.status = builder.status
+        self.created_date = builder.created_date
+        self.modified_date = builder.modified_date
+        self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
         """Returns a string expression of the order object.

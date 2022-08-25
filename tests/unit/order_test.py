@@ -188,7 +188,7 @@ class Test_OrderAttributes:
         """
         test_order = test_order
 
-        assert test_order.comments == "Best Order Ever."
+        assert test_order.comment == "Best Order Ever."
 
     def test_orders_return_expected_status(self, test_order) -> None:
         """Tests that the status is returned as expected.
