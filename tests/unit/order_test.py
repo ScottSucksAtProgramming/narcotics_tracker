@@ -2,9 +2,11 @@
 
 Classes:
 
-    Test_OrderModule: Contains all unit tests for the order module.
+    Test_OrderModule: Tests the order module.
 
-    Test_Order: Contains all unit tests for the Order class.
+    Test_OrderAttributes: Tests the attributes of the Order class.
+
+    Test_OrderMethods: Tests the methods of the Order class.
 """
 
 from narcotics_tracker import order
@@ -25,8 +27,8 @@ class Test_OrderModule:
         assert order.__doc__ != None
 
 
-class Test_Order:
-    """Contains all unit tests for the Order class.
+class Test_OrderAttributes:
+    """Contains all unit tests for the attributes of the Order class.
 
     Behaviors Tested:
         - Order class can be accessed.
@@ -46,7 +48,7 @@ class Test_Order:
         - Orders return expected created_date.
         - Orders return expected modified_date.
         - Orders return expected modified_by.
-
+        - Orders can be edited.
     """
 
     def test_can_access_Order_class(self) -> None:
@@ -231,3 +233,39 @@ class Test_Order:
         test_order = test_order
 
         assert test_order.modified_by == "Navi"
+
+    def test_orders_can_be_edited(self, test_order):
+        """Tests that the orders's properties and be changed.
+
+        Loads test_order. Changes modified_by to 'Willem'.
+
+        Asserts that test_order.modified_by is 'Willem'.
+        """
+        test_order = test_order
+
+        test_order.modified_by = "Willem"
+
+        assert test_order.modified_by == "Willem"
+
+
+class Test_OrderMethods:
+    """Contains all unit tests for the methods of the Order class.
+
+    Behaviors Tested:
+        - __repr__ returns the correct string.
+    """
+
+    def test__repr___returns_correct_string(self, test_order):
+        """Tests that __repr__ returns correct string.
+
+        Loads test_order. Calls str(test_order).
+
+        Asserts that str(test_order) returns:
+            Controlled Substance Order: 2022-ThisOne, placed on: 01-02-1986 "
+            "from Mystical Medicine. Order State: Forgotten.
+        """
+        test_order = test_order
+        assert str(test_order) == (
+            f"Controlled Substance Order: 2022-ThisOne, placed on: "
+            f"01-02-1986 from Mystical Medicine. Order State: Forgotten."
+        )

@@ -33,20 +33,83 @@ class Order:
 
     Attributes:
 
+        order_id (int): The numeric identifier of the order in the database.
+
+        po_number (str): The unique identifier for the specific order.
+
+        date_ordered (str): Date the order was placed.
+
+        medication_code (str): `medication.Medication.code` of medications
+            ordered.
+
+        containers_amount (int): The number of containers for the medication
+            ordered.
+
+        supplier (str): The name of the supplier.
+
+        supplier_order_number (str): The suppliers order number for reference.
+
+        dea_form_number (str): The number of the 222 form used to order Class
+            II medications. (Optional)
+
+        date_received (str): Date a package is received.
+
+        packages_received (int): Number of packages of a specific medication
+            received.
+
+        comments (str): Any comments or additional details for the order.
+
+        status (str): The status of the order.
+
+        created_date (str): The date the order was first entered into the
+            narcotics tracker.
+
+        modified_date (str): The date the order was last modified.
+
+        modified_by (str): The user who last modified the order.
+
     Instance Methods:
 
     Static Methods:
     """
 
-    # def __init__(self, builder=None) -> None:
-    #     """Initializes the medication object using the MedicationBuilder.
+    def __init__(self, builder=None) -> None:
+        """Initializes the medication object using the MedicationBuilder.
 
-    #     Medications are complex objects with many attributes. The Builder
-    #     Pattern was used to separate the creation of medications to the
-    #     Builder Package. Refer to the documentation for the MedicationBuilder
-    #     for more information.
+        Medications are complex objects with many attributes. The Builder
+        Pattern was used to separate the creation of medications to the
+        Builder Package. Refer to the documentation for the MedicationBuilder
+        for more information.
 
-    #     Args:
-    #         builder (builder.MedicationBuilder): The builder used to
-    #         construct the medication object.
-    #     """
+        Args:
+            builder (builder.MedicationBuilder): The builder used to
+            construct the medication object.
+        """
+        self.order_id = None
+        self.po_number = None
+        self.date_ordered = None
+        self.medication_code = None
+        self.containers_amount = None
+        self.supplier = None
+        self.supplier_order_number = None
+        self.dea_form_number = None
+        self.date_received = None
+        self.packages_received = None
+        self.comments = None
+        self.status = None
+        self.created_date = None
+        self.modified_date = None
+        self.modified_by = None
+
+    def __repr__(self) -> str:
+        """Returns a string expression of the order object.
+
+        Returns:
+            str: The string describing the order object
+        """
+
+        return (
+            f"Controlled Substance Order: {self.po_number}, placed on: "
+            f"{self.date_ordered} from {self.supplier}. Order State: "
+            f"{self.status}."
+        )
