@@ -22,8 +22,8 @@ Functions:
 class Order:
     """Represents controlled substance orders in the Narcotics Tracker.
 
-    Each order has attributes that assisted in tracking the medication
-    inventory including the medications and amounts ordered and the purchase
+    Each order has attributes that assisted in tracking the order
+    inventory including the orders and amounts ordered and the purchase
     order number. This class defines the attributes and behaviors of
     controlled substance orders and handles the storing, updating and deletion
     of order data within the database. Any aspects related to controlled
@@ -39,10 +39,10 @@ class Order:
 
         date_ordered (str): Date the order was placed.
 
-        medication_code (str): `medication.Medication.code` of medications
+        order_code (str): `order.order.code` of orders
             ordered.
 
-        containers_amount (int): The number of containers for the medication
+        containers_amount (int): The number of containers for the order
             ordered.
 
         supplier (str): The name of the supplier.
@@ -50,11 +50,11 @@ class Order:
         supplier_order_number (str): The suppliers order number for reference.
 
         dea_form_number (str): The number of the 222 form used to order Class
-            II medications. (Optional)
+            II orders. (Optional)
 
         date_received (str): Date a package is received.
 
-        packages_received (int): Number of packages of a specific medication
+        packages_received (int): Number of packages of a specific order
             received.
 
         comments (str): Any comments or additional details for the order.
@@ -74,16 +74,16 @@ class Order:
     """
 
     def __init__(self, builder=None) -> None:
-        """Initializes the medication object using the MedicationBuilder.
+        """Initializes the order object using the orderBuilder.
 
-        Medications are complex objects with many attributes. The Builder
-        Pattern was used to separate the creation of medications to the
-        Builder Package. Refer to the documentation for the MedicationBuilder
+        orders are complex objects with many attributes. The Builder
+        Pattern was used to separate the creation of orders to the
+        Builder Package. Refer to the documentation for the orderBuilder
         for more information.
 
         Args:
-            builder (builder.MedicationBuilder): The builder used to
-            construct the medication object.
+            builder (builder.orderBuilder): The builder used to
+            construct the order object.
         """
         self.order_id = builder.order_id
         self.po_number = builder.po_number
