@@ -31,7 +31,6 @@ from narcotics_tracker.utils import date, utilities
 
 def return_table_creation_query() -> str:
     """Returns the sql query needed to create the medication table."""
-
     return """CREATE TABLE IF NOT EXISTS medication (
             MEDICATION_ID INTEGER PRIMARY KEY,
             CODE TEXT UNIQUE,                
