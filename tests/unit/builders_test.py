@@ -1,17 +1,46 @@
-"""Contains the Test_Builder class used to test the medication_builder module.
+"""Contains the Test_MedicationBuilder class used to test the module.
 
 Classes: 
 
-    Test_Builder: Contains all unit tests for the medication_builder module.
+    Test_BuilderTemplates: Contains all unit tests for the template modules.
+
+    Test_MedicationBuilder: Contains all unit tests for the module.
 """
 import pytest
 
 from narcotics_tracker import medication
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import medication_builder
+from narcotics_tracker.builders import (
+    medication_builder,
+    medication_builder_template,
+    order_builder_template,
+)
 
 
-class Test_Builder:
+class Test_BuilderTemplates:
+    """Contains all unit tests for the builder template modules.
+
+    Behaviors Tested:
+        - Can access medication_builder_template module.
+        - Can access order_builder_template module.
+    """
+
+    def test_can_access_medication_builder_template_module(self) -> None:
+        """Tests that the medication_builder_template module can be accessed.
+
+        Asserts that medication_builder_template.__doc__ does not return 'None'.
+        """
+        assert medication_builder_template.__doc__ != None
+
+    def test_can_access_order_builder_template_module(self) -> None:
+        """Tests that the order_builder_template module can be accessed.
+
+        Asserts that order_builder_template.__doc__ does not return 'None'.
+        """
+        assert order_builder_template.__doc__ != None
+
+
+class Test_MedicationBuilder:
     """Contains all unit tests for the medication_builder module.
 
     Behaviors Tested:
