@@ -1,9 +1,9 @@
-"""Contains Test_Medicationattributes and Test_MedicationMethods classes.
+"""Contains Test_MedicationAttributes and Test_MedicationMethods classes.
 
 Classes:
     Test_MedicationModule: Contains all unit tests for the medication module.
     
-    Test_Medicationattributes: Contains all unit tests for the attributes of the Medication Class.
+    Test_MedicationAttributes: Contains all unit tests for the attributes of the Medication Class.
     
     Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
 

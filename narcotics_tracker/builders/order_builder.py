@@ -218,34 +218,34 @@ class OrderBuilder(order_builder_template.Order):
                 the order."""
         self.modified_by = modified_by
 
-    def set_all_properties(self, properties: dict) -> None:
-        """Sets all properties of the medication.
+    def set_all_attributes(self, attributes: dict) -> None:
+        """Sets all attributes of the medication.
 
         Args:
-            properties (dict): The properties of the order. Dictionary
+            attributes (dict): The attributes of the order. Dictionary
                 keys are formatted as the order's property names.
         """
-        self.set_order_id(properties["order_id"])
-        self.set_po_number(properties["po_number"])
-        self.set_date_ordered(properties["date_ordered"])
-        self.set_medication_code(properties["medication_code"])
-        self.set_containers_amount(properties["containers_amount"])
-        self.set_supplier(properties["supplier"])
-        self.set_supplier_order_number(properties["suppler_order_number"])
-        self.set_dea_form_number(properties["dea_form_number"])
-        self.set_date_received(properties["date_received"])
-        self.set_packages_received(properties["packages_received"])
-        self.set_comment(properties["comment"])
-        self.set_status(properties["status"])
-        self.set_created_date(properties["created_date"])
-        self.set_modified_date(properties["modified_date"])
-        self.set_modified_by(properties["modified_by"])
+        self.set_order_id(attributes["order_id"])
+        self.set_po_number(attributes["po_number"])
+        self.set_date_ordered(attributes["date_ordered"])
+        self.set_medication_code(attributes["medication_code"])
+        self.set_containers_amount(attributes["containers_amount"])
+        self.set_supplier(attributes["supplier"])
+        self.set_supplier_order_number(attributes["suppler_order_number"])
+        self.set_dea_form_number(attributes["dea_form_number"])
+        self.set_date_received(attributes["date_received"])
+        self.set_packages_received(attributes["packages_received"])
+        self.set_comment(attributes["comment"])
+        self.set_status(attributes["status"])
+        self.set_created_date(attributes["created_date"])
+        self.set_modified_date(attributes["modified_date"])
+        self.set_modified_by(attributes["modified_by"])
 
     def build(self) -> "order.Order":
-        """Returns the order object. Assigns the order's properties.
+        """Returns the order object. Assigns the order's attributes.
 
         This is the last method to be called as part of the building process.
-        It will return the order object with all of its properties set.
+        It will return the order object with all of its attributes set.
         The concentration is calculated using the calculate_concentration
         method.
 

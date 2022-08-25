@@ -532,12 +532,12 @@ class Test_OrderBuilder:
 
         assert ord_builder.modified_by == expected
 
-    def test_set_all_properties(self):
-        """Tests that the OrderBuilder can set all properties.
+    def test_set_all_attributes(self):
+        """Tests that the OrderBuilder can set all attributes.
 
-        Asserts that all properties are returned with correct values.
+        Asserts that all attributes are returned with correct values.
         """
-        order_properties = {
+        order_attributes = {
             "order_id": 1,
             "po_number": "2",
             "date_ordered": "3",
@@ -556,7 +556,7 @@ class Test_OrderBuilder:
         }
 
         ord_builder = order_builder.OrderBuilder()
-        ord_builder.set_all_properties(order_properties)
+        ord_builder.set_all_attributes(order_attributes)
 
         assert (
             ord_builder.order_id == 1
@@ -581,7 +581,7 @@ class Test_OrderBuilder:
 
         Asserts that the order object returns a order object.
         """
-        order_properties = {
+        order_attributes = {
             "order_id": 1,
             "po_number": "2",
             "date_ordered": "3",
@@ -600,7 +600,7 @@ class Test_OrderBuilder:
         }
 
         ord_builder = order_builder.OrderBuilder()
-        ord_builder.set_all_properties(order_properties)
+        ord_builder.set_all_attributes(order_attributes)
         expected = order.Order
 
         aspirin = ord_builder.build()
