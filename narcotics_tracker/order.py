@@ -36,5 +36,17 @@ class Order:
     Instance Methods:
 
     Static Methods:
-
     """
+
+    # def __init__(self, builder=None) -> None:
+    #     """Initializes the medication object using the MedicationBuilder.
+
+    #     Medications are complex objects with many attributes. The Builder
+    #     Pattern was used to separate the creation of medications to the
+    #     Builder Package. Refer to the documentation for the MedicationBuilder
+    #     for more information.
+
+    #     Args:
+    #         builder (builder.MedicationBuilder): The builder used to
+    #         construct the medication object.
+    #     """
