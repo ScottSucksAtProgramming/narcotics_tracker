@@ -102,7 +102,7 @@ class Test_MedicationProperties:
 
     Behaviors Tested:
         - Medications can be created.
-        - Medications return expected medication_ID.
+        - Medications return expected medication_id.
         - Medications return expected code.
         - Medications return expected name.
         - Medications return expected container_type.
