@@ -63,7 +63,7 @@ class Test_PeriodsModule:
 
         data = periods.return_periods(db)
         assert data == [
-            (9001, "02-29-0001", "01-35-0000", "08-26-2022", "08-25-2022", "Cinder")
+            (9001, "02-29-0001", "01-35-0000", "08-26-2022", "08-26-2022", "Cinder")
         ]
 
 
