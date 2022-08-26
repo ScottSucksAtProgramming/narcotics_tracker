@@ -14,6 +14,10 @@ the database.
 Classes:
     ReportingPeriod: Defines the representation of reporting periods for the 
         project.
+
+Functions:
+
+    return_table_creation_query: Returns the query needed to create the Table.
 """
 
 import sqlite3
@@ -41,6 +45,17 @@ def return_table_creation_query() -> str:
 class ReportingPeriod:
     """Defines the representation of reporting periods for the project.
 
+    Initializer:
+        def __init__(self, starting_date: str, ending_date: str) -> None:
+
+            Creates an instance of ReportingPeriod and assigns attributes.
+
+            Arguments:
+                starting_date (str): The date when the reporting period
+                    starts.
+
+                ending_date (str): The date when the reporting period ends.
+
     Attributes:
         period_id (int): Unique identifier of each reporting period.
             Assigned by the database.
@@ -57,16 +72,12 @@ class ReportingPeriod:
         modified_by (str): Identifier of the person who last modified the
             reporting period.
 
-    Initializer:
-        def __init__(self, starting_date: str, ending_date: str) -> None:
+    Instance Methods:
+        __repr__: Returns a string expression of the reporting period object.
 
-            Creates an instance of ReportingPeriod and assigns attributes.
+        save: Saves a new reporting period to the database.
 
-            Arguments:
-                starting_date (str): The date when the reporting period
-                    starts.
-
-                ending_date (str): The date when the reporting period ends.
+        return_attributes: Returns the period's attributes as a tuple.
     """
 
     def __init__(self, starting_date: str, ending_date: str) -> None:
