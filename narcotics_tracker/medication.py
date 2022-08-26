@@ -207,7 +207,7 @@ class Medication:
 
         The save method will only write the medication into the table if it
         does not already exist. Use the update method to update the
-        medication'a properties.
+        medication'a attributes.
 
         Uses the date module to set the created if it is None. Sets the
         modified date.
