@@ -170,11 +170,10 @@ class ReportingPeriod:
         """
         self.modified_date = date.return_date_as_string()
 
-        sql_query = """INSERT OR REPLACE INTO reporting_periods (period_id, starting_date) VALUES (?, ?)"""
-        values = (
-            self.period_id,
-            new_starting_date,
+        sql_query = (
+            """UPDATE reporting_periods SET starting_date =(?) WHERE period_id = (?)"""
         )
+        values = (new_starting_date, self.period_id)
 
         db_connection.write_data(sql_query, values)
 
@@ -190,11 +189,10 @@ class ReportingPeriod:
         """
         self.modified_date = date.return_date_as_string()
 
-        sql_query = """INSERT OR REPLACE INTO reporting_periods (period_id, ending_date) VALUES (?, ?)"""
-        values = (
-            self.period_id,
-            new_ending_date,
+        sql_query = (
+            """UPDATE reporting_periods SET ending_date =(?) WHERE period_id = (?)"""
         )
+        values = (new_ending_date, self.period_id)
 
         db_connection.write_data(sql_query, values)
 

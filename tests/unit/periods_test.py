@@ -264,6 +264,7 @@ class Test_PeriodMethods:
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(periods.return_table_creation_query())
+        test_period.save(db)
 
         test_period.update_starting_date("00-00-0000", db)
 
@@ -285,6 +286,7 @@ class Test_PeriodMethods:
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(periods.return_table_creation_query())
+        test_period.save(db)
 
         test_period.update_ending_date("99-99-9999", db)
 
