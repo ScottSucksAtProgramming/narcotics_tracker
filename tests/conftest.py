@@ -6,7 +6,7 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import database, periods
+from narcotics_tracker import database, event_types, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
@@ -70,6 +70,26 @@ def test_period() -> periods.ReportingPeriod:
     test_period.modified_by = "Cinder"
 
     return test_period
+
+
+@fixture
+def test_event_type() -> event_types.EventType:
+    """Creates a test object from the EventType Class.
+
+    Returns:
+        test_event_type (event_type.EventType): An EventType object for
+            testing.
+    """
+    test_event_type = event_types.EventType(
+        "TEST", "Test Event", "Used for testing the EventType Class."
+    )
+
+    test_event_type.event_id = 2001
+    test_event_type.created_date = "08-26-2022"
+    test_event_type.modified_date = "08-01-2022"
+    test_event_type.modified_by = "Bast"
+
+    return test_event_type
 
 
 @fixture
