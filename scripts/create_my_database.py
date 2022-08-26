@@ -36,10 +36,6 @@ MORPHINE_PROPERTIES = [
     medication_statuses.MedicationStatus.ACTIVE,
 ]
 
-REPORTING_PERIOD_1_PROPERTIES = ["01-01-2022", "06-30-2022"]
-
-REPORTING_PERIOD_2_PROPERTIES = ["07-01-2022", "12-31-2022"]
-
 
 def build_medication(medication_properties: list):
     """Uses the MedicationBuilder to create medication objects."""
@@ -70,6 +66,10 @@ def main():
     midazolam.modified_by = "SRK"
 
     # Build Reporting Period Objects
+    period_1 = periods.ReportingPeriod("01-01-2022", "06-30-2022")
+    period_1.modified_by = "SRK"
+    period_2 = periods.ReportingPeriod("07-01-2022", "12-31-2022")
+    period_2.modified_by = "SRK"
 
     db = database.Database()
     db.connect("inventory.db")
@@ -83,6 +83,9 @@ def main():
     fentanyl.save(db)
     morphine.save(db)
     midazolam.save(db)
+
+    period_1.save(db)
+    period_2.save(db)
 
 
 if __name__ == "__main__":
