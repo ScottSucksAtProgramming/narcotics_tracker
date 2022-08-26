@@ -63,7 +63,7 @@ class Test_MedicationProperties:
         """
         test_med = test_med
 
-        assert test_med.code == "Un-69420-9001"
+        assert test_med.medication_code == "Un-69420-9001"
 
     def test_medications_return_expected_name(self, test_med):
         """Tests that the medication's code is returned as expected.
@@ -200,7 +200,7 @@ class Test_MedicationMethods:
         Asserts that return_table_create_query is
         'CREATE TABLE IF NOT EXISTS medication (
             MEDICATION_ID INTEGER PRIMARY KEY,
-            CODE TEXT UNIQUE,
+            MEDICATION_CODE TEXT UNIQUE,
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
@@ -216,7 +216,7 @@ class Test_MedicationMethods:
         assert medication.return_table_creation_query() == (
             """CREATE TABLE IF NOT EXISTS medication (
             MEDICATION_ID INTEGER PRIMARY KEY,
-            CODE TEXT UNIQUE,                
+            MEDICATION_CODE TEXT UNIQUE,                
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
@@ -247,14 +247,16 @@ class Test_MedicationMethods:
         test_med.save(db)
 
         code = ["Un-69420-9001"]
-        raw_data = db.return_data("""SELECT * FROM medication WHERE code=(?)""", code)
+        raw_data = db.return_data(
+            """SELECT * FROM medication WHERE medication_code=(?)""", code
+        )
 
         med_data = medication.parse_medication_data(raw_data)
 
         assert (
             med_data["medication_id"] == 1
             and med_data["name"] == "Unobtanium"
-            and med_data["code"] == "Un-69420-9001"
+            and med_data["medication_code"] == "Un-69420-9001"
             and med_data["container_type"] == containers.Container.VIAL
             and med_data["fill_amount"] == 9_001.0
             and med_data["dose"] == 69_420.0
@@ -325,7 +327,7 @@ class Test_MedicationMethods:
         test_med.save(db)
 
         data = db.return_data(
-            """SELECT * FROM medication WHERE CODE='Un-69420-9001'"""
+            """SELECT * FROM medication WHERE MEDICATION_CODE='Un-69420-9001'"""
         )[0][2]
 
         assert data == "Unobtanium"
@@ -375,7 +377,7 @@ class Test_MedicationMethods:
         loaded_med.update(db, med_code)
 
         data = db.return_data(
-            """SELECT status FROM medication WHERE CODE=(?)""", [med_code]
+            """SELECT status FROM medication WHERE MEDICATION_CODE=(?)""", [med_code]
         )
 
         assert data[0][0] == "Active"

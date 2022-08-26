@@ -68,7 +68,7 @@ class Test_Builder:
 
         med_builder.set_code("ASA")
 
-        assert med_builder.code == expected
+        assert med_builder.medication_code == expected
 
     def test_set_container(self):
         """Tests that the medication builder sets the container type.

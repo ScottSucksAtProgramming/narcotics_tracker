@@ -33,7 +33,7 @@ def return_table_creation_query() -> str:
     """Returns the sql query needed to create the medication table."""
     return """CREATE TABLE IF NOT EXISTS medication (
             MEDICATION_ID INTEGER PRIMARY KEY,
-            CODE TEXT UNIQUE,                
+            MEDICATION_CODE TEXT UNIQUE,                
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
@@ -61,7 +61,7 @@ def parse_medication_data(medication_data) -> dict:
 
     properties["medication_id"] = medication_data[0][0]
     properties["name"] = medication_data[0][2]
-    properties["code"] = medication_data[0][1]
+    properties["medication_code"] = medication_data[0][1]
     properties["container_type"] = utilities.enum_from_string(
         containers.Container, medication_data[0][3]
     )
@@ -173,7 +173,7 @@ class Medication:
         """
 
         self.medication_id = builder.medication_id
-        self.code = builder.code
+        self.medication_code = builder.medication_code
         self.name = builder.name
         self.container_type = builder.container_type
         self.fill_amount = builder.fill_amount
@@ -194,7 +194,7 @@ class Medication:
 
         return (
             f"Medication Object {self.medication_id} for {self.name} with "
-            f"code {self.code}. Container type: {self.container_type.value}. "
+            f"code {self.medication_code}. Container type: {self.container_type.value}. "
             f"Fill amount: {self.fill_amount} ml. "
             f"Dose: {self.dose} {self.preferred_unit.value}. "
             f"Concentration: {self.concentration}. "
@@ -244,7 +244,7 @@ class Medication:
         """
         sql_query = """UPDATE medication 
             SET MEDICATION_ID = ?, 
-                CODE = ?, 
+                MEDICATION_CODE = ?, 
                 NAME = ?, 
                 CONTAINER_TYPE = ?, 
                 FILL_AMOUNT = ?, 
@@ -255,7 +255,7 @@ class Medication:
                 CREATED_DATE = ?, 
                 MODIFIED_DATE = ?, 
                 MODIFIED_BY = ? 
-            WHERE CODE = ?"""
+            WHERE MEDICATION_CODE = ?"""
 
         if database.Database.created_date_is_none(self):
             self.created_date = date.return_date_as_string()
@@ -290,7 +290,7 @@ class Medication:
 
         return (
             self.medication_id,
-            self.code,
+            self.medication_code,
             self.name,
             self.container_type.value,
             self.fill_amount,

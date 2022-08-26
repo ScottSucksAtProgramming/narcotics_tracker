@@ -63,7 +63,7 @@ class MedicationBuilder(medication_builder_template.Medication):
     def __init__(self) -> None:
         """Initializes the medication builder. Sets all attributes to None."""
         self.medication_id = None
-        self.code = None
+        self.medication_code = None
         self.name = None
         self.container_type = None
         self.fill_amount = None
@@ -113,7 +113,7 @@ class MedicationBuilder(medication_builder_template.Medication):
             code (str): Identifier for this specific medication. Defaults to
                 None.
         """
-        self.code = code
+        self.medication_code = code
 
     def set_container(self, container_type: containers.Container) -> None:
         """Sets the medication's container type via the enum Container class.
@@ -264,7 +264,7 @@ class MedicationBuilder(medication_builder_template.Medication):
         """
         self.set_medication_id(properties["medication_id"])
         self.set_name(properties["name"])
-        self.set_code(properties["code"])
+        self.set_code(properties["medication_code"])
         self.set_container(properties["container_type"])
         self.set_fill_amount(properties["fill_amount"])
         self.set_dose_and_unit(properties["dose"], properties["unit"])
