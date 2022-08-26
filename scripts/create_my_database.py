@@ -2,12 +2,12 @@
 writes them to the table."""
 
 
-from narcotics_tracker import database, medication
+from narcotics_tracker import database, medication, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
 FENTANYL_PROPERTIES = [
-    "Fent1",
+    "fentanyl",
     "Fentanyl",
     containers.Container.VIAL,
     100,
@@ -17,7 +17,7 @@ FENTANYL_PROPERTIES = [
 ]
 
 MIDAZOLAM_PROPERTIES = [
-    "Midaz1",
+    "midazolam",
     "Midazolam",
     containers.Container.VIAL,
     10,
@@ -27,7 +27,7 @@ MIDAZOLAM_PROPERTIES = [
 ]
 
 MORPHINE_PROPERTIES = [
-    "Morph1",
+    "morphine",
     "Morphine",
     containers.Container.VIAL,
     10,
@@ -35,6 +35,10 @@ MORPHINE_PROPERTIES = [
     1,
     medication_statuses.MedicationStatus.ACTIVE,
 ]
+
+REPORTING_PERIOD_1_PROPERTIES = ["01-01-2022", "06-30-2022"]
+
+REPORTING_PERIOD_2_PROPERTIES = ["07-01-2022", "12-31-2022"]
 
 
 def build_medication(medication_properties: list):
@@ -53,6 +57,7 @@ def build_medication(medication_properties: list):
 
 def main():
 
+    # Build Medication Objects
     fentanyl = build_medication(FENTANYL_PROPERTIES)
     fentanyl.created_date = "08-08-2022"
     fentanyl.modified_by = "SRK"
@@ -64,10 +69,15 @@ def main():
     midazolam = build_medication(MIDAZOLAM_PROPERTIES)
     midazolam.modified_by = "SRK"
 
+    # Build Reporting Period Objects
+
     db = database.Database()
     db.connect("inventory.db")
 
     sql_query = medication.return_table_creation_query()
+    db.create_table(sql_query)
+
+    sql_query = periods.return_table_creation_query()
     db.create_table(sql_query)
 
     fentanyl.save(db)
