@@ -55,9 +55,15 @@ def return_periods(db_connection: sqlite3.Connection) -> str:
     """
     sql_query = """SELECT * FROM reporting_periods"""
 
-    periods = db_connection.return_data(sql_query)
+    periods_list = []
 
-    return periods
+    periods_data = db_connection.return_data(sql_query)
+
+    for period in periods_data:
+        periods_list.append(
+            f"Reporting Period {period[0]}. Started on: {period[1]}. Ends on: {period[3]}"
+        )
+    return periods_list
 
 
 class ReportingPeriod:

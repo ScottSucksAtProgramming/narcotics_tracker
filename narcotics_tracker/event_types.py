@@ -15,7 +15,7 @@ Functions:
 
     return_table_creation_query: Returns the query needed to create the Table.
 
-    return_event_types: Returns the contents of the event_types table.
+    return_event_types: Returns contents of event_types as a list of strings.
 """
 
 import sqlite3
@@ -41,20 +41,25 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_event_types(db_connection: sqlite3.Connection) -> str:
-    """Returns the contents of the event_types table.
+def return_event_types(db_connection: sqlite3.Connection) -> list[str]:
+    """Returns the contents of the event_types table as a list of strings.
 
     Args:
         db_connection (sqlite3.Connection): The database connection.
 
     Returns:
-        table_contents (str): The contents of the table as a string.
+        table_contents (list[str]): The contents of the table as a list of
+            strings.
     """
     sql_query = """SELECT * FROM event_types"""
 
-    event_types = db_connection.return_data(sql_query)
+    event_types_list = []
 
-    return event_types
+    event_types_data = db_connection.return_data(sql_query)
+    for event in event_types_data:
+        event_types_list.append(f"Event Type {event[2]}. Code: {event[1]}. {event[3]}")
+
+    return event_types_list
 
 
 class EventType:

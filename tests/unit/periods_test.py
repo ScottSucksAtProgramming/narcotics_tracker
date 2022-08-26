@@ -61,10 +61,11 @@ class Test_PeriodsModule:
         test_period = test_period
         test_period.save(db)
 
-        data = periods.return_periods(db)
-        assert data == [
-            (9001, "02-29-0001", "01-35-0000", "08-26-2022", "08-26-2022", "Cinder")
-        ]
+        periods_list = periods.return_periods(db)
+        assert (
+            "Reporting Period 9001. Started on: 02-29-0001. Ends on: 08-26-2022"
+            in periods_list
+        )
 
 
 class Test_PeriodAttributes:

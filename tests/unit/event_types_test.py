@@ -47,26 +47,35 @@ class Test_EventTypesModule:
 
         assert event_types.return_table_creation_query() == expected_query
 
-    # def test_return_event_types_returns_expected_event_types(
-    #     self, test_event_type, database_test_set_up
-    # ) -> None:
-    #     """Tests that the show method returns the expected reporting event_types.
+    def test_return_event_types_returns_expected_event_types(
+        self, test_event_type, database_test_set_up
+    ) -> None:
+        """Tests that the return_event_types method returns the expected event_types.
 
-    #     Loads and saves test_event_type. Calls event_types.show().
+        Loads and saves test_event_type. Creates and save. 2nd_event_type
+        Calls event_types.return_event_types().
 
-    #     Asserts that event_types.show() returns expected data.
-    #     """
-    #     db = database.Database()
-    #     db.connect("test_database.db")
-    #     db.create_table(event_types.return_table_creation_query())
+        Asserts that event_types.return_event_types() returns expected data.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
 
-    #     test_event_type = test_event_type
-    #     test_event_type.save(db)
+        test_event_type = test_event_type
+        second_event_type = event_types.EventType(
+            "2ND", "2nd Event Type", "Useless Thing."
+        )
+        test_event_type.save(db)
+        second_event_type.save(db)
 
-    #     data = event_types.return_event_types(db)
-    #     assert data == [
-    #         (9001, "02-29-0001", "01-35-0000", "08-26-2022", "08-25-2022", "Cinder")
-    #     ]
+        event_types_list = event_types.return_event_types(db)
+
+        assert (
+            "Event Type Test Event. Code: TEST. Used for testing the EventType Class."
+            in event_types_list
+            and "Event Type 2nd Event Type. Code: 2ND. Useless Thing."
+            in event_types_list
+        )
 
 
 class Test_EventTypeAttributes:
