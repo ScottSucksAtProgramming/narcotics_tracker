@@ -64,6 +64,7 @@ def test_period() -> periods.ReportingPeriod:
     """
     test_period = periods.ReportingPeriod("02-29-0001", "01-35-0000")
 
+    test_period.period_id = 9001
     test_period.created_date = "08-26-2022"
     test_period.modified_date = "08-01-2022"
     test_period.modified_by = "Cinder"

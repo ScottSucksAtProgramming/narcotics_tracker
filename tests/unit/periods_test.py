@@ -1,6 +1,6 @@
 """Contains the classes and test which test the periods module."""
 
-from narcotics_tracker import periods
+from narcotics_tracker import database, periods
 
 
 class Test_PeriodsModule:
@@ -142,6 +142,9 @@ class Test_PeriodMethods:
 
     Behaviors Tested:
         - __init__ sets attributes correctly.
+        - __repr__ returns correct string.
+        - Can save ReportingPeriod to database.
+        - return_attributes returns the correct values.
     """
 
     def test___init___sets_attributes_correctly(self, test_period) -> None:
@@ -155,7 +158,63 @@ class Test_PeriodMethods:
         test_period = test_period
 
         assert (
-            test_period.period_id == None
+            test_period.period_id == 9001
             and test_period.starting_date == "02-29-0001"
             and test_period.ending_date == "01-35-0000"
+        )
+
+    def test___repr___returns_expected_string(self, test_period) -> None:
+        """Tests that __repr__ returns correct string.
+
+        Loads test_period. Calls str(test_period).
+
+        Asserts that str(test_med) returns:
+            "
+        """
+        test_period = test_period
+
+        print(str(test_period))
+        assert str(test_period) == (
+            f"Reporting Period 9001. Started on: 02-29-0001. Ends on: " f"01-35-0000."
+        )
+
+    def test_can_save_reporting_period_to_database(
+        self, test_period, database_test_set_up
+    ) -> None:
+        """Tests that reporting periods can be saved to the database.
+
+        Loads test_period. Calls test_period.save. Calls db.return_data()
+        using the period_id of '9001'.
+
+        Asserts that returned data has starting_date value of '02-29-0001'.
+        """
+        test_period = test_period
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(periods.return_table_creation_query())
+
+        test_period.save(db)
+
+        data = db.return_data(
+            """SELECT starting_date FROM reporting_periods WHERE period_id = 9001"""
+        )
+
+        assert data[0][0] == "02-29-0001"
+
+    def test_return_attributes(self, test_period):
+        """Tests that the reporting period data is correctly returned.
+
+        Loads test_period. Calls test_period.return_attributes().
+
+        Asserts values returned are expected values.
+        """
+        test_period = test_period
+        assert test_period.return_attributes() == (
+            9001,
+            "02-29-0001",
+            "01-35-0000",
+            "08-26-2022",
+            "08-01-2022",
+            "Cinder",
         )
