@@ -1,4 +1,12 @@
-"""Contains the classes and test which test the periods module."""
+"""Contains the classes and test which test the periods module.
+
+Classes:
+    Test_PeriodsModule: Contains all unit tests for the periods module.
+    
+    Test_PeriodAttributes: Contains all unit tests for Period's attributes.
+    
+    Test_PeriodMethods: Contains all unit tests for the Period Class' methods.
+"""
 
 from narcotics_tracker import database, periods
 
