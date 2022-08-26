@@ -18,6 +18,8 @@ Classes:
 Functions:
 
     return_table_creation_query: Returns the query needed to create the Table.
+
+    return_periods: Returns the contents of the reporting_periods table.
 """
 
 import sqlite3
@@ -40,6 +42,22 @@ def return_table_creation_query() -> str:
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT
             )"""
+
+
+def return_periods(db_connection: sqlite3.Connection) -> str:
+    """Returns the contents of the reporting_periods table.
+
+    Args:
+        db_connection (sqlite3.Connection): The database connection.
+
+    Returns:
+        table_contents (str): The contents of the table as a string.
+    """
+    sql_query = """SELECT * FROM reporting_periods"""
+
+    periods = db_connection.return_data(sql_query)
+
+    return periods
 
 
 class ReportingPeriod:

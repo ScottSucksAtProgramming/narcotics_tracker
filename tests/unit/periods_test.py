@@ -16,7 +16,8 @@ class Test_PeriodsModule:
 
     Behaviors Tested:
         - Periods module can be accessed.
-        - return_table_creation_query returns correct string.
+        - Method return_table_creation_query returns correct string.
+        - Method return_periods returns all reporting_periods.
     """
 
     def test_periods_module_can_be_accessed(self) -> None:
@@ -43,6 +44,27 @@ class Test_PeriodsModule:
             )"""
 
         assert periods.return_table_creation_query() == expected_query
+
+    def test_return_periods_returns_expected_reporting_periods(
+        self, test_period, database_test_set_up
+    ) -> None:
+        """Tests that the show method returns the expected reporting periods.
+
+        Loads and saves test_period. Calls periods.show().
+
+        Asserts that periods.show returns expected data.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(periods.return_table_creation_query())
+
+        test_period = test_period
+        test_period.save(db)
+
+        data = periods.return_periods(db)
+        assert data == [
+            (9001, "02-29-0001", "01-35-0000", "08-26-2022", "08-25-2022", "Cinder")
+        ]
 
 
 class Test_PeriodAttributes:
