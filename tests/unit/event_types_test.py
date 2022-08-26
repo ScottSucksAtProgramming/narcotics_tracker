@@ -9,7 +9,7 @@ Classes:
     Test_EventTypesMethods: Contains unit tests for the EventType's methods.
 """
 
-from narcotics_tracker import event_types
+from narcotics_tracker import database, event_types
 
 
 class Test_EventTypesModule:
@@ -39,7 +39,7 @@ class Test_EventTypesModule:
             EVENT_ID INTEGER PRIMARY KEY,
             EVENT_CODE TEXT UNIQUE,                
             EVENT_NAME TEXT,
-            DESCRIPTION TEXT
+            DESCRIPTION TEXT,
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT
@@ -187,11 +187,12 @@ class Test_EventTypeMethods:
     Behaviors Tested:
         - __init__ sets attributes correctly.
         - __repr__ returns correct string.
-    # !     - Can save ReportingPeriod to database.
-    # !     - Can update ReportingPeriod starting date.
-    # !     - Can update ReportingPeriod ending date.
-    # !     - return_attributes returns the correct values.
-    # !     - Can delete reporting period from database.
+        - Can save EventType to database.
+        - Can update EventType code.
+        - Can update EventType name.
+        - Can update EventType description.
+        - return_attributes returns the correct values.
+        - Can delete reporting period from database.
     """
 
     def test___init___sets_attributes_correctly(self, test_event_type) -> None:
@@ -224,4 +225,136 @@ class Test_EventTypeMethods:
         assert str(test_event_type) == (
             f"Event Type Test Event. Code: TEST. Used for testing the "
             f"EventType Class."
+        )
+
+    def test_can_save_event_type_to_database(
+        self, test_event_type, database_test_set_up
+    ) -> None:
+        """Tests that event types can be saved to the database.
+
+        Loads test_event_type. Calls test_event_type.save. Calls db.return_data()
+        using the event_id of '2001'.
+
+        Asserts that returned data has event_code value of 'TEST'.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+
+        test_event_type.save(db)
+
+        data = db.return_data(
+            """SELECT event_code FROM event_types WHERE event_id = '2001'"""
+        )
+
+        assert data[0][0] == "TEST"
+
+    def test_can_update_event_code(self, test_event_type, database_test_set_up) -> None:
+        """Tests that the event type's event code can be updated.
+
+        Loads test_event_type. Updates event code to 'NEW CODE'. Queries the
+        event code for the event_id of 2001.
+
+        Asserts that test_event_type.event_code is 'NEW CODE'.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+        test_event_type.save(db)
+
+        test_event_type.update_code("NEW CODE", db)
+
+        data = db.return_data(
+            """SELECT event_code FROM event_types WHERE event_id = 2001"""
+        )
+        assert data[0][0] == "NEW CODE"
+
+    def test_can_update_name(self, test_event_type, database_test_set_up) -> None:
+        """Tests that the event type's event code can be updated.
+
+        Loads test_event_type. Updates event code to 'NEW NAME'. Queries the
+        event code for the event_id of 2001.
+
+        Asserts that test_event_type.event_name is 'NEW NAME'.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+        test_event_type.save(db)
+
+        test_event_type.update_name("NEW NAME", db)
+
+        data = db.return_data(
+            """SELECT event_name FROM event_types WHERE event_id = 2001"""
+        )
+        assert data[0][0] == "NEW NAME"
+
+    def test_can_update_description(
+        self, test_event_type, database_test_set_up
+    ) -> None:
+        """Tests that the event type's event code can be updated.
+
+        Loads test_event_type. Updates event code to 'This is the new description.'. Queries the
+        event code for the event_id of 2001.
+
+        Asserts that test_event_type.description is 'This is the new description.'.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+        test_event_type.save(db)
+
+        test_event_type.update_description("This is the new description.", db)
+
+        data = db.return_data(
+            """SELECT description FROM event_types WHERE event_id = 2001"""
+        )
+        assert data[0][0] == "This is the new description."
+
+    def test_can_delete_event_type_from_database(
+        self, test_event_type, database_test_set_up
+    ):
+        """Tests that event types can be deleted from the database.
+
+        Loads test_event_type. Saves it to database. Then deletes it. Gets data from
+        event_types table.
+
+        Asserts data is empty.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+
+        test_event_type.save(db)
+        test_event_type.delete(db)
+
+        data = db.return_data("""SELECT * FROM event_types""")
+        assert data == []
+
+    def test_return_attributes(self, test_event_type):
+        """Tests that the event types data is correctly returned.
+
+        Loads test_event_type. Calls test_event_type.return_attributes().
+
+        Asserts values returned are expected values.
+        """
+        test_event_type = test_event_type
+        assert test_event_type.return_attributes() == (
+            2001,
+            "TEST",
+            "Test Event",
+            "Used for testing the EventType Class.",
+            "08-26-2022",
+            "08-01-2022",
+            "Bast",
         )

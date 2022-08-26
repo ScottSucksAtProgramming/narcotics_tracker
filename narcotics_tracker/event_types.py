@@ -20,6 +20,9 @@ Functions:
 
 import sqlite3
 
+from narcotics_tracker import database
+from narcotics_tracker.utils import date
+
 
 def return_table_creation_query() -> str:
     """Returns the sql query needed to create the Event Types Table.
@@ -31,7 +34,7 @@ def return_table_creation_query() -> str:
             EVENT_ID INTEGER PRIMARY KEY,
             EVENT_CODE TEXT UNIQUE,                
             EVENT_NAME TEXT,
-            DESCRIPTION TEXT
+            DESCRIPTION TEXT,
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT
@@ -96,9 +99,11 @@ class EventType:
 
         save: Saves a new event type to the database.
 
-        #! update_starting_date: Updates the starting date of the event type.
+        update_code: Updates the code of the event type.
 
-        #! update_ending_date: Updates the ending date of the event type.
+        update_name: Updates the name of the event type.
+
+        update_description: Updates the description of the event type.
 
         delete: Deletes the event type from the database.
 
@@ -136,4 +141,111 @@ class EventType:
         return (
             f"Event Type {self.event_name}. Code: {self.event_code}. "
             f"{self.description}"
+        )
+
+    def save(self, db_connection: sqlite3.Connection) -> None:
+        """Saves a new event type to the database.
+
+        The save method will only write the event_type into the table if it does
+        not already exist. Use the update method to update the event_type's
+        attributes.
+
+        Use the date module to set the created date if it is None. Sets the
+        modified date.
+
+        Args:
+            db_connection (sqlite3.Connection): The database connection.
+        """
+        sql_query = """INSERT OR IGNORE INTO event_types VALUES (
+            ?, ?, ?, ?, ?, ?, ?)"""
+
+        if database.Database.created_date_is_none(self):
+            self.created_date = date.return_date_as_string()
+        self.modified_date = date.return_date_as_string()
+
+        values = self.return_attributes()
+
+        db_connection.write_data(sql_query, values)
+
+    def update_code(
+        self, new_event_code: str, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the event code of the event type.
+
+        Args:
+            new_event_code (str): The new event id.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """UPDATE event_types SET event_code =(?) WHERE event_id = (?)"""
+        values = (new_event_code, self.event_id)
+
+        db_connection.write_data(sql_query, values)
+
+    def update_name(
+        self, new_event_name: str, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the event id of the event type.
+
+        Args:
+            new_event_name (str): The new event name.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """UPDATE event_types SET event_name =(?) WHERE event_id = (?)"""
+        values = (new_event_name, self.event_id)
+
+        db_connection.write_data(sql_query, values)
+
+    def update_description(
+        self, new_description: str, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the event id of the event type.
+
+        Args:
+            new_description (str): The new event name.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """UPDATE event_types SET description =(?) WHERE event_id = (?)"""
+        values = (new_description, self.event_id)
+
+        db_connection.write_data(sql_query, values)
+
+    def delete(self, db_connection: sqlite3.Connection):
+        """Deletes the event type from the database.
+
+        The delete method will delete the event type from the database
+        entirely. Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM event_types WHERE event_id = ?"""
+        values = (self.event_id,)
+        db_connection.write_data(sql_query, values)
+
+    def return_attributes(self) -> tuple:
+        """Returns the attributes of the event types as a tuple.
+
+        Returns:
+            tuple: The attributes of the event types. Follows the order
+            of the columns in the event_types table.
+        """
+
+        return (
+            self.event_id,
+            self.event_code,
+            self.event_name,
+            self.description,
+            self.created_date,
+            self.modified_date,
+            self.modified_by,
         )
