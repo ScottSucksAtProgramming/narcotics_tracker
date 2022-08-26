@@ -77,6 +77,12 @@ class ReportingPeriod:
 
         save: Saves a new reporting period to the database.
 
+        update_starting_date: Updates the starting date of the period.
+
+        update_ending_date: Updates the ending date of the reporting period.
+
+        delete: Deletes the reporting period from the database.
+
         return_attributes: Returns the period's attributes as a tuple.
     """
 
@@ -132,6 +138,60 @@ class ReportingPeriod:
 
         values = self.return_attributes()
 
+        db_connection.write_data(sql_query, values)
+
+    def update_starting_date(
+        self, new_starting_date: str, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the starting date of the reporting period.
+
+        Args:
+            new_starting_date (str): The new starting date in format MM-DD-YYYY.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """INSERT OR REPLACE INTO reporting_periods (period_id, starting_date) VALUES (?, ?)"""
+        values = (
+            self.period_id,
+            new_starting_date,
+        )
+
+        db_connection.write_data(sql_query, values)
+
+    def update_ending_date(
+        self, new_ending_date: str, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the ending date of the reporting period.
+
+        Args:
+            new_ending_date (str): The new ending date in format MM-DD-YYYY.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """INSERT OR REPLACE INTO reporting_periods (period_id, ending_date) VALUES (?, ?)"""
+        values = (
+            self.period_id,
+            new_ending_date,
+        )
+
+        db_connection.write_data(sql_query, values)
+
+    def delete(self, db_connection: sqlite3.Connection):
+        """Deletes the reporting period from the database.
+
+        The delete method will delete the reporting period from the database
+        entirely. Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM reporting_periods WHERE period_id = ?"""
+        values = (self.period_id,)
         db_connection.write_data(sql_query, values)
 
     def return_attributes(self) -> tuple:

@@ -152,7 +152,10 @@ class Test_PeriodMethods:
         - __init__ sets attributes correctly.
         - __repr__ returns correct string.
         - Can save ReportingPeriod to database.
+        - Can update ReportingPeriod starting date.
+        - Can update ReportingPeriod ending date.
         - return_attributes returns the correct values.
+        - Can delete reporting period from database.
     """
 
     def test___init___sets_attributes_correctly(self, test_period) -> None:
@@ -181,7 +184,6 @@ class Test_PeriodMethods:
         """
         test_period = test_period
 
-        print(str(test_period))
         assert str(test_period) == (
             f"Reporting Period 9001. Started on: 02-29-0001. Ends on: " f"01-35-0000."
         )
@@ -205,7 +207,7 @@ class Test_PeriodMethods:
         test_period.save(db)
 
         data = db.return_data(
-            """SELECT starting_date FROM reporting_periods WHERE period_id = 9001"""
+            """SELECT starting_date FROM reporting_periods WHERE period_id = '9001'"""
         )
 
         assert data[0][0] == "02-29-0001"
@@ -226,3 +228,67 @@ class Test_PeriodMethods:
             "08-01-2022",
             "Cinder",
         )
+
+    def test_can_update_starting_date(self, test_period, database_test_set_up) -> None:
+        """Tests that the reporting period's starting date can be updated.
+
+        Loads test_period. Updates starting date to '00-00-0000'. Queries the
+        starting date for the period_id of 9001.
+
+        Asserts that test_period.starting_date is '00-00-0000'.
+        """
+        test_period = test_period
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(periods.return_table_creation_query())
+
+        test_period.update_starting_date("00-00-0000", db)
+
+        data = db.return_data(
+            """SELECT starting_date FROM reporting_periods WHERE period_id = 9001"""
+        )
+        assert data[0][0] == "00-00-0000"
+
+    def test_can_update_ending_date(self, test_period, database_test_set_up) -> None:
+        """Tests that the reporting period's ending date can be updated.
+
+        Loads test_period. Updates ending date to '99-99-9999'. Queries the
+        ending date for the period_id of 9001.
+
+        Asserts that test_period.ending_date is '99-99-9999'.
+        """
+        test_period = test_period
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(periods.return_table_creation_query())
+
+        test_period.update_ending_date("99-99-9999", db)
+
+        data = db.return_data(
+            """SELECT ending_date FROM reporting_periods WHERE period_id = 9001"""
+        )
+        assert data[0][0] == "99-99-9999"
+
+    def test_can_delete_reporting_period_from_database(
+        self, test_period, database_test_set_up
+    ):
+        """Tests that reporting periods can be deleted from the database.
+
+        Loads test_period. Saves it to database. Then deletes it. Gets data from
+        reporting_periods table.
+
+        Asserts data is empty.
+        """
+        test_period = test_period
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(periods.return_table_creation_query())
+
+        test_period.save(db)
+        test_period.delete(db)
+
+        data = db.return_data("""SELECT * FROM reporting_periods""")
+        assert data == []
