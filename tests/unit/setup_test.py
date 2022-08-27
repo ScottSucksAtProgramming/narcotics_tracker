@@ -64,3 +64,20 @@ class Test_Setup:
         data = db.return_table_names()
 
         assert "reporting_periods" in data
+
+    def test_setup_can_create_event_types_table(self, database_test_set_up) -> None:
+        """Tests to see if the event_types table can be created.
+
+        Connects to 'test_database.db'. Creates event_types table.
+        Returns table names.
+
+        Asserts that 'event_types' is in list of table names.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+
+        setup.create_event_types_table(db)
+
+        data = db.return_table_names()
+
+        assert "event_types" in data
