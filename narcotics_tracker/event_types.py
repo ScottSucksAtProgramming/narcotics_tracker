@@ -81,6 +81,9 @@ class EventType:
 
             description (str): Description of the event.
 
+            operator (int): The operator of the inventory change. '+1' for
+                adding stock. '-1' for removing stock.
+
     Attributes:
         event_id (int): Numeric identifier of each event type.
             Assigned by the database.
@@ -91,6 +94,9 @@ class EventType:
         event_name (str): Name of the event.
 
         description (str): Description of the event.
+
+        operator (int): The operator of the inventory change. '+1' for adding
+            stock. '-1' for removing stock.
 
         created_date (str): The date the event type was created in the
             table.
@@ -111,6 +117,8 @@ class EventType:
 
         update_description: Updates the description of the event type.
 
+        update_operator: Updates the operator for the event type.
+
         delete: Deletes the event type from the database.
 
         return_attributes: Returns the event type's attributes as a tuple.
@@ -130,6 +138,9 @@ class EventType:
             event_name (str): Name of the event.
 
             description (str): Description of the event.
+
+            operator (int): The operator of the inventory change. '+1' for
+                adding stock. '-1' for removing stock.
         """
         self.event_id = None
         self.event_code = event_code
@@ -224,6 +235,24 @@ class EventType:
 
         sql_query = """UPDATE event_types SET description =(?) WHERE event_id = (?)"""
         values = (new_description, self.event_id)
+
+        db_connection.write_data(sql_query, values)
+
+    def update_operator(
+        self, new_operator: int, db_connection: sqlite3.Connection
+    ) -> None:
+        """Updates the event id of the event type.
+
+        Args:
+            new_operator (int): The new operator. +1 if events add stock. -1
+                if events remove stock.
+
+            db_connection (sqlite3.Connection) The database connection.
+        """
+        self.modified_date = date.return_date_as_string()
+
+        sql_query = """UPDATE event_types SET operator =(?) WHERE event_id = (?)"""
+        values = (new_operator, self.event_id)
 
         db_connection.write_data(sql_query, values)
 
