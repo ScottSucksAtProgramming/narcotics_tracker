@@ -2,7 +2,7 @@
 writes them to the table."""
 
 
-from narcotics_tracker import database, medication, periods
+from narcotics_tracker import database, event_types, medication, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
@@ -71,6 +71,55 @@ def main():
     period_2 = periods.ReportingPeriod("07-01-2022", "12-31-2022")
     period_2.modified_by = "SRK"
 
+    # Build Standard Inventory Events
+    import_event = event_types.EventType(
+        "IMPORT",
+        "Imported Medications",
+        "Used when adding pre-existing stock to the table",
+        +1,
+    )
+    import_event.modified_by = "SRK"
+
+    order_event = event_types.EventType(
+        "ORDER",
+        "Ordered Medications",
+        "Used when adding new stock from a purchase order.",
+        +1,
+    )
+    order_event.modified_by = "SRK"
+
+    use_event = event_types.EventType(
+        "USE",
+        "Used Medications",
+        "Used when subtracting medication that was administered to a patient.",
+        -1,
+    )
+    use_event.modified_by = "SRK"
+
+    waste_event = event_types.EventType(
+        "WASTE",
+        "Wasted Medications",
+        "Used when subtracting medication which was wasted.",
+        -1,
+    )
+    waste_event.modified_by = "SRK"
+
+    destruction_event = event_types.EventType(
+        "DESTROY",
+        "Destroy Medications",
+        "Used when subtracting medication which was destroyed through a reverse distributor.",
+        -1,
+    )
+    destruction_event.modified_by = "SRK"
+
+    loss_event = event_types.EventType(
+        "LOSS",
+        "Loss of Medications",
+        "Used when subtracting medication which were lost or stolen.",
+        -1,
+    )
+    loss_event.modified_by = "SRK"
+
     db = database.Database()
     db.connect("inventory.db")
 
@@ -86,6 +135,13 @@ def main():
 
     period_1.save(db)
     period_2.save(db)
+
+    import_event.save(db)
+    order_event.save(db)
+    use_event.save(db)
+    waste_event.save(db)
+    destruction_event.save(db)
+    loss_event.save(db)
 
 
 if __name__ == "__main__":
