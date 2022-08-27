@@ -18,7 +18,7 @@ class Test_EventTypesModule:
     Behaviors Tested:
         - Event Types module can be accessed.
         - Method return_table_creation_query returns correct string.
-    # !    - Method return_event_types returns all event_types.
+        - Method return_event_types returns all event_types.
     """
 
     def test_event_types_module_can_be_accessed(self) -> None:
@@ -40,6 +40,7 @@ class Test_EventTypesModule:
             EVENT_CODE TEXT UNIQUE,                
             EVENT_NAME TEXT,
             DESCRIPTION TEXT,
+            OPERATOR INTEGER,
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT
@@ -63,7 +64,7 @@ class Test_EventTypesModule:
 
         test_event_type = test_event_type
         second_event_type = event_types.EventType(
-            "2ND", "2nd Event Type", "Useless Thing."
+            "2ND", "2nd Event Type", "Useless Thing.", +1
         )
         test_event_type.save(db)
         second_event_type.save(db)
@@ -87,7 +88,8 @@ class Test_EventTypeAttributes:
         - event_id attribute returns correct value.
         - event_code attribute returns correct value.
         - event_name attribute returns correct value.
-        - description attributes returns correct value.
+        - description attribute returns correct value.
+        - operator attribute returns correct value.
         - created_date attribute returns correct value.
         - modified_date attribute returns correct value.
         - modified_by attribute returns correct value.
@@ -156,6 +158,17 @@ class Test_EventTypeAttributes:
 
         assert test_event_type.description == "Used for testing the EventType Class."
 
+    def test_operator_returns_correct_value(self, test_event_type) -> None:
+        """Tests that the operator attributes returns the correct value.
+
+        Loads test_event_type.
+
+        Asserts that test_event_type.operator is -1.
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.operator == -1
+
     def test_created_date_returns_correct_value(self, test_event_type) -> None:
         """Tests that the created_date attributes returns the correct value.
 
@@ -200,6 +213,7 @@ class Test_EventTypeMethods:
         - Can update EventType code.
         - Can update EventType name.
         - Can update EventType description.
+        - Can update EventType operator.
         - return_attributes returns the correct values.
         - Can delete reporting period from database.
     """
@@ -283,10 +297,10 @@ class Test_EventTypeMethods:
         assert data[0][0] == "NEW CODE"
 
     def test_can_update_name(self, test_event_type, database_test_set_up) -> None:
-        """Tests that the event type's event code can be updated.
+        """Tests that the event type's name can be updated.
 
-        Loads test_event_type. Updates event code to 'NEW NAME'. Queries the
-        event code for the event_id of 2001.
+        Loads test_event_type. Updates name to 'NEW NAME'. Queries the
+        name for the event_id of 2001.
 
         Asserts that test_event_type.event_name is 'NEW NAME'.
         """
@@ -307,10 +321,10 @@ class Test_EventTypeMethods:
     def test_can_update_description(
         self, test_event_type, database_test_set_up
     ) -> None:
-        """Tests that the event type's event code can be updated.
+        """Tests that the event type's description can be updated.
 
-        Loads test_event_type. Updates event code to 'This is the new description.'. Queries the
-        event code for the event_id of 2001.
+        Loads test_event_type. Updates description to 'This is the new description.'. Queries the
+        description for the event_id of 2001.
 
         Asserts that test_event_type.description is 'This is the new description.'.
         """
@@ -327,6 +341,28 @@ class Test_EventTypeMethods:
             """SELECT description FROM event_types WHERE event_id = 2001"""
         )
         assert data[0][0] == "This is the new description."
+
+    def test_can_update_operator(self, test_event_type, database_test_set_up) -> None:
+        """Tests that the event type's operator can be updated.
+
+        Loads test_event_type. Updates event code to 'This is the new operator.'. Queries the
+        event code for the event_id of 2001.
+
+        Asserts that test_event_type.operator is -10.
+        """
+        test_event_type = test_event_type
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+        test_event_type.save(db)
+
+        test_event_type.update_operator(-10, db)
+
+        data = db.return_data(
+            """SELECT operator FROM event_types WHERE event_id = 2001"""
+        )
+        assert data[0][0] == -10
 
     def test_can_delete_event_type_from_database(
         self, test_event_type, database_test_set_up
@@ -363,6 +399,7 @@ class Test_EventTypeMethods:
             "TEST",
             "Test Event",
             "Used for testing the EventType Class.",
+            -1,
             "08-26-2022",
             "08-01-2022",
             "Bast",

@@ -81,7 +81,7 @@ def test_event_type() -> event_types.EventType:
             testing.
     """
     test_event_type = event_types.EventType(
-        "TEST", "Test Event", "Used for testing the EventType Class."
+        "TEST", "Test Event", "Used for testing the EventType Class.", -1
     )
 
     test_event_type.event_id = 2001

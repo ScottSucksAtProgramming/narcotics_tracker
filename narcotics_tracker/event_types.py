@@ -35,6 +35,7 @@ def return_table_creation_query() -> str:
             EVENT_CODE TEXT UNIQUE,                
             EVENT_NAME TEXT,
             DESCRIPTION TEXT,
+            OPERATOR INTEGER,
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT
@@ -115,7 +116,9 @@ class EventType:
         return_attributes: Returns the event type's attributes as a tuple.
     """
 
-    def __init__(self, event_code: str, event_name: str, description: str) -> None:
+    def __init__(
+        self, event_code: str, event_name: str, description: str, operator: int
+    ) -> None:
         """Creates an instance of EventType and assigns attributes.
 
         Sets the event_id to None.
@@ -132,6 +135,7 @@ class EventType:
         self.event_code = event_code
         self.event_name = event_name
         self.description = description
+        self.operator = operator
         self.created_date = None
         self.modified_date = None
         self.modified_by = None
@@ -162,7 +166,7 @@ class EventType:
             db_connection (sqlite3.Connection): The database connection.
         """
         sql_query = """INSERT OR IGNORE INTO event_types VALUES (
-            ?, ?, ?, ?, ?, ?, ?)"""
+            ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
             self.created_date = date.return_date_as_string()
@@ -250,6 +254,7 @@ class EventType:
             self.event_code,
             self.event_name,
             self.description,
+            self.operator,
             self.created_date,
             self.modified_date,
             self.modified_by,
