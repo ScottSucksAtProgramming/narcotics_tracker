@@ -5,13 +5,18 @@ Classes:
     Test_Builder: Contains all unit tests for the medication_builder module.
 """
 import pytest
+import sqlite3
 
-from narcotics_tracker import medication
+from narcotics_tracker import database, inventory, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import medication_builder
+from narcotics_tracker.builders import (
+    adjustment_builder_template,
+    adjustment_builder,
+    medication_builder,
+)
 
 
-class Test_Builder:
+class Test_MedicationBuilder:
     """Contains all unit tests for the medication_builder module.
 
     Behaviors Tested:
@@ -244,3 +249,182 @@ class Test_Builder:
         aspirin = med_builder.build()
 
         assert isinstance(aspirin, expected)
+
+
+class Test_AdjustmentAbstractBuilder:
+    """Contains the unit tests for the adjustment_builder_template module.
+
+    Behaviors Tested:
+        - Module adjustment_builder_template can be accessed.
+        - Class Adjustment can be accessed.
+    """
+
+    def test_adjustment_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if the adjustment_builder_template exists and is accessible.
+
+        Asserts that adjustment_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert adjustment_builder_template.__doc__ != None
+
+    def test_adjustment_class_can_be_accessed(self) -> None:
+        """Tests that Adjustment class exists and is accessible.
+
+        Asserts that adjustment_builder_template.Adjustment.__doc__ does not
+        return 'None'.
+        """
+        assert adjustment_builder_template.Adjustment.__doc__ != None
+
+
+class Test_AdjustmentBuilderModule:
+    """Contains the unit tests for the adjustment_builder module.
+
+    Behaviors Tested:
+
+        - Module adjustment_builders can be accessed.
+    """
+
+    def test_adjustment_builder_module_can_be_accessed(self) -> None:
+        """Tests that adjustment_builder.py module exists and is accessible.
+
+        Asserts that adjustment_builder.__doc__ does not return 'None'.
+        """
+        assert adjustment_builder.__doc__ != None
+
+
+class Test_AdjustmentBuilder:
+    """Contains the unit tests for the AdjustmentBuilder class.
+
+    Behaviors Tested:
+
+        - Class AdjustmentBuilder can be accessed.
+        - AdjustmentBuilder sets the adjustment id correctly.
+        - AdjustmentBuilder sets the adjustment date correctly.
+        - AdjustmentBuilder sets the event code correctly.
+        - AdjustmentBuilder sets the medication code correctly.
+        - AdjustmentBuilder sets amount in preferred unit correctly.
+        - AdjustmentBuilder sets the reference ID correctly.
+        - AdjustmentBuilder sets the created date correctly.
+        - AdjustmentBuilder sets the modified date correctly.
+        - AdjustmentBuilder sets the modified by attribute correctly.
+        - Created adjustment object has type inventory.Adjustment.
+    """
+
+    def test_adjustment_builder_class_can_be_accessed(self) -> None:
+        """Tests that the AdjustmentBuilder class exists and is accessible.
+
+        Asserts that adjustment_builder.AdjustmentBuilder.__doc__ does not
+        return 'None'.
+        """
+        assert adjustment_builder.AdjustmentBuilder.__doc__ != None
+
+    def test_adjustment_id_is_set_correctly_(self, test_adjustment) -> None:
+        """Tests that AdjustmentBuilder sets the adjustment's id correctly.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.adjustment_id is set to '-300'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.adjustment_id == -300
+
+    def test_adjustment_date_is_set_correctly_(self, test_adjustment) -> None:
+        """Tests that AdjustmentBuilder sets the adjustment's date correctly.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.adjustment_date is set to '06-06-1989'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.adjustment_date == "06-06-1989"
+
+    def test_event_code_is_set_correctly_(self, test_adjustment) -> None:
+        """Tests that AdjustmentBuilder sets the event_code correctly.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.event_code is set to 'DONATE'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.event_code == "DONATE"
+
+    def test_medication_code_is_set_correctly_(self, test_adjustment) -> None:
+        """Tests that AdjustmentBuilder sets the medication_code correctly.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.medication_code is set to 'Viagra'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.medication_code == "Viagra"
+
+    def test_amount_in_preferred_unit_is_set_correctly(self, test_adjustment) -> None:
+        """Tests that amount of medication changed is set correctly.
+
+        Loads test_med. Builds medications table and saves test_med.
+
+        Asserts that test_adjustment.quantity_amount is '1'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.amount_in_preferred_unit == 1
+
+    def test_reference_id_is_set_correctly(self, test_adjustment) -> None:
+        """Tests that the Adjustment's reference ID is set correctly.
+
+        Loads test_adjustment
+
+        Asserts that test_adjustment.reference_id is 'TEST ID'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.reference_id == "TEST ID"
+
+    def test_created_date_is_set_correctly(self, test_adjustment) -> None:
+        """Tests that the adjustments created date is set correctly.
+
+        Loads test_adjustment.
+
+        Asserts test_adjustment.created_date is 'Yesterday'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.created_date == "Yesterday"
+
+    def test_modified_date_is_set_correctly(self, test_adjustment) -> None:
+        """Tests that the adjustments created date is set correctly.
+
+        Loads test_adjustment.
+
+        Asserts test_adjustment.modified_date is 'Tomorrow'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.modified_date == "Tomorrow"
+
+    def test_modified_by_is_set_correctly(self, test_adjustment) -> None:
+        """Tests that the adjustments created date is set correctly.
+
+        Loads test_adjustment.
+
+        Asserts test_adjustment.modified_by is 'Ambrose'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.modified_by == "Ambrose"
+
+    def test_adjustment_objects_is_instance_of_adjustment_class(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the objects are instances of the Adjustment class.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment is an instance of inventory.Adjustment
+        """
+        assert isinstance(test_adjustment, inventory.Adjustment)
