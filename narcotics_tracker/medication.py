@@ -31,7 +31,7 @@ from narcotics_tracker.utils import date, utilities
 
 def return_table_creation_query() -> str:
     """Returns the sql query needed to create the medication table."""
-    return """CREATE TABLE IF NOT EXISTS medication (
+    return """CREATE TABLE IF NOT EXISTS medications (
             MEDICATION_ID INTEGER PRIMARY KEY,
             MEDICATION_CODE TEXT UNIQUE,                
             NAME TEXT,
@@ -89,7 +89,7 @@ def return_medication(db_connection: sqlite3.Connection) -> list[str]:
         table_contents (list[str]): The contents of the table as a list of
             strings.
     """
-    sql_query = """SELECT * FROM medication"""
+    sql_query = """SELECT * FROM medications"""
 
     medications_list = []
 
@@ -264,7 +264,7 @@ class Medication:
             db_connection (sqlite3.Connection): The database connection.
         """
 
-        sql_query = """INSERT OR IGNORE INTO medication VALUES (
+        sql_query = """INSERT OR IGNORE INTO medications VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
@@ -290,7 +290,7 @@ class Medication:
 
             code (str): The unique identifier for the medication.
         """
-        sql_query = """UPDATE medication 
+        sql_query = """UPDATE medications 
             SET MEDICATION_ID = ?, 
                 MEDICATION_CODE = ?, 
                 NAME = ?, 
@@ -324,7 +324,7 @@ class Medication:
                 database.
         """
 
-        sql_query = """DELETE FROM medication WHERE medication_id = ?"""
+        sql_query = """DELETE FROM medications WHERE medication_id = ?"""
         values = (self.medication_id,)
         db_connection.write_data(sql_query, values)
 

@@ -29,31 +29,14 @@ class Test_InventoryModule:
     def test_return_table_creation_query_returns_expected_string(self) -> None:
         """Tests that the return_table_creation_query returns as expected.
 
-        Asserts that method returns: 'CREATE TABLE IF NOT EXISTS inventory (
-            INVENTORY_ID INTEGER PRIMARY KEY,
-            EVENT_DATE TEXT,
-            EVENT_CODE TEXT FOREIGN KEY,
-            MEDICATION_CODE TEXT,
-            QUANTITY_IN_MCG REAL,
-            REPORTING_PERIOD_ID INTEGER,
-            REFERENCE_ID TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
-            MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (MEDICATION_CODE) REFERENCES medication (MEDICATION_CODE)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
-            )'
+        Asserts that method returns the expected string.
         """
         assert (
             inventory.return_table_creation_query()
             == """CREATE TABLE IF NOT EXISTS inventory (
             INVENTORY_ID INTEGER PRIMARY KEY,
-            EVENT_DATE TEXT,                
-            EVENT_CODE TEXT FOREIGN KEY,
+            EVENT_DATE TEXT,
+            EVENT_CODE TEXT,
             MEDICATION_CODE TEXT,
             QUANTITY_IN_MCG REAL,
             REPORTING_PERIOD_ID INTEGER,
@@ -61,12 +44,9 @@ class Test_InventoryModule:
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) 
-            ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (MEDICATION_CODE) REFERENCES medication (MEDICATION_CODE)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
+            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE),
+            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE),
             FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
             )"""
         )
 

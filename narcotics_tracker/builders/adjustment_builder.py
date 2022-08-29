@@ -28,6 +28,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
     def __init__(self) -> None:
         """Initializes the adjustment builder. Sets all attributes to None."""
+        self.database_connection = None
         self.adjustment_id = None
         self.medication_code = None
         self.name = None
@@ -40,6 +41,14 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.created_date = None
         self.modified_date = None
         self.modified_by = None
+
+    def set_database_connection(self, db_connection: sqlite3.Connection) -> None:
+        """Sets the connections to the database.
+
+        Args:
+            db_connection (sqlite3.Connection): Connection to the database.
+        """
+        self.database_connection = db_connection
 
     def set_adjustment_id(self, adjustment_id: int = None) -> None:
         """Sets the adjustment's id number. Should not be called by the user.
@@ -149,35 +158,16 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
                 the adjustment."""
         self.modified_by = modified_by
 
-    # def calculate_concentration(self) -> None:
-    #     """Calculates the concentration of the adjustment.
+    # def calculate_amount_in_mcg(self, db_connection) -> None:
+    #     """Calculates and sets the adjustment amount in micrograms."""
+    #     # TODO 1. Get preferred Unit.
+    #     preferred_unit = medication.return_preferred_unit(
+    #         self.medication_code, db_connection
+    #     )
+    #     print(preferred_unit)
 
-    #     Formula: dose/fill_amount
-    #     """
-    #     self.concentration = self.dose / self.fill_amount
-
-    # def set_all_properties(self, properties: dict) -> None:
-    #     """Sets all properties of the medication.
-
-    #     Args:
-    #         properties (dict): The properties of the medication. Dictionary
-    #             keys are formatted as the medication property names.
-    #     """
-    #     self.set_medication_id(properties["medication_id"])
-    #     self.set_name(properties["name"])
-    #     self.set_code(properties["medication_code"])
-    #     self.set_container(properties["container_type"])
-    #     self.set_fill_amount(properties["fill_amount"])
-    #     self.set_dose_and_unit(properties["dose"], properties["unit"])
-    #     self.set_concentration(properties["concentration"])
-    #     self.set_status(properties["status"])
-    #     self.set_created_date(properties["created_date"])
-    #     self.set_modified_date(properties["modified_date"])
-    #     self.set_modified_by(properties["modified_by"])
-
-    # def reset(self) -> None:
-    #     """Resets the medication to its default values."""
-    #     self._medication = medication.Medication()
+    #     # Todo 2. Convert amount to micrograms
+    #     # todo 3. Save amount as attribute.
 
     def build(self) -> "inventory.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's properties.

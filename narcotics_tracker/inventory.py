@@ -23,8 +23,8 @@ def return_table_creation_query() -> str:
     """Returns the sql query needed to create the inventory table."""
     return """CREATE TABLE IF NOT EXISTS inventory (
             INVENTORY_ID INTEGER PRIMARY KEY,
-            EVENT_DATE TEXT,                
-            EVENT_CODE TEXT FOREIGN KEY,
+            EVENT_DATE TEXT,
+            EVENT_CODE TEXT,
             MEDICATION_CODE TEXT,
             QUANTITY_IN_MCG REAL,
             REPORTING_PERIOD_ID INTEGER,
@@ -32,12 +32,9 @@ def return_table_creation_query() -> str:
             CREATED_DATE TEXT,
             MODIFIED_DATE TEXT,
             MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) 
-            ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (MEDICATION_CODE) REFERENCES medication (MEDICATION_CODE)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
+            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE),
+            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE),
             FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID)
-            ON UPDATE CASCADE ON DELETE RESTRICT,
             )"""
 
 
@@ -63,6 +60,7 @@ class Adjustment:
         understand step-wise approach to building these objects. Refer to the
         documentation for the AdjustmentBuilder for more information.
         """
+        self.database_connection = builder.database_connection
         self.adjustment_id = builder.adjustment_id
         self.adjustment_date = builder.adjustment_date
         self.event_code = builder.event_code

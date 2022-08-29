@@ -46,7 +46,7 @@ class Test_PeriodsModule:
         assert periods.return_table_creation_query() == expected_query
 
     def test_return_periods_returns_expected_reporting_periods(
-        self, test_period, database_test_set_up
+        self, test_period, reset_database
     ) -> None:
         """Tests that the show method returns the expected reporting periods.
 
@@ -212,7 +212,7 @@ class Test_PeriodMethods:
         )
 
     def test_can_save_reporting_period_to_database(
-        self, test_period, database_test_set_up
+        self, test_period, reset_database
     ) -> None:
         """Tests that reporting periods can be saved to the database.
 
@@ -252,7 +252,7 @@ class Test_PeriodMethods:
             "Cinder",
         )
 
-    def test_can_update_starting_date(self, test_period, database_test_set_up) -> None:
+    def test_can_update_starting_date(self, test_period, reset_database) -> None:
         """Tests that the reporting period's starting date can be updated.
 
         Loads test_period. Updates starting date to '00-00-0000'. Queries the
@@ -274,7 +274,7 @@ class Test_PeriodMethods:
         )
         assert data[0][0] == "00-00-0000"
 
-    def test_can_update_ending_date(self, test_period, database_test_set_up) -> None:
+    def test_can_update_ending_date(self, test_period, reset_database) -> None:
         """Tests that the reporting period's ending date can be updated.
 
         Loads test_period. Updates ending date to '99-99-9999'. Queries the
@@ -297,7 +297,7 @@ class Test_PeriodMethods:
         assert data[0][0] == "99-99-9999"
 
     def test_can_delete_reporting_period_from_database(
-        self, test_period, database_test_set_up
+        self, test_period, reset_database
     ):
         """Tests that reporting periods can be deleted from the database.
 

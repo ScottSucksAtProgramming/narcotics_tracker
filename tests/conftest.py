@@ -103,11 +103,13 @@ def test_adjustment() -> "inventory.Adjustment":
     Returns:
         test_adjustment (medication.Medication): A medication object for testing.
     """
+
     adj_builder = adjustment_builder.AdjustmentBuilder()
+    adj_builder.set_database_connection("test_database_2.db")
     adj_builder.set_adjustment_id(-300)
     adj_builder.set_adjustment_date("06-06-1989")
     adj_builder.set_event_code("DONATE")
-    adj_builder.set_medication_code("Viagra")
+    adj_builder.set_medication_code("Un-69420-9001")
     adj_builder.set_adjustment_amount(1)
     adj_builder.set_reference_id("TEST ID")
     adj_builder.set_created_date("Yesterday")
@@ -120,7 +122,7 @@ def test_adjustment() -> "inventory.Adjustment":
 
 
 @fixture
-def database_test_set_up():
+def reset_database():
     """Resets test_database.db"""
     db = database.Database()
     db.connect("test_database.db")

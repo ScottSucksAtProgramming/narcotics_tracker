@@ -210,7 +210,7 @@ class Database:
         Returns:
             medication (medication.Medication): The medication object.
         """
-        sql_query = """SELECT * FROM medication WHERE MEDICATION_CODE = ?"""
+        sql_query = """SELECT * FROM medications WHERE MEDICATION_CODE = ?"""
         values = (code,)
 
         result = self.return_data(sql_query, values)

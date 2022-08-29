@@ -45,7 +45,7 @@ class Test_Database:
 
         assert isinstance(db, database.Database)
 
-    def test_database_can_create_database_file(self, test_db, database_test_set_up):
+    def test_database_can_create_database_file(self, test_db, reset_database):
         """Tests that Database can create a database file.
 
         Asserts that the database file exists in os path.
@@ -56,7 +56,7 @@ class Test_Database:
 
         assert os.path.exists("data/test_database.db")
 
-    def test_database_can_connect_to_database(self, database_test_set_up):
+    def test_database_can_connect_to_database(self, reset_database):
         """Tests that connection can be made to the database.
 
         Asserts that the database_connection is not None.
@@ -66,7 +66,7 @@ class Test_Database:
         db.connect("test_database.db")
         assert db.database_connection is not None
 
-    def test_database_can_delete_database(self, database_test_set_up):
+    def test_database_can_delete_database(self, reset_database):
         """Tests that Database can delete a database.
 
         Creates a database, then deletes it.
@@ -78,7 +78,7 @@ class Test_Database:
 
         assert os.path.exists("data/test_database.db") == False
 
-    def test_database_can_create_table(self, database_test_set_up):
+    def test_database_can_create_table(self, reset_database):
         """Tests that Database can create a table.
 
         Creates a table.
@@ -95,7 +95,7 @@ class Test_Database:
 
         assert "test_table" in tables
 
-    def test_database_can_return_list_of_tables(self, database_test_set_up):
+    def test_database_can_return_list_of_tables(self, reset_database):
         """Tests that the writer can return a list of tables.
 
         Creates two tables, asserts that both tables exist in the list."""
@@ -110,7 +110,7 @@ class Test_Database:
 
         assert "test_table" in data and "test_table_2" in data
 
-    def test_database_can_return_columns(self, database_test_set_up):
+    def test_database_can_return_columns(self, reset_database):
         """Tests that Database can return list of columns from table.
 
         Creates a table with columns 'data' and 'number'. Gets list of columns.
@@ -129,7 +129,7 @@ class Test_Database:
         # Assert
         assert "data" in columns and "number" in columns
 
-    def test_database_can_delete_table(self, database_test_set_up):
+    def test_database_can_delete_table(self, reset_database):
         """Tests that Database can delete a table.
 
         Creates table if it doesn't already exist, then deletes it.
@@ -150,7 +150,7 @@ class Test_Database:
 
         assert "test_table" not in final_tables
 
-    def test_database_can_rename_table(self, database_test_set_up):
+    def test_database_can_rename_table(self, reset_database):
         """Tests that Database can rename a table.
 
         Creates 'old_table'. Renames 'old_table' to 'new_table'.
@@ -167,7 +167,7 @@ class Test_Database:
 
         assert "new_table" in tables and "old_table" not in tables
 
-    def test_database_can_add_column_to_table(self, database_test_set_up):
+    def test_database_can_add_column_to_table(self, reset_database):
         """Test that Database can add a column to a table.
 
         Creates a table, adds a column.
@@ -184,7 +184,7 @@ class Test_Database:
 
         assert "new_column" in columns
 
-    def test_database_can_rename_column_in_table(self, database_test_set_up):
+    def test_database_can_rename_column_in_table(self, reset_database):
         """Tests that Database can rename a column in a table.
 
         Creates a table, adds a column, renames the column.
@@ -203,7 +203,7 @@ class Test_Database:
         columns = db.return_columns("""SElECT * FROM test_table""")
         assert "new_data" in columns
 
-    def test_database_can_write_data_to_table(self, database_test_set_up):
+    def test_database_can_write_data_to_table(self, reset_database):
         """Tests that Database can write data to a table.
 
         Creates a table, writes data to the table.
@@ -248,9 +248,7 @@ class Test_Database:
 
         assert database.Database.created_date_is_none(test_med) == True
 
-    def test_medication_can_be_created_from_stored_data(
-        self, test_med, database_test_set_up
-    ):
+    def test_medication_can_be_created_from_stored_data(self, test_med, reset_database):
         """Test that a medication object can be created from stored data.
         
         Loads test_med, saved it to the database, then loads the data from 
@@ -270,7 +268,7 @@ class Test_Database:
 
         assert isinstance(new_med, medication.Medication)
 
-    def test_loaded_med_has_type_Medication(self, test_med, database_test_set_up):
+    def test_loaded_med_has_type_Medication(self, test_med, reset_database):
         """Tests that loaded medications are medication objects.
 
         Saves test_med to database. Loads test_med from database to new_med.

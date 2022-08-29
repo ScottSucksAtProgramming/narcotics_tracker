@@ -49,7 +49,7 @@ class Test_EventTypesModule:
         assert event_types.return_table_creation_query() == expected_query
 
     def test_return_event_types_returns_expected_event_types(
-        self, test_event_type, database_test_set_up
+        self, test_event_type, reset_database
     ) -> None:
         """Tests that the return_event_types method returns the expected event_types.
 
@@ -251,7 +251,7 @@ class Test_EventTypeMethods:
         )
 
     def test_can_save_event_type_to_database(
-        self, test_event_type, database_test_set_up
+        self, test_event_type, reset_database
     ) -> None:
         """Tests that event types can be saved to the database.
 
@@ -274,7 +274,7 @@ class Test_EventTypeMethods:
 
         assert data[0][0] == "TEST"
 
-    def test_can_update_event_code(self, test_event_type, database_test_set_up) -> None:
+    def test_can_update_event_code(self, test_event_type, reset_database) -> None:
         """Tests that the event type's event code can be updated.
 
         Loads test_event_type. Updates event code to 'NEW CODE'. Queries the
@@ -296,7 +296,7 @@ class Test_EventTypeMethods:
         )
         assert data[0][0] == "NEW CODE"
 
-    def test_can_update_name(self, test_event_type, database_test_set_up) -> None:
+    def test_can_update_name(self, test_event_type, reset_database) -> None:
         """Tests that the event type's name can be updated.
 
         Loads test_event_type. Updates name to 'NEW NAME'. Queries the
@@ -318,9 +318,7 @@ class Test_EventTypeMethods:
         )
         assert data[0][0] == "NEW NAME"
 
-    def test_can_update_description(
-        self, test_event_type, database_test_set_up
-    ) -> None:
+    def test_can_update_description(self, test_event_type, reset_database) -> None:
         """Tests that the event type's description can be updated.
 
         Loads test_event_type. Updates description to 'This is the new description.'. Queries the
@@ -342,7 +340,7 @@ class Test_EventTypeMethods:
         )
         assert data[0][0] == "This is the new description."
 
-    def test_can_update_operator(self, test_event_type, database_test_set_up) -> None:
+    def test_can_update_operator(self, test_event_type, reset_database) -> None:
         """Tests that the event type's operator can be updated.
 
         Loads test_event_type. Updates event code to 'This is the new operator.'. Queries the
@@ -364,9 +362,7 @@ class Test_EventTypeMethods:
         )
         assert data[0][0] == -10
 
-    def test_can_delete_event_type_from_database(
-        self, test_event_type, database_test_set_up
-    ):
+    def test_can_delete_event_type_from_database(self, test_event_type, reset_database):
         """Tests that event types can be deleted from the database.
 
         Loads test_event_type. Saves it to database. Then deletes it. Gets data from

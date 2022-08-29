@@ -17,7 +17,7 @@ class Test_Setup:
         - Setup can create medication table.
     """
 
-    def test_setup_can_create_database_file(self, database_test_set_up):
+    def test_setup_can_create_database_file(self, reset_database):
         """Tests to see if the database file can be created.
 
         Connects to 'test_database.db'.
@@ -29,13 +29,13 @@ class Test_Setup:
 
         assert os.path.exists("data/test_database.db")
 
-    def test_setup_can_create_medication_table(self, database_test_set_up):
+    def test_setup_can_create_medication_table(self, reset_database):
         """Tests to see if the medication table can be created.
 
         Connects to 'test_database.db'. Creates medication table. Returns
         table names.
 
-        Asserts that 'medication' is in list of table names.
+        Asserts that 'medications' is in list of table names.
         """
         db = database.Database()
         db.connect("test_database.db")
@@ -44,11 +44,9 @@ class Test_Setup:
 
         data = db.return_table_names()
 
-        assert "medication" in data
+        assert "medications" in data
 
-    def test_setup_can_create_reporting_periods_table(
-        self, database_test_set_up
-    ) -> None:
+    def test_setup_can_create_reporting_periods_table(self, reset_database) -> None:
         """Tests to see if the reporting_periods table can be created.
 
         Connects to 'test_database.db'. Creates reporting_periods table.
@@ -65,7 +63,7 @@ class Test_Setup:
 
         assert "reporting_periods" in data
 
-    def test_setup_can_create_event_types_table(self, database_test_set_up) -> None:
+    def test_setup_can_create_event_types_table(self, reset_database) -> None:
         """Tests to see if the event_types table can be created.
 
         Connects to 'test_database.db'. Creates event_types table.

@@ -2,7 +2,7 @@
 writes them to the table."""
 
 
-from narcotics_tracker import database, event_types, medication, periods
+from narcotics_tracker import database, event_types, inventory, medication, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import medication_builder
 
@@ -121,13 +121,19 @@ def main():
     loss_event.modified_by = "SRK"
 
     db = database.Database()
-    db.connect("inventory.db")
+    db.connect("test_database_2.db")
 
-    sql_query = medication.return_table_creation_query()
-    db.create_table(sql_query)
+    med_table_query = medication.return_table_creation_query()
+    db.create_table(med_table_query)
 
-    sql_query = periods.return_table_creation_query()
-    db.create_table(sql_query)
+    periods_table_query = periods.return_table_creation_query()
+    db.create_table(periods_table_query)
+
+    event_types_table_query = event_types.return_table_creation_query()
+    db.create_table(event_types_table_query)
+
+    inventory_table_query = inventory.return_table_creation_query()
+    db.create_table(inventory_table_query)
 
     fentanyl.save(db)
     morphine.save(db)
