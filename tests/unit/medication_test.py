@@ -25,6 +25,7 @@ class Test_MedicationModule:
         - Method return_table_creation_query returns correct string.
         - Method parse_medication_data creates dictionary with correct vales.
         - Method return_medications returns all medications.
+        - Method return_preferred_unit returns the correct unit.
     """
 
     def test_medication_module_can_be_accessed(self) -> None:
@@ -102,7 +103,7 @@ class Test_MedicationModule:
             and med_data["container_type"] == containers.Container.VIAL
             and med_data["fill_amount"] == 9_001.0
             and med_data["dose"] == 69_420.0
-            and med_data["unit"] == units.Unit.MCG
+            and med_data["unit"] == units.Unit.MG
             and med_data["concentration"] == 7.712476391512054
             and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
             and med_data["created_date"] == "01-02-1986"
@@ -133,9 +134,19 @@ class Test_MedicationModule:
         medication_list = medication.return_medication(db)
 
         assert (
-            "Unobtanium 69420.0 mcg in 9001.0 ml. Code: Un-69420-9001."
+            "Unobtanium 69420.0 mg in 9001.0 ml. Code: Un-69420-9001."
             in medication_list
         )
+
+    def test_return_preferred_unit_returns_correct_unit_as_string(
+        self, database_test_set_up, test_med
+    ) -> None:
+        """Tests that the correct unit is returned for the specified med.
+
+        Loads and saves test_med to database. Calls
+        medication.return_preferred_unit(test_med, db).
+
+        Asserts that 'mg' is returned."""
 
 
 class Test_MedicationAttributes:
@@ -245,7 +256,7 @@ class Test_MedicationAttributes:
         """
         test_med = test_med
 
-        assert test_med.preferred_unit == units.Unit.MCG
+        assert test_med.preferred_unit == units.Unit.MG
 
     def test_medications_return_expected_concentration(self, test_med):
         """Tests that the medication's concentration is returned correctly.
@@ -325,14 +336,14 @@ class Test_MedicationMethods:
 
         Asserts that str(test_med) returns:
             "Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            "Container type: Vial. Fill amount: 9001 ml. Dose: 69420 mcg. "
+            "Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
             "Concentration: 7.712476391512054. Status: Discontinued. Created "
             "on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
         """
         test_med = test_med
         assert str(test_med) == (
             f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420 mcg. "
+            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
             f"Concentration: 7.712476391512054. Status: Discontinued. Created "
             f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
         )
@@ -351,8 +362,8 @@ class Test_MedicationMethods:
             "Unobtanium",
             "Vial",
             9001,
-            69420,
-            "mcg",
+            69420.0,
+            "mg",
             7.712476391512054,
             "Discontinued",
             "01-02-1986",

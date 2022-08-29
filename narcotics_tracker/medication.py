@@ -102,6 +102,31 @@ def return_medication(db_connection: sqlite3.Connection) -> list[str]:
     return medications_list
 
 
+def return_preferred_unit(
+    medication_code: str, db_connection: sqlite3.Connection
+) -> str:
+    """Queries the medications table for the preferred unit of the medication.
+
+    Args:
+
+        medication_code (str): The unique identifier for the medication from
+            the medications table.
+
+        db_connection (sqlite3.Connection): The connection to the database.
+
+    Returns:
+
+        preferred_unit (str): The preferred unit for the medication as a
+            string.
+    """
+    sql_query = """SELECT unit FROM medication where code=(?)"""
+    values = [medication_code]
+
+    preferred_unit = db_connection.return_data(sql_query, values)
+
+    return preferred_unit
+
+
 class Medication:
     """Represents controlled substance medications in the Narcotics Tracker.
 
