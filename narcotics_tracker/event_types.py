@@ -66,6 +66,18 @@ def return_event_types(db_connection: sqlite3.Connection) -> list[str]:
 class EventType:
     """Defines the representation of Event Types for the project.
 
+    Multiple Event types can be declared, created and managed using this
+    class. Event Types are NOT the specific events which actually change the
+    inventory. Instead they are classifications of types of events. There is a
+    set of standard events that come with the Narcotics Tracker.
+
+    For information on creating actual inventory change events look at the
+    inventory module.
+
+    Events perform one of two operations: they either add or subtract a set
+    amount of medication from the inventory. This is denoted using the
+    operator property which can be set to +1 or -1 respectively.
+
     Initializer:
         def __init__(self, event_code: str, event_name: str, description: str) -> None:
 
