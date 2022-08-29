@@ -6,9 +6,9 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import database, event_types, periods
+from narcotics_tracker import database, event_types, inventory, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import medication_builder
+from narcotics_tracker.builders import adjustment_builder, medication_builder
 
 if TYPE_CHECKING:
     from narcotics_tracker import medication
@@ -30,7 +30,7 @@ def test_med() -> "medication.Medication":
     med_builder.set_name("Unobtanium")
     med_builder.set_code("Un-69420-9001")
     med_builder.set_container(containers.Container.VIAL)
-    med_builder.set_dose_and_unit(69_420, units.Unit.MCG)
+    med_builder.set_dose_and_unit(69.420, units.Unit.MG)
     med_builder.set_fill_amount(9_001)
     med_builder.set_status(medication_statuses.MedicationStatus.DISCONTINUED)
     med_builder.set_created_date("01-02-1986")
@@ -90,6 +90,33 @@ def test_event_type() -> event_types.EventType:
     test_event_type.modified_by = "Bast"
 
     return test_event_type
+
+
+@fixture
+def test_adjustment() -> "inventory.Adjustment":
+    """Return a Medication object for testing.
+
+    The test_adjustment fixture uses the builder to create a medication object for
+    testing. All the medication attributes are set with values which would not
+    be valid for a medication in a real system.
+
+    Returns:
+        test_adjustment (medication.Medication): A medication object for testing.
+    """
+    adj_builder = adjustment_builder.AdjustmentBuilder()
+    adj_builder.set_adjustment_id(-300)
+    adj_builder.set_adjustment_date("06-06-1989")
+    adj_builder.set_event_code("DONATE")
+    adj_builder.set_medication_code("Viagra")
+    adj_builder.set_adjustment_amount(1)
+    adj_builder.set_reference_id("TEST ID")
+    adj_builder.set_created_date("Yesterday")
+    adj_builder.set_modified_date("Tomorrow")
+    adj_builder.set_modified_by("Ambrose")
+
+    test_adjustment = adj_builder.build()
+
+    return test_adjustment
 
 
 @fixture
