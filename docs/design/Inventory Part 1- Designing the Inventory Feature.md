@@ -88,8 +88,8 @@ There are a bunch of requirements outlined above which can be broken down a few 
 
 ### Inventory Table
     1. Creation of the Inventory Table.
-    2. Creation of an Event Class to handle actual inventory changes.
-    3. Ability for users to creat events, specify their details and save them into the inventory table.
+    2. Creation of an Adjustment Class to handle actual inventory changes.
+    3. Ability for users to create adjustments, specify their details and save them into the inventory table.
     4. Ability for events to multiply the operator against the amount that was changed.
     5. Ability for the amount to be converted from the preferred unit to the standard unit (mcg).
     5. A mechanism where new events are assigned the appropriate `reporting_period_id', `created_date`, and medication information.
