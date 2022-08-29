@@ -79,6 +79,29 @@ def parse_medication_data(medication_data) -> dict:
     return properties
 
 
+def return_medication(db_connection: sqlite3.Connection) -> list[str]:
+    """Returns the contents of the medications table as a list of strings.
+
+    Args:
+        db_connection (sqlite3.Connection): The database connection.
+
+    Returns:
+        table_contents (list[str]): The contents of the table as a list of
+            strings.
+    """
+    sql_query = """SELECT * FROM medication"""
+
+    medications_list = []
+
+    medications_data = db_connection.return_data(sql_query)
+    for event in medications_data:
+        medications_list.append(
+            f"{event[2]} {event[5]} {event[6]} in {event[4]} ml. Code: {event[1]}."
+        )
+
+    return medications_list
+
+
 class Medication:
     """Represents controlled substance medications in the Narcotics Tracker.
 

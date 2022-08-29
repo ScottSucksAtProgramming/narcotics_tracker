@@ -1,15 +1,141 @@
 """Contains Test_MedicationAttributes and Test_MedicationMethods classes.
 
 Classes:
+
+    Test_Medication Module: Contains all unit tests for the Medication Module.
+    
     Test_MedicationAttributes: Contains all unit tests for the attributes of the Medication Class.
     
-    Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class."""
+    Test_MedicationMethods: Contains all unit tests for the methods of the Medication Class.
+    
+"""
 
 import pytest
 
 from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.utils import date
+
+
+class Test_MedicationModule:
+    """Contains all unit tests for the Medication Module.
+
+    Behaviors Tested:
+        - Medication module can be accessed.
+        - Method return_table_creation_query returns correct string.
+        - Method parse_medication_data creates dictionary with correct vales.
+        - Method return_medications returns all medications.
+    """
+
+    def test_medication_module_can_be_accessed(self) -> None:
+        """Tests that the medication module exists and can be accessed.
+
+        Asserts that calling medication.__doc__ does not return 'None'.
+        """
+        assert medication.__doc__ != None
+
+    def test_medication_table_query_returns_correct_string(self):
+        """Tests that return_table_creation_query returns correct string.
+
+        Calls medication.return_table_creation_query
+
+        Asserts that return_table_create_query is
+        'CREATE TABLE IF NOT EXISTS medication (
+            MEDICATION_ID INTEGER PRIMARY KEY,
+            MEDICATION_CODE TEXT UNIQUE,
+            NAME TEXT,
+            CONTAINER_TYPE TEXT,
+            FILL_AMOUNT REAL,
+            DOSE REAL,
+            UNIT TEXT,
+            CONCENTRATION REAL,
+            STATUS TEXT,
+            CREATED_DATE TEXT,
+            MODIFIED_DATE TEXT,
+            MODIFIED_BY TEXT
+        )'
+        """
+        assert medication.return_table_creation_query() == (
+            """CREATE TABLE IF NOT EXISTS medication (
+            MEDICATION_ID INTEGER PRIMARY KEY,
+            MEDICATION_CODE TEXT UNIQUE,                
+            NAME TEXT,
+            CONTAINER_TYPE TEXT,
+            FILL_AMOUNT REAL,
+            DOSE REAL,
+            UNIT TEXT,
+            CONCENTRATION REAL,
+            STATUS TEXT,
+            CREATED_DATE TEXT,
+            MODIFIED_DATE TEXT,
+            MODIFIED_BY TEXT
+            )"""
+        )
+
+    def test_parse_medication_data_creates_dictionary_with_correct_values(
+        self, test_med
+    ):
+        """Tests that parse_medication_data returns correct dictionary data.
+
+        Loads test_med and saves to database. Retrieves medication data from
+        database and parses it.
+
+        Asserts that the data returned matches ALL expected values.
+        """
+        test_med = test_med
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+        test_med.save(db)
+
+        code = ["Un-69420-9001"]
+        raw_data = db.return_data(
+            """SELECT * FROM medication WHERE medication_code=(?)""", code
+        )
+
+        med_data = medication.parse_medication_data(raw_data)
+
+        assert (
+            med_data["medication_id"] == 1
+            and med_data["name"] == "Unobtanium"
+            and med_data["medication_code"] == "Un-69420-9001"
+            and med_data["container_type"] == containers.Container.VIAL
+            and med_data["fill_amount"] == 9_001.0
+            and med_data["dose"] == 69_420.0
+            and med_data["unit"] == units.Unit.MCG
+            and med_data["concentration"] == 7.712476391512054
+            and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
+            and med_data["created_date"] == "01-02-1986"
+            and med_data["modified_date"] == date.return_date_as_string()
+            and med_data["modified_by"] == "Kvothe"
+        )
+
+    def test_return_medication_returns_expected_medication(
+        self, test_med, database_test_set_up
+    ) -> None:
+        """Tests that the return_medication method returns the expected medication.
+
+        Loads and saves test_med. Creates and save. 2nd_med
+        Calls medication.return_medication().
+
+        Asserts that medication.return_medication() returns expected data.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medication.return_table_creation_query())
+
+        test_med = test_med
+        second_med = test_med
+        second_med.code = "SECOND MED"
+        test_med.save(db)
+        second_med.save(db)
+
+        medication_list = medication.return_medication(db)
+
+        assert (
+            "Unobtanium 69420.0 mcg in 9001.0 ml. Code: Un-69420-9001."
+            in medication_list
+        )
 
 
 class Test_MedicationAttributes:
@@ -183,90 +309,13 @@ class Test_MedicationMethods:
     """Contains all unit tests for the methods of the Medication Class.
 
     Behaviors Tested:
-        - return_table_creation_query returns correct string.
-        - parse_medication_data creates dictionary with correct vales.
+
         - __repr__ returns the correct string.
         - Medication data can be saved to the database.
         - Medication data can be updated in the database.
         - Medication data can be deleted from the database.
         - return_attributes returns the correct information.
     """
-
-    def test_medication_table_query_returns_correct_string(self):
-        """Tests that return_table_creation_query returns correct string.
-
-        Calls medication.return_table_creation_query
-
-        Asserts that return_table_create_query is
-        'CREATE TABLE IF NOT EXISTS medication (
-            MEDICATION_ID INTEGER PRIMARY KEY,
-            MEDICATION_CODE TEXT UNIQUE,
-            NAME TEXT,
-            CONTAINER_TYPE TEXT,
-            FILL_AMOUNT REAL,
-            DOSE REAL,
-            UNIT TEXT,
-            CONCENTRATION REAL,
-            STATUS TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
-            MODIFIED_BY TEXT
-        )'
-        """
-        assert medication.return_table_creation_query() == (
-            """CREATE TABLE IF NOT EXISTS medication (
-            MEDICATION_ID INTEGER PRIMARY KEY,
-            MEDICATION_CODE TEXT UNIQUE,                
-            NAME TEXT,
-            CONTAINER_TYPE TEXT,
-            FILL_AMOUNT REAL,
-            DOSE REAL,
-            UNIT TEXT,
-            CONCENTRATION REAL,
-            STATUS TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
-            MODIFIED_BY TEXT
-            )"""
-        )
-
-    def test_parse_medication_data_creates_dictionary_with_correct_values(
-        self, test_med
-    ):
-        """Tests that parse_medication_data returns correct dictionary data.
-
-        Loads test_med and saves to database. Retrieves medication data from
-        database and parses it.
-
-        Asserts that the data returned matches ALL expected values.
-        """
-        test_med = test_med
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
-        test_med.save(db)
-
-        code = ["Un-69420-9001"]
-        raw_data = db.return_data(
-            """SELECT * FROM medication WHERE medication_code=(?)""", code
-        )
-
-        med_data = medication.parse_medication_data(raw_data)
-
-        assert (
-            med_data["medication_id"] == 1
-            and med_data["name"] == "Unobtanium"
-            and med_data["medication_code"] == "Un-69420-9001"
-            and med_data["container_type"] == containers.Container.VIAL
-            and med_data["fill_amount"] == 9_001.0
-            and med_data["dose"] == 69_420.0
-            and med_data["unit"] == units.Unit.MCG
-            and med_data["concentration"] == 7.712476391512054
-            and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
-            and med_data["created_date"] == "01-02-1986"
-            and med_data["modified_date"] == date.return_date_as_string()
-            and med_data["modified_by"] == "Kvothe"
-        )
 
     def test__repr___returns_correct_string(self, test_med):
         """Tests that __repr__ returns correct string.
