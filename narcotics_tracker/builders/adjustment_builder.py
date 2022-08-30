@@ -8,7 +8,6 @@ Classes:
 
     AdjustmentBuilder: Builds and returns inventory adjustment objects.
 """
-import sqlite3
 
 from narcotics_tracker import database, event_types, inventory, medication
 from narcotics_tracker.builders import adjustment_builder_template
