@@ -36,6 +36,8 @@ MORPHINE_PROPERTIES = [
     medication_statuses.MedicationStatus.ACTIVE,
 ]
 
+DATABASE_FILES = ["inventory.db", "test_database_2.db"]
+
 
 def build_medication(medication_properties: list):
     """Uses the MedicationBuilder to create medication objects."""
@@ -124,34 +126,35 @@ def main():
     )
     loss_event.modified_by = "SRK"
 
-    db = database.Database()
-    db.connect("inventory.db")
+    for _ in DATABASE_FILES:
+        db = database.Database()
+        db.connect(f"{_}")
 
-    med_table_query = medication.return_table_creation_query()
-    db.create_table(med_table_query)
+        med_table_query = medication.return_table_creation_query()
+        db.create_table(med_table_query)
 
-    periods_table_query = periods.return_table_creation_query()
-    db.create_table(periods_table_query)
+        periods_table_query = periods.return_table_creation_query()
+        db.create_table(periods_table_query)
 
-    event_types_table_query = event_types.return_table_creation_query()
-    db.create_table(event_types_table_query)
+        event_types_table_query = event_types.return_table_creation_query()
+        db.create_table(event_types_table_query)
 
-    inventory_table_query = inventory.return_table_creation_query()
-    db.create_table(inventory_table_query)
+        inventory_table_query = inventory.return_table_creation_query()
+        db.create_table(inventory_table_query)
 
-    fentanyl.save(db)
-    morphine.save(db)
-    midazolam.save(db)
+        fentanyl.save(db)
+        morphine.save(db)
+        midazolam.save(db)
 
-    period_1.save(db)
-    period_2.save(db)
+        period_1.save(db)
+        period_2.save(db)
 
-    import_event.save(db)
-    order_event.save(db)
-    use_event.save(db)
-    waste_event.save(db)
-    destruction_event.save(db)
-    loss_event.save(db)
+        import_event.save(db)
+        order_event.save(db)
+        use_event.save(db)
+        waste_event.save(db)
+        destruction_event.save(db)
+        loss_event.save(db)
 
 
 if __name__ == "__main__":
