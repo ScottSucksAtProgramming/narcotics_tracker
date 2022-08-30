@@ -68,13 +68,9 @@ def main():
     midazolam.modified_by = "SRK"
 
     # Build Reporting Period Objects
-    period_1 = periods.ReportingPeriod(
-        database.return_datetime("2022-01-01"), database.return_datetime("2022-06-30")
-    )
+    period_1 = periods.ReportingPeriod("2022-01-01", "2022-06-30")
     period_1.modified_by = "SRK"
-    period_2 = periods.ReportingPeriod(
-        database.return_datetime("2022-07-01"), database.return_datetime("2022-12-31")
-    )
+    period_2 = periods.ReportingPeriod("2022-07-01", "2025-12-31")
     period_2.modified_by = "SRK"
 
     # Build Standard Inventory Events

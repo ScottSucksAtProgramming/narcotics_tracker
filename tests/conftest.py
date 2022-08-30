@@ -62,7 +62,7 @@ def test_period() -> periods.ReportingPeriod:
     Returns:
         test_period (period.Period): A period object for testing.
     """
-    test_period = periods.ReportingPeriod("2001-01-01 00:00:00", "2001-06-30 00:00:00")
+    test_period = periods.ReportingPeriod("2001-01-01 00:00:00", "2100-06-30 00:00:00")
 
     test_period.period_id = 9001
     test_period.created_date = database.return_datetime("2022-08-01")

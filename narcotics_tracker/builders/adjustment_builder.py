@@ -9,7 +9,7 @@ Classes:
     AdjustmentBuilder: Builds and returns inventory adjustment objects.
 """
 
-from narcotics_tracker import database, event_types, inventory, medication
+from narcotics_tracker import database, event_types, inventory, medication, periods
 from narcotics_tracker.builders import adjustment_builder_template
 from narcotics_tracker.utils import unit_converter
 
@@ -34,6 +34,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.medication_code = None
         self.amount_in_preferred_unit = None
         self.amount_in_mcg = None
+        self.reporting_period_id = None
         self.reference_id = None
         self.created_date = None
         self.modified_date = None
@@ -70,8 +71,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         Args:
             adjustment_date (str): The date when the adjustment occurred.
+                Formatted as YYYY-MM-DD HH:MM:SS.
         """
-        self.adjustment_date = adjustment_date
+        self.adjustment_date = database.return_datetime(adjustment_date)
 
     def set_event_code(self, event_code: str) -> None:
         """Sets the unique event_code of the adjustment.
@@ -174,6 +176,19 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         self.amount_in_mcg = amount_in_mcg * operator
 
+    def assign_reporting_period(self) -> None:
+        """Checks that adjustment_date and assigns the period it falls within."""
+
+        # Todo: Get Reporting Periods with their start and end dates.
+        _, reporting_periods = periods.return_periods(self.database_connection)
+
+        # Todo: Compare the dates and assign the reporting_period's id as reporting_period_id.
+        for period in reporting_periods:
+            if self.adjustment_date >= period[1] and self.adjustment_date <= period[2]:
+                self.reporting_period_id = period[0]
+            else:
+                self.reporting_period_id = None
+
     def build(self) -> "inventory.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's properties.
 
@@ -184,5 +199,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         Returns:
             inventory.Adjustment: The inventory adjustment object.
         """
+        self.calculate_amount_in_mcg()
+        self.assign_reporting_period()
 
         return inventory.Adjustment(self)

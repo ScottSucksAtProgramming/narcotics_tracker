@@ -346,11 +346,14 @@ class Test_AdjustmentBuilder:
 
         Loads test_adjustment.
 
-        Asserts that test_adjustment.adjustment_date is set to '06-06-1989'.
+        Asserts that test_adjustment.adjustment_date is set to '2022-08-01 06:00:00'.
         """
         test_adjustment = test_adjustment
+        formatted_date = database.format_datetime_from_unixepoch(
+            test_adjustment.adjustment_date
+        )
 
-        assert test_adjustment.adjustment_date == "06-06-1989"
+        assert formatted_date == "2022-08-01 06:00:00"
 
     def test_event_code_is_set_correctly(self, test_adjustment) -> None:
         """Tests that AdjustmentBuilder sets the event_code correctly.
@@ -442,6 +445,17 @@ class Test_AdjustmentBuilder:
         test_adjustment = test_adjustment
 
         assert test_adjustment.amount_in_mcg == -1000
+
+    def test_reporting_period_is_assigned_correctly(self, test_adjustment) -> None:
+        """Tests that the correcting period is assigned to the adjustment.
+
+        Loads test_adjustment.
+
+        Asserts test_adjustment.reporting_period_id returns '2'.
+        """
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.reporting_period_id == 2
 
     def test_adjustment_objects_is_instance_of_adjustment_class(
         self, test_adjustment

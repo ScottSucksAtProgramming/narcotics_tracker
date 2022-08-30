@@ -52,7 +52,9 @@ def return_periods(db_connection: sqlite3.Connection) -> str:
     Returns:
         table_contents (str): The contents of the table as a string.
     """
-    sql_query = """SELECT * FROM reporting_periods"""
+    sql_query = (
+        """SELECT period_id, starting_date, ending_date FROM reporting_periods"""
+    )
 
     periods_string_list = []
     periods_values_list = []
@@ -61,10 +63,9 @@ def return_periods(db_connection: sqlite3.Connection) -> str:
 
     for period in periods_data:
         periods_string_list.append(
-            f"Reporting Period {period[0]}. Started on: {database.format_datetime_from_unixepoch(period[1])}. Ends on: {database.format_datetime_from_unixepoch(period[3])}"
+            f"Reporting Period {period[0]}. Started on: {database.format_datetime_from_unixepoch(period[1])}. Ends on: {database.format_datetime_from_unixepoch(period[2])}"
         )
-        print(period[3])
-        periods_values_list.append((period[0], period[1], period[3]))
+        periods_values_list.append((period[0], period[1], period[2]))
     return periods_string_list, periods_values_list
 
 

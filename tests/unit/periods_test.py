@@ -60,11 +60,9 @@ class Test_PeriodsModule:
 
         test_period = test_period
         test_period.save(db)
-
         periods_list, _ = periods.return_periods(db)
-        print(periods_list, _)
         assert (
-            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2022-07-31 20:00:00"
+            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2100-06-29 20:00:00"
             in periods_list
         )
 
@@ -129,11 +127,11 @@ class Test_PeriodAttributes:
 
         Loads test_period.
 
-        Asserts that test_period.ending_date is '993859200'
+        Asserts that test_period.ending_date is '4117996800'
         """
         test_period = test_period
 
-        assert test_period.ending_date == 993859200
+        assert test_period.ending_date == 4117996800
 
     def test_created_date_returns_correct_value(self, test_period) -> None:
         """Tests that the created_date attributes returns the correct value.
@@ -195,7 +193,7 @@ class Test_PeriodMethods:
         assert (
             test_period.period_id == 9001
             and test_period.starting_date == 978307200
-            and test_period.ending_date == 993859200
+            and test_period.ending_date == 4117996800
         )
 
     def test___repr___returns_expected_string(self, test_period) -> None:
@@ -209,7 +207,7 @@ class Test_PeriodMethods:
         test_period = test_period
 
         assert str(test_period) == (
-            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2001-06-29 20:00:00."
+            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2100-06-29 20:00:00."
         )
 
     def test_can_save_reporting_period_to_database(
@@ -247,7 +245,7 @@ class Test_PeriodMethods:
         assert test_period.return_attributes() == (
             9001,
             978307200,
-            993859200,
+            4117996800,
             1659312000,
             1659312000,
             "Cinder",
