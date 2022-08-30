@@ -25,7 +25,6 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import database
-from narcotics_tracker.utils import date
 
 
 def return_table_creation_query() -> str:
@@ -157,8 +156,8 @@ class ReportingPeriod:
             ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.return_date_as_string()
-        self.modified_date = date.return_date_as_string()
+            self.created_date = database.return_datetime()
+        self.modified_date = database.return_datetime()
 
         values = self.return_attributes()
 
@@ -174,7 +173,7 @@ class ReportingPeriod:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = (
             """UPDATE reporting_periods SET starting_date =(?) WHERE period_id = (?)"""
@@ -193,7 +192,7 @@ class ReportingPeriod:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = (
             """UPDATE reporting_periods SET ending_date =(?) WHERE period_id = (?)"""

@@ -26,23 +26,23 @@ import sqlite3
 
 from narcotics_tracker import database
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.utils import date, utilities
+from narcotics_tracker.utils import utilities
 
 
 def return_table_creation_query() -> str:
     """Returns the sql query needed to create the medication table."""
     return """CREATE TABLE IF NOT EXISTS medications (
             MEDICATION_ID INTEGER PRIMARY KEY,
-            MEDICATION_CODE TEXT UNIQUE,                
+            MEDICATION_CODE TEXT UNIQUE,
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
-            DOSE REAL,
-            UNIT TEXT,
+            DOSE_IN_MCG REAL,
+            PREFERRED_UNIT TEXT,
             CONCENTRATION REAL,
             STATUS TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INT,
+            MODIFIED_DATE INT,
             MODIFIED_BY TEXT
             )"""
 
@@ -268,8 +268,8 @@ class Medication:
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.return_date_as_string()
-        self.modified_date = date.return_date_as_string()
+            self.created_date = database.return_datetime()
+        self.modified_date = database.return_datetime()
 
         values = self.return_attributes()
 
@@ -296,8 +296,8 @@ class Medication:
                 NAME = ?, 
                 CONTAINER_TYPE = ?, 
                 FILL_AMOUNT = ?, 
-                DOSE = ?, 
-                UNIT = ?, 
+                DOSE_IN_MCG = ?, 
+                PREFERRED_UNIT = ?, 
                 CONCENTRATION = ?, 
                 STATUS = ?, 
                 CREATED_DATE = ?, 
@@ -306,8 +306,8 @@ class Medication:
             WHERE MEDICATION_CODE = ?"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.return_date_as_string()
-        self.modified_date = date.return_date_as_string()
+            self.created_date = database.return_datetime()
+        self.modified_date = database.return_datetime()
 
         values = self.return_attributes() + (code,)
 

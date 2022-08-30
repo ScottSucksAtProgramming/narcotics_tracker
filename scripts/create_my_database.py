@@ -55,20 +55,24 @@ def main():
 
     # Build Medication Objects
     fentanyl = build_medication(FENTANYL_PROPERTIES)
-    fentanyl.created_date = "08-08-2022"
+    fentanyl.created_date = database.return_datetime("2022-08-08")
     fentanyl.modified_by = "SRK"
 
     morphine = build_medication(MORPHINE_PROPERTIES)
-    morphine.created_date = "08-08-2022"
+    morphine.created_date = database.return_datetime("2022-08-08")
     morphine.modified_by = "SRK"
 
     midazolam = build_medication(MIDAZOLAM_PROPERTIES)
     midazolam.modified_by = "SRK"
 
     # Build Reporting Period Objects
-    period_1 = periods.ReportingPeriod("01-01-2022", "06-30-2022")
+    period_1 = periods.ReportingPeriod(
+        database.return_datetime("2022-01-01"), database.return_datetime("2022-06-30")
+    )
     period_1.modified_by = "SRK"
-    period_2 = periods.ReportingPeriod("07-01-2022", "12-31-2022")
+    period_2 = periods.ReportingPeriod(
+        database.return_datetime("2022-07-01"), database.return_datetime("2022-12-31")
+    )
     period_2.modified_by = "SRK"
 
     # Build Standard Inventory Events
@@ -121,7 +125,7 @@ def main():
     loss_event.modified_by = "SRK"
 
     db = database.Database()
-    db.connect("test_database_2.db")
+    db.connect("inventory.db")
 
     med_table_query = medication.return_table_creation_query()
     db.create_table(med_table_query)

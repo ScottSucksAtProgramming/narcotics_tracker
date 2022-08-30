@@ -9,7 +9,6 @@ Classes:
 import os
 
 from narcotics_tracker import database, medication
-from narcotics_tracker.utils import date
 
 
 class Test_Database:
@@ -268,7 +267,6 @@ class Test_Database:
 
         assert isinstance(new_med, medication.Medication)
 
-    def test_loaded_med_has_type_Medication(self, test_med, reset_database):
         """Tests that loaded medications are medication objects.
 
         Saves test_med to database. Loads test_med from database to new_med.
@@ -288,3 +286,20 @@ class Test_Database:
         new_med = db.load_medication(medication_code)
 
         assert isinstance(new_med, medication.Medication)
+
+    def test_can_return_current_datetime(self) -> None:
+        """Tests to see if the Database class can get the current date time.
+
+        Asserts that the returned datetime is not 'None'.
+        """
+
+        assert database.return_datetime() != None
+
+    def test_can_format_unixepoch_datetime_to_readable_string(self) -> None:
+        """Tests that unixepoch datetimes can be converted to strings.
+
+        Asserts that the datetime int '505026000' returns 01-02-1986"""
+
+        assert (
+            database.format_datetime_from_unixepoch(505026000) == "1986-01-02 00:00:00"
+        )

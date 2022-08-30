@@ -14,7 +14,6 @@ import pytest
 
 from narcotics_tracker import database, medication
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.utils import date
 
 
 class Test_MedicationModule:
@@ -47,28 +46,28 @@ class Test_MedicationModule:
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
-            DOSE REAL,
-            UNIT TEXT,
+            DOSE_IN_MCG REAL,
+            PREFERRED_UNIT TEXT,
             CONCENTRATION REAL,
             STATUS TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INT,
+            MODIFIED_DATE INT,
             MODIFIED_BY TEXT
-        )'
+            )'
         """
         assert medication.return_table_creation_query() == (
             """CREATE TABLE IF NOT EXISTS medications (
             MEDICATION_ID INTEGER PRIMARY KEY,
-            MEDICATION_CODE TEXT UNIQUE,                
+            MEDICATION_CODE TEXT UNIQUE,
             NAME TEXT,
             CONTAINER_TYPE TEXT,
             FILL_AMOUNT REAL,
-            DOSE REAL,
-            UNIT TEXT,
+            DOSE_IN_MCG REAL,
+            PREFERRED_UNIT TEXT,
             CONCENTRATION REAL,
             STATUS TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INT,
+            MODIFIED_DATE INT,
             MODIFIED_BY TEXT
             )"""
         )
@@ -106,9 +105,6 @@ class Test_MedicationModule:
             and med_data["unit"] == units.Unit.MG
             and med_data["concentration"] == 7.712476391512054
             and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
-            and med_data["created_date"] == "01-02-1986"
-            and med_data["modified_date"] == date.return_date_as_string()
-            and med_data["modified_by"] == "Kvothe"
         )
 
     def test_return_medication_returns_expected_medication(

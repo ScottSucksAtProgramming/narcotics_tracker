@@ -21,7 +21,6 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import database
-from narcotics_tracker.utils import date
 
 
 def return_table_creation_query() -> str:
@@ -211,8 +210,8 @@ class EventType:
             ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
-            self.created_date = date.return_date_as_string()
-        self.modified_date = date.return_date_as_string()
+            self.created_date = database.return_datetime()
+        self.modified_date = database.return_datetime()
 
         values = self.return_attributes()
 
@@ -228,7 +227,7 @@ class EventType:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = """UPDATE event_types SET event_code =(?) WHERE event_id = (?)"""
         values = (new_event_code, self.event_id)
@@ -245,7 +244,7 @@ class EventType:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = """UPDATE event_types SET event_name =(?) WHERE event_id = (?)"""
         values = (new_event_name, self.event_id)
@@ -262,7 +261,7 @@ class EventType:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = """UPDATE event_types SET description =(?) WHERE event_id = (?)"""
         values = (new_description, self.event_id)
@@ -280,7 +279,7 @@ class EventType:
 
             db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = date.return_date_as_string()
+        self.modified_date = database.return_datetime()
 
         sql_query = """UPDATE event_types SET operator =(?) WHERE event_id = (?)"""
         values = (new_operator, self.event_id)
