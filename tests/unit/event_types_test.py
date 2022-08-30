@@ -19,6 +19,7 @@ class Test_EventTypesModule:
         - Event Types module can be accessed.
         - Method return_table_creation_query returns correct string.
         - Method return_event_types returns all event_types.
+        - Method return_operator returns expected result.
     """
 
     def test_event_types_module_can_be_accessed(self) -> None:
@@ -77,6 +78,20 @@ class Test_EventTypesModule:
             and "Event Type 2nd Event Type. Code: 2ND. Useless Thing."
             in event_types_list
         )
+
+    def test_return_operator_returns_expected_integer(self, test_event_type) -> None:
+        """Tests that return_operator returns the event types operator.
+
+        Loads test_event_type. Calls test_event_type.return_operator().
+
+        Asserts that method returns '-1'.
+        """
+        db = database.Database()
+        db.connect("test_database_2.db")
+        test_event_type = test_event_type
+        test_event_type.event_code = "LOSS"
+
+        assert event_types.return_operator(test_event_type.event_code, db) == -1
 
 
 class Test_EventTypeAttributes:

@@ -63,6 +63,25 @@ def return_event_types(db_connection: sqlite3.Connection) -> list[str]:
     return event_types_list
 
 
+def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
+    """Obtains and returns the event_types' operator.
+
+    Args:
+        event_code (str): The unique identifier of the event.
+
+        db_connection (sqlite3.Connection): The connection to the database.
+
+    Returns:
+        operator (int): The operator for the event type.
+    """
+    sql_query = """SELECT operator FROM event_types WHERE event_code =(?)"""
+    values = [event_code]
+
+    operator = db_connection.return_data(sql_query, values)
+
+    return operator[0][0]
+
+
 class EventType:
     """Defines the representation of Event Types for the project.
 
