@@ -35,10 +35,10 @@ def return_table_creation_query() -> str:
     """
     return """CREATE TABLE IF NOT EXISTS reporting_periods (
             PERIOD_ID INTEGER PRIMARY KEY,
-            STARTING_DATE TEXT,                
-            ENDING_DATE TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            STARTING_DATE INTEGER,                
+            ENDING_DATE INTEGER,
+            CREATED_DATE INTEGER,
+            MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT
             )"""
 
@@ -54,15 +54,18 @@ def return_periods(db_connection: sqlite3.Connection) -> str:
     """
     sql_query = """SELECT * FROM reporting_periods"""
 
-    periods_list = []
+    periods_string_list = []
+    periods_values_list = []
 
     periods_data = db_connection.return_data(sql_query)
 
     for period in periods_data:
-        periods_list.append(
-            f"Reporting Period {period[0]}. Started on: {period[1]}. Ends on: {period[3]}"
+        periods_string_list.append(
+            f"Reporting Period {period[0]}. Started on: {database.format_datetime_from_unixepoch(period[1])}. Ends on: {database.format_datetime_from_unixepoch(period[3])}"
         )
-    return periods_list
+        print(period[3])
+        periods_values_list.append((period[0], period[1], period[3]))
+    return periods_string_list, periods_values_list
 
 
 class ReportingPeriod:
@@ -121,8 +124,8 @@ class ReportingPeriod:
                 ending_date (str): The date when the reporting period ends.
         """
         self.period_id = None
-        self.starting_date = starting_date
-        self.ending_date = ending_date
+        self.starting_date = database.return_datetime(starting_date)
+        self.ending_date = database.return_datetime(ending_date)
         self.created_date = None
         self.modified_date = None
         self.modified_by = None
@@ -134,9 +137,12 @@ class ReportingPeriod:
             str: The string describing the reporting period object
         """
 
+        starting_date = database.format_datetime_from_unixepoch(self.starting_date)
+        ending_date = database.format_datetime_from_unixepoch(self.ending_date)
+
         return (
             f"Reporting Period {self.period_id}. Started on: "
-            f"{self.starting_date}. Ends on: {self.ending_date}."
+            f"{starting_date}. Ends on: {ending_date}."
         )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
@@ -169,7 +175,8 @@ class ReportingPeriod:
         """Updates the starting date of the reporting period.
 
         Args:
-            new_starting_date (str): The new starting date in format MM-DD-YYYY.
+            new_starting_date (str): The new starting date in format
+                YYY-MM-DD HH:MM:SS.
 
             db_connection (sqlite3.Connection) The database connection.
         """
@@ -178,7 +185,7 @@ class ReportingPeriod:
         sql_query = (
             """UPDATE reporting_periods SET starting_date =(?) WHERE period_id = (?)"""
         )
-        values = (new_starting_date, self.period_id)
+        values = (database.return_datetime(new_starting_date), self.period_id)
 
         db_connection.write_data(sql_query, values)
 
@@ -197,7 +204,7 @@ class ReportingPeriod:
         sql_query = (
             """UPDATE reporting_periods SET ending_date =(?) WHERE period_id = (?)"""
         )
-        values = (new_ending_date, self.period_id)
+        values = (database.return_datetime(new_ending_date), self.period_id)
 
         db_connection.write_data(sql_query, values)
 

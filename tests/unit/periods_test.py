@@ -36,10 +36,10 @@ class Test_PeriodsModule:
         """
         expected_query = """CREATE TABLE IF NOT EXISTS reporting_periods (
             PERIOD_ID INTEGER PRIMARY KEY,
-            STARTING_DATE TEXT,                
-            ENDING_DATE TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            STARTING_DATE INTEGER,                
+            ENDING_DATE INTEGER,
+            CREATED_DATE INTEGER,
+            MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT
             )"""
 
@@ -61,9 +61,10 @@ class Test_PeriodsModule:
         test_period = test_period
         test_period.save(db)
 
-        periods_list = periods.return_periods(db)
+        periods_list, _ = periods.return_periods(db)
+        print(periods_list, _)
         assert (
-            "Reporting Period 9001. Started on: 02-29-0001. Ends on: 08-26-2022"
+            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2022-07-31 20:00:00"
             in periods_list
         )
 
@@ -117,44 +118,44 @@ class Test_PeriodAttributes:
 
         Loads test_period.
 
-        Asserts that test_period.starting_date is '02-29-0001'.
+        Asserts that test_period.starting_date is '978307200'.
         """
         test_period = test_period
 
-        assert test_period.starting_date == "02-29-0001"
+        assert test_period.starting_date == 978307200
 
     def test_ending_date_returns_correct_value(self, test_period) -> None:
         """Tests that the ending_date attributes returns the correct value.
 
         Loads test_period.
 
-        Asserts that test_period.ending_date is '01-35-0000'
+        Asserts that test_period.ending_date is '993859200'
         """
         test_period = test_period
 
-        assert test_period.ending_date == "01-35-0000"
+        assert test_period.ending_date == 993859200
 
     def test_created_date_returns_correct_value(self, test_period) -> None:
         """Tests that the created_date attributes returns the correct value.
 
         Loads test_period.
 
-        Asserts that test_period.created_date is '08-26-2022'
+        Asserts that test_period.created_date is '1659312000'
         """
         test_period = test_period
 
-        assert test_period.created_date == "08-26-2022"
+        assert test_period.created_date == 1659312000
 
     def test_modified_date_returns_correct_value(self, test_period) -> None:
         """Tests that the modified_date attributes returns the correct value.
 
         Loads test_period.
 
-        Asserts that test_period.modified_date is '08-01-2022'
+        Asserts that test_period.modified_date is '1659312000'
         """
         test_period = test_period
 
-        assert test_period.modified_date == "08-01-2022"
+        assert test_period.modified_date == 1659312000
 
     def test_modified_by_returns_correct_value(self, test_period) -> None:
         """Tests that the modified_by attributes returns the correct value.
@@ -193,8 +194,8 @@ class Test_PeriodMethods:
 
         assert (
             test_period.period_id == 9001
-            and test_period.starting_date == "02-29-0001"
-            and test_period.ending_date == "01-35-0000"
+            and test_period.starting_date == 978307200
+            and test_period.ending_date == 993859200
         )
 
     def test___repr___returns_expected_string(self, test_period) -> None:
@@ -208,7 +209,7 @@ class Test_PeriodMethods:
         test_period = test_period
 
         assert str(test_period) == (
-            f"Reporting Period 9001. Started on: 02-29-0001. Ends on: " f"01-35-0000."
+            "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2001-06-29 20:00:00."
         )
 
     def test_can_save_reporting_period_to_database(
@@ -233,7 +234,7 @@ class Test_PeriodMethods:
             """SELECT starting_date FROM reporting_periods WHERE period_id = '9001'"""
         )
 
-        assert data[0][0] == "02-29-0001"
+        assert data[0][0] == 978307200
 
     def test_return_attributes(self, test_period):
         """Tests that the reporting period data is correctly returned.
@@ -245,20 +246,20 @@ class Test_PeriodMethods:
         test_period = test_period
         assert test_period.return_attributes() == (
             9001,
-            "02-29-0001",
-            "01-35-0000",
-            "08-26-2022",
-            "08-01-2022",
+            978307200,
+            993859200,
+            1659312000,
+            1659312000,
             "Cinder",
         )
 
     def test_can_update_starting_date(self, test_period, reset_database) -> None:
         """Tests that the reporting period's starting date can be updated.
 
-        Loads test_period. Updates starting date to '00-00-0000'. Queries the
+        Loads test_period. Updates starting date to '2022-12-25 00:00:00'. Queries the
         starting date for the period_id of 9001.
 
-        Asserts that test_period.starting_date is '00-00-0000'.
+        Asserts that test_period.starting_date is '2022-12-25 00:00:00'.
         """
         test_period = test_period
 
@@ -267,20 +268,20 @@ class Test_PeriodMethods:
         db.create_table(periods.return_table_creation_query())
         test_period.save(db)
 
-        test_period.update_starting_date("00-00-0000", db)
+        test_period.update_starting_date("2022-12-25 00:00:00", db)
 
         data = db.return_data(
             """SELECT starting_date FROM reporting_periods WHERE period_id = 9001"""
         )
-        assert data[0][0] == "00-00-0000"
+        assert data[0][0] == 1671926400
 
     def test_can_update_ending_date(self, test_period, reset_database) -> None:
         """Tests that the reporting period's ending date can be updated.
 
-        Loads test_period. Updates ending date to '99-99-9999'. Queries the
+        Loads test_period. Updates ending date to '2011-09-11'. Queries the
         ending date for the period_id of 9001.
 
-        Asserts that test_period.ending_date is '99-99-9999'.
+        Asserts that test_period.ending_date is '2011-09-11'.
         """
         test_period = test_period
 
@@ -289,12 +290,12 @@ class Test_PeriodMethods:
         db.create_table(periods.return_table_creation_query())
         test_period.save(db)
 
-        test_period.update_ending_date("99-99-9999", db)
+        test_period.update_ending_date("2011-09-11", db)
 
         data = db.return_data(
             """SELECT ending_date FROM reporting_periods WHERE period_id = 9001"""
         )
-        assert data[0][0] == "99-99-9999"
+        assert data[0][0] == 1315699200
 
     def test_can_delete_reporting_period_from_database(
         self, test_period, reset_database

@@ -62,11 +62,11 @@ def test_period() -> periods.ReportingPeriod:
     Returns:
         test_period (period.Period): A period object for testing.
     """
-    test_period = periods.ReportingPeriod("02-29-0001", "01-35-0000")
+    test_period = periods.ReportingPeriod("2001-01-01 00:00:00", "2001-06-30 00:00:00")
 
     test_period.period_id = 9001
-    test_period.created_date = "08-26-2022"
-    test_period.modified_date = "08-01-2022"
+    test_period.created_date = database.return_datetime("2022-08-01")
+    test_period.modified_date = database.return_datetime("2022-08-01")
     test_period.modified_by = "Cinder"
 
     return test_period
@@ -107,7 +107,7 @@ def test_adjustment() -> "inventory.Adjustment":
     adj_builder = adjustment_builder.AdjustmentBuilder()
     adj_builder.set_database_connection("test_database_2.db")
     adj_builder.set_adjustment_id(-300)
-    adj_builder.set_adjustment_date("06-06-1989")
+    adj_builder.set_adjustment_date("2022-08-01 10:00:00")
     adj_builder.set_event_code("WASTE")
     adj_builder.set_medication_code("morphine")
     adj_builder.set_adjustment_amount(1)
