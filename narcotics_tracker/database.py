@@ -24,6 +24,29 @@ if TYPE_CHECKING:
     from narcotics_tracker import medication
 
 
+def return_datetime(string_date_time: str = None) -> int:
+    """Returns current local date time as unixepoch formatted integer."""
+    sql_query = """SELECT unixepoch();"""
+
+    if string_date_time:
+        sql_query = f"""SELECT unixepoch('{string_date_time}');"""
+
+    db = Database()
+    db.connect("inventory.db")
+
+    return db.return_data(sql_query)[0][0]
+
+
+def format_datetime_from_unixepoch(unix_date_time: int) -> str:
+    """Formats a unixepoch datetime to readable format."""
+    sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
+    values = [unix_date_time]
+    db = Database()
+    db.connect("inventory.db")
+
+    return db.return_data(sql_query, values)[0][0]
+
+
 class Database:
     """Interacts directly with the database.
 
