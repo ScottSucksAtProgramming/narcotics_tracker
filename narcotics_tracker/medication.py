@@ -119,12 +119,12 @@ def return_preferred_unit(
         preferred_unit (str): The preferred unit for the medication as a
             string.
     """
-    sql_query = """SELECT unit FROM medication where code=(?)"""
+    sql_query = """SELECT unit FROM medications WHERE medication_code=(?)"""
     values = [medication_code]
 
     preferred_unit = db_connection.return_data(sql_query, values)
 
-    return preferred_unit
+    return preferred_unit[0][0]
 
 
 class Medication:

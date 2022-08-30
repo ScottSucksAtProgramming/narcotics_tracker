@@ -147,6 +147,13 @@ class Test_MedicationModule:
         medication.return_preferred_unit(test_med, db).
 
         Asserts that 'mg' is returned."""
+        db = database.Database()
+        db.connect("test_database_2.db")
+
+        test_med = test_med
+        test_med.medication_code = "morphine"
+
+        assert medication.return_preferred_unit(test_med.medication_code, db)
 
 
 class Test_MedicationAttributes:
