@@ -341,7 +341,7 @@ class Test_AdjustmentBuilder:
 
         assert test_adjustment.adjustment_id == -300
 
-    def test_adjustment_date_is_set_correctly_(self, test_adjustment) -> None:
+    def test_adjustment_date_is_set_correctly(self, test_adjustment) -> None:
         """Tests that AdjustmentBuilder sets the adjustment's date correctly.
 
         Loads test_adjustment.
@@ -352,27 +352,27 @@ class Test_AdjustmentBuilder:
 
         assert test_adjustment.adjustment_date == "06-06-1989"
 
-    def test_event_code_is_set_correctly_(self, test_adjustment) -> None:
+    def test_event_code_is_set_correctly(self, test_adjustment) -> None:
         """Tests that AdjustmentBuilder sets the event_code correctly.
 
         Loads test_adjustment.
 
-        Asserts that test_adjustment.event_code is set to 'DONATE'.
+        Asserts that test_adjustment.event_code is set to 'WASTE'.
         """
         test_adjustment = test_adjustment
 
-        assert test_adjustment.event_code == "DONATE"
+        assert test_adjustment.event_code == "WASTE"
 
-    def test_medication_code_is_set_correctly_(self, test_adjustment) -> None:
+    def test_medication_code_is_set_correctly(self, test_adjustment) -> None:
         """Tests that AdjustmentBuilder sets the medication_code correctly.
 
         Loads test_adjustment.
 
-        Asserts that test_adjustment.medication_code is set to 'Un-69420-9001'.
+        Asserts that test_adjustment.medication_code is set to 'morphine'.
         """
         test_adjustment = test_adjustment
 
-        assert test_adjustment.medication_code == "Un-69420-9001"
+        assert test_adjustment.medication_code == "morphine"
 
     def test_amount_in_preferred_unit_is_set_correctly(self, test_adjustment) -> None:
         """Tests that amount of medication changed is set correctly.
@@ -429,25 +429,19 @@ class Test_AdjustmentBuilder:
 
         assert test_adjustment.modified_by == "Ambrose"
 
-    # def test_amount_in_mcg_is_calculated_correctly(
-    #     self, test_adjustment, test_med, database_test_set_up
-    # ) -> None:
-    #     """Tests that the amount in mcg is calculated correctly.
+    def test_amount_in_mcg_is_calculated_correctly(self, test_adjustment) -> None:
+        """Tests that the amount in mcg is calculated correctly.
 
-    #     Connects to test database. Creates medication table and saves
-    #     test_med. Loads test_adjustment.
+        Connects to test database. Loads test_adjustment.
 
-    #     Asserts test_adjustment.amount_in_mcg is 100.
-    #     """
-    #     db = database.Database()
-    #     db.connect("test_database.db")
+        Asserts test_adjustment.amount_in_mcg is 1000.
+        """
+        db = database.Database()
+        db.connect("test_database_2.db")
 
-    #     db.create_table(medication.return_table_creation_query())
-    #     test_med = test_med
-    #     test_med.save(db)
+        test_adjustment = test_adjustment
 
-    #     test_adjustment = test_adjustment
-    #     test_adjustment.medication_code = "Un-69420-9001"
+        assert test_adjustment.amount_in_mcg == -1000
 
     def test_adjustment_objects_is_instance_of_adjustment_class(
         self, test_adjustment

@@ -10,7 +10,7 @@ Classes:
 """
 import sqlite3
 
-from narcotics_tracker import inventory, medication
+from narcotics_tracker import database, event_types, inventory, medication
 from narcotics_tracker.builders import adjustment_builder_template
 from narcotics_tracker.utils import unit_converter
 
@@ -30,25 +30,26 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """Initializes the adjustment builder. Sets all attributes to None."""
         self.database_connection = None
         self.adjustment_id = None
+        self.adjustment_date = None
+        self.event_code = None
         self.medication_code = None
-        self.name = None
-        self.container_type = None
-        self.fill_amount = None
-        self.dose = None
-        self.preferred_unit = None
-        self.concentration = None
-        self.status = None
+        self.amount_in_preferred_unit = None
+        self.amount_in_mcg = None
+        self.reference_id = None
         self.created_date = None
         self.modified_date = None
         self.modified_by = None
 
-    def set_database_connection(self, db_connection: sqlite3.Connection) -> None:
+    def set_database_connection(self, database_file: str) -> None:
         """Sets the connections to the database.
 
         Args:
             db_connection (sqlite3.Connection): Connection to the database.
         """
-        self.database_connection = db_connection
+        db = database.Database()
+        db.connect(database_file)
+
+        self.database_connection = db
 
     def set_adjustment_id(self, adjustment_id: int = None) -> None:
         """Sets the adjustment's id number. Should not be called by the user.
@@ -158,16 +159,21 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
                 the adjustment."""
         self.modified_by = modified_by
 
-    # def calculate_amount_in_mcg(self, db_connection) -> None:
-    #     """Calculates and sets the adjustment amount in micrograms."""
-    #     # TODO 1. Get preferred Unit.
-    #     preferred_unit = medication.return_preferred_unit(
-    #         self.medication_code, db_connection
-    #     )
-    #     print(preferred_unit)
+    def calculate_amount_in_mcg(self) -> None:
+        """Calculates and sets the adjustment amount in micrograms."""
+        preferred_unit = medication.return_preferred_unit(
+            self.medication_code, db_connection=self.database_connection
+        )
 
-    #     # Todo 2. Convert amount to micrograms
-    #     # todo 3. Save amount as attribute.
+        amount_in_mcg = unit_converter.UnitConverter.to_mcg(
+            self.amount_in_preferred_unit, preferred_unit
+        )
+
+        operator = event_types.return_operator(
+            self.event_code, self.database_connection
+        )
+
+        self.amount_in_mcg = amount_in_mcg * operator
 
     def build(self) -> "inventory.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's properties.
