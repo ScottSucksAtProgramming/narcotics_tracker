@@ -7,7 +7,7 @@ Classes:
     Test_AdjustmentAttributes: Contains unit tests for the class' attributes.
 """
 
-from narcotics_tracker import inventory
+from narcotics_tracker import database, inventory
 
 
 class Test_InventoryModule:
@@ -56,6 +56,19 @@ class Test_AdjustmentAttributes:
 
     Behaviors Tested:
         - Adjustments class can be accessed.
+        - Adjustments return expected database_connection.
+        - Adjustments return expected Adjustment_ID.
+        - Adjustments return expected adjustment_date.
+        #! - Adjustments return expected name.
+        #! - Adjustments return expected container_type.
+        #! - Adjustments return expected fill_amount.
+        #! - Adjustments return expected dose.
+        #! - Adjustments return expected preferred_unit.
+        #! - Adjustments return expected concentration.
+        #! - Adjustments return expected created_date.
+        #! - Adjustments return expected modified_date.
+        #! - Adjustments return expected modified_by.
+        #! - Adjustments can be edited.
     """
 
     def test_can_access_adjustment_class(self) -> None:
@@ -64,3 +77,37 @@ class Test_AdjustmentAttributes:
         Asserts that inventory.Adjustment.__doc__ does not return nothing.
         """
         assert inventory.Adjustment.__doc__ != None
+
+    def test_adjustments_return_expected_database_connection(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the correct database_connection is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.database_connection is not None."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.database_connection != None
+
+    def test_adjustments_return_expected_adjustment_id(self, test_adjustment) -> None:
+        """Tests that the correct adjustment_id is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.adjustment_id is -300."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.adjustment_id == -300
+
+    def test_adjustments_return_expected_adjustment_date(self, test_adjustment) -> None:
+        """Tests that the correct adjustment_date is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.adjustment_date is 1659348000."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.adjustment_date == database.return_datetime(
+            "2022-08-01 10:00:00"
+        )

@@ -184,8 +184,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         # Todo: Compare the dates and assign the reporting_period's id as reporting_period_id.
         for period in reporting_periods:
-            if self.adjustment_date >= period[1] and self.adjustment_date <= period[2]:
+            if period[1] <= self.adjustment_date and self.adjustment_date <= period[2]:
                 self.reporting_period_id = period[0]
+                return
             else:
                 self.reporting_period_id = None
 
