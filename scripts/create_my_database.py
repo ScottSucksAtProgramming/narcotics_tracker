@@ -80,7 +80,7 @@ def main():
     # Build Standard Inventory Events
     import_event = event_types.EventType(
         "IMPORT",
-        "Imported Medications",
+        "imported",
         "Used when adding pre-existing stock to the table",
         +1,
     )
@@ -88,7 +88,7 @@ def main():
 
     order_event = event_types.EventType(
         "ORDER",
-        "Ordered Medications",
+        "ordered",
         "Used when adding new stock from a purchase order.",
         +1,
     )
@@ -96,7 +96,7 @@ def main():
 
     use_event = event_types.EventType(
         "USE",
-        "Used Medications",
+        "used",
         "Used when subtracting medication that was administered to a patient.",
         -1,
     )
@@ -104,7 +104,7 @@ def main():
 
     waste_event = event_types.EventType(
         "WASTE",
-        "Wasted Medications",
+        "wasted",
         "Used when subtracting medication which was wasted.",
         -1,
     )
@@ -112,7 +112,7 @@ def main():
 
     destruction_event = event_types.EventType(
         "DESTROY",
-        "Destroy Medications",
+        "destroyed",
         "Used when subtracting medication which was destroyed through a reverse distributor.",
         -1,
     )
@@ -120,7 +120,7 @@ def main():
 
     loss_event = event_types.EventType(
         "LOSS",
-        "Loss of Medications",
+        "lost",
         "Used when subtracting medication which were lost or stolen.",
         -1,
     )
