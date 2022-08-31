@@ -59,15 +59,16 @@ class Test_AdjustmentAttributes:
         - Adjustments return expected database_connection.
         - Adjustments return expected adjustment_ID.
         - Adjustments return expected adjustment_date.
-        #! - Adjustments return expected event_code.
-        #! - Adjustments return expected medication_code.
-        #! - Adjustments return expected amount_in_mcg.
-        #! - Adjustments return expected reporting_period_id.
-        #! - Adjustments return expected reference_id.
-        #! - Adjustments return expected created_date.
-        #! - Adjustments return expected modified_date.
-        #! - Adjustments return expected modified_by.
-        #! - Adjustments can be edited.
+        - Adjustments return expected event_code.
+        - Adjustments return expected medication_code.
+        - Adjustments return expected amount_in_preferred_unit
+        - Adjustments return expected amount_in_mcg.
+        - Adjustments return expected reporting_period_id.
+        - Adjustments return expected reference_id.
+        - Adjustments return expected created_date.
+        - Adjustments return expected modified_date.
+        - Adjustments return expected modified_by.
+        - Adjustments can be edited.
     """
 
     def test_can_access_adjustment_class(self) -> None:
@@ -130,6 +131,18 @@ class Test_AdjustmentAttributes:
         test_adjustment = test_adjustment
 
         assert test_adjustment.medication_code == "morphine"
+
+    def test_adjustments_return_expected_amount_in_preferred_unit(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the correct amount_in_preferred_unit is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.amount_in_preferred_unit is 1."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.amount_in_preferred_unit == 1
 
     def test_adjustments_return_expected_amount_in_mcg(self, test_adjustment) -> None:
         """Tests that the correct amount_in_mcg is returned.
@@ -205,3 +218,32 @@ class Test_AdjustmentAttributes:
         test_adjustment.modified_by = "Me, Duh!"
 
         assert test_adjustment.modified_by == "Me, Duh!"
+
+
+class Test_AdjustmentMethods:
+    """Contains all unit tests for the methods of the Adjustment class.
+
+    Behaviors Tested:
+        - __repr__ returns correct string.
+        - Adjustments can be saved to inventory table.
+        - Adjustment data can be updated.
+        - Adjustments can be deleted from database.
+        - Method return_attributes returns the correct information.
+    """
+
+    def test__repr___returns_correct_string(self, test_adjustment):
+        """Tests that __repr__ returns correct string.
+
+        Loads test_adjustment. Calls str(test_adjustment).
+
+
+        Asserts that str(test_adjustment) returns:
+            "Adjustment Number -300 occurred at 2022-08-01 10:00:00. 1 mg of Morphine was with
+        """
+        test_adjustment = test_adjustment
+        assert str(test_adjustment) == (
+            f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
+            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
+            f"Concentration: 7.712476391512054. Status: Discontinued. Created "
+            f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
+        )
