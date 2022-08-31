@@ -113,8 +113,8 @@ def test_adjustment() -> "inventory.Adjustment":
     adj_builder.set_adjustment_amount(1)
     adj_builder.calculate_amount_in_mcg()
     adj_builder.set_reference_id("TEST ID")
-    adj_builder.set_created_date("Yesterday")
-    adj_builder.set_modified_date("Tomorrow")
+    adj_builder.set_created_date("2022-08-01 10:00:00")
+    adj_builder.set_modified_date("2022-08-01 10:00:00")
     adj_builder.set_modified_by("Ambrose")
 
     test_adjustment = adj_builder.build()

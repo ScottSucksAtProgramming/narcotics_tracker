@@ -136,7 +136,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         Args:
             created_date (str): The date the adjustment was created.
         """
-        self.created_date = created_date
+        self.created_date = database.return_datetime(created_date)
 
     def set_modified_date(self, modified_date: str) -> None:
         """Sets the adjustment's modified date. Should not be called the user.
@@ -150,7 +150,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         Args:
             modified_date (str): The date the adjustment was last modified.
         """
-        self.modified_date = modified_date
+        self.modified_date = database.return_datetime(modified_date)
 
     def set_modified_by(self, modified_by: str) -> None:
         """Sets the identifier of the user who last modified the adjustment.

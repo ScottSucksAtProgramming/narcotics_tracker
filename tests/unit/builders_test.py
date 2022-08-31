@@ -404,22 +404,26 @@ class Test_AdjustmentBuilder:
 
         Loads test_adjustment.
 
-        Asserts test_adjustment.created_date is 'Yesterday'.
+        Asserts test_adjustment.created_date is '2022-08-01 10:00:00'.
         """
         test_adjustment = test_adjustment
 
-        assert test_adjustment.created_date == "Yesterday"
+        assert test_adjustment.created_date == database.return_datetime(
+            "2022-08-01 10:00:00"
+        )
 
     def test_modified_date_is_set_correctly(self, test_adjustment) -> None:
         """Tests that the adjustments created date is set correctly.
 
         Loads test_adjustment.
 
-        Asserts test_adjustment.modified_date is 'Tomorrow'.
+        Asserts test_adjustment.modified_date is '2022-08-01 10:00:00'.
         """
         test_adjustment = test_adjustment
 
-        assert test_adjustment.modified_date == "Tomorrow"
+        assert test_adjustment.modified_date == database.return_datetime(
+            "2022-08-01 10:00:00"
+        )
 
     def test_modified_by_is_set_correctly(self, test_adjustment) -> None:
         """Tests that the adjustments created date is set correctly.
