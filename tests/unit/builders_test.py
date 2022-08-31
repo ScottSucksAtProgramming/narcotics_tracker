@@ -377,17 +377,6 @@ class Test_AdjustmentBuilder:
 
         assert test_adjustment.medication_code == "morphine"
 
-    def test_amount_in_preferred_unit_is_set_correctly(self, test_adjustment) -> None:
-        """Tests that amount of medication changed is set correctly.
-
-        Loads test_med. Builds medications table and saves test_med.
-
-        Asserts that test_adjustment.quantity_amount is '1'.
-        """
-        test_adjustment = test_adjustment
-
-        assert test_adjustment.amount_in_preferred_unit == 1
-
     def test_reference_id_is_set_correctly(self, test_adjustment) -> None:
         """Tests that the Adjustment's reference ID is set correctly.
 

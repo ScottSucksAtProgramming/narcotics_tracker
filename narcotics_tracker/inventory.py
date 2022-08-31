@@ -65,7 +65,6 @@ class Adjustment:
         self.adjustment_date = builder.adjustment_date
         self.event_code = builder.event_code
         self.medication_code = builder.medication_code
-        # self.amount_in_preferred_unit = builder.amount_in_preferred_unit
         self.amount_in_mcg = builder.amount_in_mcg
         self.reporting_period_id = builder.reporting_period_id
         self.reference_id = builder.reference_id
