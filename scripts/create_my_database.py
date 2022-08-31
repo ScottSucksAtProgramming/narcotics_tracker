@@ -68,10 +68,14 @@ def main():
     midazolam.modified_by = "SRK"
 
     # Build Reporting Period Objects
-    period_1 = periods.ReportingPeriod("2022-01-01", "2022-06-30")
+    period_1 = periods.ReportingPeriod("2022-01-01 00:00:00", "2022-06-30 23:59:59")
     period_1.modified_by = "SRK"
-    period_2 = periods.ReportingPeriod("2022-07-01", "2025-12-31")
+    period_2 = periods.ReportingPeriod("2022-07-01 00:00:00", "2022-12-31 23:59:59")
     period_2.modified_by = "SRK"
+    period_3 = periods.ReportingPeriod("2023-01-01 00:00:00", "2023-06-30 23:59:59")
+    period_3.modified_by = "SRK"
+    period_4 = periods.ReportingPeriod("2023-07-01 00:00:00", "2023-12-31 23:59:59")
+    period_4.modified_by = "SRK"
 
     # Build Standard Inventory Events
     import_event = event_types.EventType(
@@ -144,6 +148,8 @@ def main():
 
         period_1.save(db)
         period_2.save(db)
+        period_3.save(db)
+        period_4.save(db)
 
         import_event.save(db)
         order_event.save(db)
