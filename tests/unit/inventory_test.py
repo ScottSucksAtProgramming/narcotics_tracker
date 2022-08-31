@@ -57,14 +57,13 @@ class Test_AdjustmentAttributes:
     Behaviors Tested:
         - Adjustments class can be accessed.
         - Adjustments return expected database_connection.
-        - Adjustments return expected Adjustment_ID.
+        - Adjustments return expected adjustment_ID.
         - Adjustments return expected adjustment_date.
-        #! - Adjustments return expected name.
-        #! - Adjustments return expected container_type.
-        #! - Adjustments return expected fill_amount.
-        #! - Adjustments return expected dose.
-        #! - Adjustments return expected preferred_unit.
-        #! - Adjustments return expected concentration.
+        #! - Adjustments return expected event_code.
+        #! - Adjustments return expected medication_code.
+        #! - Adjustments return expected amount_in_mcg.
+        #! - Adjustments return expected reporting_period_id.
+        #! - Adjustments return expected reference_id.
         #! - Adjustments return expected created_date.
         #! - Adjustments return expected modified_date.
         #! - Adjustments return expected modified_by.
@@ -111,3 +110,98 @@ class Test_AdjustmentAttributes:
         assert test_adjustment.adjustment_date == database.return_datetime(
             "2022-08-01 10:00:00"
         )
+
+    def test_adjustments_return_expected_event_code(self, test_adjustment) -> None:
+        """Tests that the correct event_code is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.event_code is WASTE."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.event_code == "WASTE"
+
+    def test_adjustments_return_expected_medication_code(self, test_adjustment) -> None:
+        """Tests that the correct medication_code is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.medication_code is morphine."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.medication_code == "morphine"
+
+    def test_adjustments_return_expected_amount_in_mcg(self, test_adjustment) -> None:
+        """Tests that the correct amount_in_mcg is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.amount_in_mcg is -1000."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.amount_in_mcg == -1000
+
+    def test_adjustments_return_expected_reporting_period_id(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the correct reporting_period_id is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.reporting_period_id is 2."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.reporting_period_id == 2
+
+    def test_adjustments_return_expected_reference_id(self, test_adjustment) -> None:
+        """Tests that the correct reference_id is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.reference_id is TEST ID."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.reference_id == "TEST ID"
+
+    def test_adjustments_return_expected_created_date(self, test_adjustment) -> None:
+        """Tests that the correct created_date is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.created_date is Yesterday."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.created_date == "Yesterday"
+
+    def test_adjustments_return_expected_modified_date(self, test_adjustment) -> None:
+        """Tests that the correct modified_date is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.modified_date is Tomorrow."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.modified_date == "Tomorrow"
+
+    def test_adjustments_return_expected_modified_by(self, test_adjustment) -> None:
+        """Tests that the correct modified_by is returned.
+
+        Loads test_adjustment.
+
+        Asserts that test_adjustment.modified_by is Ambrose."""
+        test_adjustment = test_adjustment
+
+        assert test_adjustment.modified_by == "Ambrose"
+
+    def test_adjustment_attributes_can_be_edited(self, test_adjustment) -> None:
+        """Tests that an Adjustment's attributes can be edited.
+
+        Loads test_adjustment. Changes test_adjustment.modified_by.
+
+        Asserts that test_adjustment.modified_by equals new value.
+        """
+        test_adjustment = test_adjustment
+
+        test_adjustment.modified_by = "Me, Duh!"
+
+        assert test_adjustment.modified_by == "Me, Duh!"
