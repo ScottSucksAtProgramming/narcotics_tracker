@@ -34,15 +34,15 @@ class Test_InventoryModule:
         assert (
             inventory.return_table_creation_query()
             == """CREATE TABLE IF NOT EXISTS inventory (
-            INVENTORY_ID INTEGER PRIMARY KEY,
-            EVENT_DATE TEXT,
+            ADJUSTMENT_ID INTEGER PRIMARY KEY,
+            ADJUSTMENT_DATE INTEGER,
             EVENT_CODE TEXT,
             MEDICATION_CODE TEXT,
             QUANTITY_IN_MCG REAL,
             REPORTING_PERIOD_ID INTEGER,
             REFERENCE_ID TEXT,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INTEGER,
+            MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT,
             FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
             FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -181,10 +181,10 @@ class Test_AdjustmentAttributes:
 
         Loads test_adjustment.
 
-        Asserts that test_adjustment.created_date is Yesterday."""
+        Asserts that test_adjustment.created_date is 1659348000."""
         test_adjustment = test_adjustment
 
-        assert test_adjustment.created_date == "Yesterday"
+        assert test_adjustment.created_date == 1659348000
 
     def test_adjustments_return_expected_modified_date(self, test_adjustment) -> None:
         """Tests that the correct modified_date is returned.
@@ -194,7 +194,7 @@ class Test_AdjustmentAttributes:
         Asserts that test_adjustment.modified_date is Tomorrow."""
         test_adjustment = test_adjustment
 
-        assert test_adjustment.modified_date == "Tomorrow"
+        assert test_adjustment.modified_date == 1659348000
 
     def test_adjustments_return_expected_modified_by(self, test_adjustment) -> None:
         """Tests that the correct modified_by is returned.
@@ -225,25 +225,62 @@ class Test_AdjustmentMethods:
 
     Behaviors Tested:
         - __repr__ returns correct string.
+        - Method return_attributes returns the correct information.
         - Adjustments can be saved to inventory table.
         - Adjustment data can be updated.
         - Adjustments can be deleted from database.
-        - Method return_attributes returns the correct information.
+
     """
 
-    def test__repr___returns_correct_string(self, test_adjustment):
+    def test__repr___returns_correct_string(self, test_adjustment) -> None:
         """Tests that __repr__ returns correct string.
 
         Loads test_adjustment. Calls str(test_adjustment).
 
 
         Asserts that str(test_adjustment) returns:
-            "Adjustment Number -300 occurred at 2022-08-01 10:00:00. 1 mg of Morphine was with
+            "Adjustment Number -300: 1 mg of Morphine wasted on 2022-08-01
+            06:00:00."
         """
         test_adjustment = test_adjustment
+
         assert str(test_adjustment) == (
-            f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
-            f"Concentration: 7.712476391512054. Status: Discontinued. Created "
-            f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
+            "Adjustment Number -300: 1 mg of Morphine wasted on 2022-08-01 06:00:00."
         )
+
+    def test_return_attributes(self, test_adjustment):
+        """Tests that the adjustment data is correctly returned.
+
+        Loads test_adjustment. Calls test_adjustment.return_attributes().
+
+        Asserts values returned are expected values.
+        """
+        test_adjustment = test_adjustment
+        assert test_adjustment.return_attributes() == (
+            -300,
+            1659348000,
+            "WASTE",
+            "morphine",
+            -1000,
+            2,
+            "TEST ID",
+            1659348000,
+            1659348000,
+            "Ambrose",
+        )
+
+    def test_adjustment_can_be_saved_to_inventory_table(self, test_adjustment) -> None:
+        """Tests that adjustments can be saved to the database.
+
+        Loads test_adjustment. Saves it to the database.
+
+        Asserts that the adjustment is present when querying the table.
+        """
+        test_adjustment = test_adjustment
+        test_adjustment.save()
+
+        db = database.Database()
+        db.connect("test_database_2.db")
+        data = db.return_data("""SELECT adjustment_id FROM inventory""")[0]
+
+        assert -300 in data
