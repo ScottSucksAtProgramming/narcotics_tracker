@@ -17,8 +17,12 @@ import os
 from typing import TYPE_CHECKING
 import sqlite3
 
-from narcotics_tracker import event_types, medication
-from narcotics_tracker.builders import event_type_builder, medication_builder
+from narcotics_tracker import event_types, medication, reporting_periods
+from narcotics_tracker.builders import (
+    event_type_builder,
+    medication_builder,
+    reporting_period_builder,
+)
 
 if TYPE_CHECKING:
     from narcotics_tracker import medication
@@ -265,3 +269,28 @@ class Database:
         loaded_med = event_builder.build()
 
         return loaded_med
+
+    def load_reporting_period(
+        self, period_id: int
+    ) -> "reporting_periods.ReportingPeriod":
+        """Create a ReportingPeriod object from data in the database.
+
+        Args:
+            period_id (int): The numeric identifier of the ReportingPeriod to
+                be loaded.
+
+        Returns:
+            loaded_period (reporting_periods.ReportingPeriod): The
+                ReportingPeriod object.
+        """
+        sql_query = """SELECT * FROM reporting_periods WHERE period_id = ?"""
+        values = (period_id,)
+
+        result = self.return_data(sql_query, values)
+        period_data = reporting_periods.parse_reporting_period_data(result)
+
+        period_builder = reporting_period_builder.ReportingPeriodBuilder()
+        period_builder.set_all_properties(period_data)
+        loaded_period = period_builder.build()
+
+        return loaded_period

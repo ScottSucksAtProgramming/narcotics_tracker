@@ -15,6 +15,8 @@ from narcotics_tracker.builders import (
     event_type_builder,
     event_type_builder_template,
     medication_builder,
+    reporting_period_builder,
+    reporting_period_builder_template,
 )
 
 
@@ -617,3 +619,133 @@ class Test_EventTypeBuilder:
         test_event_type = test_event_type
 
         assert test_event_type.modified_by == "Bast"
+
+
+class Test_ReportingPeriodAbstractBuilder:
+    """Contains unit tests for the Reporting Period Builder Template module.
+
+    Behaviors Tested:
+        - Module reporting_period_builder_template can be accessed.
+        - Class ReportingPeriod can be accessed.
+    """
+
+    def test_reporting_period_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if reporting_period_builder_template exists and is accessible.
+
+        Asserts that reporting_period_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert reporting_period_builder_template.__doc__ != None
+
+    def test_reporting_period_class_can_be_accessed(self) -> None:
+        """Tests that ReportingPeriod class exists and is accessible.
+
+        Asserts that reporting_period_builder_template.ReportingPeriod.__doc__ does not
+        return 'None'.
+        """
+        assert reporting_period_builder_template.ReportingPeriod.__doc__ != None
+
+
+class Test_ReportingPeriodBuilderModule:
+    """Contains the unit tests for the reporting period builder module.
+
+    Behaviors Tested:
+
+        - Module reporting period builder can be accessed.
+    """
+
+    def test_reporting_period_builder_can_be_accessed(self) -> None:
+        """Tests that the module exists and can be accessed.
+
+        Asserts that reporting_period_builder.__doc__ does not return 'None'.
+        """
+        assert reporting_period_builder.__doc__ != None
+
+
+class Test_ReportingPeriodBuilder:
+    """Contains the unit tests for the ReportingPeriodBuilder class.
+
+    Behaviors Tested:
+
+        - Class ReportingPeriodBuilder can be accessed.
+        - ReportingPeriodBuilder sets the event id correctly.
+        - ReportingPeriodBuilder sets the event code correctly.
+        - ReportingPeriodBuilder sets the event_name correctly.
+        - ReportingPeriodBuilder sets the description correctly.
+        - ReportingPeriodBuilder sets the modifier correctly.
+        - ReportingPeriodBuilder sets the created date correctly.
+        - ReportingPeriodBuilder sets the modified date correctly.
+        - ReportingPeriodBuilder sets the modified by attribute correctly.
+        #! - Created ReportingPeriod object has type event_type.ReportingPeriod.
+    """
+
+    def test_reporting_period_class_can_be_accessed(self) -> None:
+        """Tests that the ReportingPeriodBuilder class exists and is accessible.
+
+        Asserts that reporting_period_builder.ReportingPeriodBuilder.__doc__ does not
+        return 'None'.
+        """
+        assert reporting_period_builder.ReportingPeriodBuilder.__doc__ != None
+
+    def test_period_id_is_set_correctly(self, test_period) -> None:
+        """Tests that the period_id is set correctly.
+
+        Asserts that test_period.period_id is 2001.
+        """
+        test_period = test_period
+
+        assert test_period.period_id == 9001
+
+    def test_starting_date_is_set_correctly(self, test_period) -> None:
+        """Tests that the starting_date is set correctly.
+
+        Asserts that test_period.starting_date is expected.
+        """
+        test_period = test_period
+
+        assert test_period.starting_date == database.return_datetime(
+            "2001-01-01 00:00:00"
+        )
+
+    def test_ending_date_is_set_correctly(self, test_period) -> None:
+        """Tests that the ending_date is set correctly.
+
+        Asserts that test_period.ending_date is expected.
+        """
+        test_period = test_period
+
+        assert test_period.ending_date == database.return_datetime(
+            "2100-06-30 00:00:00"
+        )
+
+    def test_created_date_is_set_correctly(self, test_period) -> None:
+        """Tests that the created_date is set correctly.
+
+        Asserts that test_period.created_date is "2022-08-26 00:00:00".
+        """
+        test_period = test_period
+
+        assert test_period.created_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_date_is_set_correctly(self, test_period) -> None:
+        """Tests that the modified_date is set correctly.
+
+        Asserts that test_period.modified_date is "2022-08-01 00:00:00".
+        """
+        test_period = test_period
+
+        assert test_period.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_by_is_set_correctly(self, test_period) -> None:
+        """Tests that the modified_by is set correctly.
+
+        Asserts that test_period.modified_by is "Cinder".
+        """
+        test_period = test_period
+
+        assert test_period.modified_by == "Cinder"

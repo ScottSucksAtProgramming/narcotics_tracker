@@ -8,7 +8,7 @@ Classes:
 
 import os
 
-from narcotics_tracker import database, event_types, medication
+from narcotics_tracker import database, event_types, medication, reporting_periods
 
 
 class Test_Database:
@@ -247,8 +247,8 @@ class Test_Database:
 
         assert database.Database.created_date_is_none(test_med) == True
 
-    def test_medication_can_be_created_from_stored_data(self, test_med, reset_database):
-        """Test that a medication object can be created from stored data.
+    def test_medication_can_be_loaded_from_stored_data(self, test_med, reset_database):
+        """Test that a medication object can be loaded from stored data.
         
         Loads test_med, saved it to the database, then loads the data from 
         the saved database and creates a medication object from the data.
@@ -267,10 +267,10 @@ class Test_Database:
 
         assert isinstance(new_med, medication.Medication)
 
-    def test_event_type_can_be_created_from_stored_data(
+    def test_event_type_can_be_loaded_from_stored_data(
         self, test_event_type, reset_database
     ):
-        """Test that a event_type object can be created from stored data.
+        """Test that a event_type object can be loaded from stored data.
 
         Loads test_event_type, saved it to the database, then loads the data
         from the saved database and creates a event_type object from the data.
@@ -288,6 +288,28 @@ class Test_Database:
         new_event = db.load_event_type("TEST")
 
         assert isinstance(new_event, event_types.EventType)
+
+    def test_reporting_period_can_be_loaded_from_stored_data(
+        self, test_period, reset_database
+    ):
+        """Test that a reporting_period object can be loaded from stored data.
+
+        Loads test_period, saves it to the database, then loads the data
+        from the database and creates a ReportingPeriod object from the data.
+
+        Asserts that the new ReportingPeriod object has the same type as a
+        ReportingPeriod object.
+        """
+        test_period = test_period
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(reporting_periods.return_table_creation_query())
+        test_period.save(db)
+
+        new_period = db.load_reporting_period(9001)
+
+        assert isinstance(new_period, reporting_periods.ReportingPeriod)
 
     def test_can_return_current_datetime(self) -> None:
         """Tests to see if the Database class can get the current date time.

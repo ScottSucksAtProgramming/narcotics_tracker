@@ -2,9 +2,19 @@
 writes them to the table."""
 
 
-from narcotics_tracker import database, event_types, inventory, medication, periods
+from narcotics_tracker import (
+    database,
+    event_types,
+    inventory,
+    medication,
+    reporting_periods,
+)
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import event_type_builder, medication_builder
+from narcotics_tracker.builders import (
+    event_type_builder,
+    medication_builder,
+    reporting_period_builder,
+)
 
 FENTANYL_PROPERTIES = [
     "fentanyl",
@@ -68,14 +78,32 @@ def main():
     midazolam.modified_by = "SRK"
 
     # Build Reporting Period Objects
-    period_1 = periods.ReportingPeriod("2022-01-01 00:00:00", "2022-06-30 23:59:59")
-    period_1.modified_by = "SRK"
-    period_2 = periods.ReportingPeriod("2022-07-01 00:00:00", "2022-12-31 23:59:59")
-    period_2.modified_by = "SRK"
-    period_3 = periods.ReportingPeriod("2023-01-01 00:00:00", "2023-06-30 23:59:59")
-    period_3.modified_by = "SRK"
-    period_4 = periods.ReportingPeriod("2023-07-01 00:00:00", "2023-12-31 23:59:59")
-    period_4.modified_by = "SRK"
+
+    period_builder = reporting_period_builder.ReportingPeriodBuilder()
+
+    period_builder.set_starting_date("2022-01-01 00:00:00")
+    period_builder.set_ending_date("2022-06-30 23:59:59")
+    period_builder.set_modified_by("SRK")
+    period_1 = period_builder.build()
+
+    period_builder = reporting_period_builder.ReportingPeriodBuilder()
+
+    period_builder.set_starting_date("2022-07-01 00:00:00")
+    period_builder.set_ending_date("2022-12-31 23:59:59")
+    period_builder.set_modified_by("SRK")
+    period_2 = period_builder.build()
+
+    period_builder = reporting_period_builder.ReportingPeriodBuilder()
+
+    period_builder.set_starting_date("2023-01-01 00:00:00")
+    period_builder.set_ending_date("2023-06-30 23:59:59")
+    period_builder.set_modified_by("SRK")
+    period_3 = period_builder.build()
+
+    period_builder.set_starting_date("2023-07-01 00:00:00")
+    period_builder.set_ending_date("2023-12-31 23:59:59")
+    period_builder.set_modified_by("SRK")
+    period_4 = period_builder.build()
 
     # Build Standard Inventory Events
     event_builder = event_type_builder.EventTypeBuilder()
@@ -139,7 +167,7 @@ def main():
         med_table_query = medication.return_table_creation_query()
         db.create_table(med_table_query)
 
-        periods_table_query = periods.return_table_creation_query()
+        periods_table_query = reporting_periods.return_table_creation_query()
         db.create_table(periods_table_query)
 
         event_types_table_query = event_types.return_table_creation_query()

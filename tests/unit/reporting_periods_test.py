@@ -8,7 +8,7 @@ Classes:
     Test_PeriodMethods: Contains all unit tests for the Period Class' methods.
 """
 
-from narcotics_tracker import database, periods
+from narcotics_tracker import database, reporting_periods
 
 
 class Test_PeriodsModule:
@@ -25,7 +25,7 @@ class Test_PeriodsModule:
 
         Asserts that calling periods.__doc__ does not return 'None'.
         """
-        assert periods.__doc__ != None
+        assert reporting_periods.__doc__ != None
 
     def test_return_table_creation_query_returns_expected_string(self) -> None:
         """Tests that the table_creation_query returns the correct string.
@@ -43,7 +43,7 @@ class Test_PeriodsModule:
             MODIFIED_BY TEXT
             )"""
 
-        assert periods.return_table_creation_query() == expected_query
+        assert reporting_periods.return_table_creation_query() == expected_query
 
     def test_return_periods_returns_expected_reporting_periods(
         self, test_period, reset_database
@@ -56,18 +56,47 @@ class Test_PeriodsModule:
         """
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(periods.return_table_creation_query())
+        db.create_table(reporting_periods.return_table_creation_query())
 
         test_period = test_period
         test_period.save(db)
-        periods_list, _ = periods.return_periods(db)
+        periods_list, _ = reporting_periods.return_periods(db)
         assert (
             "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2100-06-29 20:00:00"
             in periods_list
         )
 
+    def test_parse_reporting_period_data_returns_correct_values(
+        self, reset_database, test_period
+    ) -> None:
+        """Tests if parse_reporting_period_data returns correct dictionary.
 
-class Test_PeriodAttributes:
+        Resets the database. Creates reporting_periods table. Builds and saves
+        test_period to database. Queries database for reporting period data
+        and calls the parser.
+
+        Asserts that dictionary returned assigns the correct data to correct
+        keys.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(reporting_periods.return_table_creation_query())
+
+        test_period = test_period
+        test_period.save(db)
+        data = test_period.read(db)
+        dictionary = reporting_periods.parse_reporting_period_data(data)
+
+        assert (
+            dictionary["period_id"] == 9001
+            and dictionary["starting_date"]
+            == database.return_datetime("2001-01-01 00:00:00")
+            and dictionary["ending_date"]
+            == database.return_datetime("2100-06-30 00:00:00")
+        )
+
+
+class Test_ReportingPeriodAttributes:
     """Contains all unit tests for the Period Class' attributes.
 
     Behaviors Tested:
@@ -86,7 +115,7 @@ class Test_PeriodAttributes:
 
         Asserts that calling Period.__doc__ does not return 'None'.
         """
-        assert periods.ReportingPeriod.__doc__ != None
+        assert reporting_periods.ReportingPeriod.__doc__ != None
 
     def test_can_create_period_objects(self, test_period) -> None:
         """Tests that objects can be created from the Period Class.
@@ -97,7 +126,7 @@ class Test_PeriodAttributes:
         """
         test_period = test_period
 
-        assert isinstance(test_period, periods.ReportingPeriod)
+        assert isinstance(test_period, reporting_periods.ReportingPeriod)
 
     def test_period_id_returns_correct_value(self, test_period) -> None:
         """Tests that the period_id attribute returns the correct value.
@@ -167,17 +196,18 @@ class Test_PeriodAttributes:
         assert test_period.modified_by == "Cinder"
 
 
-class Test_PeriodMethods:
+class Test_ReportingPeriodMethods:
     """Contains all unit tests for the Period Class' methods.
 
     Behaviors Tested:
         - __init__ sets attributes correctly.
         - __repr__ returns correct string.
         - Can save ReportingPeriod to database.
-        - Can update ReportingPeriod starting date.
-        - Can update ReportingPeriod ending date.
-        - return_attributes returns the correct values.
+        - Can read ReportingPeriod data from database.
+        - Can load ReportingPeriod from database.
+        - Can update ReportingPeriod in database.
         - Can delete reporting period from database.
+        - return_attributes returns the correct values.
     """
 
     def test___init___sets_attributes_correctly(self, test_period) -> None:
@@ -224,7 +254,7 @@ class Test_PeriodMethods:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(periods.return_table_creation_query())
+        db.create_table(reporting_periods.return_table_creation_query())
 
         test_period.save(db)
 
@@ -233,6 +263,52 @@ class Test_PeriodMethods:
         )
 
         assert data[0][0] == 978307200
+
+    def test_can_read_reporting_period_from_database(
+        self, reset_database, test_period
+    ) -> None:
+        """Tests if the reporting period's data can be returned from database.
+
+        Resets the database. Creates reporting_periods table. Builds and saves
+        test_period. Calls test_period.read().
+
+        Asserts that data returned matches expected values.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(reporting_periods.return_table_creation_query())
+
+        test_period = test_period
+        test_period.save(db)
+
+        data = test_period.read(db)[0]
+        expected = [
+            9001,
+            database.return_datetime("2001-01-01 00:00:00"),
+            database.return_datetime("2100-06-30 00:00:00"),
+        ]
+
+        assert (
+            data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
+        )
+
+    def test_can_load_reporting_period_from_database(
+        self, reset_database, test_period
+    ) -> None:
+        """Tests to see if a Reporting Period Object can be loaded from data.
+        Loads and saves test_period. Creates loaded_period from data.
+
+        Asserts that test_period and loaded_period return identical
+        attributes.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(reporting_periods.return_table_creation_query())
+
+        test_period = test_period
+        test_period.save(db)
+
+        loaded_period_type = db.load_reporting_period(9001)
 
     def test_return_attributes(self, test_period):
         """Tests that the reporting period data is correctly returned.
@@ -251,50 +327,6 @@ class Test_PeriodMethods:
             "Cinder",
         )
 
-    def test_can_update_starting_date(self, test_period, reset_database) -> None:
-        """Tests that the reporting period's starting date can be updated.
-
-        Loads test_period. Updates starting date to '2022-12-25 00:00:00'. Queries the
-        starting date for the period_id of 9001.
-
-        Asserts that test_period.starting_date is '2022-12-25 00:00:00'.
-        """
-        test_period = test_period
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(periods.return_table_creation_query())
-        test_period.save(db)
-
-        test_period.update_starting_date("2022-12-25 00:00:00", db)
-
-        data = db.return_data(
-            """SELECT starting_date FROM reporting_periods WHERE period_id = 9001"""
-        )
-        assert data[0][0] == 1671926400
-
-    def test_can_update_ending_date(self, test_period, reset_database) -> None:
-        """Tests that the reporting period's ending date can be updated.
-
-        Loads test_period. Updates ending date to '2011-09-11'. Queries the
-        ending date for the period_id of 9001.
-
-        Asserts that test_period.ending_date is '2011-09-11'.
-        """
-        test_period = test_period
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(periods.return_table_creation_query())
-        test_period.save(db)
-
-        test_period.update_ending_date("2011-09-11", db)
-
-        data = db.return_data(
-            """SELECT ending_date FROM reporting_periods WHERE period_id = 9001"""
-        )
-        assert data[0][0] == 1315699200
-
     def test_can_delete_reporting_period_from_database(
         self, test_period, reset_database
     ):
@@ -309,7 +341,7 @@ class Test_PeriodMethods:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(periods.return_table_creation_query())
+        db.create_table(reporting_periods.return_table_creation_query())
 
         test_period.save(db)
         test_period.delete(db)

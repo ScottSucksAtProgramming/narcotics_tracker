@@ -6,12 +6,13 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import database, event_types, inventory, periods
+from narcotics_tracker import database, event_types, inventory, reporting_periods
 from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import (
     adjustment_builder,
     event_type_builder,
     medication_builder,
+    reporting_period_builder,
 )
 
 if TYPE_CHECKING:
@@ -60,18 +61,23 @@ def test_db() -> str:
 
 
 @fixture
-def test_period() -> periods.ReportingPeriod:
+def test_period() -> reporting_periods.ReportingPeriod:
     """Creates a test object from the Period Class.
 
     Returns:
         test_period (period.Period): A period object for testing.
     """
-    test_period = periods.ReportingPeriod("2001-01-01 00:00:00", "2100-06-30 00:00:00")
 
-    test_period.period_id = 9001
-    test_period.created_date = database.return_datetime("2022-08-01")
-    test_period.modified_date = database.return_datetime("2022-08-01")
-    test_period.modified_by = "Cinder"
+    period_builder = reporting_period_builder.ReportingPeriodBuilder()
+
+    period_builder.set_period_id(9001)
+    period_builder.set_starting_date("2001-01-01 00:00:00")
+    period_builder.set_ending_date("2100-06-30 00:00:00")
+    period_builder.set_created_date("2022-08-01 00:00:00")
+    period_builder.set_modified_date("2022-08-01 00:00:00")
+    period_builder.set_modified_by("Cinder")
+
+    test_period = period_builder.build()
 
     return test_period
 
