@@ -225,7 +225,8 @@ class Test_EventTypeMethods:
         - __repr__ returns correct string.
         - Can save EventType to database.
         - Can load EventType from database.
-       #! - Can update EventType.
+        - Can update EventType in database.
+        - Can read EventType data from database.
         - return_attributes returns the correct values.
         - Can delete EventType from database.
     """
@@ -304,93 +305,67 @@ class Test_EventTypeMethods:
 
         loaded_event_type = db.load_event_type("TEST")
 
-    def test_can_update_event_code(self, test_event_type, reset_database) -> None:
-        """Tests that the event type's event code can be updated.
+    def test_can_update_event_types(self, reset_database, test_event_type) -> None:
+        """Tests to see if EventType data can be updated.
 
-        Loads test_event_type. Updates event code to 'NEW CODE'. Queries the
-        event code for the event_id of 2001.
+        Resets database. Creates Event Type Table. Builds and saves
+        test_event_type to database.Loads test_event_type as
+        loaded_event_type. Changes Operator and updates database. Queries the
+        data.
 
-        Asserts that test_event_type.event_code is 'NEW CODE'.
+        Asserts that the returned data has the new operator.
         """
-        test_event_type = test_event_type
-
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
+
+        test_event_type = test_event_type
         test_event_type.save(db)
 
-        test_event_type.update_code("NEW CODE", db)
+        loaded_event_type = db.load_event_type("TEST")
+        loaded_event_type.operator = +10
+
+        loaded_event_type.update(db)
 
         data = db.return_data(
-            """SELECT event_code FROM event_types WHERE event_id = 2001"""
-        )
-        assert data[0][0] == "NEW CODE"
+            """SELECT operator FROM event_types WHERE event_code = 'TEST'"""
+        )[0][0]
 
-    def test_can_update_name(self, test_event_type, reset_database) -> None:
-        """Tests that the event type's name can be updated.
+        assert data == +10
 
-        Loads test_event_type. Updates name to 'NEW NAME'. Queries the
-        name for the event_id of 2001.
+    def test_can_read_event_type_from_database(
+        self, reset_database, test_event_type
+    ) -> None:
+        """Tests to see if the event's data can be returned from database.
 
-        Asserts that test_event_type.event_name is 'NEW NAME'.
+        Resets the database. Creates event_types table. Builds and saves
+        test_event_type. Calls test_event_type.read().
+
+        Asserts that data returned matches expected values.
         """
-        test_event_type = test_event_type
-
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
-        test_event_type.save(db)
 
-        test_event_type.update_name("NEW NAME", db)
-
-        data = db.return_data(
-            """SELECT event_name FROM event_types WHERE event_id = 2001"""
-        )
-        assert data[0][0] == "NEW NAME"
-
-    def test_can_update_description(self, test_event_type, reset_database) -> None:
-        """Tests that the event type's description can be updated.
-
-        Loads test_event_type. Updates description to 'This is the new description.'. Queries the
-        description for the event_id of 2001.
-
-        Asserts that test_event_type.description is 'This is the new description.'.
-        """
         test_event_type = test_event_type
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(event_types.return_table_creation_query())
         test_event_type.save(db)
 
-        test_event_type.update_description("This is the new description.", db)
+        data = test_event_type.read(db)[0]
+        expected = [
+            2001,
+            "TEST",
+            "Test Event",
+            "Used for testing the EventType Class.",
+            -1,
+        ]
 
-        data = db.return_data(
-            """SELECT description FROM event_types WHERE event_id = 2001"""
+        assert (
+            data[0] == expected[0]
+            and data[1] == expected[1]
+            and data[2] == expected[2]
+            and data[3] == expected[3]
+            and data[4] == expected[4]
         )
-        assert data[0][0] == "This is the new description."
-
-    def test_can_update_operator(self, test_event_type, reset_database) -> None:
-        """Tests that the event type's operator can be updated.
-
-        Loads test_event_type. Updates event code to 'This is the new operator.'. Queries the
-        event code for the event_id of 2001.
-
-        Asserts that test_event_type.operator is -10.
-        """
-        test_event_type = test_event_type
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(event_types.return_table_creation_query())
-        test_event_type.save(db)
-
-        test_event_type.update_operator(-10, db)
-
-        data = db.return_data(
-            """SELECT operator FROM event_types WHERE event_id = 2001"""
-        )
-        assert data[0][0] == -10
 
     def test_can_delete_event_type_from_database(self, test_event_type, reset_database):
         """Tests that event types can be deleted from the database.

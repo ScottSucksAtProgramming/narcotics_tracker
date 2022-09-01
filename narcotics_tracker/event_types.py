@@ -231,74 +231,57 @@ class EventType:
 
         db_connection.write_data(sql_query, values)
 
-    def update_code(
-        self, new_event_code: str, db_connection: sqlite3.Connection
-    ) -> None:
-        """Updates the event code of the event type.
+    def update(self, db_connection: sqlite3.Connection) -> None:
+        """Updates an existing event_type in the database.
+
+        The update method will overwrite the event_type's data if it already
+        exists within the database. Use the save method to create a new
+        event_type.
+
+        Sets the modified date, and will set the created date if it is None.
 
         Args:
-            new_event_code (str): The new event id.
+            db_connection (sqlite3.Connection): The connection to the
+            database.
 
-            db_connection (sqlite3.Connection) The database connection.
+            event_code (str): The unique identifier for the event_type.
         """
+        sql_query = """UPDATE event_types 
+            SET EVENT_ID = ?, 
+                EVENT_CODE = ?, 
+                EVENT_NAME = ?, 
+                DESCRIPTION = ?, 
+                OPERATOR = ?, 
+                CREATED_DATE = ?, 
+                MODIFIED_DATE = ?, 
+                MODIFIED_BY = ? 
+            WHERE EVENT_CODE = ?"""
+
+        if database.Database.created_date_is_none(self):
+            self.created_date = database.return_datetime()
         self.modified_date = database.return_datetime()
 
-        sql_query = """UPDATE event_types SET event_code =(?) WHERE event_id = (?)"""
-        values = (new_event_code, self.event_id)
+        values = self.return_attributes() + (self.event_code,)
 
         db_connection.write_data(sql_query, values)
 
-    def update_name(
-        self, new_event_name: str, db_connection: sqlite3.Connection
-    ) -> None:
-        """Updates the event id of the event type.
+    def read(self, db_connection: sqlite3.Connection) -> list:
+        """Returns the data of the event type from the database.
+
+        This function will make no changes to the data.
 
         Args:
-            new_event_name (str): The new event name.
+            db_connection (sqlite3.Connection): The connection to the
+            database.
 
-            db_connection (sqlite3.Connection) The database connection.
         """
-        self.modified_date = database.return_datetime()
+        sql_query = """SELECT * from event_types WHERE event_code = ?"""
 
-        sql_query = """UPDATE event_types SET event_name =(?) WHERE event_id = (?)"""
-        values = (new_event_name, self.event_id)
+        values = (self.event_code,)
 
-        db_connection.write_data(sql_query, values)
+        data = db_connection.return_data(sql_query, values)
 
-    def update_description(
-        self, new_description: str, db_connection: sqlite3.Connection
-    ) -> None:
-        """Updates the event id of the event type.
-
-        Args:
-            new_description (str): The new event name.
-
-            db_connection (sqlite3.Connection) The database connection.
-        """
-        self.modified_date = database.return_datetime()
-
-        sql_query = """UPDATE event_types SET description =(?) WHERE event_id = (?)"""
-        values = (new_description, self.event_id)
-
-        db_connection.write_data(sql_query, values)
-
-    def update_operator(
-        self, new_operator: int, db_connection: sqlite3.Connection
-    ) -> None:
-        """Updates the event id of the event type.
-
-        Args:
-            new_operator (int): The new operator. +1 if events add stock. -1
-                if events remove stock.
-
-            db_connection (sqlite3.Connection) The database connection.
-        """
-        self.modified_date = database.return_datetime()
-
-        sql_query = """UPDATE event_types SET operator =(?) WHERE event_id = (?)"""
-        values = (new_operator, self.event_id)
-
-        db_connection.write_data(sql_query, values)
+        return data
 
     def delete(self, db_connection: sqlite3.Connection):
         """Deletes the event type from the database.
