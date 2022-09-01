@@ -364,7 +364,6 @@ class Test_AdjustmentMethods:
             "Used when adding pre-existing stock to the table.",
             1,
         ]
-        print(returned_attributes)
         assert (
             expected_attributes[0] == returned_attributes[0]
             and expected_attributes[1] == returned_attributes[1]

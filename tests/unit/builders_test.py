@@ -566,7 +566,6 @@ class Test_EventTypeBuilder:
         Asserts that test_event.event_name is Test Event.
         """
         test_event_type = test_event_type
-        print(test_event_type.event_name)
 
         assert test_event_type.event_name == "Test Event"
 

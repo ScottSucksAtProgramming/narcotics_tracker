@@ -200,7 +200,6 @@ class Test_EventTypeAttributes:
         Asserts that test_event_type.modified_date is '08-01-2022'
         """
         test_event_type = test_event_type
-        print(test_event_type.modified_date)
 
         assert test_event_type.modified_date == database.return_datetime(
             "2022-08-01 00:00:00"
