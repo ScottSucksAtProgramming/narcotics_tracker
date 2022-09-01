@@ -17,7 +17,7 @@ import os
 from typing import TYPE_CHECKING
 import sqlite3
 
-from narcotics_tracker import medication
+from narcotics_tracker import event_types, medication
 from narcotics_tracker.builders import medication_builder
 
 if TYPE_CHECKING:
@@ -240,6 +240,27 @@ class Database:
         medication_data = medication.parse_medication_data(result)
 
         med_builder = medication_builder.MedicationBuilder()
+        med_builder.set_all_properties(medication_data)
+        loaded_med = med_builder.build()
+
+        return loaded_med
+
+    def load_event_type(self, event_code: str) -> "event_type.EventType":
+        """Create an EventType object from data in the database.
+
+        Args:
+            event_code (str): The event_code of the EventType to be loaded.
+
+        Returns:
+            event (event_type.EventType): The EventType object.
+        """
+        sql_query = """SELECT * FROM event_types WHERE event_code = ?"""
+        values = (event_code,)
+
+        result = self.return_data(sql_query, values)
+        medication_data = event_type.parse_medication_data(result)
+
+        event_builder = medication_builder.MedicationBuilder()
         med_builder.set_all_properties(medication_data)
         loaded_med = med_builder.build()
 
