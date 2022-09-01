@@ -121,6 +121,22 @@ class EventTypeBuilder(event_type_builder_template.EventType):
         """
         self.modified_by = modified_by
 
+    def set_all_properties(self, properties: dict) -> None:
+        """Sets all properties of the event.
+
+        Args:
+            properties (dict): The properties of the event. Dictionary
+                keys are formatted as the event property names.
+        """
+        self.set_event_id(properties["event_id"])
+        self.set_event_code(properties["event_code"])
+        self.set_event_name(properties["event_name"])
+        self.set_description(properties["description"])
+        self.set_operator(properties["operator"])
+        self.set_created_date(properties["created_date"])
+        self.set_modified_date(properties["modified_date"])
+        self.set_modified_by(properties["modified_by"])
+
     def build(self) -> "event_types.EventType":
         """Returns the EventType object. Assigns the EventType's properties.
 

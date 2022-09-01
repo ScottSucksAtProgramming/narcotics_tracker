@@ -226,12 +226,9 @@ class Test_EventTypeMethods:
         - __repr__ returns correct string.
         - Can save EventType to database.
         - Can load EventType from database.
-        - Can update EventType code.
-        - Can update EventType name.
-        - Can update EventType description.
-        - Can update EventType operator.
+       #! - Can update EventType.
         - return_attributes returns the correct values.
-        - Can delete reporting period from database.
+        - Can delete EventType from database.
     """
 
     def test___init___sets_attributes_correctly(self, test_event_type) -> None:
@@ -306,7 +303,7 @@ class Test_EventTypeMethods:
         test_event_type = test_event_type
         test_event_type.save(db)
 
-        loaded_event_type = db.load_event("TEST")
+        loaded_event_type = db.load_event_type("TEST")
 
     def test_can_update_event_code(self, test_event_type, reset_database) -> None:
         """Tests that the event type's event code can be updated.

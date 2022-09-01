@@ -8,7 +8,7 @@ Classes:
 
 import os
 
-from narcotics_tracker import database, medication
+from narcotics_tracker import database, event_types, medication
 
 
 class Test_Database:
@@ -267,25 +267,27 @@ class Test_Database:
 
         assert isinstance(new_med, medication.Medication)
 
-        """Tests that loaded medications are medication objects.
+    def test_event_type_can_be_created_from_stored_data(
+        self, test_event_type, reset_database
+    ):
+        """Test that a event_type object can be created from stored data.
 
-        Saves test_med to database. Loads test_med from database to new_med.
+        Loads test_event_type, saved it to the database, then loads the data
+        from the saved database and creates a event_type object from the data.
 
-        Asserts new_med is an instance of 'medication.Medication'.
+        Asserts that the new event_type object has the same type as a
+        event_type object.
         """
-
-        test_med = test_med
+        test_event_type = test_event_type
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
-        test_med.save(db)
+        db.create_table(event_types.return_table_creation_query())
+        test_event_type.save(db)
 
-        medication_code = "Un-69420-9001"
+        new_event = db.load_event_type("TEST")
 
-        new_med = db.load_medication(medication_code)
-
-        assert isinstance(new_med, medication.Medication)
+        assert isinstance(new_event, event_types.EventType)
 
     def test_can_return_current_datetime(self) -> None:
         """Tests to see if the Database class can get the current date time.
