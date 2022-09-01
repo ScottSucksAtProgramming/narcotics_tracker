@@ -20,6 +20,7 @@ class Test_EventTypesModule:
         - Method return_table_creation_query returns correct string.
         - Method return_event_types returns all event_types.
         - Method return_operator returns expected result.
+        - Method parse_event_type_data returns correct dictionary and values.
     """
 
     def test_event_types_module_can_be_accessed(self) -> None:
@@ -87,6 +88,35 @@ class Test_EventTypesModule:
         test_event_type.event_code = "LOSS"
 
         assert event_types.return_operator(test_event_type.event_code, db) == -1
+
+    def test_parse_event_type_data_returns_correct_values(
+        self, reset_database, test_event_type
+    ) -> None:
+        """Tests if part_event_type_data returns dictionary with correct data.
+
+        Resets the database. Creates event_types table. Builds and saves
+        test_event_type to database. Queries database for event type data and
+        calls the parser.
+
+        Asserts that dictionary returned assigns the correct data to correct
+        keys.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+
+        test_event_type = test_event_type
+        test_event_type.save(db)
+        data = test_event_type.read(db)
+        dictionary = event_types.parse_event_type_data(data)
+
+        assert (
+            dictionary["event_id"] == 2001
+            and dictionary["event_code"] == "TEST"
+            and dictionary["event_name"] == "Test Event"
+            and dictionary["description"] == "Used for testing the EventType Class."
+            and dictionary["operator"] == -1
+        )
 
 
 class Test_EventTypeAttributes:
