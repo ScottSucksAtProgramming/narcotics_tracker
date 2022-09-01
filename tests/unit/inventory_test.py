@@ -44,9 +44,9 @@ class Test_InventoryModule:
             CREATED_DATE INTEGER,
             MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE ON DELETE RESTRICT
+            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE,
+            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE,
+            FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE
             )"""
         )
 
@@ -227,9 +227,13 @@ class Test_AdjustmentMethods:
         - __repr__ returns correct string.
         - Method return_attributes returns the correct information.
         - Adjustments can be saved to inventory table.
-        - Adjustment data can be updated.
         - Adjustments can be deleted from database.
-
+        - Can update adjustment_date.
+        - Can update event_code.
+        - Can Update medication_code.
+        - Can update amount_in_mcg.
+        - Can update reporting_period_id
+        - Can update reference_id.
     """
 
     def test__repr___returns_correct_string(self, test_adjustment) -> None:
@@ -284,3 +288,138 @@ class Test_AdjustmentMethods:
         data = db.return_data("""SELECT adjustment_id FROM inventory""")[0]
 
         assert -300 in data
+
+    def test_delete_adjustment(self, test_adjustment, reset_database):
+        """Tests that the adjustment can be deleted from the database.
+
+        Loads test_adjustment. Saves it to database. Then deletes it.
+        Gets data from adjustment table.
+
+        Asserts data does not contain test_adjustment.adjustment_id.
+        """
+        test_adjustment = test_adjustment
+
+        db = database.Database()
+        db.connect("test_database_2.db")
+        db.create_table(inventory.return_table_creation_query())
+
+        test_adjustment.save()
+        test_adjustment.delete()
+
+        data = db.return_data("""SELECT adjustment_id FROM inventory""")
+        assert test_adjustment.adjustment_id not in data
+
+    def test_can_update_adjustment_date(self, test_adjustment) -> None:
+        """Tests that the adjustment date can be updated in database.
+
+        Loads test_adjustment, save it. Calls update_adjustment_date using test_adjustment's
+
+        Asserts that new adjustment_date is returned from the database.
+        """
+        test_adjustment = test_adjustment
+        test_adjustment.save()
+
+        db = database.Database()
+        db.connect("test_database_2.db")
+
+        test_adjustment.update_adjustment_date("2022-08-31 14:00:00")
+
+        value = -300
+        data = db.return_data(
+            """SELECT adjustment_date FROM inventory WHERE adjustment_ID = (?)""",
+            [value],
+        )[0][0]
+
+        assert data == database.return_datetime("2022-08-31 14:00:00")
+
+    def test_return_event_codes_returns_expected_codes(self, test_adjustment) -> None:
+        """Tests that the correct event codes are returned.
+
+        Asserts that the standard event codes are in the list of standard
+        event codes.
+        """
+        test_adjustment = test_adjustment
+        event_codes = test_adjustment.return_event_codes()
+        standard_event_codes = ["IMPORT", "ORDER", "USE", "WASTE", "DESTROY", "LOSS"]
+        for code in event_codes:
+            if code not in standard_event_codes:
+                assert False
+        assert True
+
+    def test_return_event_attributes_returns_expected_list(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the method returns the expected correct attributes.
+
+        Asserts that returned_attributes is
+        [1, 'IMPORT','imported', 'Used when adding pre-existing stock to the table.', 1]
+        """
+        test_adjustment = test_adjustment
+        returned_attributes = test_adjustment.return_event_attributes("IMPORT")
+
+        expected_attributes = [
+            1,
+            "IMPORT",
+            "imported",
+            "Used when adding pre-existing stock to the table.",
+            1,
+        ]
+        print(returned_attributes)
+        assert (
+            expected_attributes[0] == returned_attributes[0]
+            and expected_attributes[1] == returned_attributes[1]
+            and expected_attributes[2] == returned_attributes[2]
+            and expected_attributes[3] == returned_attributes[3]
+            and expected_attributes[4] == returned_attributes[4]
+        )
+
+    def test_even_code_is_invalid_returns_correct_boolean(
+        self, test_adjustment
+    ) -> None:
+        """Tests that event_code_is_invalid returns correctly.
+
+        Asserts that event_code_is_invalid("LOSS") returns false and
+        event_code_is_invalid("GIVEAWAY") returns true.
+        """
+        test_adjustment = test_adjustment
+        assert (
+            test_adjustment.event_code_is_invalid("LOSS") == False
+            and test_adjustment.event_code_is_invalid("GIVEAWAY") == True
+        )
+
+    def test_compare_operators_changes_amount_in_mcg_correctly(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the amount_in_mcg is adjusted correctly.
+
+        Asserts that amount_in_mcg is changed.
+        """
+        test_adjustment = test_adjustment
+        first_amount = test_adjustment.amount_in_mcg
+        test_adjustment.compare_operators("ORDER")
+        second_amount = test_adjustment.amount_in_mcg
+
+        assert second_amount == first_amount * -1
+
+    def test_can_update_event_code(self, test_adjustment) -> None:
+        """Tests that the adjustment date can be updated in database.
+
+        Loads test_adjustment, save it. Calls update_event_code using test_adjustment's
+
+        Asserts that new event_code is returned from the database.
+        """
+        test_adjustment = test_adjustment
+        test_adjustment.save()
+
+        db = database.Database()
+        db.connect("test_database_2.db")
+
+        test_adjustment.update_event_code("ORDER")
+
+        value = -300
+        data = db.return_data(
+            """SELECT event_code FROM inventory WHERE adjustment_ID = (?)""",
+            [value],
+        )[0][0]
+
+        assert data == "ORDER"

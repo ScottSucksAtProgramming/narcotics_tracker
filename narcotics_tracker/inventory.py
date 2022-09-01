@@ -36,9 +36,9 @@ def return_table_creation_query() -> str:
             CREATED_DATE INTEGER,
             MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE ON DELETE RESTRICT,
-            FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE ON DELETE RESTRICT
+            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE,
+            FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE,
+            FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE
             )"""
 
 
@@ -148,48 +148,110 @@ class Adjustment:
 
         self.database_connection.write_data(sql_query, values)
 
-    def update(self, db_connection: sqlite3.Connection, code: str) -> None:
-        """Updates an existing medication in the database.
-
-        The update method will overwrite the medication data if it already
-        exists within the database. Use the save method to create a new
-        medication.
-
-        Sets the modified date, and will set the created date if it is None.
+    def update_adjustment_date(self, new_adjustment_date: str) -> None:
+        """Updates the adjustment date of the adjustment.
 
         Args:
-            db_connection (sqlite3.Connection): The connection to the
-            database.
-
-            code (str): The unique identifier for the medication.
+            new_adjustment_date (str): The new starting date in format
+                YYY-MM-DD HH:MM:SS.
         """
-        sql_query = """UPDATE medications 
-            SET MEDICATION_ID = ?, 
-                MEDICATION_CODE = ?, 
-                NAME = ?, 
-                CONTAINER_TYPE = ?, 
-                FILL_AMOUNT = ?, 
-                DOSE_IN_MCG = ?, 
-                PREFERRED_UNIT = ?, 
-                CONCENTRATION = ?, 
-                STATUS = ?, 
-                CREATED_DATE = ?, 
-                MODIFIED_DATE = ?, 
-                MODIFIED_BY = ? 
-            WHERE MEDICATION_CODE = ?"""
+        new_modified_date = database.return_datetime()
 
-        if database.Database.created_date_is_none(self):
-            self.created_date = database.return_datetime()
+        sql_query = (
+            """UPDATE inventory SET adjustment_date =(?) WHERE adjustment_id = (?)"""
+        )
+        values = (database.return_datetime(new_adjustment_date), self.adjustment_id)
+
+        self.database_connection.write_data(sql_query, values)
+
+        values = (new_modified_date, self.adjustment_id)
+        self.database_connection.write_data(
+            """UPDATE inventory SET modified_date = (?) WHERE adjustment_id= (?)""",
+            values,
+        )
+
+    def return_event_codes(self) -> list[str]:
+        """Queries the database for event codes.
+
+        Returns:
+            list[str]: List of event codes.
+        """
+        valid_event_codes = []
+        event_codes = self.database_connection.return_data(
+            """SELECT event_code FROM event_types"""
+        )
+        for event in event_codes:
+            valid_event_codes.append(event[0])
+        return valid_event_codes
+
+    def return_event_attributes(self, event_code) -> list[str]:
+        """Queries the database for and event's attributes.
+
+        Returns:
+            list[str]: List of the events attributes.
+        """
+        event_attributes_list = []
+        event_data = self.database_connection.return_data(
+            """SELECT * FROM event_types WHERE event_code =(?)""", [event_code]
+        )[0]
+        for event in event_data:
+            event_attributes_list.append(event)
+        return event_attributes_list
+
+    def event_code_is_invalid(self, new_event_code) -> bool:
+        """Checks the event code is listed in the event_types table.
+
+        Returns:
+            bool: True if event_code in event_types table, otherwise false.
+        """
+        event_codes_list = self.return_event_codes()
+
+        if new_event_code in event_codes_list:
+            return False
+        else:
+            return True
+
+    def compare_operators(self, new_event_code) -> int:
+        """Compares event operators and returns adjusted amount_in_mcg."""
+        old_event_operator = self.return_event_attributes(self.event_code)[4]
+        new_event_operator = self.return_event_attributes(new_event_code)[4]
+
+        if old_event_operator != new_event_operator:
+            new_amount_in_mcg = self.amount_in_mcg * -1
+            self.amount_in_mcg = new_amount_in_mcg
+        return self.amount_in_mcg
+
+    def update_event_code(self, new_event_code: str) -> None:
+        """Updates the adjustment date of the adjustment.
+
+        Args:
+            new_event_code (str): The new event_code.
+        """
+        # Check if new event code is valid.
+        if self.event_code_is_invalid(new_event_code):
+            raise ValueError
+
+        # Compare operators and return adjusted amount_in_mcg.
+        self.amount_in_mcg = self.compare_operators(new_event_code)
+
+        # Get current modified date.
         self.modified_date = database.return_datetime()
 
-        values = self.return_attributes() + (code,)
+        # Update the database.
+        sql_query = """UPDATE inventory SET event_code =(?), quantity_in_mcg = (?), modified_date = (?) WHERE adjustment_id = (?)"""
+        values = (
+            new_event_code,
+            self.amount_in_mcg,
+            self.modified_date,
+            self.adjustment_id,
+        )
 
-        db_connection.write_data(sql_query, values)
+        self.database_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection):
-        """Delete the medication from the database.
+    def delete(self):
+        """Delete the adjustment from the database.
 
-        The delete will delete the medication from the database entirely.
+        The delete will delete the adjustment from the database entirely.
         Note: This is irreversible.
 
         Args:
@@ -197,6 +259,6 @@ class Adjustment:
                 database.
         """
 
-        sql_query = """DELETE FROM medications WHERE medication_id = ?"""
-        values = (self.medication_id,)
-        db_connection.write_data(sql_query, values)
+        sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
+        values = (self.adjustment_id,)
+        self.database_connection.write_data(sql_query, values)
