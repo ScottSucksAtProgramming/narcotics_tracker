@@ -81,6 +81,30 @@ def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
     return operator[0][0]
 
 
+def parse_event_type_data(event_type_data) -> dict:
+    """Returns event_type data from the database as a dictionary.
+
+    Args:
+        event_type_data (list): The event_type data
+
+    Returns:
+        properties (dict): Dictionary objects contains the properties of
+            the event_type."""
+
+    properties = {}
+
+    properties["event_id"] = event_type_data[0][0]
+    properties["event_code"] = event_type_data[0][1]
+    properties["event_name"] = event_type_data[0][2]
+    properties["description"] = event_type_data[0][3]
+    properties["operator"] = event_type_data[0][4]
+    properties["created_date"] = event_type_data[0][5]
+    properties["modified_date"] = event_type_data[0][6]
+    properties["modified_by"] = event_type_data[0][7]
+
+    return properties
+
+
 class EventType:
     """Defines the representation of Event Types for the project.
 
