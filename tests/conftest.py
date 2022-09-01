@@ -8,7 +8,11 @@ from typing import TYPE_CHECKING
 
 from narcotics_tracker import database, event_types, inventory, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import adjustment_builder, medication_builder
+from narcotics_tracker.builders import (
+    adjustment_builder,
+    event_type_builder,
+    medication_builder,
+)
 
 if TYPE_CHECKING:
     from narcotics_tracker import medication
@@ -80,15 +84,17 @@ def test_event_type() -> event_types.EventType:
         test_event_type (event_type.EventType): An EventType object for
             testing.
     """
-    test_event_type = event_types.EventType(
-        "TEST", "Test Event", "Used for testing the EventType Class.", -1
-    )
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_id(2001)
+    event_builder.set_event_code("TEST")
+    event_builder.set_event_name("Test Event")
+    event_builder.set_description("Used for testing the EventType Class.")
+    event_builder.set_operator(-1)
+    event_builder.set_created_date("2022-08-26 00:00:00")
+    event_builder.set_modified_date("2022-08-01 00:00:00")
+    event_builder.set_modified_by("Bast")
 
-    test_event_type.event_id = 2001
-    test_event_type.created_date = "08-26-2022"
-    test_event_type.modified_date = "08-01-2022"
-    test_event_type.modified_by = "Bast"
-
+    test_event_type = event_builder.build()
     return test_event_type
 
 

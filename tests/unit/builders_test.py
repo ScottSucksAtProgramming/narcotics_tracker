@@ -12,6 +12,8 @@ from narcotics_tracker.enums import containers, medication_statuses, units
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
+    event_type_builder,
+    event_type_builder_template,
     medication_builder,
 )
 
@@ -471,3 +473,148 @@ class Test_AdjustmentBuilder:
         Asserts that test_adjustment is an instance of inventory.Adjustment
         """
         assert isinstance(test_adjustment, inventory.Adjustment)
+
+
+class Test_EventTypeAbstractBuilder:
+    """Contains the unit tests for the event_type_builder_template module.
+
+    Behaviors Tested:
+        - Module event_type_builder_template can be accessed.
+        - Class event_type can be accessed.
+    """
+
+    def test_event_type_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if the event_type_builder_template exists and is accessible.
+
+        Asserts that event_type_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert event_type_builder_template.__doc__ != None
+
+    def test_event_type_class_can_be_accessed(self) -> None:
+        """Tests that EventType class exists and is accessible.
+
+        Asserts that event_type_builder_template.EventType.__doc__ does not
+        return 'None'.
+        """
+        assert event_type_builder_template.EventType.__doc__ != None
+
+
+class Test_EventTypeBuilderModule:
+    """Contains the unit tests for the event_type_builder module.
+
+    Behaviors Tested:
+
+        - Module event_type_builder can be accessed.
+    """
+
+    def test_event_type_builder_can_be_accessed(self) -> None:
+        """Tests that the module exists and can be accessed.
+
+        Asserts that event_type_builder.__doc__ does not return 'None'.
+        """
+        assert event_type_builder.__doc__ != None
+
+
+class Test_EventTypeBuilder:
+    """Contains the unit tests for the EventTypeBuilder class.
+
+    Behaviors Tested:
+
+        - Class EventTypeBuilder can be accessed.
+        - EventTypeBuilder sets the event id correctly.
+        - EventTypeBuilder sets the event code correctly.
+        - EventTypeBuilder sets the event_name correctly.
+        - EventTypeBuilder sets the description correctly.
+        - EventTypeBuilder sets the modifier correctly.
+        - EventTypeBuilder sets the created date correctly.
+        - EventTypeBuilder sets the modified date correctly.
+        - EventTypeBuilder sets the modified by attribute correctly.
+        #! - Created EventType object has type event_type.EventType.
+    """
+
+    def test_event_type_class_can_be_accessed(self) -> None:
+        """Tests that the EventTypeBuilder class exists and is accessible.
+
+        Asserts that event_type_builder.EventTypeBuilder.__doc__ does not
+        return 'None'.
+        """
+        assert event_type_builder.EventTypeBuilder.__doc__ != None
+
+    def test_event_id_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the event_id is set correctly.
+
+        Asserts that test_event.event_id is 2001.
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.event_id == 2001
+
+    def test_event_code_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the event_code is set correctly.
+
+        Asserts that test_event.event_code is TEST.
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.event_code == "TEST"
+
+    def test_event_name_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the event_name is set correctly.
+
+        Asserts that test_event.event_name is Test Event.
+        """
+        test_event_type = test_event_type
+        print(test_event_type.event_name)
+
+        assert test_event_type.event_name == "Test Event"
+
+    def test_description_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the description is set correctly.
+
+        Asserts that test_event.description is ;Used for testing the EventType Class.'
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.description == "Used for testing the EventType Class."
+
+    def test_operator_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the operator is set correctly.
+
+        Asserts that test_event.operator is -1.
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.operator == -1
+
+    def test_created_date_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the created_date is set correctly.
+
+        Asserts that test_event.created_date is "2022-08-26 00:00:00".
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.created_date == database.return_datetime(
+            "2022-08-26 00:00:00"
+        )
+
+    def test_modified_date_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the modified_date is set correctly.
+
+        Asserts that test_event.modified_date is "2022-08-01 00:00:00".
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_date_is_set_correctly(self, test_event_type) -> None:
+        """Tests that the modified_by is set correctly.
+
+        Asserts that test_event.modified_by is "Bast".
+        """
+        test_event_type = test_event_type
+
+        assert test_event_type.modified_by == "Bast"

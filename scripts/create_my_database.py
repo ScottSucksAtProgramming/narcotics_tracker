@@ -4,7 +4,7 @@ writes them to the table."""
 
 from narcotics_tracker import database, event_types, inventory, medication, periods
 from narcotics_tracker.enums import containers, medication_statuses, units
-from narcotics_tracker.builders import medication_builder
+from narcotics_tracker.builders import event_type_builder, medication_builder
 
 FENTANYL_PROPERTIES = [
     "fentanyl",
@@ -78,53 +78,59 @@ def main():
     period_4.modified_by = "SRK"
 
     # Build Standard Inventory Events
-    import_event = event_types.EventType(
-        "IMPORT",
-        "imported",
-        "Used when adding pre-existing stock to the table",
-        +1,
-    )
-    import_event.modified_by = "SRK"
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("IMPORT")
+    event_builder.set_event_name("imported")
+    event_builder.set_description("Used when adding pre-existing stock to the table.")
+    event_builder.set_operator(+1)
+    event_builder.set_modified_by("SRK")
+    import_event = event_builder.build()
 
-    order_event = event_types.EventType(
-        "ORDER",
-        "ordered",
-        "Used when adding new stock from a purchase order.",
-        +1,
-    )
-    order_event.modified_by = "SRK"
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("ORDER")
+    event_builder.set_event_name("ordered")
+    event_builder.set_description("Used when adding new stock from a purchase order.")
+    event_builder.set_operator(+1)
+    event_builder.set_modified_by("SRK")
+    order_event = event_builder.build()
 
-    use_event = event_types.EventType(
-        "USE",
-        "used",
-        "Used when subtracting medication that was administered to a patient.",
-        -1,
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("USE")
+    event_builder.set_event_name("used")
+    event_builder.set_description(
+        "Used when subtracting medication that was administered to a patient."
     )
-    use_event.modified_by = "SRK"
+    event_builder.set_operator(-1)
+    event_builder.set_modified_by("SRK")
+    use_event = event_builder.build()
 
-    waste_event = event_types.EventType(
-        "WASTE",
-        "wasted",
-        "Used when subtracting medication which was wasted.",
-        -1,
-    )
-    waste_event.modified_by = "SRK"
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("WASTE")
+    event_builder.set_event_name("wasted")
+    event_builder.set_description("Used when subtracting medication which was wasted.")
+    event_builder.set_operator(-1)
+    event_builder.set_modified_by("SRK")
+    waste_event = event_builder.build()
 
-    destruction_event = event_types.EventType(
-        "DESTROY",
-        "destroyed",
-        "Used when subtracting medication which was destroyed through a reverse distributor.",
-        -1,
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("DESTROY")
+    event_builder.set_event_name("destroyed")
+    event_builder.set_description(
+        "Used when subtracting medication which was destroyed through a reverse distributor."
     )
-    destruction_event.modified_by = "SRK"
+    event_builder.set_operator(-1)
+    event_builder.set_modified_by("SRK")
+    destruction_event = event_builder.build()
 
-    loss_event = event_types.EventType(
-        "LOSS",
-        "lost",
-        "Used when subtracting medication which were lost or stolen.",
-        -1,
+    event_builder = event_type_builder.EventTypeBuilder()
+    event_builder.set_event_code("LOSS")
+    event_builder.set_event_name("lost")
+    event_builder.set_description(
+        "Used when subtracting medication which were lost or stolen."
     )
-    loss_event.modified_by = "SRK"
+    event_builder.set_operator(-1)
+    event_builder.set_modified_by("SRK")
+    loss_event = event_builder.build()
 
     for _ in DATABASE_FILES:
         db = database.Database()

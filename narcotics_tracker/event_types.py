@@ -35,8 +35,8 @@ def return_table_creation_query() -> str:
             EVENT_NAME TEXT,
             DESCRIPTION TEXT,
             OPERATOR INTEGER,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INTEGER,
+            MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT
             )"""
 
@@ -154,32 +154,22 @@ class EventType:
         return_attributes: Returns the event type's attributes as a tuple.
     """
 
-    def __init__(
-        self, event_code: str, event_name: str, description: str, operator: int
-    ) -> None:
+    def __init__(self, builder=None) -> None:
         """Creates an instance of EventType and assigns attributes.
 
         Sets the event_id to None.
 
         Arguments:
-            event_code (str): Unique identifier of each event type. Assigned
-                by the user.
 
-            event_name (str): Name of the event.
-
-            description (str): Description of the event.
-
-            operator (int): The operator of the inventory change. '+1' for
-                adding stock. '-1' for removing stock.
         """
-        self.event_id = None
-        self.event_code = event_code
-        self.event_name = event_name
-        self.description = description
-        self.operator = operator
-        self.created_date = None
-        self.modified_date = None
-        self.modified_by = None
+        self.event_id = builder.event_id
+        self.event_code = builder.event_code
+        self.event_name = builder.event_name
+        self.description = builder.description
+        self.operator = builder.operator
+        self.created_date = builder.created_date
+        self.modified_date = builder.modified_date
+        self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
         """Returns a string expression of the event type.

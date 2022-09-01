@@ -42,8 +42,8 @@ class Test_EventTypesModule:
             EVENT_NAME TEXT,
             DESCRIPTION TEXT,
             OPERATOR INTEGER,
-            CREATED_DATE TEXT,
-            MODIFIED_DATE TEXT,
+            CREATED_DATE INTEGER,
+            MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT
             )"""
 
@@ -64,18 +64,13 @@ class Test_EventTypesModule:
         db.create_table(event_types.return_table_creation_query())
 
         test_event_type = test_event_type
-        second_event_type = event_types.EventType(
-            "2ND", "2nd Event Type", "Useless Thing.", +1
-        )
+
         test_event_type.save(db)
-        second_event_type.save(db)
 
         event_types_list = event_types.return_event_types(db)
 
         assert (
             "Event Type Test Event. Code: TEST. Used for testing the EventType Class."
-            in event_types_list
-            and "Event Type 2nd Event Type. Code: 2ND. Useless Thing."
             in event_types_list
         )
 
@@ -193,7 +188,9 @@ class Test_EventTypeAttributes:
         """
         test_event_type = test_event_type
 
-        assert test_event_type.created_date == "08-26-2022"
+        assert test_event_type.created_date == database.return_datetime(
+            "2022-08-26 00:00:00"
+        )
 
     def test_modified_date_returns_correct_value(self, test_event_type) -> None:
         """Tests that the modified_date attributes returns the correct value.
@@ -203,8 +200,11 @@ class Test_EventTypeAttributes:
         Asserts that test_event_type.modified_date is '08-01-2022'
         """
         test_event_type = test_event_type
+        print(test_event_type.modified_date)
 
-        assert test_event_type.modified_date == "08-01-2022"
+        assert test_event_type.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
 
     def test_modified_by_returns_correct_value(self, test_event_type) -> None:
         """Tests that the modified_by attributes returns the correct value.
@@ -225,6 +225,7 @@ class Test_EventTypeMethods:
         - __init__ sets attributes correctly.
         - __repr__ returns correct string.
         - Can save EventType to database.
+        - Can load EventType from database.
         - Can update EventType code.
         - Can update EventType name.
         - Can update EventType description.
@@ -288,6 +289,24 @@ class Test_EventTypeMethods:
         )
 
         assert data[0][0] == "TEST"
+
+    def test_can_load_event_from_database(
+        self, reset_database, test_event_type
+    ) -> None:
+        """Tests to see if an Event Type Object can be loaded from data.
+        Loads and saves test_event_type. Creates loaded_event from data.
+
+        Asserts that test_event_type and loaded_event_type return identical
+        attributes.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(event_types.return_table_creation_query())
+
+        test_event_type = test_event_type
+        test_event_type.save(db)
+
+        loaded_event_type = db.load_event("TEST")
 
     def test_can_update_event_code(self, test_event_type, reset_database) -> None:
         """Tests that the event type's event code can be updated.
@@ -411,7 +430,7 @@ class Test_EventTypeMethods:
             "Test Event",
             "Used for testing the EventType Class.",
             -1,
-            "08-26-2022",
-            "08-01-2022",
+            database.return_datetime("2022-08-26 00:00:00"),
+            database.return_datetime("2022-08-01 00:00:00"),
             "Bast",
         )
