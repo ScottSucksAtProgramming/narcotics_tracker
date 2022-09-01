@@ -9,7 +9,13 @@ Classes:
     AdjustmentBuilder: Builds and returns inventory adjustment objects.
 """
 
-from narcotics_tracker import database, event_types, inventory, medication, periods
+from narcotics_tracker import (
+    database,
+    event_types,
+    inventory,
+    medication,
+    reporting_periods,
+)
 from narcotics_tracker.builders import adjustment_builder_template
 from narcotics_tracker.utils import unit_converter
 
@@ -180,10 +186,10 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """Checks that adjustment_date and assigns the period it falls within."""
 
         # Todo: Get Reporting Periods with their start and end dates.
-        _, reporting_periods = periods.return_periods(self.database_connection)
+        _, periods = reporting_periods.return_periods(self.database_connection)
 
-        # Todo: Compare the dates and assign the reporting_period's id as reporting_period_id.
-        for period in reporting_periods:
+        # Todo: Compare the dates and assign the period's id as period_id.
+        for period in periods:
             if period[1] <= self.adjustment_date and self.adjustment_date <= period[2]:
                 self.reporting_period_id = period[0]
                 return

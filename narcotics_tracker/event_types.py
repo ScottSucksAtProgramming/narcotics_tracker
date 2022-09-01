@@ -16,7 +16,6 @@ The Event Type Builder Module contains information on creating event types and
 specifying their attributes.
 
 The database module contains information on communicating with the database.
-The inventory 
 
 Classes:
     EventType: Defines Event Types and instantiates them as objects.
@@ -273,22 +272,21 @@ class EventType:
 
         The update method will overwrite the event_type's data if it already
         exists within the database. Use the save method to store new
-        event types in the database..
+        event types in the database.
 
         How to use:
             Use the event_types.return_event_types() method to return a list
             of event types.
 
             Use the database.load_event_type() method, passing in the
-            event_code of the event type you wish to update, to create a new
-            EventType object.
+            event_code of the event type you wish to update.
 
             Modify the attributes as necessary and call this method to update
-            the attributes to the database.
+            the attributes in the database.
 
             If you are changing the event_code use the save() method to create
             a new event type entry in the table and use the delete method to
-            remove the old one entry.
+            remove the old entry.
 
         Assigns a new modified_date.
 
