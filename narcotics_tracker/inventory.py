@@ -21,7 +21,7 @@ Functions:
 
     return_table_creation_query: Returns query to create the inventory table.
 
-    #! parse_medication_data: Returns medication data from database as dictionary.
+    parse_adjustment_data: Returns adjustment data as dictionary.
 """
 
 import sqlite3
