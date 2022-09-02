@@ -238,10 +238,7 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(
-        self,
-        db_connection: sqlite3.Connection,
-    ) -> None:
+    def delete(self, db_connection: sqlite3.Connection) -> None:
         """Delete the adjustment from the database.
 
         The delete will delete the adjustment from the database entirely.
