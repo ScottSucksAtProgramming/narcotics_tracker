@@ -159,7 +159,7 @@ class Adjustment:
             self.modified_by,
         )
 
-    def save(self, db_connection: sqlite3.Connection = None) -> None:
+    def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new adjustment to the database.
 
         The save method will only write the adjustment into the table if it
@@ -182,7 +182,7 @@ class Adjustment:
 
         values = self.return_attributes()
 
-        self.database_connection.write_data(sql_query, values)
+        db_connection.write_data(sql_query, values)
 
     def read(self, db_connection: sqlite3.Connection) -> tuple:
         """Returns the data of the adjustment from the database as a tuple.
@@ -259,105 +259,56 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
-    def update_adjustment_date(self, new_adjustment_date: str) -> None:
-        """Updates the adjustment date of the adjustment.
+    # def return_event_codes(self) -> list[str]:
+    #     """Queries the database for event codes.
 
-        Args:
-            new_adjustment_date (str): The new starting date in format
-                YYY-MM-DD HH:MM:SS.
-        """
-        new_modified_date = database.return_datetime()
+    #     Returns:
+    #         list[str]: List of event codes.
+    #     """
+    #     valid_event_codes = []
+    #     event_codes = self.database_connection.return_data(
+    #         """SELECT event_code FROM event_types"""
+    #     )
+    #     for event in event_codes:
+    #         valid_event_codes.append(event[0])
+    #     return valid_event_codes
 
-        sql_query = (
-            """UPDATE inventory SET adjustment_date =(?) WHERE adjustment_id = (?)"""
-        )
-        values = (database.return_datetime(new_adjustment_date), self.adjustment_id)
+    # def return_event_attributes(self, event_code) -> list[str]:
+    #     """Queries the database for and event's attributes.
 
-        self.database_connection.write_data(sql_query, values)
+    #     Returns:
+    #         list[str]: List of the events attributes.
+    #     """
+    #     event_attributes_list = []
+    #     event_data = self.database_connection.return_data(
+    #         """SELECT * FROM event_types WHERE event_code =(?)""", [event_code]
+    #     )[0]
+    #     for event in event_data:
+    #         event_attributes_list.append(event)
+    #     return event_attributes_list
 
-        values = (new_modified_date, self.adjustment_id)
-        self.database_connection.write_data(
-            """UPDATE inventory SET modified_date = (?) WHERE adjustment_id= (?)""",
-            values,
-        )
+    # def event_code_is_invalid(self, new_event_code) -> bool:
+    #     """Checks the event code is listed in the event_types table.
 
-    def return_event_codes(self) -> list[str]:
-        """Queries the database for event codes.
+    #     Returns:
+    #         bool: True if event_code in event_types table, otherwise false.
+    #     """
+    #     event_codes_list = self.return_event_codes()
 
-        Returns:
-            list[str]: List of event codes.
-        """
-        valid_event_codes = []
-        event_codes = self.database_connection.return_data(
-            """SELECT event_code FROM event_types"""
-        )
-        for event in event_codes:
-            valid_event_codes.append(event[0])
-        return valid_event_codes
+    #     if new_event_code in event_codes_list:
+    #         return False
+    #     else:
+    #         return True
 
-    def return_event_attributes(self, event_code) -> list[str]:
-        """Queries the database for and event's attributes.
+    # def compare_operators(self, new_event_code) -> int:
+    # """Compares event operators and returns adjusted amount_in_mcg."""
+    # old_event_operator = self.return_event_attributes(self.event_code)[4]
+    # new_event_operator = self.return_event_attributes(new_event_code)[4]
 
-        Returns:
-            list[str]: List of the events attributes.
-        """
-        event_attributes_list = []
-        event_data = self.database_connection.return_data(
-            """SELECT * FROM event_types WHERE event_code =(?)""", [event_code]
-        )[0]
-        for event in event_data:
-            event_attributes_list.append(event)
-        return event_attributes_list
-
-    def event_code_is_invalid(self, new_event_code) -> bool:
-        """Checks the event code is listed in the event_types table.
-
-        Returns:
-            bool: True if event_code in event_types table, otherwise false.
-        """
-        event_codes_list = self.return_event_codes()
-
-        if new_event_code in event_codes_list:
-            return False
-        else:
-            return True
-
-    def compare_operators(self, new_event_code) -> int:
-        """Compares event operators and returns adjusted amount_in_mcg."""
-        old_event_operator = self.return_event_attributes(self.event_code)[4]
-        new_event_operator = self.return_event_attributes(new_event_code)[4]
-
-        if old_event_operator != new_event_operator:
-            new_amount_in_mcg = self.amount_in_mcg * -1
-            self.amount_in_mcg = new_amount_in_mcg
-        return self.amount_in_mcg
-
-    def update_event_code(self, new_event_code: str) -> None:
-        """Updates the adjustment date of the adjustment.
-
-        Args:
-            new_event_code (str): The new event_code.
-        """
-        # Check if new event code is valid.
-        if self.event_code_is_invalid(new_event_code):
-            raise ValueError
-
-        # Compare operators and return adjusted amount_in_mcg.
-        self.amount_in_mcg = self.compare_operators(new_event_code)
-
-        # Get current modified date.
-        self.modified_date = database.return_datetime()
-
-        # Update the database.
-        sql_query = """UPDATE inventory SET event_code =(?), quantity_in_mcg = (?), modified_date = (?) WHERE adjustment_id = (?)"""
-        values = (
-            new_event_code,
-            self.amount_in_mcg,
-            self.modified_date,
-            self.adjustment_id,
-        )
-
-        self.database_connection.write_data(sql_query, values)
+    # if old_event_operator != new_event_operator:
+    #     new_amount_in_mcg = self.amount_in_mcg * -1
+    #     self.amount_in_mcg = new_amount_in_mcg
+    # return self.amount_in_mcg
 
     def delete(
         self,
