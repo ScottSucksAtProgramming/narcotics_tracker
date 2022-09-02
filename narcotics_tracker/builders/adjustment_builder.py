@@ -8,10 +8,10 @@ Classes:
 
     AdjustmentBuilder: Builds and returns inventory adjustment objects.
 """
+import sqlite3
 
 from narcotics_tracker import (
     database,
-    event_types,
     inventory,
     medication,
     reporting_periods,
@@ -166,21 +166,32 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
                 the adjustment."""
         self.modified_by = modified_by
 
-    def calculate_amount_in_mcg(self) -> None:
+    def set_amount_in_mcg(self, amount_in_mcg: float) -> None:
+        """Sets the adjustment amount in micrograms."""
+
+        self.amount_in_mcg = amount_in_mcg
+
+    def set_reporting_period_id(self, reporting_period_id: int) -> None:
+        """Sets the adjustment's reporting period ID.
+
+        Args:
+
+            reporting_period_id (int): The numeric identifier of the the
+                reporting period.
+        """
+        self.reporting_period_id = reporting_period_id
+
+    def calculate_amount_in_mcg(self, db_connection: sqlite3.Connection) -> None:
         """Calculates and sets the adjustment amount in micrograms."""
         preferred_unit = medication.return_preferred_unit(
-            self.medication_code, db_connection=self.database_connection
+            self.medication_code, db_connection=db_connection
         )
 
         amount_in_mcg = unit_converter.UnitConverter.to_mcg(
             self.amount_in_preferred_unit, preferred_unit
         )
 
-        operator = event_types.return_operator(
-            self.event_code, self.database_connection
-        )
-
-        self.amount_in_mcg = amount_in_mcg * operator
+        self.amount_in_mcg = amount_in_mcg
 
     def assign_reporting_period(self) -> None:
         """Checks that adjustment_date and assigns the period it falls within."""
@@ -196,17 +207,41 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
             else:
                 self.reporting_period_id = None
 
-    def build(self) -> "inventory.Adjustment":
+    def set_all_properties(self, properties: dict) -> None:
+        """Sets all properties of the adjustment.
+
+        Args:
+            properties (dict): The properties of the adjustment. Dictionary
+                keys are formatted as the adjustment property names.
+        """
+        self.set_adjustment_id(properties["adjustment_id"])
+        self.adjustment_date = properties["adjustment_date"]
+        self.set_event_code(properties["event_code"])
+        self.set_medication_code(properties["medication_code"])
+        self.set_amount_in_mcg(properties["amount_in_mcg"])
+        self.set_reference_id(properties["reference_id"])
+        self.set_reporting_period_id(properties["reporting_period_id"])
+        self.set_created_date(properties["created_date"])
+        self.set_modified_date(properties["modified_date"])
+        self.set_modified_by(properties["modified_by"])
+
+    def build(self, db_connection: sqlite3.Connection) -> "inventory.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's properties.
 
         This is the last method to be called as part of the building process.
         It will return the Adjustment object with all of its properties set.
 
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
 
         Returns:
             inventory.Adjustment: The inventory adjustment object.
         """
-        self.calculate_amount_in_mcg()
-        self.assign_reporting_period()
+        if self.amount_in_mcg == None:
+            self.calculate_amount_in_mcg(db_connection)
+
+        if self.reporting_period_id == None:
+            self.assign_reporting_period()
 
         return inventory.Adjustment(self)

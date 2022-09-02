@@ -17,8 +17,9 @@ import os
 from typing import TYPE_CHECKING
 import sqlite3
 
-from narcotics_tracker import event_types, medication, reporting_periods
+from narcotics_tracker import event_types, inventory, medication, reporting_periods
 from narcotics_tracker.builders import (
+    adjustment_builder,
     event_type_builder,
     medication_builder,
     reporting_period_builder,
@@ -294,3 +295,30 @@ class Database:
         loaded_period = period_builder.build()
 
         return loaded_period
+
+    def load_adjustment(
+        self, adjustment_id: int, db_connection: sqlite3.Connection
+    ) -> "inventory.Adjustment":
+        """Create an Adjustment object from data in the database.
+
+        Args:
+            adjustment_id (int): The numeric identifier of the Adjustment to
+                be loaded.
+
+            db_connection (sqlite3.Connection): Connection to the database.
+
+        Returns:
+            loaded_adjustment (inventory.Adjustment): The
+                Adjustment object.
+        """
+        sql_query = """SELECT * FROM inventory WHERE adjustment_id = ?"""
+        values = (adjustment_id,)
+
+        result = self.return_data(sql_query, values)
+        adjustment_data = inventory.parse_adjustment_data(result)
+
+        adj_builder = adjustment_builder.AdjustmentBuilder()
+        adj_builder.set_all_properties(adjustment_data)
+        loaded_adjustment = adj_builder.build(db_connection)
+
+        return loaded_adjustment

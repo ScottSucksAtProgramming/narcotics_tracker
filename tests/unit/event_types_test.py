@@ -92,7 +92,7 @@ class Test_EventTypesModule:
     def test_parse_event_type_data_returns_correct_values(
         self, reset_database, test_event_type
     ) -> None:
-        """Tests if part_event_type_data returns dictionary with correct data.
+        """Tests if parse_event_type_data returns dictionary with correct data.
 
         Resets the database. Creates event_types table. Builds and saves
         test_event_type to database. Queries database for event type data and
@@ -368,6 +368,19 @@ class Test_EventTypeMethods:
         test_event_type.save(db)
 
         loaded_event_type = db.load_event_type("TEST")
+
+        assert (
+            loaded_event_type.return_attributes()[0]
+            == test_event_type.return_attributes()[0]
+            and loaded_event_type.return_attributes()[1]
+            == test_event_type.return_attributes()[1]
+            and loaded_event_type.return_attributes()[2]
+            == test_event_type.return_attributes()[2]
+            and loaded_event_type.return_attributes()[3]
+            == test_event_type.return_attributes()[3]
+            and loaded_event_type.return_attributes()[4]
+            == test_event_type.return_attributes()[4]
+        )
 
     def test_can_update_event_type_in_database(
         self, reset_database, test_event_type

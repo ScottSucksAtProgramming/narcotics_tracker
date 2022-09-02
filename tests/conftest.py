@@ -116,6 +116,9 @@ def test_adjustment() -> "inventory.Adjustment":
         test_adjustment (medication.Medication): A medication object for testing.
     """
 
+    db = database.Database()
+    db.connect("test_database_2.db")
+
     adj_builder = adjustment_builder.AdjustmentBuilder()
     adj_builder.set_database_connection("test_database_2.db")
     adj_builder.set_adjustment_id(-300)
@@ -123,13 +126,12 @@ def test_adjustment() -> "inventory.Adjustment":
     adj_builder.set_event_code("WASTE")
     adj_builder.set_medication_code("morphine")
     adj_builder.set_adjustment_amount(1)
-    adj_builder.calculate_amount_in_mcg()
     adj_builder.set_reference_id("TEST ID")
     adj_builder.set_created_date("2022-08-01 10:00:00")
     adj_builder.set_modified_date("2022-08-01 10:00:00")
     adj_builder.set_modified_by("Ambrose")
 
-    test_adjustment = adj_builder.build()
+    test_adjustment = adj_builder.build(db)
 
     return test_adjustment
 

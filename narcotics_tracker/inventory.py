@@ -1,15 +1,21 @@
-"""Defines the representation of the inventory table and inventory events.
+"""Contains the implementation and representation of inventory adjustments.
 
-This module handles the creation of the inventory table. The Events class 
-defines the representation of the events or lines in the inventory which will 
-adjust the actual inventory amounts. 
+The inventory table is the main table used in the Narcotics Tracker. It stores 
+Adjustments which are the specific events that make changes to the inventory, 
+such as administration to a patient or sending drugs to a reverse distributor 
+for destruction.
+
+Multiple modules including Event Types, Medication, and the Database module 
+will interact heavily with this table.
+
+This module handles the creation of the inventory table. The Adjustment class 
+defines the representation of the inventory adjustments.
 
 See the database module for information on interacting with the database.
-Tests are located in the tests/unit/inventory_test.py file.
 
 Classes:
 
-    Event: Defines the events that adjust the inventory amounts.
+    Adjustment: Defines the events that adjust the inventory amounts.
 
 Functions:
 
@@ -40,6 +46,32 @@ def return_table_creation_query() -> str:
             FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE,
             FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE
             )"""
+
+
+def parse_adjustment_data(adjustment_data) -> dict:
+    """Returns adjustment data from the database as a dictionary.
+
+    Args:
+        adjustment_data (list): The adjustment's attributes
+
+    Returns:
+        properties (dict): Dictionary objects contains the properties of
+            the adjustment."""
+
+    properties = {}
+
+    properties["adjustment_id"] = adjustment_data[0][0]
+    properties["adjustment_date"] = adjustment_data[0][1]
+    properties["event_code"] = adjustment_data[0][2]
+    properties["medication_code"] = adjustment_data[0][3]
+    properties["amount_in_mcg"] = adjustment_data[0][4]
+    properties["reporting_period_id"] = adjustment_data[0][5]
+    properties["reference_id"] = adjustment_data[0][6]
+    properties["created_date"] = adjustment_data[0][7]
+    properties["modified_date"] = adjustment_data[0][8]
+    properties["modified_by"] = adjustment_data[0][9]
+
+    return properties
 
 
 class Adjustment:
@@ -127,7 +159,7 @@ class Adjustment:
             self.modified_by,
         )
 
-    def save(self) -> None:
+    def save(self, db_connection: sqlite3.Connection = None) -> None:
         """Saves a new adjustment to the database.
 
         The save method will only write the adjustment into the table if it
@@ -135,6 +167,10 @@ class Adjustment:
         adjustment's attributes.
 
         Sets created date if created date is None.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
         """
 
         sql_query = """INSERT OR IGNORE INTO inventory VALUES (
@@ -147,6 +183,81 @@ class Adjustment:
         values = self.return_attributes()
 
         self.database_connection.write_data(sql_query, values)
+
+    def read(self, db_connection: sqlite3.Connection) -> tuple:
+        """Returns the data of the adjustment from the database as a tuple.
+
+        This function will make no changes to the data.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+            database.
+
+        Returns:
+            tuple: A tuple containing the adjustment's attribute values.
+        """
+        sql_query = """SELECT * from inventory WHERE adjustment_id = ?"""
+
+        values = (self.adjustment_id,)
+
+        data = db_connection.return_data(sql_query, values)
+
+        return data
+
+    def update(self, db_connection: sqlite3.Connection) -> None:
+        """Updates the adjustment in the inventory table of the database.
+
+        The update method will overwrite the adjustment's data if it already
+        exists within the database. Use the save method to store new
+        adjustments in the database.
+
+        How to use:
+            Use the inventory.return_adjustment() method to return a list
+            of adjustments.
+
+            Use the database.load_adjustment() method, passing in the
+            adjustment_id of the adjustment you wish to update.
+
+            Modify the attributes as necessary and call this method to update
+            the attributes in the database.
+
+            If you are changing the adjustment_id use the save() method to
+            create a new adjustment entry in the table and use the delete
+            method to remove the old entry.
+
+        Assigns a new modified_date.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+            database.
+
+            adjustment_id (str): The numeric identifier of the adjustment.
+
+        Raises:
+
+            IndexError: An Index Error will be raised if the adjustment_id is not
+            found on the inventory table.
+        """
+        sql_query = """UPDATE inventory 
+            SET ADJUSTMENT_ID = ?, 
+                ADJUSTMENT_DATE = ?,
+                EVENT_CODE = ?, 
+                MEDICATION_CODE = ?, 
+                QUANTITY_IN_MCG = ?, 
+                REPORTING_PERIOD_ID = ?,
+                REFERENCE_ID = ?,
+                CREATED_DATE = ?, 
+                MODIFIED_DATE = ?, 
+                MODIFIED_BY = ? 
+            WHERE ADJUSTMENT_ID = ?"""
+
+        if database.Database.created_date_is_none(self):
+            self.created_date = database.return_datetime()
+        self.modified_date = database.return_datetime()
+
+        values = self.return_attributes() + (self.adjustment_id,)
+
+        db_connection.write_data(sql_query, values)
 
     def update_adjustment_date(self, new_adjustment_date: str) -> None:
         """Updates the adjustment date of the adjustment.
@@ -248,7 +359,10 @@ class Adjustment:
 
         self.database_connection.write_data(sql_query, values)
 
-    def delete(self):
+    def delete(
+        self,
+        db_connection: sqlite3.Connection,
+    ) -> None:
         """Delete the adjustment from the database.
 
         The delete will delete the adjustment from the database entirely.
@@ -261,4 +375,4 @@ class Adjustment:
 
         sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
         values = (self.adjustment_id,)
-        self.database_connection.write_data(sql_query, values)
+        db_connection.write_data(sql_query, values)
