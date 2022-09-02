@@ -138,27 +138,6 @@ class Adjustment:
             f"{database.format_datetime_from_unixepoch(self.adjustment_date)}."
         )
 
-    def return_attributes(self) -> tuple:
-        """Returns the attributes of the medication as a tuple.
-
-        Returns:
-            tuple: The attributes of the medication. Follows the order of the
-                columns in the medication table.
-        """
-
-        return (
-            self.adjustment_id,
-            self.adjustment_date,
-            self.event_code,
-            self.medication_code,
-            self.amount_in_mcg,
-            self.reporting_period_id,
-            self.reference_id,
-            self.created_date,
-            self.modified_date,
-            self.modified_by,
-        )
-
     def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new adjustment to the database.
 
@@ -259,57 +238,6 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
-    # def return_event_codes(self) -> list[str]:
-    #     """Queries the database for event codes.
-
-    #     Returns:
-    #         list[str]: List of event codes.
-    #     """
-    #     valid_event_codes = []
-    #     event_codes = self.database_connection.return_data(
-    #         """SELECT event_code FROM event_types"""
-    #     )
-    #     for event in event_codes:
-    #         valid_event_codes.append(event[0])
-    #     return valid_event_codes
-
-    # def return_event_attributes(self, event_code) -> list[str]:
-    #     """Queries the database for and event's attributes.
-
-    #     Returns:
-    #         list[str]: List of the events attributes.
-    #     """
-    #     event_attributes_list = []
-    #     event_data = self.database_connection.return_data(
-    #         """SELECT * FROM event_types WHERE event_code =(?)""", [event_code]
-    #     )[0]
-    #     for event in event_data:
-    #         event_attributes_list.append(event)
-    #     return event_attributes_list
-
-    # def event_code_is_invalid(self, new_event_code) -> bool:
-    #     """Checks the event code is listed in the event_types table.
-
-    #     Returns:
-    #         bool: True if event_code in event_types table, otherwise false.
-    #     """
-    #     event_codes_list = self.return_event_codes()
-
-    #     if new_event_code in event_codes_list:
-    #         return False
-    #     else:
-    #         return True
-
-    # def compare_operators(self, new_event_code) -> int:
-    # """Compares event operators and returns adjusted amount_in_mcg."""
-    # old_event_operator = self.return_event_attributes(self.event_code)[4]
-    # new_event_operator = self.return_event_attributes(new_event_code)[4]
-
-    # if old_event_operator != new_event_operator:
-    #     new_amount_in_mcg = self.amount_in_mcg * -1
-    #     self.amount_in_mcg = new_amount_in_mcg
-    # return self.amount_in_mcg
-
     def delete(
         self,
         db_connection: sqlite3.Connection,
@@ -327,3 +255,24 @@ class Adjustment:
         sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
         values = (self.adjustment_id,)
         db_connection.write_data(sql_query, values)
+
+    def return_attributes(self) -> tuple:
+        """Returns the attributes of the medication as a tuple.
+
+        Returns:
+            tuple: The attributes of the medication. Follows the order of the
+                columns in the medication table.
+        """
+
+        return (
+            self.adjustment_id,
+            self.adjustment_date,
+            self.event_code,
+            self.medication_code,
+            self.amount_in_mcg,
+            self.reporting_period_id,
+            self.reference_id,
+            self.created_date,
+            self.modified_date,
+            self.modified_by,
+        )
