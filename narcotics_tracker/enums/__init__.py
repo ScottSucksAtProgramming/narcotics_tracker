@@ -6,6 +6,4 @@ Modules:
     containers: Enum for the container types.
 
     medication_statuses: Enum for the medication statuses.
-
-    units: Enum for the units.
 """

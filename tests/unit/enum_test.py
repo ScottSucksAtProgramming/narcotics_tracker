@@ -10,7 +10,7 @@ Classes:
 import pytest
 
 from narcotics_tracker import medication
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.enums import containers, medication_statuses
 
 
 class Test_Container:
@@ -111,59 +111,9 @@ class Test_MedicationStatus:
                 container_type=containers.Container.VIAL,
                 fill_amount=2,
                 dose=100,
-                unit=units.Unit.MCG,
+                unit="mcg",
                 concentration=50,
                 status=medication_statuses.MedicationStatus.ON_VACATION,
-                created_date="08-01-2022",
-                modified_date="08-01-2022",
-                modified_by="test",
-            )
-
-
-class Test_Unit:
-    """Contains all unit tests for the units module.
-
-    Behaviors Tested:
-        - Tests that the Enum values return the correct string.
-        - Tests that an invalid value raises an 'AttributeError'.
-    """
-
-    def test_MCG_returns_correct_string(self):
-        """Tests that MCG returns the correct string.
-
-        Asserts that value equals 'mcg'.
-        """
-        assert units.Unit.MCG.value == "mcg"
-
-    def test_MG_returns_correct_string(self):
-        """Tests that MG returns the correct string.
-
-        Asserts that value equals 'mg'.
-        """
-        assert units.Unit.MG.value == "mg"
-
-    def test_G_returns_correct_string(self):
-        """Tests that G returns the correct string.
-
-        Asserts that value equals 'G'.
-        """
-        assert units.Unit.G.value == "G"
-
-    def test_can_restrict_unit_to_Unit_enum(self):
-        """Tests that incorrect units raise an exception.
-
-        Test passes if an 'AttributeError' is raised.
-        """
-        with pytest.raises(AttributeError):
-            fentanyl = medication.Medication(
-                name="Fentanyl",
-                code="Fe-100-2",
-                container_type=containers.Container.VIAL,
-                fill_amount=2,
-                dose=100,
-                unit=units.Unit.KG,
-                concentration=50,
-                status=medication_statuses.MedicationStatus.ACTIVE,
                 created_date="08-01-2022",
                 modified_date="08-01-2022",
                 modified_by="test",
