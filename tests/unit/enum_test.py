@@ -61,7 +61,7 @@ class Test_Container:
                 container_type=containers.Container.BOX,
                 fill_amount=2,
                 dose=100,
-                unit=units.Unit.MCG,
+                unit="mcg",
                 concentration=50,
                 status=medication_statuses.MedicationStatus.ACTIVE,
                 created_date="08-01-2022",
