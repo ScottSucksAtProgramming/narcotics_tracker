@@ -11,9 +11,9 @@ Classes:
 
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import medication
+from narcotics_tracker import medication, units
 from narcotics_tracker.builders import medication_builder_template
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.utils import unit_converter
 
 if TYPE_CHECKING:
@@ -149,29 +149,17 @@ class MedicationBuilder(medication_builder_template.Medication):
         """
         self.fill_amount = fill_amount
 
-    def set_dose_and_unit(self, dose: float, unit: units.Unit) -> None:
-        """Sets the medication's dose and its preferred unit.
-
-        Acceptable unit types are:
-            Unit.MCG,
-            Unit.MG,
-            Unit.G,
-
+    def set_dose_and_unit(self, dose: float, preferred_unit: str) -> None:
+        """Sets the medication's dose and its preferred preferred_.
         Args:
             dose (float): The amount of medication dissolved in the container.
                 Defaults to None.
 
-            unit (units.Unit): The unit the medication is commonly referred
+            preferred_unit (str): The unit the medication is commonly referred
                 by.
-
-        Raises:
-            TypeError: Raised if the unit is not a valid type.
         """
-        if unit not in units.Unit:
-            raise TypeError("Incorrect unit type.")
-
-        self.dose = unit_converter.UnitConverter.to_mcg(dose, unit.value)
-        self.unit = unit
+        self.dose = unit_converter.UnitConverter.to_mcg(dose, preferred_unit)
+        self.unit = preferred_unit
 
     def set_concentration(self, concentration: float) -> None:
         """Sets the medication's concentration. Should not be set by the user.

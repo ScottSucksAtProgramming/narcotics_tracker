@@ -6,8 +6,8 @@ Fixtures:
 from pytest import fixture
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import database, event_types, inventory, reporting_periods
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker import database, event_types, inventory, reporting_periods, units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder,
     event_type_builder,
@@ -103,7 +103,7 @@ def test_med() -> "medication.Medication":
     med_builder.set_name("Unobtanium")
     med_builder.set_code("Un-69420-9001")
     med_builder.set_container(containers.Container.VIAL)
-    med_builder.set_dose_and_unit(69.420, units.Unit.MG)
+    med_builder.set_dose_and_unit(69.420, "mg")
     med_builder.set_fill_amount(9_001)
     med_builder.set_status(medication_statuses.MedicationStatus.DISCONTINUED)
     med_builder.set_created_date("01-02-1986")

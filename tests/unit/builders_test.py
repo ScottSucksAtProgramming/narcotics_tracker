@@ -7,8 +7,8 @@ Classes:
 import pytest
 import sqlite3
 
-from narcotics_tracker import database, inventory, medication
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker import database, inventory, medication, units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
@@ -122,7 +122,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = 10_000
 
-        med_builder.set_dose_and_unit(10, units.Unit.MG)
+        med_builder.set_dose_and_unit(10, "mg")
 
         assert med_builder.dose == expected
 
@@ -134,9 +134,9 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "mg"
 
-        med_builder.set_dose_and_unit(10, units.Unit.MG)
+        med_builder.set_dose_and_unit(10, "mg")
 
-        assert med_builder.unit.value == expected
+        assert med_builder.unit == expected
 
     def test_set_unit_raises_exception_if_invalid(self):
         """Tests that the medication builder raises an exception if invalid.
@@ -226,7 +226,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = 1
 
-        med_builder.set_dose_and_unit(10, units.Unit.MCG)
+        med_builder.set_dose_and_unit(10, "mcg")
         med_builder.set_fill_amount(10)
 
         med_builder.calculate_concentration()
@@ -246,7 +246,7 @@ class Test_MedicationBuilder:
         med_builder.set_code("ASA")
         med_builder.set_fill_amount(10)
         med_builder.set_container(containers.Container.AMPULE)
-        med_builder.set_dose_and_unit(10, units.Unit.MCG)
+        med_builder.set_dose_and_unit(10, "mcg")
         med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
         med_builder.set_created_date(None)
         med_builder.set_modified_date(None)

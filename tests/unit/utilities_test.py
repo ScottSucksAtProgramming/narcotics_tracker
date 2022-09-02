@@ -5,8 +5,8 @@ Classes:
     Test_Utilities: Contains all unit tests for the utilities module.
 
 """
-
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker import units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.utils import unit_converter, utilities
 
 
@@ -96,10 +96,3 @@ class Test_Utilities:
             )
             == medication_statuses.MedicationStatus.DISCONTINUED
         )
-
-    def test_from_string_for_Unit(self):
-        """Tests enum_from_string creates a Unit from its string value.
-
-        Asserts that 'mg' equals 'units.Unit.MG'.
-        """
-        assert utilities.enum_from_string(units.Unit, "mg") == units.Unit.MG

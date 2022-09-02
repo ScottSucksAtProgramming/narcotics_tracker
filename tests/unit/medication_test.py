@@ -12,8 +12,8 @@ Classes:
 
 import pytest
 
-from narcotics_tracker import database, medication
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker import database, medication, units
+from narcotics_tracker.enums import containers, medication_statuses
 
 
 class Test_MedicationModule:
@@ -102,7 +102,7 @@ class Test_MedicationModule:
             and med_data["container_type"] == containers.Container.VIAL
             and med_data["fill_amount"] == 9_001.0
             and med_data["dose"] == 69_420.0
-            and med_data["unit"] == units.Unit.MG
+            and med_data["unit"] == "mg"
             and med_data["concentration"] == 7.712476391512054
             and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
         )
@@ -259,7 +259,7 @@ class Test_MedicationAttributes:
         """
         test_med = test_med
 
-        assert test_med.preferred_unit == units.Unit.MG
+        assert test_med.preferred_unit == "mg"
 
     def test_medications_return_expected_concentration(self, test_med):
         """Tests that the medication's concentration is returned correctly.
@@ -308,15 +308,15 @@ class Test_MedicationAttributes:
     def test_medications_can_be_edited(self, test_med):
         """Tests that the medication's attributes and be changed.
 
-        Loads test_med. Changes preferred_unit to 'units.Unit.G'.
+        Loads test_med. Changes preferred_unit to 'G'.
 
-        Asserts that test_med.preferred unit is 'units.Unit.G'.
+        Asserts that test_med.preferred unit is 'G'.
         """
         test_med = test_med
 
-        test_med.preferred_unit = units.Unit.G
+        test_med.preferred_unit = "G"
 
-        assert test_med.preferred_unit == units.Unit.G
+        assert test_med.preferred_unit == "G"
 
 
 class Test_MedicationMethods:
@@ -336,20 +336,13 @@ class Test_MedicationMethods:
 
         Loads test_med. Calls str(test_med).
 
+        return f"{self.name} {self.dose}{self.preferred_unit} in {self.fill_amount}ml. Code: {self.medication_code}"
 
         Asserts that str(test_med) returns:
-            "Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            "Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
-            "Concentration: 7.712476391512054. Status: Discontinued. Created "
-            "on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
+            "Unobtainium 69420.0mg in 9001ml. Code: Un-69420-9001."
         """
         test_med = test_med
-        assert str(test_med) == (
-            f"Medication Object 1 for Unobtanium with code Un-69420-9001. "
-            f"Container type: Vial. Fill amount: 9001 ml. Dose: 69420.0 mg. "
-            f"Concentration: 7.712476391512054. Status: Discontinued. Created "
-            f"on 01-02-1986. Last modified on 08-09-2022 by Kvothe."
-        )
+        assert str(test_med) == ("Unobtanium 69420.0mg in 9001ml. Code: Un-69420-9001.")
 
     def test_return_attributes(self, test_med):
         """Tests that the medication data is correctly returned.

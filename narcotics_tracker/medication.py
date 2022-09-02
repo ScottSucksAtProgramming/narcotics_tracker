@@ -24,8 +24,8 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import database
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker import database, units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.utils import utilities
 
 
@@ -67,7 +67,7 @@ def parse_medication_data(medication_data) -> dict:
     )
     properties["fill_amount"] = medication_data[0][4]
     properties["dose"] = medication_data[0][5]
-    properties["unit"] = utilities.enum_from_string(units.Unit, medication_data[0][6])
+    properties["unit"] = medication_data[0][6]
     properties["concentration"] = medication_data[0][7]
     properties["status"] = utilities.enum_from_string(
         medication_statuses.MedicationStatus, medication_data[0][8]
@@ -241,13 +241,8 @@ class Medication:
         """
 
         return (
-            f"Medication Object {self.medication_id} for {self.name} with "
-            f"code {self.medication_code}. Container type: {self.container_type.value}. "
-            f"Fill amount: {self.fill_amount} ml. "
-            f"Dose: {self.dose} {self.preferred_unit.value}. "
-            f"Concentration: {self.concentration}. "
-            f"Status: {self.status.value}. Created on {self.created_date}. "
-            f"Last modified on {self.modified_date} by {self.modified_by}."
+            f"{self.name} {self.dose}{self.preferred_unit} in "
+            f"{self.fill_amount}ml. Code: {self.medication_code}."
         )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
@@ -343,7 +338,7 @@ class Medication:
             self.container_type.value,
             self.fill_amount,
             self.dose,
-            self.preferred_unit.value,
+            self.preferred_unit,
             self.concentration,
             self.status.value,
             self.created_date,
