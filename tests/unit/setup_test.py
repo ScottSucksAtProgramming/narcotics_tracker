@@ -29,7 +29,7 @@ class Test_Setup:
 
         assert os.path.exists("data/test_database.db")
 
-    def test_setup_can_create_medication_table(self, reset_database):
+    def test_setup_can_create_medications_table(self, reset_database):
         """Tests to see if the medication table can be created.
 
         Connects to 'test_database.db'. Creates medication table. Returns
@@ -40,7 +40,7 @@ class Test_Setup:
         db = database.Database()
         db.connect("test_database.db")
 
-        setup.create_medication_table(db)
+        setup.create_medications_table(db)
 
         data = db.return_table_names()
 

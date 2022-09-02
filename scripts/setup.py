@@ -1,29 +1,122 @@
-"""This module will act as a setup script for the narcotics_tracker."""
+"""This script sets up the Narcotics Tracker.
+
+This script is intended to be called called the first time the Narcotics 
+Tracker is being used. It will created the database, tabes, and standard 
+items.
+
+Functions:
+
+    create_database: Creates the database file and returns a connection to it.
+
+    create_event_types_table: Creates the event_types table.
+
+    create_inventory_table: Creates the inventory table.
+
+    create_medications_table: Creates the medications table.
+
+    create_reporting_periods_table: Creates the reporting_periods table.
+
+    create_units_table: Creates the units table.
+
+    main: Sets up the Narcotics Tracker database and populates the tables.
+"""
 
 import sqlite3
 
-from narcotics_tracker import database, event_types, medication, reporting_periods
+from narcotics_tracker import (
+    database,
+    event_types,
+    inventory,
+    medication,
+    reporting_periods,
+    units,
+)
+
+# Create Database.
+def create_database(database_file_name: str = None) -> sqlite3.Connection:
+    """Creates the database file and returns a connection to it.
+
+    If the file name is not specified the user is prompted to enter it through
+    the console.
+
+    Args:
+
+        database_file_name (str): Name of the database file.
+
+    Returns:
+
+        db (sqlite3.Connection): Connection to the created database file.
+    """
+    db = database.Database()
+    db.connect(database_file_name)
+
+    return db
 
 
-def create_medication_table(db_connection: sqlite3.Connection) -> None:
-    """This function will create the medication table."""
+# Create Tables.
+def create_event_types_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the event_types table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    db_connection.create_table(event_types.return_table_creation_query())
+
+
+def create_inventory_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the inventory table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    db_connection.create_table(inventory.return_table_creation_query())
+
+
+def create_medications_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the medications table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
     db_connection.create_table(medication.return_table_creation_query())
 
 
 def create_reporting_periods_table(db_connection: sqlite3.Connection) -> None:
-    """Creates the reporting_periods table."""
+    """Creates the reporting_periods table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
     db_connection.create_table(reporting_periods.return_table_creation_query())
 
 
-def create_event_types_table(db_connection: sqlite3.Connection) -> None:
-    """Creates the events type table."""
-    db_connection.create_table(event_types.return_table_creation_query())
+def create_units_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the units table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    db_connection.create_table(units.return_table_creation_query())
+
+
+# Populate Tables.
+
+
+def main() -> None:
+    """Sets up the Narcotics Tracker database and populates the tables."""
+    database_connection = create_database()
+
+    create_event_types_table(database_connection)
+    create_inventory_table(database_connection)
+    create_medications_table(database_connection)
+    create_reporting_periods_table(database_connection)
+    create_units_table(database_connection)
 
 
 if __name__ == "__main__":
-    db = database.Database()
-    db.connect("inventory.db")
-
-    create_medication_table(db)
-    create_reporting_periods_table(db)
-    create_event_types_table(db)
+    main()
