@@ -17,12 +17,19 @@ import os
 from typing import TYPE_CHECKING
 import sqlite3
 
-from narcotics_tracker import event_types, inventory, medication, reporting_periods
+from narcotics_tracker import (
+    event_types,
+    inventory,
+    medication,
+    reporting_periods,
+    units,
+)
 from narcotics_tracker.builders import (
     adjustment_builder,
     event_type_builder,
     medication_builder,
     reporting_period_builder,
+    unit_builder,
 )
 
 if TYPE_CHECKING:
@@ -322,3 +329,26 @@ class Database:
         loaded_adjustment = adj_builder.build(db_connection)
 
         return loaded_adjustment
+
+    def load_unit(self, unit_code: str) -> "units.Unit":
+        """Create an Unit object from data in the database.
+
+        Args:
+            unit_id (str): The numeric identifier of the Unit to
+                be loaded.
+
+        Returns:
+            loaded_unit (units.Unit): The
+                Unit object.
+        """
+        sql_query = """SELECT * FROM units WHERE unit_code = ?"""
+        values = (unit_code,)
+
+        result = self.return_data(sql_query, values)
+        unit_data = units.parse_unit_data(result)
+
+        unt_builder = unit_builder.UnitBuilder()
+        unt_builder.set_all_properties(unit_data)
+        loaded_unit = unt_builder.build()
+
+        return loaded_unit

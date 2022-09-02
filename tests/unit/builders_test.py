@@ -17,6 +17,8 @@ from narcotics_tracker.builders import (
     medication_builder,
     reporting_period_builder,
     reporting_period_builder_template,
+    unit_builder,
+    unit_builder_template,
 )
 
 
@@ -749,3 +751,125 @@ class Test_ReportingPeriodBuilder:
         test_period = test_period
 
         assert test_period.modified_by == "Cinder"
+
+
+class Test_UnitAbstractBuilder:
+    """Contains unit tests for the Unit Builder Template module.
+
+    Behaviors Tested:
+        - Module unit_builder_template can be accessed.
+        - Class Unit can be accessed.
+    """
+
+    def test_unit_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if unit_builder_template exists and is accessible.
+
+        Asserts that unit_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert unit_builder_template.__doc__ != None
+
+    def test_unit_class_can_be_accessed(self) -> None:
+        """Tests that Unit class exists and is accessible.
+
+        Asserts that unit_builder_template.Unit.__doc__ does not
+        return 'None'.
+        """
+        assert unit_builder_template.Unit.__doc__ != None
+
+
+class Test_UnitBuilderModule:
+    """Contains the unit tests for the unit builder module.
+
+    Behaviors Tested:
+
+        - Module unit builder can be accessed.
+    """
+
+    def test_unit_builder_can_be_accessed(self) -> None:
+        """Tests that the module exists and can be accessed.
+
+        Asserts that unit_builder.__doc__ does not return 'None'.
+        """
+        assert unit_builder.__doc__ != None
+
+
+class Test_UnitBuilder:
+    """Contains the unit tests for the UnitBuilder class.
+
+    Behaviors Tested:
+
+        - Class UnitBuilder can be accessed.
+        - UnitBuilder sets the unit_id correctly.
+        - UnitBuilder sets the unit_code correctly.
+        - UnitBuilder sets the unit_name correctly.
+        - UnitBuilder sets the created date correctly.
+        - UnitBuilder sets the modified date correctly.
+        - UnitBuilder sets the modified by attribute correctly.
+        - Created Unit object has type event_type.Unit.
+    """
+
+    def test_unit_class_can_be_accessed(self) -> None:
+        """Tests that the UnitBuilder class exists and is accessible.
+
+        Asserts that unit_builder.UnitBuilder.__doc__ does not
+        return 'None'.
+        """
+        assert unit_builder.UnitBuilder.__doc__ != None
+
+    def test_unit_id_is_set_correctly(self, test_unit) -> None:
+        """Tests that the unit_id is set correctly.
+
+        Asserts that test_unit.unit_id is 821.
+        """
+        test_unit = test_unit
+
+        assert test_unit.unit_id == 821
+
+    def test_unit_code_is_set_correctly(self, test_unit) -> None:
+        """Tests that the unit_code is set correctly.
+
+        Asserts that test_unit.unit_code is expected.
+        """
+        test_unit = test_unit
+
+        assert test_unit.unit_code == "tn"
+
+    def test_unit_name_is_set_correctly(self, test_unit) -> None:
+        """Tests that the unit_name is set correctly.
+
+        Asserts that test_unit.unit_name is expected.
+        """
+        test_unit = test_unit
+
+        assert test_unit.unit_name == "Tina"
+
+    def test_created_date_is_set_correctly(self, test_unit) -> None:
+        """Tests that the created_date is set correctly.
+
+        Asserts that test_unit.created_date is "2022-08-26 00:00:00".
+        """
+        test_unit = test_unit
+
+        assert test_unit.created_date == database.return_datetime("2022-08-01 00:00:00")
+
+    def test_modified_date_is_set_correctly(self, test_unit) -> None:
+        """Tests that the modified_date is set correctly.
+
+        Asserts that test_unit.modified_date is "2022-08-01 00:00:00".
+        """
+        test_unit = test_unit
+
+        assert test_unit.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_by_is_set_correctly(self, test_unit) -> None:
+        """Tests that the modified_by is set correctly.
+
+        Asserts that test_unit.modified_by is "Denna".
+        """
+        test_unit = test_unit
+
+        assert test_unit.modified_by == "Denna"
