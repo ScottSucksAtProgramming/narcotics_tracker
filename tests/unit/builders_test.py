@@ -11,6 +11,7 @@ from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
+    container_builder,
     container_builder_template,
     event_type_builder,
     event_type_builder_template,
@@ -899,3 +900,101 @@ class Test_ContainerAbstractBuilder:
         return 'None'.
         """
         assert container_builder_template.Container.__doc__ != None
+
+
+class Test_ContainerBuilderModule:
+    """Contains the container tests for the container builder module.
+
+    Behaviors Tested:
+
+        - Module container builder can be accessed.
+    """
+
+    def test_container_builder_can_be_accessed(self) -> None:
+        """Tests that the module exists and can be accessed.
+
+        Asserts that container_builder.__doc__ does not return 'None'.
+        """
+        assert container_builder.__doc__ != None
+
+
+class Test_ContainerBuilder:
+    """Contains the unit tests for the ContainerBuilder class.
+
+    Behaviors Tested:
+
+        - Class ContainerBuilder can be accessed.
+        - ContainerBuilder sets the container_id correctly.
+        - ContainerBuilder sets the container_code correctly.
+        - ContainerBuilder sets the container_name correctly.
+        - ContainerBuilder sets the created date correctly.
+        - ContainerBuilder sets the modified date correctly.
+        - ContainerBuilder sets the modified by attribute correctly.
+        - Created Container object has type containers.Container.
+    """
+
+    def test_container_class_can_be_accessed(self) -> None:
+        """Tests that the ContainerBuilder class exists and is accessible.
+
+        Asserts that container_builder.ContainerBuilder.__doc__ does not
+        return 'None'.
+        """
+        assert container_builder.ContainerBuilder.__doc__ != None
+
+    def test_container_id_is_set_correctly(self, test_container) -> None:
+        """Tests that the container_id is set correctly.
+
+        Asserts that test_container.container_id is -7.
+        """
+        test_container = test_container
+
+        assert test_container.container_id == -7
+
+    def test_container_code_is_set_correctly(self, test_container) -> None:
+        """Tests that the container_code is set correctly.
+
+        Asserts that test_container.container_code is expected.
+        """
+        test_container = test_container
+
+        assert test_container.container_code == "supp"
+
+    def test_container_name_is_set_correctly(self, test_container) -> None:
+        """Tests that the container_name is set correctly.
+
+        Asserts that test_container.container_name is expected.
+        """
+        test_container = test_container
+
+        assert test_container.container_name == "Suppository"
+
+    def test_created_date_is_set_correctly(self, test_container) -> None:
+        """Tests that the created_date is set correctly.
+
+        Asserts that test_container.created_date is "2022-08-26 00:00:00".
+        """
+        test_container = test_container
+
+        assert test_container.created_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_date_is_set_correctly(self, test_container) -> None:
+        """Tests that the modified_date is set correctly.
+
+        Asserts that test_container.modified_date is "2022-08-01 00:00:00".
+        """
+        test_container = test_container
+
+        assert test_container.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_by_is_set_correctly(self, test_container) -> None:
+        """Tests that the modified_by is set correctly.
+
+        Asserts that test_container.modified_by is "Elodin".
+        """
+        test_container = test_container
+
+        assert test_container.modified_by == "Elodin"

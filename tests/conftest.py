@@ -10,6 +10,7 @@ from narcotics_tracker import database, event_types, inventory, reporting_period
 from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder,
+    container_builder,
     event_type_builder,
     medication_builder,
     reporting_period_builder,
@@ -50,6 +51,28 @@ def test_adjustment() -> "inventory.Adjustment":
     test_adjustment = adj_builder.build(db)
 
     return test_adjustment
+
+
+@fixture
+def test_container() -> containers.Container:
+    """Creates a test object from the Container Class.
+
+    Returns:
+        test_container (container.Container): A container object for testing.
+    """
+
+    cont_builder = container_builder.ContainerBuilder()
+
+    cont_builder.set_container_id(-7)
+    cont_builder.set_container_code("supp")
+    cont_builder.set_container_name("Suppository")
+    cont_builder.set_created_date("2022-08-01 00:00:00")
+    cont_builder.set_modified_date("2022-08-01 00:00:00")
+    cont_builder.set_modified_by("Elodin")
+
+    test_container = cont_builder.build()
+
+    return test_container
 
 
 @fixture
