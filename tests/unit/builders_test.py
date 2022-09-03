@@ -5,13 +5,13 @@ Classes:
     Test_Builder: Contains all unit tests for the medication_builder module.
 """
 import pytest
-import sqlite3
 
 from narcotics_tracker import database, inventory, medication, units
 from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
+    container_builder_template,
     event_type_builder,
     event_type_builder_template,
     medication_builder,
@@ -873,3 +873,29 @@ class Test_UnitBuilder:
         test_unit = test_unit
 
         assert test_unit.modified_by == "Denna"
+
+
+class Test_ContainerAbstractBuilder:
+    """Contains unit tests for the Container Builder Template module.
+
+    Behaviors Tested:
+        - Module container_builder_template can be accessed.
+        - Class Container can be accessed.
+    """
+
+    def test_container_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if container_builder_template exists and is accessible.
+
+        Asserts that container_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert container_builder_template.__doc__ != None
+
+    def test_container_class_can_be_accessed(self) -> None:
+        """Tests that container class exists and is accessible.
+
+        Asserts that container_builder_template.Container.__doc__ does not
+        return 'None'.
+        """
+        assert container_builder_template.Container.__doc__ != None
