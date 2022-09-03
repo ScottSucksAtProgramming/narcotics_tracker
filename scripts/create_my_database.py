@@ -9,9 +9,8 @@ from narcotics_tracker import (
     medication,
     reporting_periods,
 )
-from narcotics_tracker.enums import containers, medication_statuses, units
+from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
-    event_type_builder,
     medication_builder,
     reporting_period_builder,
 )
@@ -21,7 +20,7 @@ FENTANYL_PROPERTIES = [
     "Fentanyl",
     containers.Container.VIAL,
     100,
-    units.Unit.MCG,
+    "mcg",
     2,
     medication_statuses.MedicationStatus.ACTIVE,
 ]
@@ -31,7 +30,7 @@ MIDAZOLAM_PROPERTIES = [
     "Midazolam",
     containers.Container.VIAL,
     10,
-    units.Unit.MG,
+    "mg",
     2,
     medication_statuses.MedicationStatus.ACTIVE,
 ]
@@ -41,7 +40,7 @@ MORPHINE_PROPERTIES = [
     "Morphine",
     containers.Container.VIAL,
     10,
-    units.Unit.MG,
+    "mg",
     1,
     medication_statuses.MedicationStatus.ACTIVE,
 ]
@@ -105,64 +104,9 @@ def main():
     period_builder.set_modified_by("SRK")
     period_4 = period_builder.build()
 
-    # Build Standard Inventory Events
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("IMPORT")
-    event_builder.set_event_name("imported")
-    event_builder.set_description("Used when adding pre-existing stock to the table.")
-    event_builder.set_operator(+1)
-    event_builder.set_modified_by("SRK")
-    import_event = event_builder.build()
-
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("ORDER")
-    event_builder.set_event_name("ordered")
-    event_builder.set_description("Used when adding new stock from a purchase order.")
-    event_builder.set_operator(+1)
-    event_builder.set_modified_by("SRK")
-    order_event = event_builder.build()
-
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("USE")
-    event_builder.set_event_name("used")
-    event_builder.set_description(
-        "Used when subtracting medication that was administered to a patient."
-    )
-    event_builder.set_operator(-1)
-    event_builder.set_modified_by("SRK")
-    use_event = event_builder.build()
-
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("WASTE")
-    event_builder.set_event_name("wasted")
-    event_builder.set_description("Used when subtracting medication which was wasted.")
-    event_builder.set_operator(-1)
-    event_builder.set_modified_by("SRK")
-    waste_event = event_builder.build()
-
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("DESTROY")
-    event_builder.set_event_name("destroyed")
-    event_builder.set_description(
-        "Used when subtracting medication which was destroyed through a reverse distributor."
-    )
-    event_builder.set_operator(-1)
-    event_builder.set_modified_by("SRK")
-    destruction_event = event_builder.build()
-
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_code("LOSS")
-    event_builder.set_event_name("lost")
-    event_builder.set_description(
-        "Used when subtracting medication which were lost or stolen."
-    )
-    event_builder.set_operator(-1)
-    event_builder.set_modified_by("SRK")
-    loss_event = event_builder.build()
-
-    for _ in DATABASE_FILES:
+    for file_name in DATABASE_FILES:
         db = database.Database()
-        db.connect(f"{_}")
+        db.connect(f"{file_name}")
 
         med_table_query = medication.return_table_creation_query()
         db.create_table(med_table_query)
@@ -184,13 +128,6 @@ def main():
         period_2.save(db)
         period_3.save(db)
         period_4.save(db)
-
-        import_event.save(db)
-        order_event.save(db)
-        use_event.save(db)
-        waste_event.save(db)
-        destruction_event.save(db)
-        loss_event.save(db)
 
 
 if __name__ == "__main__":

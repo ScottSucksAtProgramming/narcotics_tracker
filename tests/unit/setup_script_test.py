@@ -79,3 +79,37 @@ class Test_Setup:
         data = db.return_table_names()
 
         assert "event_types" in data
+
+    def test_setup_can_populate_event_types_table(self, reset_database) -> None:
+        """Tests that the setup script adds the standard events to the table.
+
+        Resets the database. Creates table and calls
+        populate_database_with_standard_events(). Queries event_types table.
+
+        Asserts that the returned data contains 6 items.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        setup.create_event_types_table(db)
+        setup.populate_database_with_standard_events(db)
+
+        data = db.return_data("""SELECT event_name FROM event_types""")
+
+        assert len(data) == 6
+
+    def test_setup_can_populate_units_table(self, reset_database) -> None:
+        """Tests that the setup script adds the standard units to the table.
+
+        Resets the database. Creates table and calls
+        populate_database_with_standard_units(). Queries units table.
+
+        Asserts that the returned data contains 4 items.
+        """
+        db = database.Database()
+        db.connect("test_database.db")
+        setup.create_units_table(db)
+        setup.populate_database_with_standard_units(db)
+
+        data = db.return_data("""SELECT unit_code FROM units""")
+
+        assert len(data) == 4

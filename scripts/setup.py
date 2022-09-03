@@ -31,6 +31,8 @@ from narcotics_tracker import (
     reporting_periods,
     units,
 )
+from narcotics_tracker.builders import event_type_builder, unit_builder
+from narcotics_tracker.setup import standard_items
 
 # Create Database.
 def create_database(database_file_name: str = None) -> sqlite3.Connection:
@@ -47,6 +49,9 @@ def create_database(database_file_name: str = None) -> sqlite3.Connection:
 
         db (sqlite3.Connection): Connection to the created database file.
     """
+    if database_file_name == None:
+        database_file_name = input("What would you like to name the database file? ")
+
     db = database.Database()
     db.connect(database_file_name)
 
@@ -105,6 +110,44 @@ def create_units_table(db_connection: sqlite3.Connection) -> None:
 
 
 # Populate Tables.
+def populate_database_with_standard_events(db_connection: sqlite3.Connection) -> None:
+    """Builds and saves standard events to the database.
+
+    Standard events are located in the Standard Items module of the Setup
+    package.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    standard_events = standard_items.STANDARD_EVENTS
+
+    event_builder = event_type_builder.EventTypeBuilder()
+
+    for event in standard_events:
+        event_builder.set_all_properties(event)
+        built_event = event_builder.build()
+        built_event.save(db_connection)
+
+
+def populate_database_with_standard_units(db_connection: sqlite3.Connection) -> None:
+    """Builds and saves standard units to the database.
+
+    Standard units are located in the Standard Items module of the Setup
+    package.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    standard_units = standard_items.STANDARD_UNITS
+
+    unt_builder = unit_builder.UnitBuilder()
+
+    for unit in standard_units:
+        unt_builder.set_all_properties(unit)
+        built_unit = unt_builder.build()
+        built_unit.save(db_connection)
 
 
 def main() -> None:
@@ -116,6 +159,9 @@ def main() -> None:
     create_medications_table(database_connection)
     create_reporting_periods_table(database_connection)
     create_units_table(database_connection)
+
+    populate_database_with_standard_units(database_connection)
+    populate_database_with_standard_events(database_connection)
 
 
 if __name__ == "__main__":
