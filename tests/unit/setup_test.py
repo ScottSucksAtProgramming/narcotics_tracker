@@ -6,6 +6,7 @@ Classes:
     
 """
 from narcotics_tracker import setup
+from narcotics_tracker.setup import standard_items
 
 
 class Test_SetupPackage:
@@ -22,3 +23,19 @@ class Test_SetupPackage:
         Asserts that setup.__doc__ does not return 'None.
         """
         assert setup.__doc__ != None
+
+
+class Test_StandardItemsModule:
+    """Contains all unit tests for the Standard Items Module.
+
+    Behaviors Tested:
+        - Module exists can can be accessed.
+
+    """
+
+    def test_standard_items_module_exists_and_can_be_accessed(self) -> None:
+        """Tests that the Standard Items Module exists and can be accessed.
+
+        Asserts that setup.standard_items.__doc__ does not return None.
+        """
+        assert standard_items.__doc__ != None
