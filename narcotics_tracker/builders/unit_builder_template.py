@@ -37,5 +37,9 @@ class Unit(ABC):
         pass
 
     @abstractmethod
+    def set_all_properties(self) -> None:
+        pass
+
+    @abstractmethod
     def build(self) -> None:
         pass
