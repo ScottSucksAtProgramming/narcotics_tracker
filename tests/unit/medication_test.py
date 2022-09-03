@@ -52,7 +52,8 @@ class Test_MedicationModule:
             STATUS TEXT,
             CREATED_DATE INT,
             MODIFIED_DATE INT,
-            MODIFIED_BY TEXT
+            MODIFIED_BY TEXT,
+            FOREIGN KEY (PREFERRED_UNIT) REFERENCES units (unit_code)  ON UPDATE CASCADE
             )'
         """
         assert medication.return_table_creation_query() == (
@@ -68,7 +69,8 @@ class Test_MedicationModule:
             STATUS TEXT,
             CREATED_DATE INT,
             MODIFIED_DATE INT,
-            MODIFIED_BY TEXT
+            MODIFIED_BY TEXT,
+            FOREIGN KEY (PREFERRED_UNIT) REFERENCES units (unit_code)  ON UPDATE CASCADE
             )"""
         )
 
