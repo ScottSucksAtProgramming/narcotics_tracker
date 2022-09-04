@@ -49,11 +49,11 @@ class Test_ContainersModule:
         assert containers.return_table_creation_query() == expected_query
 
     def test_return_containers_returns_expected_containers(
-        self, test_unit, reset_database
+        self, test_container, reset_database
     ) -> None:
         """Tests that the return_containers method returns the expected containers.
 
-        Loads and saves test_unit. Creates and save. 2nd_unit
+        Loads and saves test_container. Creates and save. 2nd_unit
         Calls containers.return_containers().
 
         Asserts that containers.return_containers() returns expected data.
@@ -62,21 +62,21 @@ class Test_ContainersModule:
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit = test_unit
+        test_container = test_container
 
-        test_unit.save(db)
+        test_container.save(db)
 
         containers_list = containers.return_containers(db)
 
-        assert "Unit Number 821: Tina. Code: 'tn'." in containers_list[0]
+        assert "Container -7: Suppository. Code: 'supp'." in containers_list[0]
 
-    def test_parse_unit_data_returns_correct_values(
-        self, reset_database, test_unit
+    def test_parse_container_data_returns_correct_values(
+        self, reset_database, test_container
     ) -> None:
-        """Tests if parse_unit_data returns dictionary with correct data.
+        """Tests if parse_container_data returns dictionary with correct data.
 
         Resets the database. Creates containers table. Builds and saves
-        test_unit to database. Queries database for unit data and
+        test_container to database. Queries database for unit data and
         calls the parser.
 
         Asserts that dictionary returned assigns the correct data to correct
@@ -86,121 +86,123 @@ class Test_ContainersModule:
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
-        data = test_unit.read(db)
-        dictionary = containers.parse_unit_data(data)
+        test_container = test_container
+        test_container.save(db)
+        data = test_container.read(db)
+        dictionary = containers.parse_container_data(data)
 
         assert (
-            dictionary["unit_id"] == 821
-            and dictionary["unit_code"] == "tn"
-            and dictionary["unit_name"] == "Tina"
+            dictionary["container_id"] == -7
+            and dictionary["container_code"] == "supp"
+            and dictionary["container_name"] == "Suppository"
         )
 
 
 class Test_ContainerAttributes:
-    """Contains all unit tests for the Unit Class' attributes.
+    """Contains all unit tests for the Container Class' attributes.
 
     Behaviors Tested:
-        - Unit class can be accessed.
-        - Unit objects can be created.
-        - unit_id attribute returns correct value.
-        - unit_code attribute returns correct value.
-        - unit_name attribute returns correct value.
+        - Container class can be accessed.
+        - Container objects can be created.
+        - container_id attribute returns correct value.
+        - container_code attribute returns correct value.
+        - container_name attribute returns correct value.
         - created_date attribute returns correct value.
         - modified_date attribute returns correct value.
         - modified_by attribute returns correct value.
     """
 
-    def test_unit_class_can_be_accessed(self) -> None:
-        """Tests that the Unit Class exists and can be accessed.
+    def test_container_class_can_be_accessed(self) -> None:
+        """Tests that the Container Class exists and can be accessed.
 
-        Asserts that calling Unit.__doc__ does not return 'None'.
+        Asserts that calling Container.__doc__ does not return 'None'.
         """
-        assert containers.Unit.__doc__ != None
+        assert containers.Container.__doc__ != None
 
-    def test_can_create_unit_objects(self, test_unit) -> None:
-        """Tests that objects can be created from the Unit Class.
+    def test_can_create_container_objects(self, test_container) -> None:
+        """Tests that objects can be created from the Container Class.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that test_unit is an instance of the Unit Class.
+        Asserts that test_container is an instance of the Container Class.
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert isinstance(test_unit, containers.Unit)
+        assert isinstance(test_container, containers.Container)
 
-    def test_unit_id_returns_correct_value(self, test_unit) -> None:
-        """Tests that the unit_id attribute returns the correct value.
+    def test_container_id_returns_correct_value(self, test_container) -> None:
+        """Tests that the container_id attribute returns the correct value.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts test_unit.unit_id is '821'.
+        Asserts test_container.container_id is '-7'.
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert test_unit.unit_id == 821
+        assert test_container.container_id == -7
 
-    def test_unit_code_returns_correct_value(self, test_unit) -> None:
-        """Tests that the unit_code attribute returns the correct value.
+    def test_container_code_returns_correct_value(self, test_container) -> None:
+        """Tests that the container_code attribute returns the correct value.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that test_unit.unit_code is 'tn'.
+        Asserts that test_container.container_code is 'supp'.
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert test_unit.unit_code == "tn"
+        assert test_container.container_code == "supp"
 
-    def test_unit_name_returns_correct_value(self, test_unit) -> None:
-        """Tests that the unit_name attributes returns the correct value.
+    def test_container_name_returns_correct_value(self, test_container) -> None:
+        """Tests that the container_name attributes returns the correct value.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that test_unit.unit_name is 'Tina'
+        Asserts that test_container.container_name is 'Suppository'
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert test_unit.unit_name == "Tina"
+        assert test_container.container_name == "Suppository"
 
-    def test_created_date_returns_correct_value(self, test_unit) -> None:
+    def test_created_date_returns_correct_value(self, test_container) -> None:
         """Tests that the created_date attributes returns the correct value.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that test_unit.created_date is '08-26-2022'
+        Asserts that test_container.created_date is '08-26-2022'
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert test_unit.created_date == database.return_datetime("2022-08-01 00:00:00")
-
-    def test_modified_date_returns_correct_value(self, test_unit) -> None:
-        """Tests that the modified_date attributes returns the correct value.
-
-        Loads test_unit.
-
-        Asserts that test_unit.modified_date is '08-01-2022'
-        """
-        test_unit = test_unit
-
-        assert test_unit.modified_date == database.return_datetime(
+        assert test_container.created_date == database.return_datetime(
             "2022-08-01 00:00:00"
         )
 
-    def test_modified_by_returns_correct_value(self, test_unit) -> None:
+    def test_modified_date_returns_correct_value(self, test_container) -> None:
+        """Tests that the modified_date attributes returns the correct value.
+
+        Loads test_container.
+
+        Asserts that test_container.modified_date is '08-01-2022'
+        """
+        test_container = test_container
+
+        assert test_container.modified_date == database.return_datetime(
+            "2022-08-01 00:00:00"
+        )
+
+    def test_modified_by_returns_correct_value(self, test_container) -> None:
         """Tests that the modified_by attributes returns the correct value.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that test_unit.modified_by is 'Denna'
+        Asserts that test_container.modified_by is 'Elodin'
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert test_unit.modified_by == "Denna"
+        assert test_container.modified_by == "Elodin"
 
 
-class Test_UnitMethods:
-    """Contains all unit tests for the Unit Class' methods.
+class test_containerMethods:
+    """Contains all unit tests for the Container Class' methods.
 
     Behaviors Tested:
         - __init__ sets attributes correctly.
@@ -213,61 +215,65 @@ class Test_UnitMethods:
         - return_attributes returns the correct values.
     """
 
-    def test___init___sets_attributes_correctly(self, test_unit) -> None:
+    def test___init___sets_attributes_correctly(self, test_container) -> None:
         """Tests the initializer sets the objects attributes correctly.
 
-        Loads test_unit.
+        Loads test_container.
 
-        Asserts that unit_id, unit_code, and unit_name attributes are set to
+        Asserts that container_id, container_code, and container_name attributes are set to
         the expected values.
         """
-        test_unit = test_unit
+        test_container = test_container
 
         assert (
-            test_unit.unit_id == 821
-            and test_unit.unit_code == "tn"
-            and test_unit.unit_name == "Tina"
+            test_container.container_id == -7
+            and test_container.container_code == "supp"
+            and test_container.container_name == "Suppository"
         )
 
-    def test___repr___returns_expected_string(self, test_unit) -> None:
+    def test___repr___returns_expected_string(self, test_container) -> None:
         """Tests that __repr__ returns correct string.
 
-        Loads test_unit. Calls str(test_unit).
+        Loads test_container. Calls str(test_container).
 
-        Asserts that str(test_unit) returns:
+        Asserts that str(test_container) returns:
             'Unit Test. Code: TEST. Used for testing the EventType Class.'
         """
-        test_unit = test_unit
+        test_container = test_container
 
-        assert str(test_unit) == (f"Unit Number 821: Tina. Code: 'tn'.")
+        assert str(test_container) == (f"Unit Number 821: Suppository. Code: 'supp'.")
 
-    def test_can_save_unit_to_database(self, test_unit, reset_database) -> None:
+    def test_can_save_container_to_database(
+        self, test_container, reset_database
+    ) -> None:
         """Tests that containers can be saved to the database.
 
-        Loads test_unit. Calls test_unit.save. Calls db.return_data()
-        using the unit_id of '821'.
+        Loads test_container. Calls test_container.save. Calls db.return_data()
+        using the container_id of '821'.
 
-        Asserts that returned data has unit_code value of 'tn'.
+        Asserts that returned data has container_code value of 'tn'.
         """
-        test_unit = test_unit
+        test_container = test_container
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit.save(db)
+        test_container.save(db)
 
         data = db.return_data(
-            """SELECT unit_code FROM containers WHERE unit_id = '821'"""
+            """SELECT container_code FROM containers WHERE container_id = '821'"""
         )
 
         assert data[0][0] == "tn"
 
-    def test_can_read_unit_from_database(self, reset_database, test_unit) -> None:
+    def test_can_read_container_from_database(
+        self, reset_database, test_container
+    ) -> None:
         """Tests to see if the containers's data can be returned from database.
 
         Resets the database. Creates containers table. Builds and saves
-        test_unit. Calls test_unit.read().
+        test_container. Calls test_container.read().
 
         Asserts that data returned matches expected values.
         """
@@ -275,43 +281,49 @@ class Test_UnitMethods:
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+        test_container = test_container
+        test_container.save(db)
 
-        data = test_unit.read(db)[0]
+        data = test_container.read(db)[0]
         expected = [821, "tn", "Tina"]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
         )
 
-    def test_can_load_unit_from_database(self, reset_database, test_unit) -> None:
+    def test_can_load_container_from_database(
+        self, reset_database, test_container
+    ) -> None:
         """Tests to see if an Unit Object can be loaded from data.
-        Loads and saves test_unit. Creates loaded_unit from data.
+        Loads and saves test_container. Creates loaded_unit from data.
 
-        Asserts that test_unit and loaded_unit return identical
+        Asserts that test_container and loaded_unit return identical
         attributes.
         """
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+        test_container = test_container
+        test_container.save(db)
 
         loaded_unit = db.load_unit("tn")
 
         assert (
-            loaded_unit.return_attributes()[0] == test_unit.return_attributes()[0]
-            and loaded_unit.return_attributes()[1] == test_unit.return_attributes()[1]
-            and loaded_unit.return_attributes()[2] == test_unit.return_attributes()[2]
+            loaded_unit.return_attributes()[0] == test_container.return_attributes()[0]
+            and loaded_unit.return_attributes()[1]
+            == test_container.return_attributes()[1]
+            and loaded_unit.return_attributes()[2]
+            == test_container.return_attributes()[2]
         )
 
-    def test_can_update_unit_in_database(self, reset_database, test_unit) -> None:
+    def test_can_update_container_in_database(
+        self, reset_database, test_container
+    ) -> None:
         """Tests to see if Unit data can be updated.
 
-        Resets database. Creates Unit Table. Builds and saves test_unit to
-        database. Loads test_unit as loaded_unit. Changes Name and updates
+        Resets database. Creates Unit Table. Builds and saves test_container to
+        database. Loads test_container as loaded_unit. Changes Name and updates
         database. Queries the data.
 
         Asserts that the returned data has the new name.
@@ -320,48 +332,48 @@ class Test_UnitMethods:
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+        test_container = test_container
+        test_container.save(db)
 
-        test_unit.unit_name = "Not Tina"
+        test_container.container_name = "Not Tina"
 
-        test_unit.update(db)
+        test_container.update(db)
 
         data = db.return_data(
-            """SELECT unit_name FROM containers WHERE unit_code = 'tn'"""
+            """SELECT container_name FROM containers WHERE container_code = 'tn'"""
         )[0][0]
 
         assert data == "Not Tina"
 
-    def test_can_delete_unit_from_database(self, test_unit, reset_database):
+    def test_can_delete_container_from_database(self, test_container, reset_database):
         """Tests that containers can be deleted from the database.
 
-        Loads test_unit. Saves it to database. Then deletes it. Gets data from
+        Loads test_container. Saves it to database. Then deletes it. Gets data from
         containers table.
 
         Asserts data is empty.
         """
-        test_unit = test_unit
+        test_container = test_container
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(containers.return_table_creation_query())
 
-        test_unit.save(db)
-        test_unit.delete(db)
+        test_container.save(db)
+        test_container.delete(db)
 
         data = db.return_data("""SELECT * FROM containers""")
         assert data == []
 
-    def test_return_attributes(self, test_unit):
+    def test_return_attributes(self, test_container):
         """Tests that the containers data is correctly returned.
 
-        Loads test_unit. Calls test_unit.return_attributes().
+        Loads test_container. Calls test_container.return_attributes().
 
         Asserts values returned are expected values.
         """
-        test_unit = test_unit
-        assert test_unit.return_attributes() == (
+        test_container = test_container
+        assert test_container.return_attributes() == (
             821,
             "tn",
             "Tina",
