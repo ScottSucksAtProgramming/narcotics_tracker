@@ -12,8 +12,8 @@ Classes:
 
 import pytest
 
-from narcotics_tracker import database, medication, units
-from narcotics_tracker.enums import containers, medication_statuses
+from narcotics_tracker import containers, database, medication
+from narcotics_tracker.enums import medication_statuses
 
 
 class Test_MedicationModule:
@@ -101,7 +101,7 @@ class Test_MedicationModule:
             med_data["medication_id"] == 1
             and med_data["name"] == "Unobtanium"
             and med_data["medication_code"] == "Un-69420-9001"
-            and med_data["container_type"] == containers.Container.VIAL
+            and med_data["container_type"] == "Vial"
             and med_data["fill_amount"] == 9_001.0
             and med_data["dose"] == 69_420.0
             and med_data["unit"] == "mg"
@@ -224,11 +224,11 @@ class Test_MedicationAttributes:
         Loads test_med.
 
         Asserts that test_med.container_type equals
-        'containers.Container.VIAL'.
+        'Vial'.
         """
         test_med = test_med
 
-        assert test_med.container_type == containers.Container.VIAL
+        assert test_med.container_type == "Vial"
 
     def test_medications_return_expected_fill_amount(self, test_med):
         """Tests that the medication's fill amount is returned correctly.

@@ -7,7 +7,7 @@ Classes:
 import pytest
 
 from narcotics_tracker import database, inventory, medication, units
-from narcotics_tracker.enums import containers, medication_statuses
+from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
@@ -90,18 +90,8 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "Ampule"
 
-        med_builder.set_container(containers.Container.AMPULE)
-        assert med_builder.container_type.value == expected
-
-    def test_set_container_raises_exception_if_invalid(self):
-        """Tests that the medication builder raises an exception if invalid.
-
-        Passes if an AttributeError exception is raised."""
-
-        med_builder = medication_builder.MedicationBuilder()
-
-        with pytest.raises(AttributeError):
-            med_builder.set_container(containers.Container.INVALID)
+        med_builder.set_container("Ampule")
+        assert med_builder.container_type == expected
 
     def test_set_fill_amount(self):
         """Tests that the medication builder sets the fill amount.
@@ -246,7 +236,7 @@ class Test_MedicationBuilder:
         med_builder.set_name("Aspirin")
         med_builder.set_code("ASA")
         med_builder.set_fill_amount(10)
-        med_builder.set_container(containers.Container.AMPULE)
+        med_builder.set_container("Ampule")
         med_builder.set_dose_and_unit(10, "mcg")
         med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
         med_builder.set_created_date(None)

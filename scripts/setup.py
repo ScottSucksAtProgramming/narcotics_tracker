@@ -24,6 +24,7 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import (
+    containers,
     database,
     event_types,
     inventory,
@@ -31,7 +32,11 @@ from narcotics_tracker import (
     reporting_periods,
     units,
 )
-from narcotics_tracker.builders import event_type_builder, unit_builder
+from narcotics_tracker.builders import (
+    container_builder,
+    event_type_builder,
+    unit_builder,
+)
 from narcotics_tracker.setup import standard_items
 
 # Create Database.
@@ -59,6 +64,16 @@ def create_database(database_file_name: str = None) -> sqlite3.Connection:
 
 
 # Create Tables.
+def create_containers_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the containers table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    db_connection.create_table(containers.return_table_creation_query())
+
+
 def create_event_types_table(db_connection: sqlite3.Connection) -> None:
     """Creates the event_types table.
 
@@ -110,6 +125,28 @@ def create_units_table(db_connection: sqlite3.Connection) -> None:
 
 
 # Populate Tables.
+def populate_database_with_standard_containers(
+    db_connection: sqlite3.Connection,
+) -> None:
+    """Builds and saves standard containers to the database.
+
+    Standard containers are located in the Standard Items module of the Setup
+    package.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    standard_containers = standard_items.STANDARD_CONTAINERS
+
+    cont_builder = container_builder.ContainerBuilder()
+
+    for container in standard_containers:
+        cont_builder.set_all_properties(container)
+        built_container = cont_builder.build()
+        built_container.save(db_connection)
+
+
 def populate_database_with_standard_events(db_connection: sqlite3.Connection) -> None:
     """Builds and saves standard events to the database.
 
@@ -154,6 +191,7 @@ def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
     database_connection = create_database()
 
+    create_containers_table(database_connection)
     create_event_types_table(database_connection)
     create_inventory_table(database_connection)
     create_medications_table(database_connection)
@@ -162,6 +200,7 @@ def main() -> None:
 
     populate_database_with_standard_units(database_connection)
     populate_database_with_standard_events(database_connection)
+    populate_database_with_standard_containers(database_connection)
 
 
 if __name__ == "__main__":

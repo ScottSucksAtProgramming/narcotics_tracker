@@ -11,13 +11,13 @@ Classes:
 
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import medication, units
+from narcotics_tracker import containers, medication, units
 from narcotics_tracker.builders import medication_builder_template
-from narcotics_tracker.enums import containers, medication_statuses
+from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.utils import unit_converter
 
 if TYPE_CHECKING:
-    from narcotics_tracker import medication
+    from narcotics_tracker import containers, medication
 
 
 class MedicationBuilder(medication_builder_template.Medication):
@@ -115,25 +115,13 @@ class MedicationBuilder(medication_builder_template.Medication):
         """
         self.medication_code = code
 
-    def set_container(self, container_type: containers.Container) -> None:
+    def set_container(self, container_type: str) -> None:
         """Sets the medication's container type via the enum Container class.
 
-         Acceptable container types are:
-            Container.VIAL,
-            Container.AMPULE,
-            Container.PRE_FILLED_SYRINGE,
-            Container.PRE_MIXED_BAG
-
         Args:
-            container_type (containers.Container): The type of container the
+            container_type (str): The type of container the
                 medication comes in. Defaults to None.
-
-        Raises:
-            TypeError: Raised if the container type is not a valid type.
         """
-        if container_type not in containers.Container:
-            raise TypeError("Incorrect container type.")
-
         self.container_type = container_type
 
     def set_fill_amount(self, fill_amount: float) -> None:

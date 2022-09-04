@@ -24,8 +24,8 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import database, units
-from narcotics_tracker.enums import containers, medication_statuses
+from narcotics_tracker import containers, database
+from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.utils import utilities
 
 
@@ -63,9 +63,7 @@ def parse_medication_data(medication_data) -> dict:
     properties["medication_id"] = medication_data[0][0]
     properties["name"] = medication_data[0][2]
     properties["medication_code"] = medication_data[0][1]
-    properties["container_type"] = utilities.enum_from_string(
-        containers.Container, medication_data[0][3]
-    )
+    properties["container_type"] = medication_data[0][3]
     properties["fill_amount"] = medication_data[0][4]
     properties["dose"] = medication_data[0][5]
     properties["unit"] = medication_data[0][6]
@@ -336,7 +334,7 @@ class Medication:
             self.medication_id,
             self.medication_code,
             self.name,
-            self.container_type.value,
+            self.container_type,
             self.fill_amount,
             self.dose,
             self.preferred_unit,

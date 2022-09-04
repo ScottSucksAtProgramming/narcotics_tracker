@@ -78,6 +78,8 @@ STANDARD_EVENTS = [
     },
 ]
 
+# Standard Units
+
 STANDARD_UNITS = [
     {
         "unit_id": None,
@@ -107,6 +109,35 @@ STANDARD_UNITS = [
         "unit_id": None,
         "unit_code": "ml",
         "unit_name": "Milliliters",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+]
+
+# Standard Containers
+
+STANDARD_CONTAINERS = [
+    {
+        "container_id": None,
+        "container_code": "vial",
+        "container_name": "Vial",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "container_id": None,
+        "container_code": "pfs",
+        "container_name": "Pre-filled Syringe",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "container_id": None,
+        "container_code": "pmb",
+        "container_name": "Pre-mixed Bag",
         "created_date": None,
         "modified_date": None,
         "modified_by": "Setup",

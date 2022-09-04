@@ -6,7 +6,7 @@ Classes:
 
 """
 from narcotics_tracker import units
-from narcotics_tracker.enums import containers, medication_statuses
+from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.utils import unit_converter, utilities
 
 
@@ -72,17 +72,6 @@ class Test_Utilities:
         - Can create Unit enum from string.
         - Can create MedicationsStatus enum from string.
     """
-
-    def test_from_string_for_Container(self):
-        """Tests enum_from_string creates a Container from its string value.
-
-        Asserts that 'Pre-filled Syringe' equals
-        'containers.Container.PRE_FILLED_SYRINGE'.
-        """
-        assert (
-            utilities.enum_from_string(containers.Container, "Pre-filled Syringe")
-            == containers.Container.PRE_FILLED_SYRINGE
-        )
 
     def test_from_string_for_MedicationStatus(self):
         """Tests enum_from_string creates a MedicationStatus from its value.
