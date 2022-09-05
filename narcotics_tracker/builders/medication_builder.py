@@ -11,9 +11,8 @@ Classes:
 
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import containers, medication, units
+from narcotics_tracker import containers, medication, units, statuses
 from narcotics_tracker.builders import medication_builder_template
-from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.utils import unit_converter
 
 if TYPE_CHECKING:
@@ -168,7 +167,7 @@ class MedicationBuilder(medication_builder_template.Medication):
         """
         self.concentration = concentration
 
-    def set_status(self, status: medication_statuses.MedicationStatus) -> None:
+    def set_status(self, status: str) -> None:
         """Sets the medication's status via the enum MedicationStatus class.
 
         Acceptable statuses are:
@@ -183,9 +182,6 @@ class MedicationBuilder(medication_builder_template.Medication):
         Raises:
             TypeError: Raised if the status is not a valid type.
         """
-        if status not in medication_statuses.MedicationStatus:
-            raise TypeError("Incorrect status type.")
-
         self.status = status
 
     def set_created_date(self, created_date: str) -> None:

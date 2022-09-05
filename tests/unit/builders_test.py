@@ -7,7 +7,6 @@ Classes:
 import pytest
 
 from narcotics_tracker import database, inventory, medication, units
-from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
@@ -18,6 +17,7 @@ from narcotics_tracker.builders import (
     medication_builder,
     reporting_period_builder,
     reporting_period_builder_template,
+    status_builder_template,
     unit_builder,
     unit_builder_template,
 )
@@ -158,20 +158,10 @@ class Test_MedicationBuilder:
         """
         med_builder = medication_builder.MedicationBuilder()
 
-        med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
+        med_builder.set_status("Active")
         expected = "Active"
 
-        assert med_builder.status.value == expected
-
-    def test_set_status_raises_exception_if_invalid(self):
-        """Tests that the medication builder raises an exception if invalid.
-
-        Passes if an AttributeError exception is raised.
-        """
-        med_builder = medication_builder.MedicationBuilder()
-
-        with pytest.raises(AttributeError):
-            med_builder.set_status(medication_statuses.MedicationStatus.INVALID)
+        assert med_builder.status == expected
 
     def test_set_created_date(self):
         """Tests that the medication builder sets the created date.
@@ -238,7 +228,7 @@ class Test_MedicationBuilder:
         med_builder.set_fill_amount(10)
         med_builder.set_container("Ampule")
         med_builder.set_dose_and_unit(10, "mcg")
-        med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
+        med_builder.set_status("Active")
         med_builder.set_created_date(None)
         med_builder.set_modified_date(None)
         med_builder.set_modified_by("SRK")
@@ -988,3 +978,29 @@ class Test_ContainerBuilder:
         test_container = test_container
 
         assert test_container.modified_by == "Elodin"
+
+
+class Test_StatusAbstractBuilder:
+    """Contains unit tests for the Status Builder Template module.
+
+    Behaviors Tested:
+        - Module status_builder_template can be accessed.
+        - Class Status can be accessed.
+    """
+
+    def test_status_builder_template_module_can_be_accessed(self) -> None:
+        """Tests if status_builder_template exists and is accessible.
+
+        Asserts that status_builder_template.__doc__ does not return
+        'None'.
+        """
+
+    assert status_builder_template.__doc__ != None
+
+    def test_status_class_can_be_accessed(self) -> None:
+        """Tests that Status class exists and is accessible.
+
+        Asserts that status_builder_template.Status.__doc__ does not
+        return 'None'.
+        """
+        assert status_builder_template.Status.__doc__ != None

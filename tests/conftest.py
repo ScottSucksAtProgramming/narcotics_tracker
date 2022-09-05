@@ -12,15 +12,16 @@ from narcotics_tracker import (
     event_types,
     inventory,
     reporting_periods,
+    statuses,
     units,
 )
-from narcotics_tracker.enums import medication_statuses
 from narcotics_tracker.builders import (
     adjustment_builder,
     container_builder,
     event_type_builder,
     medication_builder,
     reporting_period_builder,
+    status_builder,
     unit_builder,
 )
 
@@ -135,7 +136,7 @@ def test_med() -> "medication.Medication":
     med_builder.set_container("Vial")
     med_builder.set_dose_and_unit(69.420, "mg")
     med_builder.set_fill_amount(9_001)
-    med_builder.set_status(medication_statuses.MedicationStatus.DISCONTINUED)
+    med_builder.set_status("Discontinued")
     med_builder.set_created_date("01-02-1986")
     med_builder.set_modified_date("08-09-2022")
     med_builder.set_modified_by("Kvothe")
@@ -165,6 +166,28 @@ def test_period() -> reporting_periods.ReportingPeriod:
     test_period = period_builder.build()
 
     return test_period
+
+
+@fixture
+def test_status() -> statuses.Status:
+    """Creates a test object from the Status Class.
+
+    Returns:
+        test_status (statuses.Status): A container object for testing.
+    """
+
+    stat_builder = status_builder.StatusBuilder()
+
+    stat_builder.set_status_id(-19)
+    stat_builder.set_status_code("ACTIVE")
+    stat_builder.set_status_name("Active")
+    stat_builder.set_created_date("2022-08-01 00:00:00")
+    stat_builder.set_modified_date("2022-08-01 00:00:00")
+    stat_builder.set_modified_by("Abenthy")
+
+    test_status = stat_builder.build()
+
+    return test_status
 
 
 @fixture

@@ -12,8 +12,7 @@ Classes:
 
 import pytest
 
-from narcotics_tracker import containers, database, medication
-from narcotics_tracker.enums import medication_statuses
+from narcotics_tracker import containers, database, medication, statuses
 
 
 class Test_MedicationModule:
@@ -106,7 +105,7 @@ class Test_MedicationModule:
             and med_data["dose"] == 69_420.0
             and med_data["unit"] == "mg"
             and med_data["concentration"] == 7.712476391512054
-            and med_data["status"] == medication_statuses.MedicationStatus.DISCONTINUED
+            and med_data["status"] == "Discontinued"
         )
 
     def test_return_medication_returns_expected_medication(
@@ -430,7 +429,7 @@ class Test_MedicationMethods:
 
         med_code = "Un-69420-9001"
         loaded_med = db.load_medication(med_code)
-        loaded_med.status = medication_statuses.MedicationStatus.ACTIVE
+        loaded_med.status = "Active"
         loaded_med.update(db, med_code)
 
         data = db.return_data(

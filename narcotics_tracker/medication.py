@@ -24,9 +24,7 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import containers, database
-from narcotics_tracker.enums import medication_statuses
-from narcotics_tracker.utils import utilities
+from narcotics_tracker import containers, database, statuses
 
 
 def return_table_creation_query() -> str:
@@ -68,9 +66,7 @@ def parse_medication_data(medication_data) -> dict:
     properties["dose"] = medication_data[0][5]
     properties["unit"] = medication_data[0][6]
     properties["concentration"] = medication_data[0][7]
-    properties["status"] = utilities.enum_from_string(
-        medication_statuses.MedicationStatus, medication_data[0][8]
-    )
+    properties["status"] = medication_data[0][8]
     properties["created_date"] = medication_data[0][9]
     properties["modified_date"] = medication_data[0][10]
     properties["modified_by"] = medication_data[0][11]
@@ -339,7 +335,7 @@ class Medication:
             self.dose,
             self.preferred_unit,
             self.concentration,
-            self.status.value,
+            self.status,
             self.created_date,
             self.modified_date,
             self.modified_by,
