@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING
 import sqlite3
 
 from narcotics_tracker import (
-    event_types,
+    events,
     inventory,
     medications,
     reporting_periods,
@@ -27,7 +27,7 @@ from narcotics_tracker import (
 )
 from narcotics_tracker.builders import (
     adjustment_builder,
-    event_type_builder,
+    event_builder,
     medication_builder,
     reporting_period_builder,
     status_builder,
@@ -259,24 +259,24 @@ class Database:
 
         return loaded_med
 
-    def load_event_type(self, event_code: str) -> "event_types.EventType":
-        """Create an EventType object from data in the database.
+    def load_event(self, event_code: str) -> "events.Event":
+        """Create an Event object from data in the database.
 
         Args:
-            event_code (str): The event_code of the EventType to be loaded.
+            event_code (str): The event_code of the Event to be loaded.
 
         Returns:
-            event (event_types.EventType): The EventType object.
+            event (event_types.Event): The Event object.
         """
-        sql_query = """SELECT * FROM event_types WHERE event_code = ?"""
+        sql_query = """SELECT * FROM events WHERE event_code = ?"""
         values = (event_code,)
 
         result = self.return_data(sql_query, values)
-        event_data = event_types.parse_event_type_data(result)
+        event_data = events.parse_event_data(result)
 
-        event_builder = event_type_builder.EventTypeBuilder()
-        event_builder.set_all_properties(event_data)
-        loaded_med = event_builder.build()
+        e_builder = event_builder.EventBuilder()
+        e_builder.set_all_properties(event_data)
+        loaded_med = e_builder.build()
 
         return loaded_med
 

@@ -1,4 +1,4 @@
-"""Contains the concrete builder for the EventType class.
+"""Contains the concrete builder for the Event class.
 
 Concrete builders contain the implementation of the builder interface defined 
 in the abstract builder class. They are used to build objects for the 
@@ -6,14 +6,14 @@ Narcotics Tracker in a modular step-wise approach.
 
 Classes:
 
-    EventTypeBuilder: Builds and returns EventType objects.
+    EventBuilder: Builds and returns Event objects.
 """
-from narcotics_tracker import database, event_types
-from narcotics_tracker.builders import event_type_builder_template
+from narcotics_tracker import database, events
+from narcotics_tracker.builders import event_builder_template
 
 
-class EventTypeBuilder(event_type_builder_template.EventType):
-    """Builds and returns EventType objects.
+class EventBuilder(event_builder_template.Event):
+    """Builds and returns Event objects.
 
     Initializer:
 
@@ -137,15 +137,15 @@ class EventTypeBuilder(event_type_builder_template.EventType):
         self.set_modified_date(properties["modified_date"])
         self.set_modified_by(properties["modified_by"])
 
-    def build(self) -> "event_types.EventType":
-        """Returns the EventType object. Assigns the EventType's properties.
+    def build(self) -> "events.Event":
+        """Returns the Event object. Assigns the Event's properties.
 
         This is the last method to be called as part of the building process.
-        It will return the EventType object with all of its properties set.
+        It will return the Event object with all of its properties set.
 
 
         Returns:
-            event_types.EventType: The event_types EventType object.
+            event_types.Event: The event_types Event object.
         """
 
-        return event_types.EventType(self)
+        return events.Event(self)

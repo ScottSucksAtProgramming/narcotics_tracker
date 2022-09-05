@@ -42,7 +42,7 @@ def return_table_creation_query() -> str:
             CREATED_DATE INTEGER,
             MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT,
-            FOREIGN KEY (EVENT_CODE) REFERENCES event_types (EVENT_CODE) ON UPDATE CASCADE,
+            FOREIGN KEY (EVENT_CODE) REFERENCES events (EVENT_CODE) ON UPDATE CASCADE,
             FOREIGN KEY (MEDICATION_CODE) REFERENCES medications (MEDICATION_CODE) ON UPDATE CASCADE,
             FOREIGN KEY (REPORTING_PERIOD_ID) REFERENCES reporting_periods (PERIOD_ID) ON UPDATE CASCADE
             )"""
@@ -77,7 +77,7 @@ def parse_adjustment_data(adjustment_data) -> dict:
 class Adjustment:
     """Defines the representation of inventory changes.
 
-    Event Types have been declared in the event_types module and EventTypes
+    Event Types have been declared in the events module and EventTypes
     class. Take a look at those items for information on created and declaring
     new event types.
 
@@ -127,7 +127,7 @@ class Adjustment:
         )[0][0]
 
         event_name = self.database_connection.return_data(
-            """SELECT event_name FROM event_types WHERE event_code = (?)""",
+            """SELECT event_name FROM events WHERE event_code = (?)""",
             [self.event_code],
         )[0][0]
 

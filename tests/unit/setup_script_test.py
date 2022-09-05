@@ -69,31 +69,31 @@ class Test_Setup:
         Connects to 'test_database.db'. Creates event_types table.
         Returns table names.
 
-        Asserts that 'event_types' is in list of table names.
+        Asserts that 'events' is in list of table names.
         """
         db = database.Database()
         db.connect("test_database.db")
 
-        setup.create_event_types_table(db)
+        setup.create_events_table(db)
 
         data = db.return_table_names()
 
-        assert "event_types" in data
+        assert "events" in data
 
-    def test_setup_can_populate_event_types_table(self, reset_database) -> None:
+    def test_setup_can_populate_events_table(self, reset_database) -> None:
         """Tests that the setup script adds the standard events to the table.
 
         Resets the database. Creates table and calls
-        populate_database_with_standard_events(). Queries event_types table.
+        populate_database_with_standard_events(). Queries events table.
 
         Asserts that the returned data contains 6 items.
         """
         db = database.Database()
         db.connect("test_database.db")
-        setup.create_event_types_table(db)
+        setup.create_events_table(db)
         setup.populate_database_with_standard_events(db)
 
-        data = db.return_data("""SELECT event_name FROM event_types""")
+        data = db.return_data("""SELECT event_name FROM events""")
 
         assert len(data) == 6
 

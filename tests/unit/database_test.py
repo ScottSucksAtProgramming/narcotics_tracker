@@ -8,7 +8,7 @@ Classes:
 
 import os
 
-from narcotics_tracker import database, event_types, medications, reporting_periods
+from narcotics_tracker import database, events, medications, reporting_periods
 
 
 class Test_Database:
@@ -285,12 +285,12 @@ class Test_Database:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(event_types.return_table_creation_query())
+        db.create_table(events.return_table_creation_query())
         test_event.save(db)
 
-        new_event = db.load_event_type("TEST")
+        new_event = db.load_event("TEST")
 
-        assert isinstance(new_event, event_types.EventType)
+        assert isinstance(new_event, events.Event)
 
     def test_reporting_period_can_be_loaded_from_stored_data(
         self, test_period, reset_database

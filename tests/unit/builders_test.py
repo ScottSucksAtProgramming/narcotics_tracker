@@ -12,8 +12,8 @@ from narcotics_tracker.builders import (
     adjustment_builder,
     container_builder,
     container_builder_template,
-    event_type_builder,
-    event_type_builder_template,
+    event_builder,
+    event_builder_template,
     medication_builder,
     reporting_period_builder,
     reporting_period_builder_template,
@@ -475,7 +475,7 @@ class Test_EventTypeAbstractBuilder:
         'None'.
         """
 
-    assert event_type_builder_template.__doc__ != None
+    assert event_builder_template.__doc__ != None
 
     def test_event_class_can_be_accessed(self) -> None:
         """Tests that EventType class exists and is accessible.
@@ -483,10 +483,10 @@ class Test_EventTypeAbstractBuilder:
         Asserts that event_type_builder_template.EventType.__doc__ does not
         return 'None'.
         """
-        assert event_type_builder_template.EventType.__doc__ != None
+        assert event_builder_template.Event.__doc__ != None
 
 
-class Test_EventTypeBuilderModule:
+class Test_EventBuilderModule:
     """Contains the unit tests for the event_type_builder module.
 
     Behaviors Tested:
@@ -499,33 +499,33 @@ class Test_EventTypeBuilderModule:
 
         Asserts that event_type_builder.__doc__ does not return 'None'.
         """
-        assert event_type_builder.__doc__ != None
+        assert event_builder.__doc__ != None
 
 
-class Test_EventTypeBuilder:
-    """Contains the unit tests for the EventTypeBuilder class.
+class Test_EventBuilder:
+    """Contains the unit tests for the EventBuilder class.
 
     Behaviors Tested:
 
-        - Class EventTypeBuilder can be accessed.
-        - EventTypeBuilder sets the event id correctly.
-        - EventTypeBuilder sets the event code correctly.
-        - EventTypeBuilder sets the event_name correctly.
-        - EventTypeBuilder sets the description correctly.
-        - EventTypeBuilder sets the modifier correctly.
-        - EventTypeBuilder sets the created date correctly.
-        - EventTypeBuilder sets the modified date correctly.
-        - EventTypeBuilder sets the modified by attribute correctly.
+        - Class EventBuilder can be accessed.
+        - EventBuilder sets the event id correctly.
+        - EventBuilder sets the event code correctly.
+        - EventBuilder sets the event_name correctly.
+        - EventBuilder sets the description correctly.
+        - EventBuilder sets the modifier correctly.
+        - EventBuilder sets the created date correctly.
+        - EventBuilder sets the modified date correctly.
+        - EventBuilder sets the modified by attribute correctly.
         #! - Created EventType object has type event_type.EventType.
     """
 
     def test_event_class_can_be_accessed(self) -> None:
-        """Tests that the EventTypeBuilder class exists and is accessible.
+        """Tests that the EventBuilder class exists and is accessible.
 
-        Asserts that event_type_builder.EventTypeBuilder.__doc__ does not
+        Asserts that event_type_builder.EventBuilder.__doc__ does not
         return 'None'.
         """
-        assert event_type_builder.EventTypeBuilder.__doc__ != None
+        assert event_builder.EventBuilder.__doc__ != None
 
     def test_event_id_is_set_correctly(self, test_event) -> None:
         """Tests that the event_id is set correctly.
@@ -561,7 +561,7 @@ class Test_EventTypeBuilder:
         """
         test_event = test_event
 
-        assert test_event.description == "Used for testing the EventType Class."
+        assert test_event.description == "Used for testing the Event Class."
 
     def test_operator_is_set_correctly(self, test_event) -> None:
         """Tests that the operator is set correctly.

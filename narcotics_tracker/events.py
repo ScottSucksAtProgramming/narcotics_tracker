@@ -1,10 +1,10 @@
 """Contains implementation and representation of event types.
 
-The event_types table is a vocabulary control table which stores a library of 
+The events table is a vocabulary control table which stores a library of 
 different Event Types which can be used to make adjustments to the controlled 
 substance inventory. 
 
-This module handles the creation of the event_type table, returns various 
+This module handles the creation of the event table, returns various 
 event type data from the database and parses the raw data returned from the 
 database into a usable format. It houses the EventType Class which defines and 
 instantiates the Event Types as objects.
@@ -24,11 +24,11 @@ Functions:
 
     return_table_creation_query: Returns the query needed to create the Table.
 
-    return_event_types: Returns contents of event_types as a list of strings.
+    return_events: Returns contents of events as a list of strings.
 
-    return_operator: Returns an event_types' operator using it's code.
+    return_operator: Returns an events' operator using it's code.
 
-    parse_event_type_data: Returns event_type data as a dictionary.
+    parse_event_data: Returns event data as a dictionary.
 """
 
 import sqlite3
@@ -42,7 +42,7 @@ def return_table_creation_query() -> str:
     Returns:
         str: The sql query needed to create the Event Types Table.
     """
-    return """CREATE TABLE IF NOT EXISTS event_types (
+    return """CREATE TABLE IF NOT EXISTS events (
             EVENT_ID INTEGER PRIMARY KEY,
             EVENT_CODE TEXT UNIQUE,                
             EVENT_NAME TEXT,
@@ -54,8 +54,8 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_event_types(db_connection: sqlite3.Connection) -> list[str]:
-    """Returns the contents of the event_types table as a list of strings.
+def return_events(db_connection: sqlite3.Connection) -> list[str]:
+    """Returns the contents of the events table as a list of strings.
 
     Args:
         db_connection (sqlite3.Connection): The database connection.
@@ -64,19 +64,19 @@ def return_event_types(db_connection: sqlite3.Connection) -> list[str]:
         table_contents (list[str]): The contents of the table as a list of
             strings.
     """
-    sql_query = """SELECT * FROM event_types"""
+    sql_query = """SELECT * FROM events"""
 
-    event_types_list = []
+    events_list = []
 
-    event_types_data = db_connection.return_data(sql_query)
-    for event in event_types_data:
-        event_types_list.append(f"Event Type {event[2]}. Code: {event[1]}. {event[3]}")
+    events_data = db_connection.return_data(sql_query)
+    for event in events_data:
+        events_list.append(f"Event {event[2]}. Code: {event[1]}. {event[3]}")
 
-    return event_types_list
+    return events_list
 
 
 def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
-    """Returns an event_types' operator using it's code..
+    """Returns an events' operator using it's code..
 
     Args:
         event_code (str): The unique identifier of the event.
@@ -86,7 +86,7 @@ def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
     Returns:
         operator (int): The operator for the event type.
     """
-    sql_query = """SELECT operator FROM event_types WHERE event_code =(?)"""
+    sql_query = """SELECT operator FROM events WHERE event_code =(?)"""
     values = [event_code]
 
     operator = db_connection.return_data(sql_query, values)
@@ -94,31 +94,31 @@ def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
     return operator[0][0]
 
 
-def parse_event_type_data(event_type_data) -> dict:
-    """Returns event_type data from the database as a dictionary.
+def parse_event_data(event_data) -> dict:
+    """Returns event data from the database as a dictionary.
 
     Args:
-        event_type_data (list): The event_type data
+        event_data (list): The event data
 
     Returns:
         properties (dict): Dictionary objects contains the properties of
-            the event_type."""
+            the event."""
 
     properties = {}
 
-    properties["event_id"] = event_type_data[0][0]
-    properties["event_code"] = event_type_data[0][1]
-    properties["event_name"] = event_type_data[0][2]
-    properties["description"] = event_type_data[0][3]
-    properties["operator"] = event_type_data[0][4]
-    properties["created_date"] = event_type_data[0][5]
-    properties["modified_date"] = event_type_data[0][6]
-    properties["modified_by"] = event_type_data[0][7]
+    properties["event_id"] = event_data[0][0]
+    properties["event_code"] = event_data[0][1]
+    properties["event_name"] = event_data[0][2]
+    properties["description"] = event_data[0][3]
+    properties["operator"] = event_data[0][4]
+    properties["created_date"] = event_data[0][5]
+    properties["modified_date"] = event_data[0][6]
+    properties["modified_by"] = event_data[0][7]
 
     return properties
 
 
-class EventType:
+class Event:
     """Defines Event Types and instantiates them as objects.
 
     Multiple Event types can be declared, created and managed using this
@@ -170,17 +170,17 @@ class EventType:
             information.
 
             Args:
-                builder (event_type_builder.EventTypeBuilder): The builder
+                builder (event_builder.EventTypeBuilder): The builder
                     used to construct the EventType object.
 
     Instance Methods:
         __repr__: Returns a string expression of the event type.
 
-        save: Saves a new event type to the event_types table in the database.
+        save: Saves a new event type to the events table in the database.
 
         read: Returns the data of the event type from the database as a tuple.
 
-        update: Updates the event type in the event_types table of the
+        update: Updates the event type in the events table of the
             database.
 
         delete: Deletes the event type from the database.
@@ -200,7 +200,7 @@ class EventType:
         information.
 
         Args:
-            builder (event_type_builder.EventTypeBuilder): The builder used to
+            builder (event_builder.EventTypeBuilder): The builder used to
                 construct the EventType object.
         """
         self.event_id = builder.event_id
@@ -225,10 +225,10 @@ class EventType:
         )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
-        """Saves a new event type to the event_types table in the database.
+        """Saves a new event type to the events table in the database.
 
-        The save method will only write the event_type into the table if it does
-        not already exist. Use the update method to update the event_type's
+        The save method will only write the event into the table if it does
+        not already exist. Use the update method to update the event's
         attributes.
 
         Assigns a created_date and modified_date.
@@ -236,7 +236,7 @@ class EventType:
         Args:
             db_connection (sqlite3.Connection): The database connection.
         """
-        sql_query = """INSERT OR IGNORE INTO event_types VALUES (
+        sql_query = """INSERT OR IGNORE INTO events VALUES (
             ?, ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
@@ -259,7 +259,7 @@ class EventType:
         Returns:
             tuple: A tuple containing the event type's attribute values.
         """
-        sql_query = """SELECT * from event_types WHERE event_code = ?"""
+        sql_query = """SELECT * from events WHERE event_code = ?"""
 
         values = (self.event_code,)
 
@@ -268,17 +268,17 @@ class EventType:
         return data
 
     def update(self, db_connection: sqlite3.Connection) -> None:
-        """Updates the event type in the event_types table of the database.
+        """Updates the event type in the events table of the database.
 
-        The update method will overwrite the event_type's data if it already
+        The update method will overwrite the event's data if it already
         exists within the database. Use the save method to store new
         event types in the database.
 
         How to use:
-            Use the event_types.return_event_types() method to return a list
+            Use the events.return_events() method to return a list
             of event types.
 
-            Use the database.load_event_type() method, passing in the
+            Use the database.load_event() method, passing in the
             event_code of the event type you wish to update.
 
             Modify the attributes as necessary and call this method to update
@@ -294,14 +294,14 @@ class EventType:
             db_connection (sqlite3.Connection): The connection to the
             database.
 
-            event_code (str): The unique identifier of the event_type.
+            event_code (str): The unique identifier of the event.
 
         Raises:
 
             IndexError: An Index Error will be raised if the event_code is not
-            found on the event_types table.
+            found on the events table.
         """
-        sql_query = """UPDATE event_types 
+        sql_query = """UPDATE events 
             SET EVENT_ID = ?, 
                 EVENT_CODE = ?, 
                 EVENT_NAME = ?, 
@@ -330,7 +330,7 @@ class EventType:
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """
-        sql_query = """DELETE FROM event_types WHERE event_id = ?"""
+        sql_query = """DELETE FROM events WHERE event_id = ?"""
         values = (self.event_id,)
         db_connection.write_data(sql_query, values)
 
@@ -339,7 +339,7 @@ class EventType:
 
         Returns:
             tuple: The attributes of the event types. Follows the order
-            of the columns in the event_types table.
+            of the columns in the events table.
         """
 
         return (

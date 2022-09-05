@@ -26,7 +26,7 @@ import sqlite3
 from narcotics_tracker import (
     containers,
     database,
-    event_types,
+    events,
     inventory,
     medications,
     reporting_periods,
@@ -35,7 +35,7 @@ from narcotics_tracker import (
 )
 from narcotics_tracker.builders import (
     container_builder,
-    event_type_builder,
+    event_builder,
     status_builder,
     unit_builder,
 )
@@ -76,14 +76,14 @@ def create_containers_table(db_connection: sqlite3.Connection) -> None:
     db_connection.create_table(containers.return_table_creation_query())
 
 
-def create_event_types_table(db_connection: sqlite3.Connection) -> None:
-    """Creates the event_types table.
+def create_events_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the events table.
 
     Args:
 
         db_connection (sqlite3.Connection): The connection to the database.
     """
-    db_connection.create_table(event_types.return_table_creation_query())
+    db_connection.create_table(events.return_table_creation_query())
 
 
 def create_inventory_table(db_connection: sqlite3.Connection) -> None:
@@ -171,11 +171,11 @@ def populate_database_with_standard_events(db_connection: sqlite3.Connection) ->
     """
     standard_events = standard_items.STANDARD_EVENTS
 
-    event_builder = event_type_builder.EventTypeBuilder()
+    e_builder = event_builder.EventBuilder()
 
     for event in standard_events:
-        event_builder.set_all_properties(event)
-        built_event = event_builder.build()
+        e_builder.set_all_properties(event)
+        built_event = e_builder.build()
         built_event.save(db_connection)
 
 
@@ -224,7 +224,7 @@ def main() -> None:
     database_connection = create_database()
 
     create_containers_table(database_connection)
-    create_event_types_table(database_connection)
+    create_events_table(database_connection)
     create_inventory_table(database_connection)
     create_medications_table(database_connection)
     create_reporting_periods_table(database_connection)

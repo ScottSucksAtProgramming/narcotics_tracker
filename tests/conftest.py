@@ -30,7 +30,7 @@ from typing import TYPE_CHECKING
 from narcotics_tracker import (
     containers,
     database,
-    event_types,
+    events,
     inventory,
     reporting_periods,
     statuses,
@@ -39,7 +39,7 @@ from narcotics_tracker import (
 from narcotics_tracker.builders import (
     adjustment_builder,
     container_builder,
-    event_type_builder,
+    event_builder,
     medication_builder,
     reporting_period_builder,
     status_builder,
@@ -163,7 +163,7 @@ def test_database() -> sqlite3.Connection:
 
 
 @fixture
-def test_event() -> event_types.EventType:
+def test_event() -> events.Event:
     """Builds and returns a test object from the Event Class.
 
     Events are used in the events vocabulary control table and the inventory
@@ -191,17 +191,17 @@ def test_event() -> event_types.EventType:
         test_event (event_type.EventType): An EventType object for
             testing.
     """
-    event_builder = event_type_builder.EventTypeBuilder()
-    event_builder.set_event_id(2001)
-    event_builder.set_event_code("TEST")
-    event_builder.set_event_name("Test Event")
-    event_builder.set_description("Used for testing the EventType Class.")
-    event_builder.set_operator(-1)
-    event_builder.set_created_date("2022-08-26 00:00:00")
-    event_builder.set_modified_date("2022-08-01 00:00:00")
-    event_builder.set_modified_by("Bast")
+    e_builder = event_builder.EventBuilder()
+    e_builder.set_event_id(2001)
+    e_builder.set_event_code("TEST")
+    e_builder.set_event_name("Test Event")
+    e_builder.set_description("Used for testing the Event Class.")
+    e_builder.set_operator(-1)
+    e_builder.set_created_date("2022-08-26 00:00:00")
+    e_builder.set_modified_date("2022-08-01 00:00:00")
+    e_builder.set_modified_by("Bast")
 
-    test_event = event_builder.build()
+    test_event = e_builder.build()
     return test_event
 
 

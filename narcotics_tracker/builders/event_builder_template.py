@@ -1,16 +1,16 @@
-"""Contains the abstract builder for the EventType class.
+"""Contains the abstract builder for the Event class.
 
 Abstract builders contain no implementation. Look at the documentation for the 
 adjustment_builder module for more information.
 
 Classes:
-    EventType: Defines the interface for the adjustment builder.
+    Event: Defines the interface for the adjustment builder.
 """
 from abc import ABC, abstractmethod
 
 
-class EventType(ABC):
-    """Defines the interface for the event_type builder."""
+class Event(ABC):
+    """Defines the interface for the event builder."""
 
     @abstractmethod
     def set_event_id(self) -> None:
