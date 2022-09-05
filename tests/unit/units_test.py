@@ -214,7 +214,7 @@ class Test_UnitMethods:
     """
 
     def test___init___sets_attributes_correctly(self, test_unit) -> None:
-        """Tests the initializer sets the objects attributes correctly.
+        """Tests that  the initializer sets the objects attributes correctly.
 
         Loads test_unit.
 
@@ -238,8 +238,9 @@ class Test_UnitMethods:
             'Unit Test. Code: TEST. Used for testing the EventType Class.'
         """
         test_unit = test_unit
+        expected = f"Unit Number 821: Tina. Code: 'tn'."
 
-        assert str(test_unit) == (f"Unit Number 821: Tina. Code: 'tn'.")
+        assert str(test_unit) == expected
 
     def test_can_save_unit_to_database(self, test_unit, reset_database) -> None:
         """Tests that Units can be saved to the database.
@@ -284,7 +285,8 @@ class Test_UnitMethods:
         )
 
     def test_can_load_unit_from_database(self, reset_database, test_unit) -> None:
-        """Tests to see if an Unit Object can be loaded from data.
+        """Tests to see if a Unit Object can be loaded from data.
+
         Loads and saves test_unit. Creates loaded_unit from data.
 
         Asserts that test_unit and loaded_unit return identical
@@ -331,7 +333,7 @@ class Test_UnitMethods:
 
         assert data == "Not Tina"
 
-    def test_can_delete_unit_from_database(self, test_unit, reset_database):
+    def test_can_delete_unit_from_database(self, test_unit, reset_database) -> None:
         """Tests that Units can be deleted from the database.
 
         Loads test_unit. Saves it to database. Then deletes it. Gets data from
@@ -351,7 +353,7 @@ class Test_UnitMethods:
         data = db.return_data("""SELECT * FROM units""")
         assert data == []
 
-    def test_return_attributes(self, test_unit):
+    def test_return_attributes(self, test_unit) -> None:
         """Tests that the Units data is correctly returned.
 
         Loads test_unit. Calls test_unit.return_attributes().
@@ -359,7 +361,7 @@ class Test_UnitMethods:
         Asserts values returned are expected values.
         """
         test_unit = test_unit
-        assert test_unit.return_attributes() == (
+        expected = (
             821,
             "tn",
             "Tina",
@@ -367,3 +369,5 @@ class Test_UnitMethods:
             database.return_datetime("2022-08-01 00:00:00"),
             "Denna",
         )
+
+        assert test_unit.return_attributes() == expected
