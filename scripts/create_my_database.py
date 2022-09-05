@@ -4,12 +4,7 @@ writes them to the table."""
 
 from narcotics_tracker import (
     database,
-    event_types,
-    inventory,
-    medication,
-    reporting_periods,
 )
-from narcotics_tracker.enums import containers, medication_statuses
 from narcotics_tracker.builders import (
     medication_builder,
     reporting_period_builder,
@@ -18,31 +13,31 @@ from narcotics_tracker.builders import (
 FENTANYL_PROPERTIES = [
     "fentanyl",
     "Fentanyl",
-    containers.Container.VIAL,
+    "VIAL",
     100,
     "mcg",
     2,
-    medication_statuses.MedicationStatus.ACTIVE,
+    "ACTIVE",
 ]
 
 MIDAZOLAM_PROPERTIES = [
     "midazolam",
     "Midazolam",
-    containers.Container.VIAL,
+    "VIAL",
     10,
     "mg",
     2,
-    medication_statuses.MedicationStatus.ACTIVE,
+    "ACTIVE",
 ]
 
 MORPHINE_PROPERTIES = [
     "morphine",
     "Morphine",
-    containers.Container.VIAL,
+    "VIAL",
     10,
     "mg",
     1,
-    medication_statuses.MedicationStatus.ACTIVE,
+    "ACTIVE",
 ]
 
 DATABASE_FILES = ["inventory.db", "test_database_2.db"]
@@ -107,18 +102,6 @@ def main():
     for file_name in DATABASE_FILES:
         db = database.Database()
         db.connect(f"{file_name}")
-
-        med_table_query = medication.return_table_creation_query()
-        db.create_table(med_table_query)
-
-        periods_table_query = reporting_periods.return_table_creation_query()
-        db.create_table(periods_table_query)
-
-        event_types_table_query = event_types.return_table_creation_query()
-        db.create_table(event_types_table_query)
-
-        inventory_table_query = inventory.return_table_creation_query()
-        db.create_table(inventory_table_query)
 
         fentanyl.save(db)
         morphine.save(db)

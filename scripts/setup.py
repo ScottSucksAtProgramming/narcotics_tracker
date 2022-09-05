@@ -28,13 +28,15 @@ from narcotics_tracker import (
     database,
     event_types,
     inventory,
-    medication,
+    medications,
     reporting_periods,
+    statuses,
     units,
 )
 from narcotics_tracker.builders import (
     container_builder,
     event_type_builder,
+    status_builder,
     unit_builder,
 )
 from narcotics_tracker.setup import standard_items
@@ -101,7 +103,7 @@ def create_medications_table(db_connection: sqlite3.Connection) -> None:
 
         db_connection (sqlite3.Connection): The connection to the database.
     """
-    db_connection.create_table(medication.return_table_creation_query())
+    db_connection.create_table(medications.return_table_creation_query())
 
 
 def create_reporting_periods_table(db_connection: sqlite3.Connection) -> None:
@@ -112,6 +114,16 @@ def create_reporting_periods_table(db_connection: sqlite3.Connection) -> None:
         db_connection (sqlite3.Connection): The connection to the database.
     """
     db_connection.create_table(reporting_periods.return_table_creation_query())
+
+
+def create_statuses_table(db_connection: sqlite3.Connection) -> None:
+    """Creates the statuses table.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    db_connection.create_table(statuses.return_table_creation_query())
 
 
 def create_units_table(db_connection: sqlite3.Connection) -> None:
@@ -187,6 +199,26 @@ def populate_database_with_standard_units(db_connection: sqlite3.Connection) -> 
         built_unit.save(db_connection)
 
 
+def populate_database_with_standard_statuses(db_connection: sqlite3.Connection) -> None:
+    """Builds and saves standard statuses to the database.
+
+    Standard statuses are located in the Standard Items module of the Setup
+    package.
+
+    Args:
+
+        db_connection (sqlite3.Connection): The connection to the database.
+    """
+    standard_statuses = standard_items.STANDARD_STATUSES
+
+    stat_builder = status_builder.StatusBuilder()
+
+    for status in standard_statuses:
+        stat_builder.set_all_properties(status)
+        built_status = stat_builder.build()
+        built_status.save(db_connection)
+
+
 def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
     database_connection = create_database()
@@ -196,11 +228,13 @@ def main() -> None:
     create_inventory_table(database_connection)
     create_medications_table(database_connection)
     create_reporting_periods_table(database_connection)
+    create_statuses_table(database_connection)
     create_units_table(database_connection)
 
     populate_database_with_standard_units(database_connection)
     populate_database_with_standard_events(database_connection)
     populate_database_with_standard_containers(database_connection)
+    populate_database_with_standard_statuses(database_connection)
 
 
 if __name__ == "__main__":

@@ -146,27 +146,48 @@ STANDARD_CONTAINERS = [
 
 # Standard Statuses
 
-STANDARD_CONTAINERS = [
+STANDARD_STATUSES = [
     {
-        "container_id": None,
-        "container_code": "vial",
-        "container_name": "Vial",
+        "status_id": None,
+        "status_code": "ACTIVE",
+        "status_name": "Active",
+        "description": "Used for items which are still being used.",
         "created_date": None,
         "modified_date": None,
         "modified_by": "Setup",
     },
     {
-        "container_id": None,
-        "container_code": "pfs",
-        "container_name": "Pre-filled Syringe",
+        "status_id": None,
+        "status_code": "INACTIVE",
+        "status_name": "Inactive",
+        "description": "Used for items which are no longer being used.",
         "created_date": None,
         "modified_date": None,
         "modified_by": "Setup",
     },
     {
-        "container_id": None,
-        "container_code": "pmb",
-        "container_name": "Pre-mixed Bag",
+        "status_id": None,
+        "status_code": "OPEN",
+        "status_name": "Open",
+        "description": "Used for orders which have not been completed.",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "status_id": None,
+        "status_code": "CANCELLED",
+        "status_name": "Cancelled",
+        "description": "Used for orders which have been cancelled.",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "status_id": None,
+        "status_code": "CLOSED",
+        "status_name": "Closed",
+        "description": "Used for orders which have been completed.",
         "created_date": None,
         "modified_date": None,
         "modified_by": "Setup",

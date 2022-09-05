@@ -122,6 +122,7 @@ class StatusBuilder(status_builder_template.Status):
         self.set_status_id(properties["status_id"])
         self.set_status_code(properties["status_code"])
         self.set_status_name(properties["status_name"])
+        self.set_description(properties["description"])
         self.set_created_date(properties["created_date"])
         self.set_modified_date(properties["modified_date"])
         self.set_modified_by(properties["modified_by"])

@@ -6,7 +6,7 @@ Classes:
 """
 import pytest
 
-from narcotics_tracker import database, inventory, medication, units
+from narcotics_tracker import database, inventory, medications, units
 from narcotics_tracker.builders import (
     adjustment_builder_template,
     adjustment_builder,
@@ -220,7 +220,7 @@ class Test_MedicationBuilder:
         Asserts that the medication object returns a Medication object.
         """
         med_builder = medication_builder.MedicationBuilder()
-        expected = medication.Medication
+        expected = medications.Medication
 
         med_builder.set_medication_id(None)
         med_builder.set_name("Aspirin")

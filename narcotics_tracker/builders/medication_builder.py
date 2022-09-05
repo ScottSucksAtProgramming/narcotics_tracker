@@ -11,12 +11,12 @@ Classes:
 
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import containers, medication, units, statuses
+from narcotics_tracker import containers, medications, medications, units, statuses
 from narcotics_tracker.builders import medication_builder_template
 from narcotics_tracker.utils import unit_converter
 
 if TYPE_CHECKING:
-    from narcotics_tracker import containers, medication
+    from narcotics_tracker import containers
 
 
 class MedicationBuilder(medication_builder_template.Medication):
@@ -248,9 +248,9 @@ class MedicationBuilder(medication_builder_template.Medication):
 
     def reset(self) -> None:
         """Resets the medication to its default values."""
-        self._medication = medication.Medication()
+        self._medication = medications.Medication()
 
-    def build(self) -> "medication.Medication":
+    def build(self) -> "medications.Medication":
         """Returns the medication object. Assigns the medication's properties.
 
         This is the last method to be called as part of the building process.
@@ -263,4 +263,4 @@ class MedicationBuilder(medication_builder_template.Medication):
         """
         self.calculate_concentration()
 
-        return medication.Medication(self)
+        return medications.Medication(self)

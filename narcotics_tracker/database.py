@@ -20,8 +20,9 @@ import sqlite3
 from narcotics_tracker import (
     event_types,
     inventory,
-    medication,
+    medications,
     reporting_periods,
+    statuses,
     units,
 )
 from narcotics_tracker.builders import (
@@ -29,11 +30,12 @@ from narcotics_tracker.builders import (
     event_type_builder,
     medication_builder,
     reporting_period_builder,
+    status_builder,
     unit_builder,
 )
 
 if TYPE_CHECKING:
-    from narcotics_tracker import medication
+    from narcotics_tracker import medications
 
 
 def return_datetime(string_date_time: str = None) -> int:
@@ -236,7 +238,7 @@ class Database:
         else:
             return False
 
-    def load_medication(self, code: str) -> "medication.Medication":
+    def load_medication(self, code: str) -> "medications.Medication":
         """Create a medication object from data in the database.
 
         Args:
@@ -249,7 +251,7 @@ class Database:
         values = (code,)
 
         result = self.return_data(sql_query, values)
-        medication_data = medication.parse_medication_data(result)
+        medication_data = medications.parse_medication_data(result)
 
         med_builder = medication_builder.MedicationBuilder()
         med_builder.set_all_properties(medication_data)
@@ -352,3 +354,26 @@ class Database:
         loaded_unit = unt_builder.build()
 
         return loaded_unit
+
+    def load_status(self, status_code: str) -> "statuses.status":
+        """Create an status object from data in the database.
+
+        Args:
+            status_id (str): The numeric identifier of the status to
+                be loaded.
+
+        Returns:
+            loaded_status (statuses.status): The
+                status object.
+        """
+        sql_query = """SELECT * FROM statuses WHERE status_code = ?"""
+        values = (status_code,)
+
+        result = self.return_data(sql_query, values)
+        status_data = statuses.parse_status_data(result)
+
+        unt_builder = status_builder.StatusBuilder()
+        unt_builder.set_all_properties(status_data)
+        loaded_status = unt_builder.build()
+
+        return loaded_status

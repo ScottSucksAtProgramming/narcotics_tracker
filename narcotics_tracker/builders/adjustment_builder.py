@@ -13,7 +13,7 @@ import sqlite3
 from narcotics_tracker import (
     database,
     inventory,
-    medication,
+    medications,
     reporting_periods,
 )
 from narcotics_tracker.builders import adjustment_builder_template
@@ -183,7 +183,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
     def calculate_amount_in_mcg(self, db_connection: sqlite3.Connection) -> None:
         """Calculates and sets the adjustment amount in micrograms."""
-        preferred_unit = medication.return_preferred_unit(
+        preferred_unit = medications.return_preferred_unit(
             self.medication_code, db_connection=db_connection
         )
 

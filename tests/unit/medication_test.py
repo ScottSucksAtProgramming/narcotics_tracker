@@ -12,7 +12,7 @@ Classes:
 
 import pytest
 
-from narcotics_tracker import containers, database, medication, statuses
+from narcotics_tracker import containers, database, medications, statuses
 
 
 class Test_MedicationModule:
@@ -31,7 +31,7 @@ class Test_MedicationModule:
 
         Asserts that calling medication.__doc__ does not return 'None'.
         """
-        assert medication.__doc__ != None
+        assert medications.__doc__ != None
 
     def test_medication_table_query_returns_correct_string(self):
         """Tests that return_table_creation_query returns correct string.
@@ -57,7 +57,7 @@ class Test_MedicationModule:
             FOREIGN KEY (STATUS) REFERENCES statuses (status_code)  ON UPDATE CASCADE
             )'
         """
-        assert medication.return_table_creation_query() == (
+        assert medications.return_table_creation_query() == (
             """CREATE TABLE IF NOT EXISTS medications (
             MEDICATION_ID INTEGER PRIMARY KEY,
             MEDICATION_CODE TEXT UNIQUE,
@@ -90,7 +90,7 @@ class Test_MedicationModule:
         test_med = test_med
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
+        db.create_table(medications.return_table_creation_query())
         test_med.save(db)
 
         code = ["Un-69420-9001"]
@@ -98,7 +98,7 @@ class Test_MedicationModule:
             """SELECT * FROM medications WHERE medication_code=(?)""", code
         )
 
-        med_data = medication.parse_medication_data(raw_data)
+        med_data = medications.parse_medication_data(raw_data)
 
         assert (
             med_data["medication_id"] == 1
@@ -124,7 +124,7 @@ class Test_MedicationModule:
         """
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
+        db.create_table(medications.return_table_creation_query())
 
         test_med = test_med
         second_med = test_med
@@ -132,7 +132,7 @@ class Test_MedicationModule:
         test_med.save(db)
         second_med.save(db)
 
-        medication_list = medication.return_medication(db)
+        medication_list = medications.return_medication(db)
 
         assert (
             "Unobtanium 69420.0 mg in 9001.0 ml. Code: Un-69420-9001."
@@ -154,7 +154,7 @@ class Test_MedicationModule:
         test_med = test_med
         test_med.medication_code = "morphine"
 
-        assert medication.return_preferred_unit(test_med.medication_code, db)
+        assert medications.return_preferred_unit(test_med.medication_code, db)
 
 
 class Test_MedicationAttributes:
@@ -186,7 +186,7 @@ class Test_MedicationAttributes:
         """
         test_med = test_med
 
-        assert isinstance(test_med, medication.Medication)
+        assert isinstance(test_med, medications.Medication)
 
     def test_medications_return_expected_medication_id(self, test_med):
         """Tests that the medication_id is returned as expected.
@@ -383,7 +383,7 @@ class Test_MedicationMethods:
         test_med = test_med
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
+        db.create_table(medications.return_table_creation_query())
         test_med.save(db)
 
         data = db.return_data(
@@ -404,7 +404,7 @@ class Test_MedicationMethods:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
+        db.create_table(medications.return_table_creation_query())
 
         test_med.save(db)
         test_med.delete(db)
@@ -428,7 +428,7 @@ class Test_MedicationMethods:
 
         db = database.Database()
         db.connect("test_database.db")
-        db.create_table(medication.return_table_creation_query())
+        db.create_table(medications.return_table_creation_query())
         test_med.save(db)
 
         med_code = "Un-69420-9001"

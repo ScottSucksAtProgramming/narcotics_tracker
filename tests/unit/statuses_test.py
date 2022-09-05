@@ -164,6 +164,17 @@ class Test_StatusAttributes:
 
         assert test_status.status_name == "Active"
 
+    def test_status_description_returns_correct_value(self, test_status) -> None:
+        """Tests that the status_description attributes returns the correct value.
+
+        Loads test_status.
+
+        Asserts that test_status.status_description is 'Used for items which are currently in use.'
+        """
+        test_status = test_status
+
+        assert test_status.description == "Used for items which are currently in use."
+
     def test_created_date_returns_correct_value(self, test_status) -> None:
         """Tests that the created_date attributes returns the correct value.
 
@@ -202,7 +213,7 @@ class Test_StatusAttributes:
         assert test_status.modified_by == "Abenthy"
 
 
-class test_StatusMethods:
+class Test_StatusMethods:
     """Contains all unit tests for the Status Class' methods.
 
     Behaviors Tested:
@@ -227,9 +238,10 @@ class test_StatusMethods:
         test_status = test_status
 
         assert (
-            test_status.status_id == -7
-            and test_status.status_code == "supp"
-            and test_status.status_name == "Suppository"
+            test_status.status_id == -19
+            and test_status.status_code == "ACTIVE"
+            and test_status.status_name == "Active"
+            and test_status.description == "Used for items which are currently in use."
         )
 
     def test___repr___returns_expected_string(self, test_status) -> None:
@@ -238,11 +250,13 @@ class test_StatusMethods:
         Loads test_status. Calls str(test_status).
 
         Asserts that str(test_status) returns:
-            'Unit Test. Code: TEST. Used for testing the EventType Class.'
+            Status -19: Active. Code: 'ACTIVE'. Used for items which are currently in use.'
         """
         test_status = test_status
 
-        assert str(test_status) == (f"Unit Number 821: Suppository. Code: 'supp'.")
+        assert str(test_status) == (
+            f"Status -19: Active. Code: 'ACTIVE'. Used for items which are currently in use."
+        )
 
     def test_can_save_status_to_database(self, test_status, reset_database) -> None:
         """Tests that statuses can be saved to the database.
@@ -261,10 +275,10 @@ class test_StatusMethods:
         test_status.save(db)
 
         data = db.return_data(
-            """SELECT status_code FROM statuses WHERE status_id = '821'"""
+            """SELECT status_code FROM statuses WHERE status_id = -19"""
         )
 
-        assert data[0][0] == "tn"
+        assert data[0][0] == "ACTIVE"
 
     def test_can_read_status_from_database(self, reset_database, test_status) -> None:
         """Tests to see if the statuses's data can be returned from database.
@@ -282,7 +296,7 @@ class test_StatusMethods:
         test_status.save(db)
 
         data = test_status.read(db)[0]
-        expected = [821, "tn", "Tina"]
+        expected = [-19, "ACTIVE", "Active"]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
@@ -302,7 +316,7 @@ class test_StatusMethods:
         test_status = test_status
         test_status.save(db)
 
-        loaded_unit = db.load_unit("tn")
+        loaded_unit = db.load_status("ACTIVE")
 
         assert (
             loaded_unit.return_attributes()[0] == test_status.return_attributes()[0]
@@ -331,7 +345,7 @@ class test_StatusMethods:
         test_status.update(db)
 
         data = db.return_data(
-            """SELECT status_name FROM statuses WHERE status_code = 'tn'"""
+            """SELECT status_name FROM statuses WHERE status_code = 'ACTIVE'"""
         )[0][0]
 
         assert data == "Not Tina"
@@ -365,10 +379,11 @@ class test_StatusMethods:
         """
         test_status = test_status
         assert test_status.return_attributes() == (
-            821,
-            "tn",
-            "Tina",
+            -19,
+            "ACTIVE",
+            "Active",
+            "Used for items which are currently in use.",
             database.return_datetime("2022-08-01 00:00:00"),
             database.return_datetime("2022-08-01 00:00:00"),
-            "Denna",
+            "Abenthy",
         )

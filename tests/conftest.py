@@ -26,19 +26,19 @@ from narcotics_tracker.builders import (
 )
 
 if TYPE_CHECKING:
-    from narcotics_tracker import medication
+    from narcotics_tracker import medications
 
 
 @fixture
 def test_adjustment() -> "inventory.Adjustment":
-    """Return a Medication object for testing.
+    """Returns an Adjustment object for testing.
 
-    The test_adjustment fixture uses the builder to create a medication object for
-    testing. All the medication attributes are set with values which would not
-    be valid for a medication in a real system.
+    The test_adjustment fixture uses the builder to create a adjustment object
+    for testing. All the adjustment attributes are set with values which would
+    not be valid for a adjustment in a real system.
 
     Returns:
-        test_adjustment (medication.Medication): A medication object for testing.
+        test_adjustment (inventory.Adjustment): A adjustment object for testing.
     """
 
     db = database.Database()
@@ -119,7 +119,7 @@ def test_event_type() -> event_types.EventType:
 
 
 @fixture
-def test_med() -> "medication.Medication":
+def test_med() -> "medications.Medication":
     """Return a Medication object for testing.
 
     The test_med fixture uses the builder to create a medication object for
