@@ -181,6 +181,7 @@ def test_status() -> statuses.Status:
     stat_builder.set_status_id(-19)
     stat_builder.set_status_code("ACTIVE")
     stat_builder.set_status_name("Active")
+    stat_builder.set_description("Used for items which are currently in use.")
     stat_builder.set_created_date("2022-08-01 00:00:00")
     stat_builder.set_modified_date("2022-08-01 00:00:00")
     stat_builder.set_modified_by("Abenthy")

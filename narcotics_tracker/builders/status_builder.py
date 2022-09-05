@@ -28,6 +28,7 @@ class StatusBuilder(status_builder_template.Status):
         self.status_id = None
         self.status_code = None
         self.status_name = None
+        self.description = None
         self.created_date = None
         self.modified_date = None
         self.modified_by = None
@@ -68,6 +69,14 @@ class StatusBuilder(status_builder_template.Status):
             status_name (str): The proper name for the status.
         """
         self.status_name = status_name
+
+    def set_description(self, description: str) -> None:
+        """Sets the statuses' description.
+
+        Args:
+            status_description (str): The proper description for the status.
+        """
+        self.description = description
 
     def set_created_date(self, created_date: str) -> None:
         """Sets the statuses' created_date.

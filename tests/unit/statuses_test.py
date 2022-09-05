@@ -41,6 +41,7 @@ class Test_StatusModule:
             STATUS_ID INTEGER PRIMARY KEY,
             STATUS_CODE TEXT UNIQUE,                
             STATUS_NAME TEXT,
+            DESCRIPTION TEXT,
             CREATED_DATE INTEGER,
             MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT

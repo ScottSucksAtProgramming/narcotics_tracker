@@ -39,6 +39,7 @@ def return_table_creation_query() -> str:
             STATUS_ID INTEGER PRIMARY KEY,
             STATUS_CODE TEXT UNIQUE,                
             STATUS_NAME TEXT,
+            DESCRIPTION TEXT,
             CREATED_DATE INTEGER,
             MODIFIED_DATE INTEGER,
             MODIFIED_BY TEXT
@@ -61,7 +62,9 @@ def return_statuses(db_connection: sqlite3.Connection) -> list[str]:
 
     status_data = db_connection.return_data(sql_query)
     for status in status_data:
-        status_list.append(f"Status {status[0]}: {status[2]}. Code: '{status[1]}'.")
+        status_list.append(
+            f"Status {status[0]}: {status[2]}. Code: '{status[1]}'. {status[3]}"
+        )
 
     return status_list
 
@@ -81,9 +84,10 @@ def parse_status_data(status_data) -> dict:
     properties["status_id"] = status_data[0][0]
     properties["status_code"] = status_data[0][1]
     properties["status_name"] = status_data[0][2]
-    properties["created_date"] = status_data[0][3]
-    properties["modified_date"] = status_data[0][4]
-    properties["modified_by"] = status_data[0][5]
+    properties["description"] = status_data[0][3]
+    properties["created_date"] = status_data[0][4]
+    properties["modified_date"] = status_data[0][5]
+    properties["modified_by"] = status_data[0][6]
 
     return properties
 
@@ -103,6 +107,9 @@ class Status:
             user. Used to interact with the unit in the database.
 
         status_code (str): Name of the unit.
+
+        description (str): A string describing the status and how it should
+            be used.
 
         created_date (str): The date the unit type was created in the
             table.
@@ -147,6 +154,7 @@ class Status:
         self.status_id = builder.status_id
         self.status_code = builder.status_code
         self.status_name = builder.status_name
+        self.description = builder.description
         self.created_date = builder.created_date
         self.modified_date = builder.modified_date
         self.modified_by = builder.modified_by
@@ -158,9 +166,7 @@ class Status:
             str: The string describing the unit specifying the event
                 type's name, code and description.
         """
-        return (
-            f"Status {self.status_id}: {self.status_name}. Code: '{self.status_code}'."
-        )
+        return f"Status {self.status_id}: {self.status_name}. Code: '{self.status_code}'. {self.description}"
 
     def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new unit to the status table in the database.
@@ -175,7 +181,7 @@ class Status:
             db_connection (sqlite3.Connection): The database connection.
         """
         sql_query = """INSERT OR IGNORE INTO statuses VALUES (
-            ?, ?, ?, ?, ?, ?)"""
+            ?, ?, ?, ?, ?, ?, ?)"""
 
         if database.Database.created_date_is_none(self):
             self.created_date = database.return_datetime()
@@ -243,6 +249,7 @@ class Status:
             SET status_id = ?, 
                 status_code = ?, 
                 status_name = ?, 
+                description = ?,
                 created_date = ?, 
                 modified_date = ?, 
                 modified_by = ? 
@@ -282,6 +289,7 @@ class Status:
             self.status_id,
             self.status_code,
             self.status_name,
+            self.description,
             self.created_date,
             self.modified_date,
             self.modified_by,

@@ -25,6 +25,10 @@ class Status(ABC):
         pass
 
     @abstractmethod
+    def set_description(self) -> None:
+        pass
+
+    @abstractmethod
     def set_created_date(self) -> None:
         pass
 

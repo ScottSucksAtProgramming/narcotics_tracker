@@ -143,3 +143,32 @@ STANDARD_CONTAINERS = [
         "modified_by": "Setup",
     },
 ]
+
+# Standard Statuses
+
+STANDARD_CONTAINERS = [
+    {
+        "container_id": None,
+        "container_code": "vial",
+        "container_name": "Vial",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "container_id": None,
+        "container_code": "pfs",
+        "container_name": "Pre-filled Syringe",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+    {
+        "container_id": None,
+        "container_code": "pmb",
+        "container_name": "Pre-mixed Bag",
+        "created_date": None,
+        "modified_date": None,
+        "modified_by": "Setup",
+    },
+]
