@@ -8,7 +8,6 @@ Classes:
 
     Test_UnitsMethods: Contains unit tests for the Unit's methods.
 """
-import sqlite3
 
 from narcotics_tracker import database, units
 
@@ -19,8 +18,8 @@ class Test_UnitsModule:
     Behaviors Tested:
         - Units module can be accessed.
         - Method return_table_creation_query returns correct string.
-        #! - Method return_units returns all units.
-        #! - Method parse_unit_data returns correct dictionary and values.
+        - Method return_units returns all units.
+        - Method parse_unit_data returns correct dictionary and values.
     """
 
     def test_units_module_can_be_accessed(self) -> None:
