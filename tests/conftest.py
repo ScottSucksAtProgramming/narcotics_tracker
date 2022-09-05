@@ -1,8 +1,29 @@
-"""Contains the fixtures and configuration for the tests.
+"""Contains the fixtures and configuration used in the Testing Suite.
+
+Testing for the Narcotics Tracker is done using pytest. This configuration 
+file contains various fixtures and setting to help with testing.
 
 Fixtures:
-    test_med: Return's a medication object for testing.
+    test_adjustment: Builds and returns a test object from the Event Class.
+
+    test_container: Builds and returns a test object from the Event Class.
+
+    test_db: Connects to and returns the connection to 'test_database.db'.
+
+    test_event: Builds and returns a test object from the Event Class.
+
+    test_medication: Builds and returns a test object from the Medication Class.
+
+    test_period: Builds and returns a test object from the Period Class.
+
+    test_status: Builds and returns a test object from the Status Class.
+
+    test_unit: Builds and returns a test object from the Unit Class.
+
+    reset_database: Resets test_database.db for testing functions.
 """
+import sqlite3
+
 from pytest import fixture
 from typing import TYPE_CHECKING
 
@@ -31,14 +52,32 @@ if TYPE_CHECKING:
 
 @fixture
 def test_adjustment() -> "inventory.Adjustment":
-    """Returns an Adjustment object for testing.
+    """Builds and returns a test object from the Adjustment Class.
 
-    The test_adjustment fixture uses the builder to create a adjustment object
-    for testing. All the adjustment attributes are set with values which would
-    not be valid for a adjustment in a real system.
+    Adjustments are used in the inventory module to make changes to the amount
+    of controlled substance medications. This function uses the builder
+    pattern to build a adjustment which can be used for testing.
+
+    Review the Inventory Module for more information on adjustments and the
+    inventory table.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    Review the Events Module for more information on Events and the event_code
+    which is used as a foreign key within the inventory table.
+
+    Review the Medications Module for more information on Medications and the
+    medication_code which is used as a foreign key within the inventory table.
+
+    How To Use:
+        Pass 'test_adjustment' into the test function.
+
+        Assign test_adjustment to a variable and use as needed.
 
     Returns:
-        test_adjustment (inventory.Adjustment): A adjustment object for testing.
+        test_adjustment (inventory.Adjustment): An adjustment object for
+            testing.
     """
 
     db = database.Database()
@@ -63,7 +102,23 @@ def test_adjustment() -> "inventory.Adjustment":
 
 @fixture
 def test_container() -> containers.Container:
-    """Creates a test object from the Container Class.
+    """Builds and returns a test object from the Container Class.
+
+    Medications come in different containers. These objects are used in the
+    containers vocabulary control table and the medications table. This
+    function uses the builder pattern to build a adjustment which can be used
+    for testing.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    Review the Medications Module for more information on Medications and the
+    container_type attribute which uses containers.
+
+    How To Use:
+        Pass 'test_container' into the test function.
+
+        Assign test_container to a variable and use as needed.
 
     Returns:
         test_container (container.Container): A container object for testing.
@@ -84,24 +139,56 @@ def test_container() -> containers.Container:
 
 
 @fixture
-def test_db() -> str:
-    """Return the name of the testing database file.
+def test_database() -> sqlite3.Connection:
+    """Connects to and returns the connection to 'test_database.db'.
 
-    The test_db fixture returns the name of the testing database file.
-    This is used in the tests to connect to the database.
+    The test_db fixture returns the a connection to the test_database.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    How To Use:
+        Pass 'test_db' into the test function.
+
+        Assign test_db to a variable and use as needed.
 
     Returns:
-        test_db (str): The path to the database file.
+        test_db (sqlite3.Connection): The connection to the 'test_database.db'
+            database.
     """
-    return "test_database.db"
+    test_db = database.Database()
+    test_db.connect("test_database.db")
+
+    return test_db
 
 
 @fixture
-def test_event_type() -> event_types.EventType:
-    """Creates a test object from the EventType Class.
+def test_event() -> event_types.EventType:
+    """Builds and returns a test object from the Event Class.
+
+    Events are used in the events vocabulary control table and the inventory
+    module to define the reason for the inventory change and select whether
+    the adjustment adds or removes medication from the inventory. This
+    function uses the builder pattern to build a adjustment which can be used
+    for testing.
+
+    Review the Inventory Module for more information on adjustments, the
+    inventory table, and the even_code column which which uses the event_code
+    as a foreign key from the events table.
+
+    Review the Database Module for more information on interacting with the
+     database.
+
+    Review the Events Module for more information on Events and the
+    event_code which is used as a foreign key within the inventory table.
+
+    How To Use:
+        Pass 'test_event' into the test function.
+
+        Assign test_event to a variable and use as needed.
 
     Returns:
-        test_event_type (event_type.EventType): An EventType object for
+        test_event (event_type.EventType): An EventType object for
             testing.
     """
     event_builder = event_type_builder.EventTypeBuilder()
@@ -114,17 +201,30 @@ def test_event_type() -> event_types.EventType:
     event_builder.set_modified_date("2022-08-01 00:00:00")
     event_builder.set_modified_by("Bast")
 
-    test_event_type = event_builder.build()
-    return test_event_type
+    test_event = event_builder.build()
+    return test_event
 
 
 @fixture
-def test_med() -> "medications.Medication":
-    """Return a Medication object for testing.
+def test_medication() -> "medications.Medication":
+    """Builds and returns a test object from the Medication Class.
 
-    The test_med fixture uses the builder to create a medication object for
-    testing. All the medication attributes are set with values which would not
-    be valid for a medication in a real system.
+    Medications are used to specify medication properties in the medications
+    table. They are also used in the inventory module where they're inventory
+    amounts are adjusted. This function uses the builder pattern to build a
+    medication object which can be used for testing.
+
+    Review the Inventory Module for more information on adjustments, the
+    inventory table, and the medication_code column which which uses the
+    medication_code as a foreign key from the events table.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    How To Use:
+        Pass 'test_med' into the test function.
+
+        Assign test_med to a variable and use as needed.
 
     Returns:
         test_med (medication.Medication): A medication object for testing.
@@ -148,7 +248,25 @@ def test_med() -> "medications.Medication":
 
 @fixture
 def test_period() -> reporting_periods.ReportingPeriod:
-    """Creates a test object from the Period Class.
+    """Builds and returns a test object from the Period Class.
+
+    Reporting Periods are used in the reporting_periods vocabulary control
+    table and the inventory module to organize adjustments into the different
+    periods in which they must be reported to New York State. This function
+    uses the builder pattern to build a reporting period object which can be
+    used for testing.
+
+    Review the Inventory Module for more information on adjustments, the
+    inventory table, and the reporting_period column which which uses the
+    reporting_period_id as a foreign key from this table.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    How To Use:
+        Pass 'test_period' into the test function.
+
+        Assign test_period to a variable and use as needed.
 
     Returns:
         test_period (period.Period): A period object for testing.
@@ -170,10 +288,27 @@ def test_period() -> reporting_periods.ReportingPeriod:
 
 @fixture
 def test_status() -> statuses.Status:
-    """Creates a test object from the Status Class.
+    """Builds and returns a test object from the Status Class.
+
+    Statuses are used in the statuses vocabulary control table and the
+    Medications module to denote the status of a particular medication. This
+    function uses the builder pattern to build a status object which can be
+    used for testing.
+
+    Review the Medication Module for more information on Medications, the
+    medications table, and the status column which which uses the status_code
+    as a foreign key from this table.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    How To Use:
+        Pass 'test_status' into the test function.
+
+        Assign test_status to a variable and use as needed.
 
     Returns:
-        test_status (statuses.Status): A container object for testing.
+        test_status (statuses.Status): A status object for testing.
     """
 
     stat_builder = status_builder.StatusBuilder()
@@ -193,10 +328,33 @@ def test_status() -> statuses.Status:
 
 @fixture
 def test_unit() -> units.Unit:
-    """Creates a test object from the Unit Class.
+    """Builds and returns a test object from the Unit Class.
+
+    Units are used in the units vocabulary control table, the Medication
+    Module to denote the unit of measurement the medication is commonly
+    measured in, the Unit Converter Module which converts between different
+    units of measurements as well as the inventory module to set the amount by
+    which the medication was changed. This function uses the builder pattern
+    to build a unit object which can be used for testing.
+
+    Review the Medication Module for information on medications, the
+    medications table and the preferred_unit column which uses the unit_code
+    as a foreign key from this table.
+
+    Review the Inventory Module for more information on adjustments, the
+    inventory table, and the amount_in_mcg column which which uses a
+    medication's preferred_unit to convert the adjustment amount.
+
+    Review the Database Module for more information on interacting with the
+    database.
+
+    How To Use:
+        Pass 'test_uni' into the test function.
+
+        Assign test_uni to a variable and use as needed.
 
     Returns:
-        test_unit (unit.unit): A unit object for testing.
+        test_unit (units.unit): A unit object for testing.
     """
 
     u_builder = unit_builder.UnitBuilder()
@@ -215,7 +373,10 @@ def test_unit() -> units.Unit:
 
 @fixture
 def reset_database():
-    """Resets test_database.db"""
+    """Resets test_database.db for testing functions.
+
+    This function deletes 'data/test_database.db'.
+    """
     db = database.Database()
     db.connect("test_database.db")
     db.delete_database("test_database.db")

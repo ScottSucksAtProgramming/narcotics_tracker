@@ -468,7 +468,7 @@ class Test_EventTypeAbstractBuilder:
         - Class event_type can be accessed.
     """
 
-    def test_event_type_builder_template_module_can_be_accessed(self) -> None:
+    def test_event_builder_template_module_can_be_accessed(self) -> None:
         """Tests if the event_type_builder_template exists and is accessible.
 
         Asserts that event_type_builder_template.__doc__ does not return
@@ -477,7 +477,7 @@ class Test_EventTypeAbstractBuilder:
 
     assert event_type_builder_template.__doc__ != None
 
-    def test_event_type_class_can_be_accessed(self) -> None:
+    def test_event_class_can_be_accessed(self) -> None:
         """Tests that EventType class exists and is accessible.
 
         Asserts that event_type_builder_template.EventType.__doc__ does not
@@ -494,7 +494,7 @@ class Test_EventTypeBuilderModule:
         - Module event_type_builder can be accessed.
     """
 
-    def test_event_type_builder_can_be_accessed(self) -> None:
+    def test_event_builder_can_be_accessed(self) -> None:
         """Tests that the module exists and can be accessed.
 
         Asserts that event_type_builder.__doc__ does not return 'None'.
@@ -519,7 +519,7 @@ class Test_EventTypeBuilder:
         #! - Created EventType object has type event_type.EventType.
     """
 
-    def test_event_type_class_can_be_accessed(self) -> None:
+    def test_event_class_can_be_accessed(self) -> None:
         """Tests that the EventTypeBuilder class exists and is accessible.
 
         Asserts that event_type_builder.EventTypeBuilder.__doc__ does not
@@ -527,81 +527,81 @@ class Test_EventTypeBuilder:
         """
         assert event_type_builder.EventTypeBuilder.__doc__ != None
 
-    def test_event_id_is_set_correctly(self, test_event_type) -> None:
+    def test_event_id_is_set_correctly(self, test_event) -> None:
         """Tests that the event_id is set correctly.
 
         Asserts that test_event.event_id is 2001.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.event_id == 2001
+        assert test_event.event_id == 2001
 
-    def test_event_code_is_set_correctly(self, test_event_type) -> None:
+    def test_event_code_is_set_correctly(self, test_event) -> None:
         """Tests that the event_code is set correctly.
 
         Asserts that test_event.event_code is TEST.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.event_code == "TEST"
+        assert test_event.event_code == "TEST"
 
-    def test_event_name_is_set_correctly(self, test_event_type) -> None:
+    def test_event_name_is_set_correctly(self, test_event) -> None:
         """Tests that the event_name is set correctly.
 
         Asserts that test_event.event_name is Test Event.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.event_name == "Test Event"
+        assert test_event.event_name == "Test Event"
 
-    def test_description_is_set_correctly(self, test_event_type) -> None:
+    def test_description_is_set_correctly(self, test_event) -> None:
         """Tests that the description is set correctly.
 
         Asserts that test_event.description is ;Used for testing the EventType Class.'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.description == "Used for testing the EventType Class."
+        assert test_event.description == "Used for testing the EventType Class."
 
-    def test_operator_is_set_correctly(self, test_event_type) -> None:
+    def test_operator_is_set_correctly(self, test_event) -> None:
         """Tests that the operator is set correctly.
 
         Asserts that test_event.operator is -1.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.operator == -1
+        assert test_event.operator == -1
 
-    def test_created_date_is_set_correctly(self, test_event_type) -> None:
+    def test_created_date_is_set_correctly(self, test_event) -> None:
         """Tests that the created_date is set correctly.
 
         Asserts that test_event.created_date is "2022-08-26 00:00:00".
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.created_date == database.return_datetime(
+        assert test_event.created_date == database.return_datetime(
             "2022-08-26 00:00:00"
         )
 
-    def test_modified_date_is_set_correctly(self, test_event_type) -> None:
+    def test_modified_date_is_set_correctly(self, test_event) -> None:
         """Tests that the modified_date is set correctly.
 
         Asserts that test_event.modified_date is "2022-08-01 00:00:00".
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.modified_date == database.return_datetime(
+        assert test_event.modified_date == database.return_datetime(
             "2022-08-01 00:00:00"
         )
 
-    def test_modified_date_is_set_correctly(self, test_event_type) -> None:
+    def test_modified_date_is_set_correctly(self, test_event) -> None:
         """Tests that the modified_by is set correctly.
 
         Asserts that test_event.modified_by is "Bast".
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.modified_by == "Bast"
+        assert test_event.modified_by == "Bast"
 
 
 class Test_ReportingPeriodAbstractBuilder:

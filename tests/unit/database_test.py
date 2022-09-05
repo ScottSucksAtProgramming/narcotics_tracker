@@ -44,14 +44,13 @@ class Test_Database:
 
         assert isinstance(db, database.Database)
 
-    def test_database_can_create_database_file(self, test_db, reset_database):
+    def test_database_can_create_database_file(self, test_database, reset_database):
         """Tests that Database can create a database file.
 
         Asserts that the database file exists in os path.
         """
-        test_db = test_db
         db = database.Database()
-        db.connect(test_db)
+        db.connect("test_database.db")
 
         assert os.path.exists("data/test_database.db")
 
@@ -223,67 +222,71 @@ class Test_Database:
 
         assert "This is the data" in data[0]
 
-    def test_created_date_is_none_returns_false_if_created_date_is_set(self, test_med):
+    def test_created_date_is_none_returns_false_if_created_date_is_set(
+        self, test_medication
+    ):
         """Tests if the function returns false when created date is set.
 
-        Loads test_med, a mock object with a created date set.
+        Loads test_medication, a mock object with a created date set.
 
         Asserts that the function returns 'False'.
         """
-        test_med = test_med
+        test_medication = test_medication
 
-        assert database.Database.created_date_is_none(test_med) == False
+        assert database.Database.created_date_is_none(test_medication) == False
 
-    def test_created_date_set_is_none_returns_true_when_set_to_None(self, test_med):
+    def test_created_date_set_is_none_returns_true_when_set_to_None(
+        self, test_medication
+    ):
         """Tests if the function returns true when created date is None.
 
-        Loads test_med, a mock object with a created date set. Sets the created
+        Loads test_medication, a mock object with a created date set. Sets the created
         date to None.
 
         Asserts that the function returns 'True'.
         """
-        test_med = test_med
-        test_med.created_date = None
+        test_medication = test_medication
+        test_medication.created_date = None
 
-        assert database.Database.created_date_is_none(test_med) == True
+        assert database.Database.created_date_is_none(test_medication) == True
 
-    def test_medication_can_be_loaded_from_stored_data(self, test_med, reset_database):
+    def test_medication_can_be_loaded_from_stored_data(
+        self, test_medication, reset_database
+    ):
         """Test that a medication object can be loaded from stored data.
         
-        Loads test_med, saved it to the database, then loads the data from 
+        Loads test_medication, saved it to the database, then loads the data from 
         the saved database and creates a medication object from the data.
         
         Asserts that the new medication object has the same type as a \
         medication object.
         """
-        test_med = test_med
+        test_medication = test_medication
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(medications.return_table_creation_query())
-        test_med.save(db)
+        test_medication.save(db)
 
         new_med = db.load_medication("Un-69420-9001")
 
         assert isinstance(new_med, medications.Medication)
 
-    def test_event_type_can_be_loaded_from_stored_data(
-        self, test_event_type, reset_database
-    ):
+    def test_event_can_be_loaded_from_stored_data(self, test_event, reset_database):
         """Test that a event_type object can be loaded from stored data.
 
-        Loads test_event_type, saved it to the database, then loads the data
+        Loads test_event, saved it to the database, then loads the data
         from the saved database and creates a event_type object from the data.
 
         Asserts that the new event_type object has the same type as a
         event_type object.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
-        test_event_type.save(db)
+        test_event.save(db)
 
         new_event = db.load_event_type("TEST")
 

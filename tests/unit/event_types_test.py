@@ -23,7 +23,7 @@ class Test_EventTypesModule:
         - Method parse_event_type_data returns correct dictionary and values.
     """
 
-    def test_event_types_module_can_be_accessed(self) -> None:
+    def test_events_module_can_be_accessed(self) -> None:
         """Tests that the event_types module exists and can be accessed.
 
         Asserts that calling event_types.__doc__ does not return 'None'.
@@ -51,11 +51,11 @@ class Test_EventTypesModule:
         assert event_types.return_table_creation_query() == expected_query
 
     def test_return_event_types_returns_expected_event_types(
-        self, test_event_type, reset_database
+        self, test_event, reset_database
     ) -> None:
         """Tests that the return_event_types method returns the expected event_types.
 
-        Loads and saves test_event_type. Creates and save. 2nd_event_type
+        Loads and saves test_event. Creates and save. 2nd_event_type
         Calls event_types.return_event_types().
 
         Asserts that event_types.return_event_types() returns expected data.
@@ -64,9 +64,9 @@ class Test_EventTypesModule:
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type = test_event_type
+        test_event = test_event
 
-        test_event_type.save(db)
+        test_event.save(db)
 
         event_types_list = event_types.return_event_types(db)
 
@@ -75,27 +75,27 @@ class Test_EventTypesModule:
             in event_types_list
         )
 
-    def test_return_operator_returns_expected_integer(self, test_event_type) -> None:
+    def test_return_operator_returns_expected_integer(self, test_event) -> None:
         """Tests that return_operator returns the event types operator.
 
-        Loads test_event_type. Calls test_event_type.return_operator().
+        Loads test_event. Calls test_event.return_operator().
 
         Asserts that method returns '-1'.
         """
         db = database.Database()
         db.connect("test_database_2.db")
-        test_event_type = test_event_type
-        test_event_type.event_code = "LOSS"
+        test_event = test_event
+        test_event.event_code = "LOSS"
 
-        assert event_types.return_operator(test_event_type.event_code, db) == -1
+        assert event_types.return_operator(test_event.event_code, db) == -1
 
     def test_parse_event_type_data_returns_correct_values(
-        self, reset_database, test_event_type
+        self, reset_database, test_event
     ) -> None:
         """Tests if parse_event_type_data returns dictionary with correct data.
 
         Resets the database. Creates event_types table. Builds and saves
-        test_event_type to database. Queries database for event type data and
+        test_event to database. Queries database for event type data and
         calls the parser.
 
         Asserts that dictionary returned assigns the correct data to correct
@@ -105,9 +105,9 @@ class Test_EventTypesModule:
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type = test_event_type
-        test_event_type.save(db)
-        data = test_event_type.read(db)
+        test_event = test_event
+        test_event.save(db)
+        data = test_event.read(db)
         dictionary = event_types.parse_event_type_data(data)
 
         assert (
@@ -135,116 +135,116 @@ class Test_EventTypeAttributes:
         - modified_by attribute returns correct value.
     """
 
-    def test_event_type_class_can_be_accessed(self) -> None:
+    def test_event_class_can_be_accessed(self) -> None:
         """Tests that the EventType Class exists and can be accessed.
 
         Asserts that calling EventType.__doc__ does not return 'None'.
         """
         assert event_types.EventType.__doc__ != None
 
-    def test_can_create_event_type_objects(self, test_event_type) -> None:
+    def test_can_create_event_type_objects(self, test_event) -> None:
         """Tests that objects can be created from the EventType Class.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type is an instance of the EventType Class.
+        Asserts that test_event is an instance of the EventType Class.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert isinstance(test_event_type, event_types.EventType)
+        assert isinstance(test_event, event_types.EventType)
 
-    def test_event_id_returns_correct_value(self, test_event_type) -> None:
+    def test_event_id_returns_correct_value(self, test_event) -> None:
         """Tests that the event_id attribute returns the correct value.
 
-        Loads test_event_type. Sets the event_id to '9001'.
+        Loads test_event. Sets the event_id to '9001'.
 
-        Asserts test_event_type.event_id is '9001'.
+        Asserts test_event.event_id is '9001'.
         """
-        test_event_type = test_event_type
-        test_event_type.event_id = 2001
+        test_event = test_event
+        test_event.event_id = 2001
 
-        assert test_event_type.event_id == 2001
+        assert test_event.event_id == 2001
 
-    def test_event_code_returns_correct_value(self, test_event_type) -> None:
+    def test_event_code_returns_correct_value(self, test_event) -> None:
         """Tests that the event_code attribute returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.event_code is 'TEST'.
+        Asserts that test_event.event_code is 'TEST'.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.event_code == "TEST"
+        assert test_event.event_code == "TEST"
 
-    def test_event_name_returns_correct_value(self, test_event_type) -> None:
+    def test_event_name_returns_correct_value(self, test_event) -> None:
         """Tests that the event_name attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.event_name is 'Test Event'
+        Asserts that test_event.event_name is 'Test Event'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.event_name == "Test Event"
+        assert test_event.event_name == "Test Event"
 
-    def test_description_returns_correct_value(self, test_event_type) -> None:
+    def test_description_returns_correct_value(self, test_event) -> None:
         """Tests that the description attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.description is 'Used for testing the EventType Class.'
+        Asserts that test_event.description is 'Used for testing the EventType Class.'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.description == "Used for testing the EventType Class."
+        assert test_event.description == "Used for testing the EventType Class."
 
-    def test_operator_returns_correct_value(self, test_event_type) -> None:
+    def test_operator_returns_correct_value(self, test_event) -> None:
         """Tests that the operator attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.operator is -1.
+        Asserts that test_event.operator is -1.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.operator == -1
+        assert test_event.operator == -1
 
-    def test_created_date_returns_correct_value(self, test_event_type) -> None:
+    def test_created_date_returns_correct_value(self, test_event) -> None:
         """Tests that the created_date attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.created_date is '08-26-2022'
+        Asserts that test_event.created_date is '08-26-2022'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.created_date == database.return_datetime(
+        assert test_event.created_date == database.return_datetime(
             "2022-08-26 00:00:00"
         )
 
-    def test_modified_date_returns_correct_value(self, test_event_type) -> None:
+    def test_modified_date_returns_correct_value(self, test_event) -> None:
         """Tests that the modified_date attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.modified_date is '08-01-2022'
+        Asserts that test_event.modified_date is '08-01-2022'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.modified_date == database.return_datetime(
+        assert test_event.modified_date == database.return_datetime(
             "2022-08-01 00:00:00"
         )
 
-    def test_modified_by_returns_correct_value(self, test_event_type) -> None:
+    def test_modified_by_returns_correct_value(self, test_event) -> None:
         """Tests that the modified_by attributes returns the correct value.
 
-        Loads test_event_type.
+        Loads test_event.
 
-        Asserts that test_event_type.modified_by is 'Bast'
+        Asserts that test_event.modified_by is 'Bast'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert test_event_type.modified_by == "Bast"
+        assert test_event.modified_by == "Bast"
 
 
 class Test_EventTypeMethods:
@@ -261,55 +261,53 @@ class Test_EventTypeMethods:
         - return_attributes returns the correct values.
     """
 
-    def test___init___sets_attributes_correctly(self, test_event_type) -> None:
+    def test___init___sets_attributes_correctly(self, test_event) -> None:
         """Tests the initializer sets the objects attributes correctly.
 
-        Loads test_event_type.
+        Loads test_event.
 
         Asserts that event_id, event_code, event_name and description
         attributes are set to the expected values.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
         assert (
-            test_event_type.event_id == 2001
-            and test_event_type.event_code == "TEST"
-            and test_event_type.event_name == "Test Event"
-            and test_event_type.description == "Used for testing the EventType Class."
+            test_event.event_id == 2001
+            and test_event.event_code == "TEST"
+            and test_event.event_name == "Test Event"
+            and test_event.description == "Used for testing the EventType Class."
         )
 
-    def test___repr___returns_expected_string(self, test_event_type) -> None:
+    def test___repr___returns_expected_string(self, test_event) -> None:
         """Tests that __repr__ returns correct string.
 
-        Loads test_event_type. Calls str(test_event_type).
+        Loads test_event. Calls str(test_event).
 
-        Asserts that str(test_event_type) returns:
+        Asserts that str(test_event) returns:
             'Event Type Test. Code: TEST. Used for testing the EventType Class.'
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
-        assert str(test_event_type) == (
+        assert str(test_event) == (
             f"Event Type Test Event. Code: TEST. Used for testing the "
             f"EventType Class."
         )
 
-    def test_can_save_event_type_to_database(
-        self, test_event_type, reset_database
-    ) -> None:
+    def test_can_save_event_type_to_database(self, test_event, reset_database) -> None:
         """Tests that event types can be saved to the database.
 
-        Loads test_event_type. Calls test_event_type.save. Calls db.return_data()
+        Loads test_event. Calls test_event.save. Calls db.return_data()
         using the event_id of '2001'.
 
         Asserts that returned data has event_code value of 'TEST'.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type.save(db)
+        test_event.save(db)
 
         data = db.return_data(
             """SELECT event_code FROM event_types WHERE event_id = '2001'"""
@@ -318,12 +316,12 @@ class Test_EventTypeMethods:
         assert data[0][0] == "TEST"
 
     def test_can_read_event_type_from_database(
-        self, reset_database, test_event_type
+        self, reset_database, test_event
     ) -> None:
         """Tests to see if the event's data can be returned from database.
 
         Resets the database. Creates event_types table. Builds and saves
-        test_event_type. Calls test_event_type.read().
+        test_event. Calls test_event.read().
 
         Asserts that data returned matches expected values.
         """
@@ -331,10 +329,10 @@ class Test_EventTypeMethods:
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type = test_event_type
-        test_event_type.save(db)
+        test_event = test_event
+        test_event.save(db)
 
-        data = test_event_type.read(db)[0]
+        data = test_event.read(db)[0]
         expected = [
             2001,
             "TEST",
@@ -351,44 +349,42 @@ class Test_EventTypeMethods:
             and data[4] == expected[4]
         )
 
-    def test_can_load_event_from_database(
-        self, reset_database, test_event_type
-    ) -> None:
+    def test_can_load_event_from_database(self, reset_database, test_event) -> None:
         """Tests to see if an Event Type Object can be loaded from data.
-        Loads and saves test_event_type. Creates loaded_event from data.
+        Loads and saves test_event. Creates loaded_event from data.
 
-        Asserts that test_event_type and loaded_event_type return identical
+        Asserts that test_event and loaded_event_type return identical
         attributes.
         """
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type = test_event_type
-        test_event_type.save(db)
+        test_event = test_event
+        test_event.save(db)
 
         loaded_event_type = db.load_event_type("TEST")
 
         assert (
             loaded_event_type.return_attributes()[0]
-            == test_event_type.return_attributes()[0]
+            == test_event.return_attributes()[0]
             and loaded_event_type.return_attributes()[1]
-            == test_event_type.return_attributes()[1]
+            == test_event.return_attributes()[1]
             and loaded_event_type.return_attributes()[2]
-            == test_event_type.return_attributes()[2]
+            == test_event.return_attributes()[2]
             and loaded_event_type.return_attributes()[3]
-            == test_event_type.return_attributes()[3]
+            == test_event.return_attributes()[3]
             and loaded_event_type.return_attributes()[4]
-            == test_event_type.return_attributes()[4]
+            == test_event.return_attributes()[4]
         )
 
     def test_can_update_event_type_in_database(
-        self, reset_database, test_event_type
+        self, reset_database, test_event
     ) -> None:
         """Tests to see if EventType data can be updated.
 
         Resets database. Creates Event Type Table. Builds and saves
-        test_event_type to database.Loads test_event_type as
+        test_event to database.Loads test_event as
         loaded_event_type. Changes Operator and updates database. Queries the
         data.
 
@@ -398,8 +394,8 @@ class Test_EventTypeMethods:
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type = test_event_type
-        test_event_type.save(db)
+        test_event = test_event
+        test_event.save(db)
 
         loaded_event_type = db.load_event_type("TEST")
         loaded_event_type.operator = +10
@@ -412,35 +408,35 @@ class Test_EventTypeMethods:
 
         assert data == +10
 
-    def test_can_delete_event_type_from_database(self, test_event_type, reset_database):
+    def test_can_delete_event_type_from_database(self, test_event, reset_database):
         """Tests that event types can be deleted from the database.
 
-        Loads test_event_type. Saves it to database. Then deletes it. Gets data from
+        Loads test_event. Saves it to database. Then deletes it. Gets data from
         event_types table.
 
         Asserts data is empty.
         """
-        test_event_type = test_event_type
+        test_event = test_event
 
         db = database.Database()
         db.connect("test_database.db")
         db.create_table(event_types.return_table_creation_query())
 
-        test_event_type.save(db)
-        test_event_type.delete(db)
+        test_event.save(db)
+        test_event.delete(db)
 
         data = db.return_data("""SELECT * FROM event_types""")
         assert data == []
 
-    def test_return_attributes(self, test_event_type):
+    def test_return_attributes(self, test_event):
         """Tests that the event types data is correctly returned.
 
-        Loads test_event_type. Calls test_event_type.return_attributes().
+        Loads test_event. Calls test_event.return_attributes().
 
         Asserts values returned are expected values.
         """
-        test_event_type = test_event_type
-        assert test_event_type.return_attributes() == (
+        test_event = test_event
+        assert test_event.return_attributes() == (
             2001,
             "TEST",
             "Test Event",
