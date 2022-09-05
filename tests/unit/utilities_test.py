@@ -20,42 +20,42 @@ class Test_UnitConverter:
         - Can convert mcg to G.
     """
 
-    def test_convert_mg_to_mcg(self):
+    def test_convert_mg_to_mcg(self) -> None:
         """Check to see if mg can be converted to mcg.
 
         Asserts that 5 mg returns 5_000 mcg.
         """
         assert unit_converter.UnitConverter.to_mcg(5, "mg") == 5_000
 
-    def test_convert_G_to_mcg(self):
+    def test_convert_G_to_mcg(self) -> None:
         """Check to see if G can be converted to mcg.
 
         Asserts that 0.9 G returns 900_000 mcg.
         """
         assert unit_converter.UnitConverter.to_mcg(0.9, "G") == 900_000
 
-    def test_convert_mcg_to_mg(self):
+    def test_convert_mcg_to_mg(self) -> None:
         """Check to see if mcg can be converted to mg.
 
         Asserts that 500 mcg returns 0.5 mg.
         """
         assert unit_converter.UnitConverter.to_mg(500, "mcg") == 0.5
 
-    def test_convert_G_to_mg(self):
+    def test_convert_G_to_mg(self) -> None:
         """Check to see if G can be converted to mg.
 
         Asserts that 0.9 G returns 900 mg.
         """
         assert unit_converter.UnitConverter.to_mg(0.9, "G") == 900
 
-    def test_convert_mcg_to_G(self):
+    def test_convert_mcg_to_G(self) -> None:
         """Check to see if mcg can be converted to G.
 
         Asserts that 1 mcg returns 0.000001 G.
         """
         assert unit_converter.UnitConverter.to_G(1, "mcg") == 0.000001
 
-    def test_convert_mg_to_G(self):
+    def test_convert_mg_to_G(self) -> None:
         """
         Test that mg is converted to G.
         """
