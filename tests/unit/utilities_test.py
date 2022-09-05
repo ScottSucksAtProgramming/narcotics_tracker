@@ -5,9 +5,7 @@ Classes:
     Test_Utilities: Contains all unit tests for the utilities module.
 
 """
-from narcotics_tracker import units
-from narcotics_tracker.enums import medication_statuses
-from narcotics_tracker.utils import unit_converter, utilities
+from narcotics_tracker.utils import unit_converter
 
 
 class Test_UnitConverter:
@@ -62,26 +60,3 @@ class Test_UnitConverter:
         Test that mg is converted to G.
         """
         assert unit_converter.UnitConverter.to_G(5, "mg") == 0.005
-
-
-class Test_Utilities:
-    """Contains all unit tests for the utilities module.
-
-    Behaviors Tested:
-        - Can create Container enum from string.
-        - Can create Unit enum from string.
-        - Can create MedicationsStatus enum from string.
-    """
-
-    def test_from_string_for_MedicationStatus(self):
-        """Tests enum_from_string creates a MedicationStatus from its value.
-
-        Asserts that 'disConTinueD' equals
-        'medication_statuses.MedicationStatus.Discontinued'.
-        """
-        assert (
-            utilities.enum_from_string(
-                medication_statuses.MedicationStatus, "disConTinueD"
-            )
-            == medication_statuses.MedicationStatus.DISCONTINUED
-        )
