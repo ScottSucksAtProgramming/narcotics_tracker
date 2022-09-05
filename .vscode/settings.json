@@ -112,6 +112,7 @@
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
     "cSpell.words": [
+        "Abenthy",
         "Denna",
         "Elodin",
         "fent",
