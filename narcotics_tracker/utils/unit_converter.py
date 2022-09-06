@@ -29,7 +29,7 @@ class UnitConverter:
         if starting_unit == "mg":
             return amount * 10**3
 
-        elif starting_unit == "G":
+        elif starting_unit == "g":
             return amount * 10**6
 
         elif starting_unit == "mcg":
@@ -44,7 +44,7 @@ class UnitConverter:
         Returns:
             float: The amount converted to milligrams.
         """
-        if starting_unit == "G":
+        if starting_unit == "g":
             return amount * 10**3
 
         elif starting_unit == "mcg":
@@ -68,5 +68,5 @@ class UnitConverter:
         elif starting_unit == "mcg":
             return amount / 10**6
 
-        elif starting_unit == "G":
+        elif starting_unit == "g":
             return amount

@@ -193,11 +193,11 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         self.amount_in_mcg = amount_in_mcg
 
-    def assign_reporting_period(self) -> None:
+    def assign_reporting_period(self, db_connection) -> None:
         """Checks that adjustment_date and assigns the period it falls within."""
 
         # Todo: Get Reporting Periods with their start and end dates.
-        _, periods = reporting_periods.return_periods(self.database_connection)
+        _, periods = reporting_periods.return_periods(db_connection)
 
         # Todo: Compare the dates and assign the period's id as period_id.
         for period in periods:
@@ -242,6 +242,6 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
             self.calculate_amount_in_mcg(db_connection)
 
         if self.reporting_period_id == None:
-            self.assign_reporting_period()
+            self.assign_reporting_period(db_connection)
 
         return inventory.Adjustment(self)
