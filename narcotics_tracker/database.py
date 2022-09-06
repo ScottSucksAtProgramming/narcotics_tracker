@@ -93,9 +93,29 @@ class Database:
 
     """
 
-    def __init__(self) -> None:
-        """Initializes the database object and sets connection to None."""
-        self.database_connection = None
+    def __init__(self, filename: str = "inventory.db") -> None:
+        """Initializes the database object and sets it's connection to None.
+
+        Sets the connection to None. Sets the filename to the passed filename.
+        Args:
+            filename (str): the filename of the database the object will
+                connect to.
+        """
+        self.connection = None
+        self.filename = filename
+
+    def __enter__(self):
+        """Creates a connection to the database and returns the cursor.
+
+        Returns:
+            sqlite3.cursor: The cursor object which executes sql queries.
+        """
+        self.connection = sqlite3.connect("data/" + self.filename)
+        return self.connection.cursor()
+
+    def __exit__(self):
+        """Closes the database connection."""
+        self.connection.close()
 
     def connect(self, database_file: str) -> sqlite3.Connection:
         """Creates a connection to the database.
@@ -108,12 +128,17 @@ class Database:
             database_connection (sqlite3.Connection): The connection to the
                 database.
         """
+        self.connection = None
         try:
-            self.database_connection = sqlite3.connect("data/" + database_file)
+            self.connection = sqlite3.connect("data/" + database_file)
+            print(sqlite3.version)
+
         except sqlite3.Error as e:
+            print("Database connection error!")
             print(e)
 
-        return self.database_connection
+        finally:
+            return self.connection
 
     def delete_database(self, database_file: str) -> None:
         """Deletes a database from the data/ directory.
@@ -123,9 +148,9 @@ class Database:
                 directory.
         """
         try:
-            self.database_connection.close()
+            self.connection.close()
             os.remove("data/" + database_file)
-            self.database_connection = None
+            self.connection = None
         except sqlite3.Error as e:
             print(e)
 
@@ -136,7 +161,7 @@ class Database:
             sql_query (str): The SQL query to create the table. i.e.
                 "CREATE TABLE table_name (column_name column_type)"
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
 
     def return_table_names(self) -> list:
@@ -145,7 +170,7 @@ class Database:
         Returns:
             table_list (list): The list of tables in the database.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(
             """SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name"""
         )
@@ -160,7 +185,7 @@ class Database:
             sql_query (str): The SQL query to return the column names. i.e.
                 'SELECT * FROM table_name'
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
         return [description[0] for description in cursor.description]
 
@@ -171,9 +196,9 @@ class Database:
             sql_query (str): The SQL query to delete the table. i.e. DROP
                 TABLE IF EXISTS table_name
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
-        self.database_connection.commit()
+        self.connection.commit()
 
     def update_table(self, sql_query: str) -> None:
         """Updates a table using the ALTER TABLE statement.
@@ -187,9 +212,9 @@ class Database:
             Rename Column: ALTER TABLE table_name RENAME COLUMN column_name
                 TO new_column_name
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
-        self.database_connection.commit()
+        self.connection.commit()
 
     def return_data(self, sql_query: str, values: list = None) -> list:
         """Returns queried data as a list.
@@ -203,7 +228,7 @@ class Database:
         Returns:
             data (list): The data returned from the query.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         if values is None:
             cursor.execute(sql_query)
         else:
@@ -219,9 +244,9 @@ class Database:
 
             values (list): The values to be passed to the query.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query, values)
-        self.database_connection.commit()
+        self.connection.commit()
 
     @staticmethod
     def created_date_is_none(object) -> bool:
