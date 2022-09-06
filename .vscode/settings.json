@@ -39,7 +39,8 @@
         "narcotics_tracker/date/__pycache__": true,
         "narcotics_tracker/builders/__pycache__": true,
         "narcotics_tracker/enums/__pycache__": true,
-        "narcotics_tracker/utils/__pycache__": true
+        "narcotics_tracker/utils/__pycache__": true,
+        "scripts/cli/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -75,7 +76,8 @@
         "narcotics_tracker/date/__pycache__",
         "narcotics_tracker/builders/__pycache__",
         "narcotics_tracker/enums/__pycache__",
-        "narcotics_tracker/utils/__pycache__"
+        "narcotics_tracker/utils/__pycache__",
+        "scripts/cli/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -117,6 +119,7 @@
         "Elodin",
         "fent",
         "Kvothe",
+        "meds",
         "midaz",
         "MIDAZOLAM",
         "unitconverter",
