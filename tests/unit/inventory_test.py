@@ -38,7 +38,7 @@ class Test_InventoryModule:
             ADJUSTMENT_DATE INTEGER,
             EVENT_CODE TEXT,
             MEDICATION_CODE TEXT,
-            QUANTITY_IN_MCG REAL,
+            AMOUNT_IN_MCG REAL,
             REPORTING_PERIOD_ID INTEGER,
             REFERENCE_ID TEXT,
             CREATED_DATE INTEGER,
