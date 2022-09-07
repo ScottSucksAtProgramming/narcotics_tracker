@@ -16,6 +16,7 @@ Classes:
 
 import os, sqlite3
 from typing import TYPE_CHECKING
+from typing_extensions import Self
 
 from narcotics_tracker import (
     containers,
@@ -43,6 +44,7 @@ if TYPE_CHECKING:
 def return_datetime(string_date_time: str = None) -> int:
     """Returns current local date time as unixepoch formatted integer."""
     with Database("inventory.db") as db:
+
         sql_query = """SELECT unixepoch();"""
 
         if string_date_time:
@@ -56,6 +58,7 @@ def return_datetime(string_date_time: str = None) -> int:
 def format_datetime_from_unixepoch(unix_date_time: int) -> str:
     """Formats a unixepoch datetime to readable format."""
     with Database("test_database.db") as db:
+
         sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
         values = [unix_date_time]
 
@@ -98,6 +101,7 @@ class Database:
         """Initializes the database object and sets it's connection to None.
 
         Sets the connection to None. Sets the filename to the passed filename.
+
         Args:
             filename (str): the filename of the database the object will
                 connect to.
@@ -105,7 +109,7 @@ class Database:
         self.connection = None
         self.filename = filename
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         """Creates a connection to the database and returns the cursor.
 
         Returns:
@@ -119,32 +123,9 @@ class Database:
         finally:
             return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback) -> None:
         """Closes the database connection."""
         self.connection.close()
-
-    # def connect(self, database_file: str) -> sqlite3.Connection:
-    #     """Creates a connection to the database.
-
-    #     Args:
-    #         database_file (str): The database file located in the data/
-    #             directory.
-
-    #     Returns:
-    #         database_connection (sqlite3.Connection): The connection to the
-    #             database.
-    #     """
-    #     self.connection = None
-    #     try:
-    #         self.connection = sqlite3.connect("data/" + database_file)
-    #         print(sqlite3.version)
-
-    #     except sqlite3.Error as e:
-    #         print("Database connection error!")
-    #         print(e)
-
-    #     finally:
-    #         return self.connection
 
     def delete_database(self, database_file: str) -> None:
         """Deletes a database from the data/ directory.
