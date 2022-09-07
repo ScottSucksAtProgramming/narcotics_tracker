@@ -15,8 +15,6 @@ Classes:
 
 
 import os, sqlite3
-from typing import TYPE_CHECKING
-from typing_extensions import Self
 
 from narcotics_tracker import (
     containers,
@@ -36,9 +34,6 @@ from narcotics_tracker.builders import (
     status_builder,
     unit_builder,
 )
-
-if TYPE_CHECKING:
-    from narcotics_tracker import medications
 
 
 def return_datetime(string_date_time: str = None) -> int:
@@ -109,7 +104,7 @@ class Database:
         self.connection = None
         self.filename = filename
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> "Database":
         """Creates a connection to the database and returns the cursor.
 
         Returns:
