@@ -62,15 +62,14 @@ class Test_InventoryModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
-        db.create_table(inventory.return_table_creation_query())
+        with database.Database("test_database_2.db") as db:
+            db.create_table(inventory.return_table_creation_query())
 
-        test_adjustment = test_adjustment
-        test_adjustment.save(db)
-        test_adjustment.update(db)
-        data = test_adjustment.read(db)
-        dictionary = inventory.parse_adjustment_data(data)
+            test_adjustment = test_adjustment
+            test_adjustment.save(db)
+            test_adjustment.update(db)
+            data = test_adjustment.read(db)
+            dictionary = inventory.parse_adjustment_data(data)
 
         assert (
             dictionary["adjustment_id"] == -300
@@ -313,13 +312,12 @@ class Test_AdjustmentMethods:
 
         Asserts that the adjustment is present when querying the table.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
+        with database.Database("test_database_2.db") as db:
 
-        test_adjustment = test_adjustment
-        test_adjustment.save(db)
+            test_adjustment = test_adjustment
+            test_adjustment.save(db)
 
-        data = db.return_data("""SELECT adjustment_id FROM inventory""")[0]
+            data = db.return_data("""SELECT adjustment_id FROM inventory""")[0]
 
         assert -300 in data
 
@@ -330,15 +328,14 @@ class Test_AdjustmentMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
-        db.create_table(inventory.return_table_creation_query())
+        with database.Database("test_database_2.db") as db:
+            db.create_table(inventory.return_table_creation_query())
 
-        test_adjustment = test_adjustment
-        test_adjustment.save(db)
-        test_adjustment.update(db)
+            test_adjustment = test_adjustment
+            test_adjustment.save(db)
+            test_adjustment.update(db)
 
-        data = test_adjustment.read(db)[0]
+            data = test_adjustment.read(db)[0]
         expected = [
             -300,
             database.return_datetime("2022-08-01 10:00:00"),
@@ -367,15 +364,14 @@ class Test_AdjustmentMethods:
         Asserts that test_adjustment and loaded_adjustment return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
-        db.create_table(inventory.return_table_creation_query())
+        with database.Database("test_database_2.db") as db:
+            db.create_table(inventory.return_table_creation_query())
 
-        test_adjustment = test_adjustment
-        test_adjustment.save(db)
-        test_adjustment.update(db)
+            test_adjustment = test_adjustment
+            test_adjustment.save(db)
+            test_adjustment.update(db)
 
-        loaded_adjustment = db.load_adjustment(-300, db)
+            loaded_adjustment = db.load_adjustment(-300, db)
 
         assert (
             loaded_adjustment.return_attributes()[0]
@@ -401,21 +397,20 @@ class Test_AdjustmentMethods:
 
         Asserts that the returned data has the new reference_id.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
-        db.create_table(inventory.return_table_creation_query())
+        with database.Database("test_database_2.db") as db:
+            db.create_table(inventory.return_table_creation_query())
 
-        test_adjustment = test_adjustment
-        test_adjustment.save(db)
+            test_adjustment = test_adjustment
+            test_adjustment.save(db)
 
-        loaded_adjustment = db.load_adjustment(-300, db)
-        loaded_adjustment.reference_id = "New ID"
+            loaded_adjustment = db.load_adjustment(-300, db)
+            loaded_adjustment.reference_id = "New ID"
 
-        loaded_adjustment.update(db)
+            loaded_adjustment.update(db)
 
-        data = db.return_data(
-            """SELECT reference_id FROM inventory WHERE adjustment_id = -300"""
-        )[0][0]
+            data = db.return_data(
+                """SELECT reference_id FROM inventory WHERE adjustment_id = -300"""
+            )[0][0]
 
         assert data == "New ID"
 
@@ -429,15 +424,14 @@ class Test_AdjustmentMethods:
         """
         test_adjustment = test_adjustment
 
-        db = database.Database()
-        db.connect("test_database_2.db")
-        db.create_table(inventory.return_table_creation_query())
+        with database.Database("test_database_2.db") as db:
+            db.create_table(inventory.return_table_creation_query())
 
-        test_adjustment.save(db)
-        test_adjustment.delete(db)
+            test_adjustment.save(db)
+            test_adjustment.delete(db)
 
-        data = db.return_data("""SELECT adjustment_id FROM inventory""")
-        test_adjustment.save(db)
+            data = db.return_data("""SELECT adjustment_id FROM inventory""")
+            test_adjustment.save(db)
 
         assert test_adjustment.adjustment_id not in data
 

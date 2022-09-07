@@ -115,28 +115,29 @@ class Adjustment:
         Returns:
             str: The string describing the adjustment object
         """
+        with database.Database("inventory.db") as db:
 
-        preferred_unit = self.database_connection.return_data(
-            """SELECT preferred_unit FROM medications WHERE medication_code = (?)""",
-            [self.medication_code],
-        )[0][0]
+            preferred_unit = db.return_data(
+                """SELECT preferred_unit FROM medications WHERE medication_code = (?)""",
+                [self.medication_code],
+            )[0][0]
 
-        medication_name = self.database_connection.return_data(
-            """SELECT name FROM medications WHERE medication_code = (?)""",
-            [self.medication_code],
-        )[0][0]
+            medication_name = db.return_data(
+                """SELECT name FROM medications WHERE medication_code = (?)""",
+                [self.medication_code],
+            )[0][0]
 
-        event_name = self.database_connection.return_data(
-            """SELECT event_name FROM events WHERE event_code = (?)""",
-            [self.event_code],
-        )[0][0]
+            event_name = db.return_data(
+                """SELECT event_name FROM events WHERE event_code = (?)""",
+                [self.event_code],
+            )[0][0]
 
-        return (
-            f"Adjustment Number {self.adjustment_id}: "
-            f"{self.amount_in_preferred_unit} {preferred_unit} of "
-            f"{medication_name} {event_name} on "
-            f"{database.format_datetime_from_unixepoch(self.adjustment_date)}."
-        )
+            return (
+                f"Adjustment Number {self.adjustment_id}: "
+                f"{self.amount_in_preferred_unit} {preferred_unit} of "
+                f"{medication_name} {event_name} on "
+                f"{database.format_datetime_from_unixepoch(self.adjustment_date)}."
+            )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new adjustment to the database.
