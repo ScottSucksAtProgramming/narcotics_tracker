@@ -412,7 +412,7 @@ class Test_MedicationMethods:
         data = db.return_data("""SELECT * FROM medications""")
         assert data == []
 
-    def test_update(self, test_medication, reset_database):
+    def test_can_update_existing_medication(self, test_medication, reset_database):
         """Tests that a medication's attributes can be updated in the
         database.
 
@@ -430,6 +430,35 @@ class Test_MedicationMethods:
         db.connect("test_database.db")
         db.create_table(medications.return_table_creation_query())
         test_medication.save(db)
+
+        med_code = "Un-69420-9001"
+        loaded_med = db.load_medication(med_code)
+        loaded_med.status = "Active"
+        loaded_med.update(db, med_code)
+
+        data = db.return_data(
+            """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""", [med_code]
+        )
+
+        assert data[0][0] == "Active"
+
+    def test_update_nonexisting_medication(self, test_medication, reset_database):
+        """Tests that a medication's attributes can be updated in the
+        database.
+
+        Loads test_medication and saves to database. Loads medication info from
+        database to loaded_med. Changes loaded_med status to
+        'medication_statuses.MedicationStatus.ACTIVE'. Updates medication in
+        database.
+
+        Asserts medication status is
+        'Active'.
+        """
+        test_medication = test_medication
+
+        db = database.Database()
+        db.connect("test_database.db")
+        db.create_table(medications.return_table_creation_query())
 
         med_code = "Un-69420-9001"
         loaded_med = db.load_medication(med_code)

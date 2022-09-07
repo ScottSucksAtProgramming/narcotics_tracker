@@ -24,7 +24,7 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import containers, database, statuses
+from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:
@@ -270,11 +270,11 @@ class Medication:
     def update(self, db_connection: sqlite3.Connection, code: str) -> None:
         """Updates an existing medication in the database.
 
-        The update method will overwrite the medication data if it already
-        exists within the database. Use the save method to create a new
-        medication.
+        This method will overwrite the medication's data if it already
+        exists within the database. Sets the modified date, and will set the
+        created date if it is None.
 
-        Sets the modified date, and will set the created date if it is None.
+        Use the save method to create a new medication.
 
         Args:
             db_connection (sqlite3.Connection): The connection to the
@@ -305,17 +305,17 @@ class Medication:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection):
-        """Delete the medication from the database.
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Deletes the medication from the database.
 
-        The delete will delete the medication from the database entirely.
-        Note: This is irreversible.
+        This function deletes the medication from the database entirely.
+
+        #! Important: This is irreversible.
 
         Args:
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """
-
         sql_query = """DELETE FROM medications WHERE medication_id = ?"""
         values = (self.medication_id,)
         db_connection.write_data(sql_query, values)
@@ -327,7 +327,6 @@ class Medication:
             tuple: The attributes of the medication. Follows the order of the
                 columns in the medication table.
         """
-
         return (
             self.medication_id,
             self.medication_code,
