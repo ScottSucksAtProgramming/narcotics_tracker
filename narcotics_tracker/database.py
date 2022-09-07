@@ -40,25 +40,22 @@ if TYPE_CHECKING:
 
 def return_datetime(string_date_time: str = None) -> int:
     """Returns current local date time as unixepoch formatted integer."""
-    sql_query = """SELECT unixepoch();"""
+    with Database("inventory.db") as db:
+        sql_query = """SELECT unixepoch();"""
 
-    if string_date_time:
-        sql_query = f"""SELECT unixepoch('{string_date_time}');"""
+        if string_date_time:
+            sql_query = f"""SELECT unixepoch('{string_date_time}');"""
 
-    db = Database()
-    db.connect("inventory.db")
-
-    return db.return_data(sql_query)[0][0]
+        return db.return_data(sql_query)[0][0]
 
 
 def format_datetime_from_unixepoch(unix_date_time: int) -> str:
     """Formats a unixepoch datetime to readable format."""
-    sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
-    values = [unix_date_time]
-    db = Database()
-    db.connect("inventory.db")
+    with Database("test_database.db") as db:
+        sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
+        values = [unix_date_time]
 
-    return db.return_data(sql_query, values)[0][0]
+        return db.return_data(sql_query, values)[0][0]
 
 
 class Database:

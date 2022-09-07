@@ -40,39 +40,34 @@ class Test_Database:
 
         Asserts that the object is an instance of Database.
         """
-        db = database.Database()
+        with database.Database("test_database.db") as db:
 
-        assert isinstance(db, database.Database)
+            assert isinstance(db, database.Database)
 
-    def test_database_can_create_database_file(self, test_database, reset_database):
+    def test_database_can_create_database_file(self, reset_database):
         """Tests that Database can create a database file.
 
         Asserts that the database file exists in os path.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-
-        assert os.path.exists("data/test_database.db")
+        with database.Database("test_database.db") as db:
+            assert os.path.exists("data/test_database.db")
 
     def test_database_can_connect_to_database(self, reset_database):
         """Tests that connection can be made to the database.
 
         Asserts that the database_connection is not None.
         """
-        db = database.Database()
-
-        db.connect("test_database.db")
-        assert db.database_connection is not None
+        with database.Database("test_database.db") as db:
+            assert db.connection is not None
 
     def test_database_can_delete_database(self, reset_database):
         """Tests that Database can delete a database.
 
         Creates a database, then deletes it.
-        Asserts that the database is not in the list of databases."""
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.delete_database("test_database.db")
+        Asserts that the database is not in the list of databases
+        """
+        with database.Database("test_database.db") as db:
+            db.delete_database("test_database.db")
 
         assert os.path.exists("data/test_database.db") == False
 
@@ -84,12 +79,11 @@ class Test_Database:
         Asserts that the table name is returned when querying table names from
         the database.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)""")
-
-        tables = db.return_table_names()
+        with database.Database("test_database.db") as db:
+            db.create_table(
+                """CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)"""
+            )
+            tables = db.return_table_names()
 
         assert "test_table" in tables
 
@@ -97,14 +91,11 @@ class Test_Database:
         """Tests that the writer can return a list of tables.
 
         Creates two tables, asserts that both tables exist in the list."""
+        with database.Database("test_database.db") as db:
+            db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
+            db.create_table("""CREATE TABLE IF NOT EXISTS test_table_2 (data TEXT)""")
 
-        db = database.Database()
-        db.connect("test_database.db")
-
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table_2 (data TEXT)""")
-
-        data = db.return_table_names()
+            data = db.return_table_names()
 
         assert "test_table" in data and "test_table_2" in data
 
@@ -114,17 +105,13 @@ class Test_Database:
         Creates a table with columns 'data' and 'number'. Gets list of columns.
 
         Asserts that the columns exist in list of column names."""
+        with database.Database("test_database.db") as db:
+            db.create_table(
+                """CREATE TABLE IF NOT EXISTS test_table (data TEXT, number INTEGER)"""
+            )
 
-        db = database.Database()
-        db.connect("test_database.db")
+            columns = db.return_columns("""SElECT * FROM test_table""")
 
-        db.create_table(
-            """CREATE TABLE IF NOT EXISTS test_table (data TEXT, number INTEGER)"""
-        )
-
-        columns = db.return_columns("""SElECT * FROM test_table""")
-
-        # Assert
         assert "data" in columns and "number" in columns
 
     def test_database_can_delete_table(self, reset_database):
@@ -133,18 +120,14 @@ class Test_Database:
         Creates table if it doesn't already exist, then deletes it.
 
         Asserts that the table is not in the final list of tables."""
+        with database.Database("test_database.db") as db:
+            db.create_table(
+                """CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)"""
+            )
 
-        # Arrange
-        db = database.Database()
-        db.connect("test_database.db")
+            db.delete_table("""DROP TABLE IF EXISTS test_table""")
 
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (test_column TEXT)""")
-
-        db.delete_table(
-            """DROP
-                TABLE IF EXISTS test_table"""
-        )
-        final_tables = db.return_table_names()
+            final_tables = db.return_table_names()
 
         assert "test_table" not in final_tables
 
@@ -156,12 +139,11 @@ class Test_Database:
         Asserts that 'new_table' is in the final list of tables and
         'old_table' is not.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table("""CREATE TABLE IF NOT EXISTS old_table (data TEXT)""")
+        with database.Database("test_database.db") as db:
+            db.create_table("""CREATE TABLE IF NOT EXISTS old_table (data TEXT)""")
 
-        db.update_table("""ALTER TABLE old_table RENAME TO new_table""")
-        tables = db.return_table_names()
+            db.update_table("""ALTER TABLE old_table RENAME TO new_table""")
+            tables = db.return_table_names()
 
         assert "new_table" in tables and "old_table" not in tables
 
@@ -172,13 +154,12 @@ class Test_Database:
 
         Asserts that the column is returned in the list of columns.
         """
-        db = database.Database()
-        db.connect("test_database.db")
+        with database.Database("test_database.db") as db:
 
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
+            db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
 
-        db.update_table("""ALTER TABLE test_table ADD COLUMN new_column REAL""")
-        columns = db.return_columns("""SELECT * FROM 'test_table'""")
+            db.update_table("""ALTER TABLE test_table ADD COLUMN new_column REAL""")
+            columns = db.return_columns("""SELECT * FROM 'test_table'""")
 
         assert "new_column" in columns
 
@@ -191,14 +172,13 @@ class Test_Database:
         not.
         """
         # Arrange
-        db = database.Database()
-        db.connect("test_database.db")
+        with database.Database("test_database.db") as db:
 
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
+            db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
 
-        db.update_table("""ALTER TABLE test_table RENAME COLUMN data TO new_data""")
+            db.update_table("""ALTER TABLE test_table RENAME COLUMN data TO new_data""")
 
-        columns = db.return_columns("""SElECT * FROM test_table""")
+            columns = db.return_columns("""SElECT * FROM test_table""")
         assert "new_data" in columns
 
     def test_database_can_write_data_to_table(self, reset_database):
@@ -208,17 +188,15 @@ class Test_Database:
 
         Asserts that the data written is returned when querying the table.
         """
+        with database.Database("test_database.db") as db:
+            db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
+            db.write_data(
+                """INSERT INTO test_table (data) VALUES(?)""",
+                ["This is the data"],
+            )
 
-        db.write_data(
-            """INSERT INTO test_table (data) VALUES(?)""",
-            ["This is the data"],
-        )
-
-        data = db.return_data("""SElECT * FROM test_table""")
+            data = db.return_data("""SElECT * FROM test_table""")
 
         assert "This is the data" in data[0]
 
@@ -263,12 +241,11 @@ class Test_Database:
         """
         test_medication = test_medication
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
-        test_medication.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
+            test_medication.save(db)
 
-        new_med = db.load_medication("Un-69420-9001")
+            new_med = db.load_medication("Un-69420-9001")
 
         assert isinstance(new_med, medications.Medication)
 
@@ -283,12 +260,11 @@ class Test_Database:
         """
         test_event = test_event
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
-        test_event.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
+            test_event.save(db)
 
-        new_event = db.load_event("TEST")
+            new_event = db.load_event("TEST")
 
         assert isinstance(new_event, events.Event)
 
@@ -305,12 +281,11 @@ class Test_Database:
         """
         test_period = test_period
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
-        test_period.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
+            test_period.save(db)
 
-        new_period = db.load_reporting_period(9001)
+            new_period = db.load_reporting_period(9001)
 
         assert isinstance(new_period, reporting_periods.ReportingPeriod)
 
