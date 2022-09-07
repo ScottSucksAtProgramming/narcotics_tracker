@@ -54,13 +54,12 @@ class Test_PeriodsModule:
 
         Asserts that periods.show returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period = test_period
-        test_period.save(db)
-        periods_list, _ = reporting_periods.return_periods(db)
+            test_period = test_period
+            test_period.save(db)
+            periods_list, _ = reporting_periods.return_periods(db)
         assert (
             "Reporting Period 9001. Started on: 2000-12-31 19:00:00. Ends on: 2100-06-29 20:00:00"
             in periods_list
@@ -78,14 +77,13 @@ class Test_PeriodsModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period = test_period
-        test_period.save(db)
-        data = test_period.read(db)
-        dictionary = reporting_periods.parse_reporting_period_data(data)
+            test_period = test_period
+            test_period.save(db)
+            data = test_period.read(db)
+            dictionary = reporting_periods.parse_reporting_period_data(data)
 
         assert (
             dictionary["period_id"] == 9001
@@ -252,15 +250,14 @@ class Test_ReportingPeriodMethods:
         """
         test_period = test_period
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period.save(db)
+            test_period.save(db)
 
-        data = db.return_data(
-            """SELECT starting_date FROM reporting_periods WHERE period_id = '9001'"""
-        )
+            data = db.return_data(
+                """SELECT starting_date FROM reporting_periods WHERE period_id = '9001'"""
+            )
 
         assert data[0][0] == 978307200
 
@@ -274,19 +271,18 @@ class Test_ReportingPeriodMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period = test_period
-        test_period.save(db)
+            test_period = test_period
+            test_period.save(db)
 
-        data = test_period.read(db)[0]
-        expected = [
-            9001,
-            database.return_datetime("2001-01-01 00:00:00"),
-            database.return_datetime("2100-06-30 00:00:00"),
-        ]
+            data = test_period.read(db)[0]
+            expected = [
+                9001,
+                database.return_datetime("2001-01-01 00:00:00"),
+                database.return_datetime("2100-06-30 00:00:00"),
+            ]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
@@ -301,14 +297,13 @@ class Test_ReportingPeriodMethods:
         Asserts that test_period and loaded_period return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period = test_period
-        test_period.save(db)
+            test_period = test_period
+            test_period.save(db)
 
-        loaded_period_type = db.load_reporting_period(9001)
+            loaded_period_type = db.load_reporting_period(9001)
 
     def test_return_attributes(self, test_period):
         """Tests that the reporting period data is correctly returned.
@@ -339,12 +334,11 @@ class Test_ReportingPeriodMethods:
         """
         test_period = test_period
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(reporting_periods.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(reporting_periods.return_table_creation_query())
 
-        test_period.save(db)
-        test_period.delete(db)
+            test_period.save(db)
+            test_period.delete(db)
 
-        data = db.return_data("""SELECT * FROM reporting_periods""")
+            data = db.return_data("""SELECT * FROM reporting_periods""")
         assert data == []
