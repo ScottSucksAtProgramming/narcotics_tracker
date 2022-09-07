@@ -160,7 +160,7 @@ class Container:
             str: The string describing the unit specifying the event
                 type's name, code and description.
         """
-        return f"Unit Number {self.container_id}: {self.container_code}. Code: '{self.container_code}'."
+        return f"Unit Number {self.container_id}: {self.container_name}. Code: '{self.container_code}'."
 
     def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new unit to the containers table in the database.

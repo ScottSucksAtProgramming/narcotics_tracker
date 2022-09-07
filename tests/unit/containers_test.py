@@ -58,15 +58,14 @@ class Test_ContainersModule:
 
         Asserts that containers.return_containers() returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container = test_container
+            test_container = test_container
 
-        test_container.save(db)
+            test_container.save(db)
 
-        containers_list = containers.return_containers(db)
+            containers_list = containers.return_containers(db)
 
         assert "Container -7: Suppository. Code: 'supp'." in containers_list[0]
 
@@ -82,14 +81,13 @@ class Test_ContainersModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container = test_container
-        test_container.save(db)
-        data = test_container.read(db)
-        dictionary = containers.parse_container_data(data)
+            test_container = test_container
+            test_container.save(db)
+            data = test_container.read(db)
+            dictionary = containers.parse_container_data(data)
 
         assert (
             dictionary["container_id"] == -7
@@ -201,7 +199,7 @@ class Test_ContainerAttributes:
         assert test_container.modified_by == "Elodin"
 
 
-class test_containerMethods:
+class Test_containerMethods:
     """Contains all unit tests for the Container Class' methods.
 
     Behaviors Tested:
@@ -241,7 +239,7 @@ class test_containerMethods:
         """
         test_container = test_container
 
-        assert str(test_container) == (f"Unit Number 821: Suppository. Code: 'supp'.")
+        assert str(test_container) == (f"Unit Number -7: Suppository. Code: 'supp'.")
 
     def test_can_save_container_to_database(
         self, test_container, reset_database
@@ -255,17 +253,16 @@ class test_containerMethods:
         """
         test_container = test_container
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container.save(db)
+            test_container.save(db)
 
-        data = db.return_data(
-            """SELECT container_code FROM containers WHERE container_id = '821'"""
-        )
+            data = db.return_data(
+                """SELECT container_code FROM containers WHERE container_id = '-7'"""
+            )
 
-        assert data[0][0] == "tn"
+        assert data[0][0] == "supp"
 
     def test_can_read_container_from_database(
         self, reset_database, test_container
@@ -277,15 +274,14 @@ class test_containerMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container = test_container
-        test_container.save(db)
+            test_container = test_container
+            test_container.save(db)
 
-        data = test_container.read(db)[0]
-        expected = [821, "tn", "Tina"]
+            data = test_container.read(db)[0]
+            expected = [-7, "supp", "Suppository"]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
@@ -300,14 +296,13 @@ class test_containerMethods:
         Asserts that test_container and loaded_unit return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container = test_container
-        test_container.save(db)
+            test_container = test_container
+            test_container.save(db)
 
-        loaded_unit = db.load_unit("tn")
+            loaded_unit = db.load_container("supp")
 
         assert (
             loaded_unit.return_attributes()[0] == test_container.return_attributes()[0]
@@ -328,20 +323,19 @@ class test_containerMethods:
 
         Asserts that the returned data has the new name.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container = test_container
-        test_container.save(db)
+            test_container = test_container
+            test_container.save(db)
 
-        test_container.container_name = "Not Tina"
+            test_container.container_name = "Not Tina"
 
-        test_container.update(db)
+            test_container.update(db)
 
-        data = db.return_data(
-            """SELECT container_name FROM containers WHERE container_code = 'tn'"""
-        )[0][0]
+            data = db.return_data(
+                """SELECT container_name FROM containers WHERE container_code = 'supp'"""
+            )[0][0]
 
         assert data == "Not Tina"
 
@@ -355,14 +349,13 @@ class test_containerMethods:
         """
         test_container = test_container
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(containers.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(containers.return_table_creation_query())
 
-        test_container.save(db)
-        test_container.delete(db)
+            test_container.save(db)
+            test_container.delete(db)
 
-        data = db.return_data("""SELECT * FROM containers""")
+            data = db.return_data("""SELECT * FROM containers""")
         assert data == []
 
     def test_return_attributes(self, test_container):
@@ -374,10 +367,10 @@ class test_containerMethods:
         """
         test_container = test_container
         assert test_container.return_attributes() == (
-            821,
-            "tn",
-            "Tina",
+            -7,
+            "supp",
+            "Suppository",
             database.return_datetime("2022-08-01 00:00:00"),
             database.return_datetime("2022-08-01 00:00:00"),
-            "Denna",
+            "Elodin",
         )

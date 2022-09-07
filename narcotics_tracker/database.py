@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 import sqlite3
 
 from narcotics_tracker import (
+    containers,
     events,
     inventory,
     medications,
@@ -27,6 +28,7 @@ from narcotics_tracker import (
 )
 from narcotics_tracker.builders import (
     adjustment_builder,
+    container_builder,
     event_builder,
     medication_builder,
     reporting_period_builder,
@@ -402,3 +404,26 @@ class Database:
         loaded_status = unt_builder.build()
 
         return loaded_status
+
+    def load_container(self, container_code: str) -> "containers.Container":
+        """Create a container object from data in the database.
+
+        Args:
+            container_code (str): The unique identifier of the container to
+                be loaded.
+
+        Returns:
+            loaded_container (containers.Container): The
+                container object.
+        """
+        sql_query = """SELECT * FROM containers WHERE container_code = ?"""
+        values = (container_code,)
+
+        result = self.return_data(sql_query, values)
+        container_data = containers.parse_container_data(result)
+
+        cont_builder = container_builder.ContainerBuilder()
+        cont_builder.set_all_properties(container_data)
+        loaded_container = cont_builder.build()
+
+        return loaded_container
