@@ -307,16 +307,6 @@ class Test_AdjustmentBuilder:
         """
         assert adjustment_builder.AdjustmentBuilder.__doc__ != None
 
-    def test_database_connection_is_set_correctly(self, test_adjustment) -> None:
-        """Tests that the database connection is correct.
-
-        Asserts that self.database_connection is not 'None' and all tables
-        required exist.
-        """
-        test_adjustment = test_adjustment
-
-        assert test_adjustment.database_connection is not None
-
     def test_adjustment_id_is_set_correctly(self, test_adjustment) -> None:
         """Tests that AdjustmentBuilder sets the adjustment's id correctly.
 

@@ -1,7 +1,7 @@
-"""Contains the abstract builder for the adjustment class.
+"""Contains the template for the adjustment builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-adjustment_builder module for more information.
+Adjustment Builder Module for more information.
 
 Classes:
     Adjustment: Defines the interface for the adjustment builder.

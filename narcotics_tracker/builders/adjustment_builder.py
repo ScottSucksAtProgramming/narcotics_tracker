@@ -46,15 +46,44 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.modified_date = None
         self.modified_by = None
 
-    def set_database_connection(self, database_file: str) -> None:
-        """Sets the connections to the database.
+    def build(self, db_connection: sqlite3.Connection) -> "inventory.Adjustment":
+        """Returns the Adjustment object. Assigns the Adjustment's properties.
+
+        This is the last method to be called as part of the building process.
+        It will return the Adjustment object with all of its properties set.
 
         Args:
-            db_connection (sqlite3.Connection): Connection to the database.
-        """
-        with database.Database("test_database.db") as db:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
 
-            self.database_connection = db
+        Returns:
+            inventory.Adjustment: The inventory adjustment object.
+        """
+        if self.amount_in_mcg == None:
+            self.calculate_amount_in_mcg(db_connection)
+
+        if self.reporting_period_id == None:
+            self.assign_reporting_period(db_connection)
+
+        return inventory.Adjustment(self)
+
+    def set_all_properties(self, properties: dict) -> None:
+        """Sets all properties of the adjustment.
+
+        Args:
+            properties (dict): The properties of the adjustment. Dictionary
+                keys are formatted as the adjustment property names.
+        """
+        self.set_adjustment_id(properties["adjustment_id"])
+        self.adjustment_date = properties["adjustment_date"]
+        self.set_event_code(properties["event_code"])
+        self.set_medication_code(properties["medication_code"])
+        self.set_amount_in_mcg(properties["amount_in_mcg"])
+        self.set_reference_id(properties["reference_id"])
+        self.set_reporting_period_id(properties["reporting_period_id"])
+        self.set_created_date(properties["created_date"])
+        self.set_modified_date(properties["modified_date"])
+        self.set_modified_by(properties["modified_by"])
 
     def set_adjustment_id(self, adjustment_id: int = None) -> None:
         """Sets the adjustment's id number. Should not be called by the user.
@@ -120,6 +149,11 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """
         self.amount_in_preferred_unit = amount
 
+    def set_amount_in_mcg(self, amount_in_mcg: float) -> None:
+        """Sets the adjustment amount in micrograms."""
+
+        self.amount_in_mcg = amount_in_mcg
+
     def set_reference_id(self, reference_id: str) -> None:
         """Sets the reference ID for the adjustment.
 
@@ -165,11 +199,6 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
                 the adjustment."""
         self.modified_by = modified_by
 
-    def set_amount_in_mcg(self, amount_in_mcg: float) -> None:
-        """Sets the adjustment amount in micrograms."""
-
-        self.amount_in_mcg = amount_in_mcg
-
     def set_reporting_period_id(self, reporting_period_id: int) -> None:
         """Sets the adjustment's reporting period ID.
 
@@ -205,42 +234,3 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
                 return
             else:
                 self.reporting_period_id = None
-
-    def set_all_properties(self, properties: dict) -> None:
-        """Sets all properties of the adjustment.
-
-        Args:
-            properties (dict): The properties of the adjustment. Dictionary
-                keys are formatted as the adjustment property names.
-        """
-        self.set_adjustment_id(properties["adjustment_id"])
-        self.adjustment_date = properties["adjustment_date"]
-        self.set_event_code(properties["event_code"])
-        self.set_medication_code(properties["medication_code"])
-        self.set_amount_in_mcg(properties["amount_in_mcg"])
-        self.set_reference_id(properties["reference_id"])
-        self.set_reporting_period_id(properties["reporting_period_id"])
-        self.set_created_date(properties["created_date"])
-        self.set_modified_date(properties["modified_date"])
-        self.set_modified_by(properties["modified_by"])
-
-    def build(self, db_connection: sqlite3.Connection) -> "inventory.Adjustment":
-        """Returns the Adjustment object. Assigns the Adjustment's properties.
-
-        This is the last method to be called as part of the building process.
-        It will return the Adjustment object with all of its properties set.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-
-        Returns:
-            inventory.Adjustment: The inventory adjustment object.
-        """
-        if self.amount_in_mcg == None:
-            self.calculate_amount_in_mcg(db_connection)
-
-        if self.reporting_period_id == None:
-            self.assign_reporting_period(db_connection)
-
-        return inventory.Adjustment(self)

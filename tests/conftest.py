@@ -82,7 +82,6 @@ def test_adjustment() -> "inventory.Adjustment":
     with database.Database("test_database_2.db") as db:
 
         adj_builder = adjustment_builder.AdjustmentBuilder()
-        adj_builder.set_database_connection(db)
         adj_builder.set_adjustment_id(-300)
         adj_builder.set_adjustment_date("2022-08-01 10:00:00")
         adj_builder.set_event_code("WASTE")
