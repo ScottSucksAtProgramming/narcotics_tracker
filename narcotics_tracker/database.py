@@ -13,9 +13,9 @@ Classes:
     Database: Interacts with the SQLite3 database.
 """
 
-import os
+
+import os, sqlite3
 from typing import TYPE_CHECKING
-import sqlite3
 
 from narcotics_tracker import (
     containers,

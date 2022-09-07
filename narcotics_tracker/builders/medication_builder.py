@@ -9,14 +9,9 @@ Classes:
     MedicationBuilder: Builds and returns medication objects.
 """
 
-from typing import TYPE_CHECKING
-
-from narcotics_tracker import containers, medications, medications, units, statuses
+from narcotics_tracker import medications
 from narcotics_tracker.builders import medication_builder_template
 from narcotics_tracker.utils import unit_converter
-
-if TYPE_CHECKING:
-    from narcotics_tracker import containers
 
 
 class MedicationBuilder(medication_builder_template.Medication):

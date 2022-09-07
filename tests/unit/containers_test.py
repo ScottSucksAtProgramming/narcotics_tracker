@@ -8,7 +8,6 @@ Classes:
 
     Test_ContainerMethods: Contains unit tests for the Unit's methods.
 """
-import sqlite3
 
 from narcotics_tracker import database, containers
 

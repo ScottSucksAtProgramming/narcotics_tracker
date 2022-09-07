@@ -22,7 +22,6 @@ Fixtures:
 
     reset_database: Resets test_database.db for testing functions.
 """
-import sqlite3
 
 from pytest import fixture
 from typing import TYPE_CHECKING

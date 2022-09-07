@@ -8,7 +8,6 @@ Classes:
 
     Test_StatusMethods: Contains unit tests for the Status' methods.
 """
-import sqlite3
 
 from narcotics_tracker import database, statuses
 

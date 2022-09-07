@@ -3,7 +3,6 @@
 Classes:
     UnitConverter: Converts between different units of measurement.
 """
-from narcotics_tracker import units
 
 
 class UnitConverter:
