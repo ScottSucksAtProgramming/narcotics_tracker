@@ -139,30 +139,6 @@ def test_container() -> containers.Container:
 
 
 @fixture
-def test_database() -> sqlite3.Connection:
-    """Connects to and returns the connection to 'test_database.db'.
-
-    The test_db fixture returns the a connection to the test_database.
-
-    Review the Database Module for more information on interacting with the
-    database.
-
-    How To Use:
-        Pass 'test_db' into the test function.
-
-        Assign test_db to a variable and use as needed.
-
-    Returns:
-        test_db (sqlite3.Connection): The connection to the 'test_database.db'
-            database.
-    """
-    test_db = database.Database()
-    test_db.connect("test_database.db")
-
-    return test_db
-
-
-@fixture
 def test_event() -> events.Event:
     """Builds and returns a test object from the Event Class.
 
@@ -377,6 +353,5 @@ def reset_database():
 
     This function deletes 'data/test_database.db'.
     """
-    db = database.Database()
-    db.connect("test_database.db")
-    db.delete_database("test_database.db")
+    with database.Database("test_database.db") as db:
+        db.delete_database("test_database.db")
