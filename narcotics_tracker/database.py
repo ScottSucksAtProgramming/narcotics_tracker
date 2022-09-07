@@ -48,7 +48,9 @@ def return_datetime(string_date_time: str = None) -> int:
         if string_date_time:
             sql_query = f"""SELECT unixepoch('{string_date_time}');"""
 
-        return db.return_data(sql_query)[0][0]
+        data = db.return_data(sql_query)[0][0]
+
+    return data
 
 
 def format_datetime_from_unixepoch(unix_date_time: int) -> str:
