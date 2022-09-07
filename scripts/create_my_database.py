@@ -100,17 +100,16 @@ def main():
     period_4 = period_builder.build()
 
     for file_name in DATABASE_FILES:
-        db = database.Database()
-        db.connect(f"{file_name}")
+        with database.Database(f"{file_name}") as db:
 
-        fentanyl.save(db)
-        morphine.save(db)
-        midazolam.save(db)
+            fentanyl.save(db)
+            morphine.save(db)
+            midazolam.save(db)
 
-        period_1.save(db)
-        period_2.save(db)
-        period_3.save(db)
-        period_4.save(db)
+            period_1.save(db)
+            period_2.save(db)
+            period_3.save(db)
+            period_4.save(db)
 
 
 if __name__ == "__main__":
