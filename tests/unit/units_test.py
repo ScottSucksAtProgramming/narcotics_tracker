@@ -57,15 +57,14 @@ class Test_UnitsModule:
 
         Asserts that units.return_units() returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit = test_unit
+            test_unit = test_unit
 
-        test_unit.save(db)
+            test_unit.save(db)
 
-        units_list = units.return_units(db)
+            units_list = units.return_units(db)
 
         assert "Unit Number 821: Tina. Code: 'tn'." in units_list[0]
 
@@ -81,14 +80,13 @@ class Test_UnitsModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
-        data = test_unit.read(db)
-        dictionary = units.parse_unit_data(data)
+            test_unit = test_unit
+            test_unit.save(db)
+            data = test_unit.read(db)
+            dictionary = units.parse_unit_data(data)
 
         assert (
             dictionary["unit_id"] == 821
@@ -251,15 +249,16 @@ class Test_UnitMethods:
         """
         test_unit = test_unit
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit.save(db)
+            test_unit.save(db)
 
-        data = db.return_data("""SELECT unit_code FROM units WHERE unit_id = '821'""")
+            data = db.return_data(
+                """SELECT unit_code FROM units WHERE unit_id = '821'"""
+            )
 
-        assert data[0][0] == "tn"
+            assert data[0][0] == "tn"
 
     def test_can_read_unit_from_database(self, reset_database, test_unit) -> None:
         """Tests to see if the units's data can be returned from database.
@@ -269,15 +268,14 @@ class Test_UnitMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+            test_unit = test_unit
+            test_unit.save(db)
 
-        data = test_unit.read(db)[0]
-        expected = [821, "tn", "Tina"]
+            data = test_unit.read(db)[0]
+            expected = [821, "tn", "Tina"]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
@@ -291,14 +289,13 @@ class Test_UnitMethods:
         Asserts that test_unit and loaded_unit return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+            test_unit = test_unit
+            test_unit.save(db)
 
-        loaded_unit = db.load_unit("tn")
+            loaded_unit = db.load_unit("tn")
 
         assert (
             loaded_unit.return_attributes()[0] == test_unit.return_attributes()[0]
@@ -315,20 +312,19 @@ class Test_UnitMethods:
 
         Asserts that the returned data has the new name.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit = test_unit
-        test_unit.save(db)
+            test_unit = test_unit
+            test_unit.save(db)
 
-        test_unit.unit_name = "Not Tina"
+            test_unit.unit_name = "Not Tina"
 
-        test_unit.update(db)
+            test_unit.update(db)
 
-        data = db.return_data("""SELECT unit_name FROM units WHERE unit_code = 'tn'""")[
-            0
-        ][0]
+            data = db.return_data(
+                """SELECT unit_name FROM units WHERE unit_code = 'tn'"""
+            )[0][0]
 
         assert data == "Not Tina"
 
@@ -342,14 +338,13 @@ class Test_UnitMethods:
         """
         test_unit = test_unit
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(units.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(units.return_table_creation_query())
 
-        test_unit.save(db)
-        test_unit.delete(db)
+            test_unit.save(db)
+            test_unit.delete(db)
 
-        data = db.return_data("""SELECT * FROM units""")
+            data = db.return_data("""SELECT * FROM units""")
         assert data == []
 
     def test_return_attributes(self, test_unit) -> None:

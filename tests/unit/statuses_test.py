@@ -59,15 +59,14 @@ class Test_StatusModule:
 
         Asserts that statuses.return_statuses() returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status = test_status
+            test_status = test_status
 
-        test_status.save(db)
+            test_status.save(db)
 
-        statuses_list = statuses.return_statuses(db)
+            statuses_list = statuses.return_statuses(db)
 
         assert "Status -19: Active. Code: 'ACTIVE'." in statuses_list[0]
 
@@ -83,14 +82,13 @@ class Test_StatusModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status = test_status
-        test_status.save(db)
-        data = test_status.read(db)
-        dictionary = statuses.parse_status_data(data)
+            test_status = test_status
+            test_status.save(db)
+            data = test_status.read(db)
+            dictionary = statuses.parse_status_data(data)
 
         assert (
             dictionary["status_id"] == -19
@@ -268,15 +266,14 @@ class Test_StatusMethods:
         """
         test_status = test_status
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status.save(db)
+            test_status.save(db)
 
-        data = db.return_data(
-            """SELECT status_code FROM statuses WHERE status_id = -19"""
-        )
+            data = db.return_data(
+                """SELECT status_code FROM statuses WHERE status_id = -19"""
+            )
 
         assert data[0][0] == "ACTIVE"
 
@@ -288,15 +285,14 @@ class Test_StatusMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status = test_status
-        test_status.save(db)
+            test_status = test_status
+            test_status.save(db)
 
-        data = test_status.read(db)[0]
-        expected = [-19, "ACTIVE", "Active"]
+            data = test_status.read(db)[0]
+            expected = [-19, "ACTIVE", "Active"]
 
         assert (
             data[0] == expected[0] and data[1] == expected[1] and data[2] == expected[2]
@@ -309,14 +305,13 @@ class Test_StatusMethods:
         Asserts that test_status and loaded_unit return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status = test_status
-        test_status.save(db)
+            test_status = test_status
+            test_status.save(db)
 
-        loaded_unit = db.load_status("ACTIVE")
+            loaded_unit = db.load_status("ACTIVE")
 
         assert (
             loaded_unit.return_attributes()[0] == test_status.return_attributes()[0]
@@ -333,20 +328,19 @@ class Test_StatusMethods:
 
         Asserts that the returned data has the new name.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status = test_status
-        test_status.save(db)
+            test_status = test_status
+            test_status.save(db)
 
-        test_status.status_name = "Not Tina"
+            test_status.status_name = "Not Tina"
 
-        test_status.update(db)
+            test_status.update(db)
 
-        data = db.return_data(
-            """SELECT status_name FROM statuses WHERE status_code = 'ACTIVE'"""
-        )[0][0]
+            data = db.return_data(
+                """SELECT status_name FROM statuses WHERE status_code = 'ACTIVE'"""
+            )[0][0]
 
         assert data == "Not Tina"
 
@@ -360,15 +354,14 @@ class Test_StatusMethods:
         """
         test_status = test_status
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(statuses.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(statuses.return_table_creation_query())
 
-        test_status.save(db)
-        test_status.delete(db)
+            test_status.save(db)
+            test_status.delete(db)
 
-        data = db.return_data("""SELECT * FROM statuses""")
-        assert data == []
+            data = db.return_data("""SELECT * FROM statuses""")
+            assert data == []
 
     def test_return_attributes(self, test_status):
         """Tests that the statuses data is correctly returned.

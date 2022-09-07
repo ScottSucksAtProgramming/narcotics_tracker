@@ -32,7 +32,7 @@ class Test_UnitConverter:
 
         Asserts that 0.9 G returns 900_000 mcg.
         """
-        assert unit_converter.UnitConverter.to_mcg(0.9, "G") == 900_000
+        assert unit_converter.UnitConverter.to_mcg(0.9, "g") == 900_000
 
     def test_convert_mcg_to_mg(self) -> None:
         """Check to see if mcg can be converted to mg.
@@ -46,7 +46,7 @@ class Test_UnitConverter:
 
         Asserts that 0.9 G returns 900 mg.
         """
-        assert unit_converter.UnitConverter.to_mg(0.9, "G") == 900
+        assert unit_converter.UnitConverter.to_mg(0.9, "g") == 900
 
     def test_convert_mcg_to_G(self) -> None:
         """Check to see if mcg can be converted to G.
