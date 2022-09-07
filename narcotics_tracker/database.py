@@ -110,35 +110,40 @@ class Database:
         Returns:
             sqlite3.cursor: The cursor object which executes sql queries.
         """
-        self.connection = sqlite3.connect("data/" + self.filename)
-        return self.connection.cursor()
+        try:
+            self.connection = sqlite3.connect("data/" + self.filename)
+        except sqlite3.Error as e:
+            print("Database connection error.")
+            print(e)
+        finally:
+            return self.connection.cursor()
 
-    def __exit__(self):
+    def __exit__(self, type, value, traceback):
         """Closes the database connection."""
         self.connection.close()
 
-    def connect(self, database_file: str) -> sqlite3.Connection:
-        """Creates a connection to the database.
+    # def connect(self, database_file: str) -> sqlite3.Connection:
+    #     """Creates a connection to the database.
 
-        Args:
-            database_file (str): The database file located in the data/
-                directory.
+    #     Args:
+    #         database_file (str): The database file located in the data/
+    #             directory.
 
-        Returns:
-            database_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-        self.connection = None
-        try:
-            self.connection = sqlite3.connect("data/" + database_file)
-            print(sqlite3.version)
+    #     Returns:
+    #         database_connection (sqlite3.Connection): The connection to the
+    #             database.
+    #     """
+    #     self.connection = None
+    #     try:
+    #         self.connection = sqlite3.connect("data/" + database_file)
+    #         print(sqlite3.version)
 
-        except sqlite3.Error as e:
-            print("Database connection error!")
-            print(e)
+    #     except sqlite3.Error as e:
+    #         print("Database connection error!")
+    #         print(e)
 
-        finally:
-            return self.connection
+    #     finally:
+    #         return self.connection
 
     def delete_database(self, database_file: str) -> None:
         """Deletes a database from the data/ directory.
