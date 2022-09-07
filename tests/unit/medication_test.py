@@ -86,17 +86,16 @@ class Test_MedicationModule:
         Asserts that the data returned matches ALL expected values.
         """
         test_medication = test_medication
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
-        test_medication.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
+            test_medication.save(db)
 
-        code = ["Un-69420-9001"]
-        raw_data = db.return_data(
-            """SELECT * FROM medications WHERE medication_code=(?)""", code
-        )
+            code = ["Un-69420-9001"]
+            raw_data = db.return_data(
+                """SELECT * FROM medications WHERE medication_code=(?)""", code
+            )
 
-        med_data = medications.parse_medication_data(raw_data)
+            med_data = medications.parse_medication_data(raw_data)
 
         assert (
             med_data["medication_id"] == 1
@@ -120,17 +119,16 @@ class Test_MedicationModule:
 
         Asserts that medication.return_medication() returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
 
-        test_medication = test_medication
-        second_med = test_medication
-        second_med.code = "SECOND MED"
-        test_medication.save(db)
-        second_med.save(db)
+            test_medication = test_medication
+            second_med = test_medication
+            second_med.code = "SECOND MED"
+            test_medication.save(db)
+            second_med.save(db)
 
-        medication_list = medications.return_medication(db)
+            medication_list = medications.return_medication(db)
 
         assert (
             "Unobtanium 69420.0 mg in 9001.0 ml. Code: Un-69420-9001."
@@ -146,13 +144,14 @@ class Test_MedicationModule:
         medication.return_preferred_unit(test_medication, db).
 
         Asserts that 'mg' is returned."""
-        db = database.Database()
-        db.connect("test_database_2.db")
+        with database.Database("test_database_2.db") as db:
 
-        test_medication = test_medication
-        test_medication.medication_code = "morphine"
+            test_medication = test_medication
+            test_medication.medication_code = "morphine"
 
-        assert medications.return_preferred_unit(test_medication.medication_code, db)
+            assert medications.return_preferred_unit(
+                test_medication.medication_code, db
+            )
 
 
 class Test_MedicationAttributes:
@@ -372,6 +371,7 @@ class Test_MedicationMethods:
             "Kvothe",
         )
 
+    def test_can_write_medication_to_database(self, test_medication) -> None:
         """Tests that the medication data is correctly written to
         database.
 
@@ -381,14 +381,13 @@ class Test_MedicationMethods:
         Asserts data return has name 'Unobtanium'.
         """
         test_medication = test_medication
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
-        test_medication.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
+            test_medication.save(db)
 
-        data = db.return_data(
-            """SELECT * FROM medications WHERE MEDICATION_CODE='Un-69420-9001'"""
-        )[0][2]
+            data = db.return_data(
+                """SELECT * FROM medications WHERE MEDICATION_CODE='Un-69420-9001'"""
+            )[0][2]
 
         assert data == "Unobtanium"
 
@@ -402,14 +401,13 @@ class Test_MedicationMethods:
         """
         test_medication = test_medication
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
 
-        test_medication.save(db)
-        test_medication.delete(db)
+            test_medication.save(db)
+            test_medication.delete(db)
 
-        data = db.return_data("""SELECT * FROM medications""")
+            data = db.return_data("""SELECT * FROM medications""")
         assert data == []
 
     def test_can_update_existing_medication(self, test_medication, reset_database):
@@ -426,47 +424,47 @@ class Test_MedicationMethods:
         """
         test_medication = test_medication
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
-        test_medication.save(db)
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
+            test_medication.save(db)
 
-        med_code = "Un-69420-9001"
-        loaded_med = db.load_medication(med_code)
-        loaded_med.status = "Active"
-        loaded_med.update(db, med_code)
+            med_code = "Un-69420-9001"
+            loaded_med = db.load_medication(med_code)
+            loaded_med.status = "Active"
+            loaded_med.update(db, med_code)
 
-        data = db.return_data(
-            """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""", [med_code]
-        )
-
-        assert data[0][0] == "Active"
-
-    def test_update_nonexisting_medication(self, test_medication, reset_database):
-        """Tests that a medication's attributes can be updated in the
-        database.
-
-        Loads test_medication and saves to database. Loads medication info from
-        database to loaded_med. Changes loaded_med status to
-        'medication_statuses.MedicationStatus.ACTIVE'. Updates medication in
-        database.
-
-        Asserts medication status is
-        'Active'.
-        """
-        test_medication = test_medication
-
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(medications.return_table_creation_query())
-
-        med_code = "Un-69420-9001"
-        loaded_med = db.load_medication(med_code)
-        loaded_med.status = "Active"
-        loaded_med.update(db, med_code)
-
-        data = db.return_data(
-            """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""", [med_code]
-        )
+            data = db.return_data(
+                """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""",
+                [med_code],
+            )
 
         assert data[0][0] == "Active"
+
+    # def test_update_nonexisting_medication(self, test_medication, reset_database):
+    #     """Tests that a medication's attributes can be updated in the
+    #     database.
+
+    #     Loads test_medication and saves to database. Loads medication info from
+    #     database to loaded_med. Changes loaded_med status to
+    #     'medication_statuses.MedicationStatus.ACTIVE'. Updates medication in
+    #     database.
+
+    #     Asserts medication status is
+    #     'Active'.
+    #     """
+    #     test_medication = test_medication
+
+    #     with database.Database("test_database.db") as db:
+    #         db.create_table(medications.return_table_creation_query())
+
+    #         med_code = "Un-69420-9001"
+    #         loaded_med = db.load_medication(med_code)
+    #         loaded_med.status = "Active"
+    #         loaded_med.update(db, med_code)
+
+    #         data = db.return_data(
+    #             """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""",
+    #             [med_code],
+    #         )
+
+    #     assert data[0][0] == "Active"
