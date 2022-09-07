@@ -59,10 +59,7 @@ def create_database(database_file_name: str = None) -> sqlite3.Connection:
     if database_file_name == None:
         database_file_name = input("What would you like to name the database file? ")
 
-    db = database.Database()
-    db.connect(database_file_name)
-
-    return db
+    return database_file_name
 
 
 # Create Tables.
@@ -221,20 +218,21 @@ def populate_database_with_standard_statuses(db_connection: sqlite3.Connection) 
 
 def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
-    database_connection = create_database()
+    database_name = create_database()
+    with database.Database(database_name) as db:
 
-    create_containers_table(database_connection)
-    create_events_table(database_connection)
-    create_inventory_table(database_connection)
-    create_medications_table(database_connection)
-    create_reporting_periods_table(database_connection)
-    create_statuses_table(database_connection)
-    create_units_table(database_connection)
+        create_containers_table(db)
+        create_events_table(db)
+        create_inventory_table(db)
+        create_medications_table(db)
+        create_reporting_periods_table(db)
+        create_statuses_table(db)
+        create_units_table(db)
 
-    populate_database_with_standard_units(database_connection)
-    populate_database_with_standard_events(database_connection)
-    populate_database_with_standard_containers(database_connection)
-    populate_database_with_standard_statuses(database_connection)
+        populate_database_with_standard_units(db)
+        populate_database_with_standard_events(db)
+        populate_database_with_standard_containers(db)
+        populate_database_with_standard_statuses(db)
 
 
 if __name__ == "__main__":

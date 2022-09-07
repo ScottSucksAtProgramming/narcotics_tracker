@@ -60,15 +60,14 @@ class Test_EventsModule:
 
         Asserts that events.return_events() returns expected data.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event = test_event
+            test_event = test_event
 
-        test_event.save(db)
+            test_event.save(db)
 
-        events_list = events.return_events(db)
+            events_list = events.return_events(db)
 
         assert (
             "Event Test Event. Code: TEST. Used for testing the Event Class."
@@ -82,12 +81,11 @@ class Test_EventsModule:
 
         Asserts that method returns '-1'.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
-        test_event = test_event
-        test_event.event_code = "LOSS"
+        with database.Database("test_database_2.db") as db:
+            test_event = test_event
+            test_event.event_code = "LOSS"
 
-        assert events.return_operator(test_event.event_code, db) == -1
+            assert events.return_operator(test_event.event_code, db) == -1
 
     def test_parse_event_data_returns_correct_values(
         self, reset_database, test_event
@@ -101,14 +99,13 @@ class Test_EventsModule:
         Asserts that dictionary returned assigns the correct data to correct
         keys.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event = test_event
-        test_event.save(db)
-        data = test_event.read(db)
-        dictionary = events.parse_event_data(data)
+            test_event = test_event
+            test_event.save(db)
+            data = test_event.read(db)
+            dictionary = events.parse_event_data(data)
 
         assert (
             dictionary["event_id"] == 2001
@@ -302,15 +299,14 @@ class Test_EventMethods:
         """
         test_event = test_event
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event.save(db)
+            test_event.save(db)
 
-        data = db.return_data(
-            """SELECT event_code FROM events WHERE event_id = '2001'"""
-        )
+            data = db.return_data(
+                """SELECT event_code FROM events WHERE event_id = '2001'"""
+            )
 
         assert data[0][0] == "TEST"
 
@@ -324,21 +320,20 @@ class Test_EventMethods:
 
         Asserts that data returned matches expected values.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event = test_event
-        test_event.save(db)
+            test_event = test_event
+            test_event.save(db)
 
-        data = test_event.read(db)[0]
-        expected = [
-            2001,
-            "TEST",
-            "Test Event",
-            "Used for testing the Event Class.",
-            -1,
-        ]
+            data = test_event.read(db)[0]
+            expected = [
+                2001,
+                "TEST",
+                "Test Event",
+                "Used for testing the Event Class.",
+                -1,
+            ]
 
         assert (
             data[0] == expected[0]
@@ -355,14 +350,13 @@ class Test_EventMethods:
         Asserts that test_event and loaded_event_type return identical
         attributes.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event = test_event
-        test_event.save(db)
+            test_event = test_event
+            test_event.save(db)
 
-        loaded_event_type = db.load_event("TEST")
+            loaded_event_type = db.load_event("TEST")
 
         assert (
             loaded_event_type.return_attributes()[0]
@@ -389,21 +383,20 @@ class Test_EventMethods:
 
         Asserts that the returned data has the new operator.
         """
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event = test_event
-        test_event.save(db)
+            test_event = test_event
+            test_event.save(db)
 
-        loaded_event_type = db.load_event("TEST")
-        loaded_event_type.operator = +10
+            loaded_event_type = db.load_event("TEST")
+            loaded_event_type.operator = +10
 
-        loaded_event_type.update(db)
+            loaded_event_type.update(db)
 
-        data = db.return_data(
-            """SELECT operator FROM events WHERE event_code = 'TEST'"""
-        )[0][0]
+            data = db.return_data(
+                """SELECT operator FROM events WHERE event_code = 'TEST'"""
+            )[0][0]
 
         assert data == +10
 
@@ -417,14 +410,13 @@ class Test_EventMethods:
         """
         test_event = test_event
 
-        db = database.Database()
-        db.connect("test_database.db")
-        db.create_table(events.return_table_creation_query())
+        with database.Database("test_database.db") as db:
+            db.create_table(events.return_table_creation_query())
 
-        test_event.save(db)
-        test_event.delete(db)
+            test_event.save(db)
+            test_event.delete(db)
 
-        data = db.return_data("""SELECT * FROM events""")
+            data = db.return_data("""SELECT * FROM events""")
         assert data == []
 
     def test_return_attributes(self, test_event):
