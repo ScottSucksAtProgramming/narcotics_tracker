@@ -116,7 +116,7 @@ class Database:
             print("Database connection error.")
             print(e)
         finally:
-            return self.connection.cursor()
+            return self
 
     def __exit__(self, type, value, traceback):
         """Closes the database connection."""
@@ -153,10 +153,8 @@ class Database:
                 directory.
         """
         try:
-            self.connection.close()
             os.remove("data/" + database_file)
-            self.connection = None
-        except sqlite3.Error as e:
+        except Exception as e:
             print(e)
 
     def create_table(self, sql_query: str) -> None:
