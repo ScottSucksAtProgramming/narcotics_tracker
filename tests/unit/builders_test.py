@@ -430,8 +430,6 @@ class Test_AdjustmentBuilder:
 
         Asserts test_adjustment.amount_in_mcg is 1000.
         """
-        db = database.Database()
-        db.connect("test_database_2.db")
 
         test_adjustment = test_adjustment
 

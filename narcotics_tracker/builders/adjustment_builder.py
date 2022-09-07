@@ -52,10 +52,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         Args:
             db_connection (sqlite3.Connection): Connection to the database.
         """
-        db = database.Database()
-        db.connect(database_file)
+        with database.Database("test_database.db") as db:
 
-        self.database_connection = db
+            self.database_connection = db
 
     def set_adjustment_id(self, adjustment_id: int = None) -> None:
         """Sets the adjustment's id number. Should not be called by the user.
