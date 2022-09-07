@@ -74,19 +74,6 @@ class Test_EventsModule:
             in events_list
         )
 
-    def test_return_operator_returns_expected_integer(self, test_event) -> None:
-        """Tests that return_operator returns the event types operator.
-
-        Loads test_event. Calls test_event.return_operator().
-
-        Asserts that method returns '-1'.
-        """
-        with database.Database("test_database_2.db") as db:
-            test_event = test_event
-            test_event.event_code = "LOSS"
-
-            assert events.return_operator(test_event.event_code, db) == -1
-
     def test_parse_event_data_returns_correct_values(
         self, reset_database, test_event
     ) -> None:

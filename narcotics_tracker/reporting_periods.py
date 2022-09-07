@@ -277,20 +277,6 @@ class ReportingPeriod:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection):
-        """Deletes the reporting period from the database.
-
-        The delete method will delete the reporting period from the database
-        entirely. Note: This is irreversible.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-        sql_query = """DELETE FROM reporting_periods WHERE period_id = ?"""
-        values = (self.period_id,)
-        db_connection.write_data(sql_query, values)
-
     def return_attributes(self) -> tuple:
         """Returns the attributes of the reporting period as a tuple.
 
@@ -307,3 +293,17 @@ class ReportingPeriod:
             self.modified_date,
             self.modified_by,
         )
+
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Deletes the reporting period from the database.
+
+        The delete method will delete the reporting period from the database
+        entirely. Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM reporting_periods WHERE period_id = ?"""
+        values = (self.period_id,)
+        db_connection.write_data(sql_query, values)

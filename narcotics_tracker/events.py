@@ -75,25 +75,6 @@ def return_events(db_connection: sqlite3.Connection) -> list[str]:
     return events_list
 
 
-def return_operator(event_code: str, db_connection: sqlite3.Connection) -> int:
-    """Returns an events' operator using it's code..
-
-    Args:
-        event_code (str): The unique identifier of the event.
-
-        db_connection (sqlite3.Connection): The connection to the database.
-
-    Returns:
-        operator (int): The operator for the event type.
-    """
-    sql_query = """SELECT operator FROM events WHERE event_code =(?)"""
-    values = [event_code]
-
-    operator = db_connection.return_data(sql_query, values)
-
-    return operator[0][0]
-
-
 def parse_event_data(event_data) -> dict:
     """Returns event data from the database as a dictionary.
 
@@ -320,20 +301,6 @@ class Event:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection):
-        """Deletes the event type from the database.
-
-        The delete method will delete the event type from the database
-        entirely. Note: This is irreversible.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-        sql_query = """DELETE FROM events WHERE event_id = ?"""
-        values = (self.event_id,)
-        db_connection.write_data(sql_query, values)
-
     def return_attributes(self) -> tuple:
         """Returns the attributes of the event types object as a tuple.
 
@@ -352,3 +319,17 @@ class Event:
             self.modified_date,
             self.modified_by,
         )
+
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Deletes the event type from the database.
+
+        The delete method will delete the event type from the database
+        entirely. Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM events WHERE event_id = ?"""
+        values = (self.event_id,)
+        db_connection.write_data(sql_query, values)

@@ -48,6 +48,29 @@ def return_table_creation_query() -> str:
             )"""
 
 
+def return_medication(db_connection: sqlite3.Connection) -> list[str]:
+    """Returns the contents of the medications table as a list of strings.
+
+    Args:
+        db_connection (sqlite3.Connection): The database connection.
+
+    Returns:
+        table_contents (list[str]): The contents of the table as a list of
+            strings.
+    """
+    sql_query = """SELECT * FROM medications"""
+
+    medications_list = []
+
+    medications_data = db_connection.return_data(sql_query)
+    for event in medications_data:
+        medications_list.append(
+            f"{event[2]} {event[5]} {event[6]} in {event[4]} ml. Code: {event[1]}."
+        )
+
+    return medications_list
+
+
 def parse_medication_data(medication_data) -> dict:
     """Returns medication data from the database as a dictionary.
 
@@ -74,29 +97,6 @@ def parse_medication_data(medication_data) -> dict:
     properties["modified_by"] = medication_data[0][11]
 
     return properties
-
-
-def return_medication(db_connection: sqlite3.Connection) -> list[str]:
-    """Returns the contents of the medications table as a list of strings.
-
-    Args:
-        db_connection (sqlite3.Connection): The database connection.
-
-    Returns:
-        table_contents (list[str]): The contents of the table as a list of
-            strings.
-    """
-    sql_query = """SELECT * FROM medications"""
-
-    medications_list = []
-
-    medications_data = db_connection.return_data(sql_query)
-    for event in medications_data:
-        medications_list.append(
-            f"{event[2]} {event[5]} {event[6]} in {event[4]} ml. Code: {event[1]}."
-        )
-
-    return medications_list
 
 
 def return_preferred_unit(
@@ -267,6 +267,26 @@ class Medication:
 
         db_connection.write_data(sql_query, values)
 
+    def read(self, db_connection: sqlite3.Connection) -> tuple:
+        """Returns the data of the medication from the database as a tuple.
+
+        This function will make no changes to the data.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+            database.
+
+        Returns:
+            tuple: A tuple containing the medication's attribute values.
+        """
+        sql_query = """SELECT * from medications WHERE medication_code = ?"""
+
+        values = (self.medication_code,)
+
+        data = db_connection.return_data(sql_query, values)
+
+        return data
+
     def update(self, db_connection: sqlite3.Connection, code: str) -> None:
         """Updates an existing medication in the database.
 
@@ -305,21 +325,6 @@ class Medication:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Deletes the medication from the database.
-
-        This function deletes the medication from the database entirely.
-
-        #! Important: This is irreversible.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-        sql_query = """DELETE FROM medications WHERE medication_id = ?"""
-        values = (self.medication_id,)
-        db_connection.write_data(sql_query, values)
-
     def return_attributes(self) -> tuple:
         """Returns the attributes of the medication as a tuple.
 
@@ -341,3 +346,18 @@ class Medication:
             self.modified_date,
             self.modified_by,
         )
+
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Deletes the medication from the database.
+
+        This function deletes the medication from the database entirely.
+
+        #! Important: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM medications WHERE medication_id = ?"""
+        values = (self.medication_id,)
+        db_connection.write_data(sql_query, values)

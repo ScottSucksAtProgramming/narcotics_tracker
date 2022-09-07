@@ -239,21 +239,6 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Delete the adjustment from the database.
-
-        The delete will delete the adjustment from the database entirely.
-        Note: This is irreversible.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-
-        sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
-        values = (self.adjustment_id,)
-        db_connection.write_data(sql_query, values)
-
     def return_attributes(self) -> tuple:
         """Returns the attributes of the medication as a tuple.
 
@@ -274,3 +259,18 @@ class Adjustment:
             self.modified_date,
             self.modified_by,
         )
+
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Delete the adjustment from the database.
+
+        The delete will delete the adjustment from the database entirely.
+        Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+
+        sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
+        values = (self.adjustment_id,)
+        db_connection.write_data(sql_query, values)

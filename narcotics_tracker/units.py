@@ -284,20 +284,6 @@ class Unit:
 
         db_connection.write_data(sql_query, values)
 
-    def delete(self, db_connection: sqlite3.Connection):
-        """Deletes the unit from the database.
-
-        The delete method will delete the unit from the database
-        entirely. Note: This is irreversible.
-
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-        """
-        sql_query = """DELETE FROM units WHERE unit_id = ?"""
-        values = (self.unit_id,)
-        db_connection.write_data(sql_query, values)
-
     def return_attributes(self) -> tuple:
         """Returns the attributes of the units object as a tuple.
 
@@ -314,3 +300,17 @@ class Unit:
             self.modified_date,
             self.modified_by,
         )
+
+    def delete(self, db_connection: sqlite3.Connection) -> None:
+        """Deletes the unit from the database.
+
+        The delete method will delete the unit from the database
+        entirely. Note: This is irreversible.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+        """
+        sql_query = """DELETE FROM units WHERE unit_id = ?"""
+        values = (self.unit_id,)
+        db_connection.write_data(sql_query, values)

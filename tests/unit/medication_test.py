@@ -391,6 +391,45 @@ class Test_MedicationMethods:
 
         assert data == "Unobtanium"
 
+    def test_can_read_medication_from_database(self, test_medication) -> None:
+        """Tests to see if the medication's data can be returned from database.
+
+        Builds and saves test_medication. Calls test_medication.read().
+
+        Asserts that data returned matches expected values.
+        """
+        with database.Database("test_database.db") as db:
+            db.create_table(medications.return_table_creation_query())
+
+            test_medication = test_medication
+            test_medication.save(db)
+            test_medication.update(db, test_medication.medication_code)
+
+            data = test_medication.read(db)[0]
+        expected = [
+            1,
+            "Un-69420-9001",
+            "Unobtanium",
+            "Vial",
+            9001.0,
+            69420.0,
+            "mg",
+            7.712476391512054,
+            "Discontinued",
+        ]
+
+        assert (
+            data[0] == expected[0]
+            and data[1] == expected[1]
+            and data[2] == expected[2]
+            and data[3] == expected[3]
+            and data[4] == expected[4]
+            and data[5] == expected[5]
+            and data[6] == expected[6]
+            and data[7] == expected[7]
+            and data[8] == expected[8]
+        )
+
     def test_delete_medication(self, test_medication, reset_database):
         """Tests that the medication can be deleted from the database.
 
