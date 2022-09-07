@@ -4,8 +4,8 @@
 
 Imports should be grouped by the following categories with each group separated by a blank line.
 
-- Built-In Imports
 - External Package Imports
+- Built-In Imports
 - Internal Imports
 
 ```python
