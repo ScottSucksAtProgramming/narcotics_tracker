@@ -109,18 +109,6 @@ class Test_AdjustmentAttributes:
         """
         assert inventory.Adjustment.__doc__ != None
 
-    def test_adjustments_return_expected_database_connection(
-        self, test_adjustment
-    ) -> None:
-        """Tests that the correct database_connection is returned.
-
-        Loads test_adjustment.
-
-        Asserts that test_adjustment.database_connection is not None."""
-        test_adjustment = test_adjustment
-
-        assert test_adjustment.database_connection != None
-
     def test_adjustments_return_expected_adjustment_id(self, test_adjustment) -> None:
         """Tests that the correct adjustment_id is returned.
 

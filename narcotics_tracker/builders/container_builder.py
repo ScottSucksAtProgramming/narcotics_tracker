@@ -32,6 +32,35 @@ class ContainerBuilder(container_builder_template.Container):
         self.modified_date = None
         self.modified_by = None
 
+    def build(self) -> "containers.Container":
+        """Assigns attributes and returns a Container Object.
+
+        This is the last method to be called as part of the building process.
+        It will return the containerType object with all of its
+        properties set.
+
+
+        Returns:
+            containers.containerType: The Container Object.
+        """
+
+        return containers.Container(self)
+
+    def set_all_properties(self, properties: dict) -> None:
+        """Sets all properties of the Container.
+
+        Args:
+            properties (dict): The properties of the Container.
+                Dictionary keys are formatted as the Container attribute
+                names.
+        """
+        self.set_container_id(properties["container_id"])
+        self.set_container_code(properties["container_code"])
+        self.set_container_name(properties["container_name"])
+        self.set_created_date(properties["created_date"])
+        self.set_modified_date(properties["modified_date"])
+        self.set_modified_by(properties["modified_by"])
+
     def set_container_id(self, container_id: int) -> None:
         """Sets the container's id number. Should not be called by the user.
 
@@ -101,32 +130,3 @@ class ContainerBuilder(container_builder_template.Container):
                 container.
         """
         self.modified_by = modified_by
-
-    def set_all_properties(self, properties: dict) -> None:
-        """Sets all properties of the Container.
-
-        Args:
-            properties (dict): The properties of the Container.
-                Dictionary keys are formatted as the Container attribute
-                names.
-        """
-        self.set_container_id(properties["container_id"])
-        self.set_container_code(properties["container_code"])
-        self.set_container_name(properties["container_name"])
-        self.set_created_date(properties["created_date"])
-        self.set_modified_date(properties["modified_date"])
-        self.set_modified_by(properties["modified_by"])
-
-    def build(self) -> "containers.Container":
-        """Assigns attributes and returns a Container Object.
-
-        This is the last method to be called as part of the building process.
-        It will return the containerType object with all of its
-        properties set.
-
-
-        Returns:
-            containers.containerType: The Container Object.
-        """
-
-        return containers.Container(self)
