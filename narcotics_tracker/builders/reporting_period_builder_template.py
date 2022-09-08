@@ -1,16 +1,20 @@
-"""Contains the abstract builder for the ReportingPeriod class.
+"""Contains the template for the Reporting Period Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
 Reporting Period Builder module for more information.
 
 Classes:
-    ReportingPeriod: Defines the interface for the reporting period builder.
+    ReportingPeriod: Defines the interface for the Reporting Period Builder.
 """
 from abc import ABC, abstractmethod
 
 
 class ReportingPeriod(ABC):
-    """Defines the interface for the reporting period builder."""
+    """Defines the interface for the Reporting Period Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_period_id(self) -> None:

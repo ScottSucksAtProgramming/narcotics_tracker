@@ -1,4 +1,4 @@
-"""Contains the abstract builder for the Unit class.
+"""Contains the template for the Unit Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
 Unit Builder module for more information.
@@ -10,7 +10,11 @@ from abc import ABC, abstractmethod
 
 
 class Unit(ABC):
-    """Defines the interface for the Unit builder."""
+    """Defines the interface for the Unit Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_unit_id(self) -> None:

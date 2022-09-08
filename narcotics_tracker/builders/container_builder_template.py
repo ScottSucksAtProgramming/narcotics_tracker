@@ -1,16 +1,20 @@
-"""Contains the abstract builder for the Container class.
+"""Contains the template for the Container Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-Container Builder module for more information.
+Reporting Period Builder module for more information.
 
 Classes:
-    Container: Defines the interface for the Container builder.
+    Container: Defines the interface for the Container Builder.
 """
 from abc import ABC, abstractmethod
 
 
 class Container(ABC):
     """Defines the interface for the Container builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_container_id(self) -> None:

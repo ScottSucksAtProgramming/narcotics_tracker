@@ -1,18 +1,20 @@
-"""Contains the abstract builder for the medication class.
+"""Contains the template for the Medication Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-medication_builder module for more information.
+Reporting Period Builder module for more information.
 
 Classes:
-    Medication: Defines the interface for the medication builder.
+    Medication: Defines the interface for the Medication Builder.
 """
-
-
 from abc import ABC, abstractmethod
 
 
 class Medication(ABC):
-    """Defines the interface for the medication builder."""
+    """Defines the interface for the Medication Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_medication_id(self) -> None:

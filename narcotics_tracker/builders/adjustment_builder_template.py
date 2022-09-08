@@ -1,17 +1,20 @@
-"""Contains the template for the adjustment builder.
+"""Contains the template for the Adjustment Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-Adjustment Builder Module for more information.
+Reporting Period Builder module for more information.
 
 Classes:
-    Adjustment: Defines the interface for the adjustment builder.
+    Adjustment: Defines the interface for the Adjustment Builder.
 """
-
 from abc import ABC, abstractmethod
 
 
 class Adjustment(ABC):
-    """Defines the interface for the adjustment builder."""
+    """Defines the interface for the Adjustment Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_adjustment_id(self) -> None:

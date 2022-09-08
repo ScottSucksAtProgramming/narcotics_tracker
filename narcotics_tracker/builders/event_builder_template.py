@@ -1,16 +1,20 @@
-"""Contains the abstract builder for the Event class.
+"""Contains the template for the Event Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-adjustment_builder module for more information.
+Reporting Period Builder module for more information.
 
 Classes:
-    Event: Defines the interface for the adjustment builder.
+    Event: Defines the interface for the Event Builder.
 """
 from abc import ABC, abstractmethod
 
 
 class Event(ABC):
-    """Defines the interface for the event builder."""
+    """Defines the interface for the Event Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_event_id(self) -> None:

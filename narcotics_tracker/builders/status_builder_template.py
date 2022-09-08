@@ -1,16 +1,20 @@
-"""Contains the abstract builder for the Status class.
+"""Contains the template for the Status Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
-Status Builder module for more information.
+Unit Builder module for more information.
 
 Classes:
-    Status: Defines the interface for the Status builder.
+    Status: Defines the interface for the Status Builder.
 """
 from abc import ABC, abstractmethod
 
 
 class Status(ABC):
-    """Defines the interface for the Status builder."""
+    """Defines the interface for the Status Builder."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def set_status_id(self) -> None:
