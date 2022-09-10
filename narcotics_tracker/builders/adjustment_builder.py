@@ -61,6 +61,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
     Initializer:
 
         def __init__(self, db_connection: sqlite3.Connection) -> None:
+
         Initializes the adjustment builder.
 
         '''Sets the database_connection to the passed connection object. Sets all
@@ -97,7 +98,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         set_reference_id(): Sets the identifier of the user who created the
             adjustment.
 
-        set_modified_by(); Sets the identifier of the user who created the
+        set_modified_by(): Sets the identifier of the user who created the
             adjustment.
 
         assign_all_attributes(): Assigns all attributes of the adjustment.
