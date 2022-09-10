@@ -331,9 +331,9 @@ class Database:
         result = self.return_data(sql_query, values)
         adjustment_data = inventory.parse_adjustment_data(result)
 
-        adj_builder = adjustment_builder.AdjustmentBuilder()
-        adj_builder.set_all_properties(adjustment_data)
-        loaded_adjustment = adj_builder.build(db_connection)
+        adj_builder = adjustment_builder.AdjustmentBuilder(db_connection)
+        adj_builder.assign_all_attributes(adjustment_data)
+        loaded_adjustment = adj_builder.build()
 
         return loaded_adjustment
 

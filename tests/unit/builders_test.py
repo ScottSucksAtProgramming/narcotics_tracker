@@ -423,7 +423,7 @@ class Test_AdjustmentBuilder:
 
         test_adjustment = test_adjustment
 
-        assert test_adjustment.amount_in_mcg == 1000
+        assert test_adjustment.amount_in_mcg == -1000
 
     def test_reporting_period_is_assigned_correctly(self, test_adjustment) -> None:
         """Tests that the correcting period is assigned to the adjustment.

@@ -81,18 +81,18 @@ def test_adjustment() -> "inventory.Adjustment":
 
     with database.Database("test_database_2.db") as db:
 
-        adj_builder = adjustment_builder.AdjustmentBuilder()
+        adj_builder = adjustment_builder.AdjustmentBuilder(db)
         adj_builder.set_adjustment_id(-300)
         adj_builder.set_adjustment_date("2022-08-01 10:00:00")
         adj_builder.set_event_code("WASTE")
         adj_builder.set_medication_code("morphine")
         adj_builder.set_adjustment_amount(1)
         adj_builder.set_reference_id("TEST ID")
-        adj_builder.set_created_date("2022-08-01 10:00:00")
-        adj_builder.set_modified_date("2022-08-01 10:00:00")
+        adj_builder.assign_created_date("2022-08-01 10:00:00")
+        adj_builder.assign_modified_date("2022-08-01 10:00:00")
         adj_builder.set_modified_by("Ambrose")
 
-        test_adjustment = adj_builder.build(db)
+        test_adjustment = adj_builder.build()
 
         return test_adjustment
 

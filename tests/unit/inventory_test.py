@@ -77,7 +77,7 @@ class Test_InventoryModule:
             == database.return_datetime("2022-08-01 10:00:00")
             and dictionary["event_code"] == "WASTE"
             and dictionary["medication_code"] == "morphine"
-            and dictionary["amount_in_mcg"] == 1000
+            and dictionary["amount_in_mcg"] == -1000
             and dictionary["reference_id"] == "TEST ID"
         )
 
@@ -171,7 +171,7 @@ class Test_AdjustmentAttributes:
         Asserts that test_adjustment.amount_in_mcg is 1000."""
         test_adjustment = test_adjustment
 
-        assert test_adjustment.amount_in_mcg == 1000
+        assert test_adjustment.amount_in_mcg == -1000
 
     def test_adjustments_return_expected_reporting_period_id(
         self, test_adjustment
@@ -273,7 +273,7 @@ class Test_AdjustmentMethods:
             == database.return_datetime("2022-08-01 10:00:00")
             and test_adjustment.event_code == "WASTE"
             and test_adjustment.medication_code == "morphine"
-            and test_adjustment.amount_in_mcg == 1000
+            and test_adjustment.amount_in_mcg == -1000
             and test_adjustment.reference_id == "TEST ID"
         )
 
@@ -329,7 +329,7 @@ class Test_AdjustmentMethods:
             database.return_datetime("2022-08-01 10:00:00"),
             "WASTE",
             "morphine",
-            1000,
+            -1000,
             2,
             "TEST ID",
         ]
@@ -436,7 +436,7 @@ class Test_AdjustmentMethods:
             1659348000,
             "WASTE",
             "morphine",
-            1000,
+            -1000,
             2,
             "TEST ID",
             1659348000,

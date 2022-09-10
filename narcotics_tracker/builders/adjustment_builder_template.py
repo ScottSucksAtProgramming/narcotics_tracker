@@ -41,11 +41,11 @@ class Adjustment(ABC):
         pass
 
     @abstractmethod
-    def set_created_date(self) -> None:
+    def assign_created_date(self) -> None:
         pass
 
     @abstractmethod
-    def set_modified_date(self) -> None:
+    def assign_modified_date(self) -> None:
         pass
 
     @abstractmethod

@@ -1,12 +1,17 @@
-"""Contains the concrete builder for the adjustment class.
+"""Contains the concrete builder for the Adjustment class.
 
-Concrete builders contain the implementation of the builder interface defined 
-in the abstract builder class. They are used to build objects for the 
-Narcotics Tracker in a modular step-wise approach.
+Builders are used to construct objects. The abstract builder templates define 
+the interface for the concrete builders which are used to define the object's 
+attributes and instantiate them.
+
+Using the builders is the preferred method for creating objects in the 
+narcotics tracker. They allow for an easy-to-understand, step-by step-approach 
+to building to objects as well as performing other calculations and obtaining 
+information from the database as necessary.
 
 Classes:
 
-    AdjustmentBuilder: Builds and returns inventory adjustment objects.
+    AdjustmentBuilder: Builds and returns Inventory Adjustment objects.
 """
 import sqlite3
 
@@ -21,7 +26,37 @@ from narcotics_tracker.utils import unit_converter
 
 
 class AdjustmentBuilder(adjustment_builder_template.Adjustment):
-    """Builds and returns inventory adjustment objects.
+    """Builds and returns Inventory Adjustment objects.
+
+    The AdjustmentBuilder class is used to construct Inventory Adjustment
+    objects. There are two types of methods: 'set' methods can be called to
+    manually set attributes for the object; 'assign' methods perform
+    calculations and are used as part of the build method to assign other
+    attributes like the created date, or unit conversions.
+
+    Look at the Adjustment Class documentation in the Inventory Module for
+    more information on how to use the Adjustment objects.
+
+    How To Use:
+
+        1. Create a database connection using the database.Database() context
+        manager.
+
+        2. Initialize the builder by assigning it to a variable and passing a
+        database connection:
+            ```adj_builder = adjustment_builder.AdjustmentBuilder(database_connection)```
+
+        3. Call the following methods and pass the required values:
+        ```set_adjustment_id()```; ```set_adjustment_date()```;
+        ```set_event_code()```; ```set_medication_code()```;
+        ```set_adjustment_amount()```; ```set_reference_id()```; and
+        ```set_modified_by()```;
+
+        4. Call the `build()` method to return an Adjustment object. The
+        ```build()``` method will convert the adjustment_amount to the
+        amount_in_mcg and assign the correct reporting_period based on the
+        adjustment_date. If you would like assign these manually it's
+        recommended to do so after the object has been created.
 
     Initializer:
 
@@ -31,9 +66,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
     """
 
-    def __init__(self) -> None:
+    def __init__(self, db_connection: sqlite3.Connection) -> None:
         """Initializes the adjustment builder. Sets all attributes to None."""
-        self.database_connection = None
+        self.database_connection = db_connection
         self.adjustment_id = None
         self.adjustment_date = None
         self.event_code = None
@@ -46,44 +81,22 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.modified_date = None
         self.modified_by = None
 
-    def build(self, db_connection: sqlite3.Connection) -> "inventory.Adjustment":
+    def build(self) -> "inventory.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's properties.
 
         This is the last method to be called as part of the building process.
         It will return the Adjustment object with all of its properties set.
 
-        Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
-
         Returns:
             inventory.Adjustment: The inventory adjustment object.
         """
         if self.amount_in_mcg == None:
-            self.calculate_amount_in_mcg(db_connection)
+            self.assign_amount_in_mcg()
 
         if self.reporting_period_id == None:
-            self.assign_reporting_period(db_connection)
+            self.assign_reporting_period(self.database_connection)
 
         return inventory.Adjustment(self)
-
-    def set_all_properties(self, properties: dict) -> None:
-        """Sets all properties of the adjustment.
-
-        Args:
-            properties (dict): The properties of the adjustment. Dictionary
-                keys are formatted as the adjustment property names.
-        """
-        self.set_adjustment_id(properties["adjustment_id"])
-        self.adjustment_date = properties["adjustment_date"]
-        self.set_event_code(properties["event_code"])
-        self.set_medication_code(properties["medication_code"])
-        self.set_amount_in_mcg(properties["amount_in_mcg"])
-        self.set_reference_id(properties["reference_id"])
-        self.set_reporting_period_id(properties["reporting_period_id"])
-        self.set_created_date(properties["created_date"])
-        self.set_modified_date(properties["modified_date"])
-        self.set_modified_by(properties["modified_by"])
 
     def set_adjustment_id(self, adjustment_id: int = None) -> None:
         """Sets the adjustment's id number. Should not be called by the user.
@@ -149,11 +162,6 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """
         self.amount_in_preferred_unit = amount
 
-    def set_amount_in_mcg(self, amount_in_mcg: float) -> None:
-        """Sets the adjustment amount in micrograms."""
-
-        self.amount_in_mcg = amount_in_mcg
-
     def set_reference_id(self, reference_id: str) -> None:
         """Sets the reference ID for the adjustment.
 
@@ -163,71 +171,126 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """
         self.reference_id = reference_id
 
-    def set_created_date(self, created_date: str) -> None:
-        """Sets the adjustment's created date. Should not be called users.
-
-        This method will set the adjustment's created date. The created date
-        is set automatically when the adjustment is saved in the database.
-        This method is useful in setting the created date when loading a
-        adjustment from the database. It will override any created date set in
-        the database table. Users should not call this method.
-
-        Args:
-            created_date (str): The date the adjustment was created.
-        """
-        self.created_date = database.return_datetime(created_date)
-
-    def set_modified_date(self, modified_date: str) -> None:
-        """Sets the adjustment's modified date. Should not be called the user.
-
-        This method will set the adjustment's modified by date. The modified
-        by date is set automatically when the adjustment is updated in the
-        database. This method is useful in setting the modified_by date when
-        loading a adjustment from the database. It will override any modified
-        by date set in the database table. Users should not call this method.
-
-        Args:
-            modified_date (str): The date the adjustment was last modified.
-        """
-        self.modified_date = database.return_datetime(modified_date)
-
     def set_modified_by(self, modified_by: str) -> None:
-        """Sets the identifier of the user who last modified the adjustment.
+        """Sets the identifier of the user who created the adjustment.
 
         Args:
-            modified_by (str): The identifier of the user who last modified
-                the adjustment."""
+            modified_by (str): The identifier of the user who created the
+                adjustment.
+        """
         self.modified_by = modified_by
 
-    def set_reporting_period_id(self, reporting_period_id: int) -> None:
-        """Sets the adjustment's reporting period ID.
+    def assign_all_attributes(self, properties: dict) -> None:
+        """Sets all properties of the adjustment.
 
         Args:
-
-            reporting_period_id (int): The numeric identifier of the the
-                reporting period.
+            properties (dict): The properties of the adjustment. Dictionary
+                keys are formatted as the adjustment property names.
         """
-        self.reporting_period_id = reporting_period_id
+        self.set_adjustment_id(properties["adjustment_id"])
+        self.adjustment_date = properties["adjustment_date"]
+        self.set_event_code(properties["event_code"])
+        self.set_medication_code(properties["medication_code"])
+        self.assign_amount_in_mcg(properties["amount_in_mcg"])
+        self.set_reference_id(properties["reference_id"])
+        self.assign_reporting_period(
+            self.database_connection, properties["reporting_period_id"]
+        )
+        self.assign_created_date(properties["created_date"])
+        self.assign_modified_date(properties["modified_date"])
+        self.set_modified_by(properties["modified_by"])
 
-    def calculate_amount_in_mcg(self, db_connection: sqlite3.Connection) -> None:
-        """Calculates and sets the adjustment amount in micrograms."""
+    def assign_amount_in_mcg(self, amount: float = None) -> None:
+        """Manually sets (or calculates) the amount_in_mcg attribute.
+
+        If an amount is passed it will be set directly. Otherwise the
+        correct amount will be assigned by converting the
+        adjustment_amount from the medication's preferred unit to micrograms
+        and multiplying it against the event's operator.
+
+        Note: This method is not intended to be called when building an
+        Adjustment.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+
+            amount (float): The amount of medication changed in micrograms.
+                Optional. Defaults to None.
+        """
+        if amount:
+            self.amount_in_mcg = amount
+            return
+
         preferred_unit = medications.return_preferred_unit(
-            self.medication_code, db_connection=db_connection
+            self.medication_code, db_connection=self.database_connection
         )
 
-        amount_in_mcg = unit_converter.UnitConverter.to_mcg(
+        converted_amount = unit_converter.UnitConverter.to_mcg(
             self.amount_in_preferred_unit, preferred_unit
         )
 
-        self.amount_in_mcg = amount_in_mcg
+        operator = self.return_event_operator()
 
-    def assign_reporting_period(self, db_connection) -> None:
-        """Checks that adjustment_date and assigns the period it falls within."""
+        self.amount_in_mcg = converted_amount * operator
 
-        # Todo: Get Reporting Periods with their start and end dates.
+    def return_event_operator(self) -> int:
+        sql_query = (
+            f"""SELECT operator FROM events WHERE event_code ='{self.event_code}'"""
+        )
+
+        return self.database_connection.return_data(sql_query)[0][0]
+
+    def assign_created_date(self, created_date: str) -> None:
+        """Manually sets the created_date attribute.
+
+        Note: This method is not intended to be called when building an
+        Adjustment.
+
+        Args:
+            created_date (str): The date the adjustment object was created.
+                Must be in the format 'YYYY-MM-DD HH:MM:SS'.
+        """
+        self.created_date = database.return_datetime(created_date)
+
+    def assign_modified_date(self, modified_date: str) -> None:
+        """Manually sets the modified_date attribute.
+
+        Note: This method is not intended to be called when building an
+        Adjustment.
+
+        Args:
+            modified_date (str): The date the adjustment was last modified.
+                Must be in the format 'YYYY-MM-DD HH:MM:SS'.
+        """
+        self.modified_date = database.return_datetime(modified_date)
+
+    def assign_reporting_period(
+        self, db_connection: sqlite3.Connection, reporting_period: int = None
+    ) -> None:
+        """Manually sets (or calculates) the Reporting Period ID.
+
+        If a reporting_period is passed it will be assigned directly.
+        Otherwise the correct reporting period will be assigned based on the
+        adjustment_date.
+
+        Note: This method is not intended to be called when building an
+        Adjustment.
+
+        Args:
+            db_connection (sqlite3.Connection): The connection to the
+                database.
+
+            reporting_period (int): The numeric identifier of the reporting
+                period which the adjustment fits in. Optional. Defaults to
+                None.
+        """
+        if reporting_period:
+            self.reporting_period_id = reporting_period
+            return
+
         _, periods = reporting_periods.return_periods(db_connection)
 
-        # Todo: Compare the dates and assign the period's id as period_id.
         for period in periods:
             if period[1] <= self.adjustment_date and self.adjustment_date <= period[2]:
                 self.reporting_period_id = period[0]
