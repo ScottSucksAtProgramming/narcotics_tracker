@@ -1,13 +1,13 @@
 """Contains the concrete builder for the Adjustment class.
 
-Builders are used to construct objects. The abstract builder templates define 
-the interface for the concrete builders which are used to define the object's 
-attributes and instantiate them.
+Adjustments are entries saved to the inventory table which add or remove 
+medication amounts from the stock. 
 
-Using the builders is the preferred method for creating objects in the 
-narcotics tracker. They allow for an easy-to-understand, step-by step-approach 
-to building to objects as well as performing other calculations and obtaining 
-information from the database as necessary.
+For more information on Adjustments look at the documentation for the 
+Inventory Module.
+
+For more information in communication with the database look at the 
+documentation for the Database Module.
 
 Classes:
 
@@ -60,14 +60,77 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
     Initializer:
 
+        def __init__(self, db_connection: sqlite3.Connection) -> None:
+        Initializes the adjustment builder.
+
+        '''Sets the database_connection to the passed connection object. Sets all
+        other attributes to None.
+        '''
+        self.database_connection = db_connection
+        self.adjustment_id = None
+        self.adjustment_date = None
+        self.event_code = None
+        self.medication_code = None
+        self.amount_in_preferred_unit = None
+        self.amount_in_mcg = None
+        self.reporting_period_id = None
+        self.reference_id = None
+        self.created_date = None
+        self.modified_date = None
+        self.modified_by = None
+
     Instance Methods:
 
+        build(): Returns the Adjustment object. Assigns the Adjustment's
+            properties.
+
+        set_adjustment_date(): ets the date which the adjustment occurred.
+
+        set_event_code(): Sets the unique event_code of the adjustment.
+
+        set_medication_code(): Sets the medication_code of the medication
+            which was adjusted.
+
+        set_adjustment_amount(): Sets the amount of medication changed in this
+            adjustment.
+
+        set_reference_id(): Sets the identifier of the user who created the
+            adjustment.
+
+        set_modified_by(); Sets the identifier of the user who created the
+            adjustment.
+
+        assign_all_attributes(): Assigns all attributes of the adjustment.
+
+        assign_adjustment_id(): Sets the adjustment's id number. Should not be
+            called by the user.
+
+        assign_amount_in_mcg(): Manually sets (or calculates) the
+            amount_in_mcg attribute.
+
+        return_event_operator(): Returns the operator from the events table.
+
+        assign_created_date(): Manually sets the created_date attribute.
+
+        assign_modified_date(): Manually sets the modified_date attribute.
+
+
+        assign_reporting_period(): Manually sets (or calculates) the Reporting
+            Period ID.
+
     Exceptions:
+
+        ValueError: This exception is thrown when a negative value is set as
+            the adjustment_amount.
 
     """
 
     def __init__(self, db_connection: sqlite3.Connection) -> None:
-        """Initializes the adjustment builder. Sets all attributes to None."""
+        """Initializes the adjustment builder.
+
+        Sets the database_connection to the passed connection object. Sets all
+        other attributes to None.
+        """
         self.database_connection = db_connection
         self.adjustment_id = None
         self.adjustment_date = None
@@ -98,23 +161,8 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         return inventory.Adjustment(self)
 
-    def set_adjustment_id(self, adjustment_id: int = None) -> None:
-        """Sets the adjustment's id number. Should not be called by the user.
-
-        This method will set the adjustment's id number. The id number is
-        generally set by the database using its row id. This method is useful
-        in setting the id number when the adjustment is loaded from the
-        database. It will override any id number that is already set and may
-        cause errors in the within the database table. Users should not call
-        this method.
-
-        Args:
-            adjustment_id (int): The adjustment's unique id. Defaults to None.
-        """
-        self.adjustment_id = adjustment_id
-
     def set_adjustment_date(self, adjustment_date: str) -> None:
-        """Sets the date which the adjustment happened.
+        """Sets the date which the adjustment occurred.
 
         Args:
             adjustment_date (str): The date when the adjustment occurred.
@@ -159,7 +207,13 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
             adjustment_amount (float): The amount of medication that was
             changed. Should be denoted in the preferred unit of measurement
             and always as a positive number.
+
+        Raises:
+            ValueError: Raised if a negative value is passed as amount.
         """
+        if amount < 0:
+            raise ValueError("Adjustment Amount should always be a positive value.")
+
         self.amount_in_preferred_unit = amount
 
     def set_reference_id(self, reference_id: str) -> None:
@@ -180,25 +234,43 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         """
         self.modified_by = modified_by
 
-    def assign_all_attributes(self, properties: dict) -> None:
-        """Sets all properties of the adjustment.
+    def assign_all_attributes(self, attributes: dict) -> None:
+        """Assigns all attributes of the adjustment.
+
+        This method is intended to be called when loading and Adjustment from
+        the database.
 
         Args:
-            properties (dict): The properties of the adjustment. Dictionary
+            attributes (dict): The attributes of the adjustment. Dictionary
                 keys are formatted as the adjustment property names.
         """
-        self.set_adjustment_id(properties["adjustment_id"])
-        self.adjustment_date = properties["adjustment_date"]
-        self.set_event_code(properties["event_code"])
-        self.set_medication_code(properties["medication_code"])
-        self.assign_amount_in_mcg(properties["amount_in_mcg"])
-        self.set_reference_id(properties["reference_id"])
+        self.assign_adjustment_id(attributes["adjustment_id"])
+        self.adjustment_date = attributes["adjustment_date"]
+        self.set_event_code(attributes["event_code"])
+        self.set_medication_code(attributes["medication_code"])
+        self.assign_amount_in_mcg(attributes["amount_in_mcg"])
+        self.set_reference_id(attributes["reference_id"])
         self.assign_reporting_period(
-            self.database_connection, properties["reporting_period_id"]
+            self.database_connection, attributes["reporting_period_id"]
         )
-        self.assign_created_date(properties["created_date"])
-        self.assign_modified_date(properties["modified_date"])
-        self.set_modified_by(properties["modified_by"])
+        self.assign_created_date(attributes["created_date"])
+        self.assign_modified_date(attributes["modified_date"])
+        self.set_modified_by(attributes["modified_by"])
+
+    def assign_adjustment_id(self, adjustment_id: int = None) -> None:
+        """Sets the adjustment's id number. Should not be called by the user.
+
+        This method will set the adjustment's id number. The id number is
+        generally set by the database using its row id. This method is useful
+        in setting the id number when the adjustment is loaded from the
+        database. It will override any id number that is already set and may
+        cause errors in the within the database table. Users should not call
+        this method.
+
+        Args:
+            adjustment_id (int): The adjustment's unique id. Defaults to None.
+        """
+        self.adjustment_id = adjustment_id
 
     def assign_amount_in_mcg(self, amount: float = None) -> None:
         """Manually sets (or calculates) the amount_in_mcg attribute.
@@ -235,6 +307,11 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.amount_in_mcg = converted_amount * operator
 
     def return_event_operator(self) -> int:
+        """Returns the operator from the events table.
+
+        Returns:
+
+            int: The operator of the event."""
         sql_query = (
             f"""SELECT operator FROM events WHERE event_code ='{self.event_code}'"""
         )

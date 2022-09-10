@@ -365,6 +365,17 @@ class Test_AdjustmentBuilder:
 
         assert test_adjustment.amount_in_preferred_unit == 1
 
+    def test_exception_raised_if_adjustment_amount_value_is_negative(self) -> None:
+        """Tests that an exception is raise if adjustment amount is negative.
+
+        Test passes if value error is raise when calling
+        set_adjustment_amount(-100).
+        """
+        with database.Database("test_database.db") as db:
+            adj_builder = adjustment_builder.AdjustmentBuilder(db)
+            with pytest.raises(ValueError):
+                adj_builder.set_adjustment_amount(-100)
+
     def test_reference_id_is_set_correctly(self, test_adjustment) -> None:
         """Tests that the Adjustment's reference ID is set correctly.
 

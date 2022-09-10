@@ -1,5 +1,16 @@
 """Assists with building complex objects for the narcotics tracker.
 
+
+Builders are used to construct objects. The abstract builder templates define 
+the interface for the concrete builders which are used to define the object's 
+attributes and instantiate them.
+
+Using the builders is the preferred method for creating objects in the 
+narcotics tracker. They allow for an easy-to-understand, step-by step-approach 
+to building to objects as well as performing other calculations and obtaining 
+information from the database as necessary.
+
+
 Many objects in the narcotics tracker are complex and have a large number of 
 attributes. The builder design pattern was used to separate the creation of 
 the objects from their representations allowing objects to be created in a 

@@ -17,7 +17,7 @@ class Adjustment(ABC):
         pass
 
     @abstractmethod
-    def set_adjustment_id(self) -> None:
+    def assign_adjustment_id(self) -> None:
         pass
 
     @abstractmethod
