@@ -305,7 +305,7 @@ class Test_AdjustmentMethods:
             test_adjustment = test_adjustment
             test_adjustment.save(db)
 
-            data = db.return_data("""SELECT adjustment_id FROM inventory""")[0]
+            data = db.return_data("""SELECT adjustment_id FROM inventory""")[1]
 
         assert -300 in data
 
@@ -401,6 +401,59 @@ class Test_AdjustmentMethods:
             )[0][0]
 
         assert data == "New ID"
+
+    def test_updating_changes_amount_in_mcg_appropriately(
+        self, test_adjustment
+    ) -> None:
+        """Tests that the amount_in_mcg is adjusted if operator is changed.
+
+        Loads and saves test_adjustment. Changes test_adjustment's event_code
+        to IMPORT, and updates the database.
+
+        Asserts that the amount_in_mcg is correctly changed from -1000 to 1000.
+        """
+        test_adjustment = test_adjustment
+
+        with database.Database("test_database_2.db") as db:
+            test_adjustment.save(db)
+
+        test_adjustment.event_code = "IMPORT"
+
+        with database.Database("test_database_2.db") as db:
+            test_adjustment.update(db)
+
+            data = db.return_data(
+                """SELECT amount_in_mcg FROM inventory WHERE adjustment_id = -300"""
+            )[0][0]
+
+        assert data == 1000
+
+    def test_amount_in_mcg_does_not_change_if_operator_is_the_same(
+        self, test_adjustment
+    ) -> None:
+        """Tests that amount_in_mcg isn't changes if the operator is unchanged.
+
+        Loads test_adjustment and changes it's id to -999. Saves to database.
+        Changes test_adjustment.event_code to "LOSS" and updates.
+
+        Asserts that amount_in_mcg is still -1000.
+        """
+        test_adjustment = test_adjustment
+        test_adjustment.adjustment_id = -999
+
+        with database.Database("test_database_2.db") as db:
+            test_adjustment.save(db)
+
+        test_adjustment.event_code = "LOSS"
+
+        with database.Database("test_database_2.db") as db:
+            test_adjustment.update(db)
+
+            data = db.return_data(
+                """SELECT amount_in_mcg FROM inventory WHERE adjustment_id= -999"""
+            )[0][0]
+
+        assert data == -1000
 
     def test_can_delete_adjustment_from_database(self, test_adjustment):
         """Tests that the adjustment can be deleted from the database.

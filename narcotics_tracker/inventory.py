@@ -212,11 +212,6 @@ class Adjustment:
             database.
 
             adjustment_id (str): The numeric identifier of the adjustment.
-
-        Raises:
-
-            IndexError: An Index Error will be raised if the adjustment_id is not
-            found on the inventory table.
         """
         sql_query = """UPDATE inventory 
             SET ADJUSTMENT_ID = ?, 
@@ -231,6 +226,8 @@ class Adjustment:
                 MODIFIED_BY = ? 
             WHERE ADJUSTMENT_ID = ?"""
 
+        self.check_and_convert_amount_in_mcg(db_connection)
+
         if database.Database.created_date_is_none(self):
             self.created_date = database.return_datetime()
         self.modified_date = database.return_datetime()
@@ -239,10 +236,32 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
+    def check_and_convert_amount_in_mcg(self, db_connection) -> None:
+        """Checks if the event operator was changed and updates the amount.
+
+        This method is called when an Adjustment is updated. It pulls the
+        original operator from the events table, compares it to the new
+        operator. If they are different the amount is adjusted appropriately.
+        """
+        old_event_code = db_connection.return_data(
+            f"""SELECT event_code FROM inventory WHERE adjustment_id='{self.adjustment_id}'"""
+        )[0][0]
+
+        old_operator = db_connection.return_data(
+            f"""SELECT operator FROM events WHERE event_code = '{old_event_code}'"""
+        )[0][0]
+
+        new_operator = db_connection.return_data(
+            f"""SELECT operator FROM events WHERE event_code = '{self.event_code}'"""
+        )[0][0]
+
+        if old_operator != new_operator:
+            self.amount_in_mcg = self.amount_in_mcg * -1
+
     def return_attributes(self) -> tuple:
         """Returns the attributes of the medication as a tuple.
 
-        Returns:
+        Returns:-10
             tuple: The attributes of the medication. Follows the order of the
                 columns in the medication table.
         """
