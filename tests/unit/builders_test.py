@@ -169,11 +169,11 @@ class Test_MedicationBuilder:
         Asserts that the medication created date returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
-        expected = "01/01/2019"
+        expected = "2022-09-09"
 
         med_builder.assign_created_date(expected)
 
-        assert med_builder.created_date == expected
+        assert med_builder.created_date == 1662681600
 
     def test_set_modified_date(self):
         """Tests that the medication builder sets the modified date.
@@ -181,11 +181,11 @@ class Test_MedicationBuilder:
         Asserts that the medication modified date returns the expected value.
         """
         med_builder = medication_builder.MedicationBuilder()
-        expected = "08/21/1986"
+        expected = "2022-09-09"
 
         med_builder.assign_modified_date(expected)
 
-        assert med_builder.modified_date == expected
+        assert med_builder.modified_date == 1662681600
 
     def test_set_modified_by(self):
         """Tests that the medication builder sets the modified by.
