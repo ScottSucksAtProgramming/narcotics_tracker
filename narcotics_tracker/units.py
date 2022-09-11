@@ -1,30 +1,75 @@
-"""Contains implementation and representation of Dosage Units.
+"""Contains implementation and representation of Units of Measurement.
 
-The units table is a vocabulary control table which stores a library of 
-different Dosage Units which can be used to define medication attributes and 
-perform conversions within the Narcotics Tracker.. 
+#* Background
 
-This module handles the creation of the units table, returns various 
-unit data from the database and parses the raw data returned from the 
-database into a usable format. It houses the Unit Class which defines and 
-instantiates the units as objects.
+Controlled substance medications are suspensions in which the medication 
+itself (the solute) is dissolved within a liquid (the solvent). Tracking 
+controlled substance medications requires the use of three types of 
+measurement: 
 
-Multiple modules including the Medication and Inventory Module make use of 
-dosage units.
+The Dose measures the amount of the medication itself and is denoted in metric 
+units of mass: Grams (g), milligrams (mg), and micrograms (mcg). These units 
+can be easily converted between. 
 
-The database module contains information on communicating with the database.
+    #! Note: 1 Gram = 1,000 milligrams = 1,000,000 micrograms.
 
-Classes:
+The Fill measures the amount of the liquid in which the medication is 
+suspended in. Fill is denoted in metric units of volume: Liters (L) and 
+milliliters (ml).
+
+The Concentration or 'strength' of a medication is calculated by dividing its 
+mass by the volume of the liquid it's dissolved in. Concentration is used to 
+calculate the total amount of a controlled substance when reporting to New 
+York State which requires the volume of the medications to be specified.
+
+#* Preferred vs. Standard Units
+
+The Narcotics Tracker divides Dosage Units into two categories. The Preferred 
+Unit is the unit of measurement by which the controlled substance is generally 
+referred and dosed by. To simplify math and standardize the inventory tracking 
+of controlled substance medications all Dosage Amounts are converted into 
+micrograms before being stored in the database. Medication amounts are 
+converted back into their preferred unit when being shown to the users.
+
+#* Intended Use
+
+This module and the Unit Class defined below allow for the creation of Unit 
+objects which represent the units of measurement within the Narcotics Tracker. 
+It is highly recommended to use the Unit Builder Module contained within the 
+Builders package to create these objects. Instructions for using builders can 
+be found within that package.
+
+The Unit Converter Module in the Utils Package performs calculations and 
+conversions between the different units of measurement. Instructions for using 
+the Unit Converter can be found within that module.
+
+    #! Note: As of the current version the Unit Converter can only convert 
+    #! between Grams, milligrams, and micrograms. This will be reviewed in a 
+    #! later update.
+
+#* Units in the Database.
+
+Units are stored within the 'units' table of the database with their numeric 
+ID, name, code, and creation / modification information specified. Medication 
+objects must specify their preferred unit and are limited to the units listed 
+in the units table.
+
+#* Classes:
+
     Unit: Defines units and instantiates them as objects.
     
-Functions:
+#* Functions:
 
     return_table_creation_query: Returns the query needed to create the table.
 
-    return_units: Returns contents of units as a list of strings.
+    return_units: Returns the contents of the units table as lists of strings 
+        and values.
 
-    parse_unit_data: Returns unit data as a dictionary.
+    parse_unit_data: Returns a Unit's attributes from the database as a 
+        dictionary.
 """
+
+from typing import Union
 
 import sqlite3
 
@@ -35,6 +80,7 @@ def return_table_creation_query() -> str:
     """Returns the sql query needed to create the Units Table.
 
     Returns:
+
         str: The sql query needed to create the Units Table.
     """
     return """CREATE TABLE IF NOT EXISTS units (
@@ -47,37 +93,47 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_units(db_connection: sqlite3.Connection) -> str:
-    """Returns the contents of the units table.
+def return_units(db_connection: sqlite3.Connection) -> Union[list[str], list]:
+    """Returns the contents of the units table as lists of strings and values.
 
     Args:
+
         db_connection (sqlite3.Connection): The database connection.
 
     Returns:
-        table_contents (str): The contents of the table as a string.
+
+        units_string_list (list): The Units in the table as a list of strings.
+
+        units_values_list
     """
     sql_query = """SELECT unit_id, unit_code, unit_name FROM units"""
 
-    periods_string_list = []
-    periods_values_list = []
+    units_string_list = []
+    units_values_list = []
 
     periods_data = db_connection.return_data(sql_query)
 
     for period in periods_data:
-        periods_string_list.append(
+        units_string_list.append(
             f"Unit Number {period[0]}: {period[2]}. Code: '{period[1]}'."
         )
-        periods_values_list.append((period[0], period[1], period[2]))
-    return periods_string_list, periods_values_list
+        units_values_list.append((period[0], period[1], period[2]))
+    return units_string_list, units_values_list
 
 
 def parse_unit_data(unit_data) -> dict:
-    """Returns unit data from the database as a dictionary.
+    """Returns a Unit's attributes from the database as a dictionary.
+
+    This function is used to pass a Unit's data into the database.load_unit()
+    method.
 
     Args:
-        unit_data (list): The unit's raw data.
+
+        unit_data (list): The unit's raw data. Obtained using
+        database.return_data().
 
     Returns:
+
         properties (dict): Dictionary objects contains the properties of
             the unit."""
 
@@ -96,31 +152,13 @@ def parse_unit_data(unit_data) -> dict:
 class Unit:
     """Defines Units and instantiates them as objects.
 
-    Each controlled substance medication contains a dose which is measured in
-    a specific unit. The most common units are milligrams and micrograms. The
-    New York State Department of Health paperwork requires medications to be
-    tracked in milligrams regardless of the unit the medication is generally
-    measured in. Reporting paperwork requires medications to be calculated in
-    milliliters and the dosage unit of the medication is required to help with
-    those conversions.
-
-    The Narcotics Tracker separates units into two categories:
-
-        Preferred Unit: The preferred unit is the unit which the medication is
-            dosed in and how it is commonly referred to by providers.
-            Fentanyl's preferred unit is micrograms, Morphine and Midazolam
-            use milligrams for their preferred unit.
-
-        Standard Unit: The Narcotics Tracker needs to be able to convert
-            between different units and store all medication amounts in a
-            standard way. This is the 'Standard Unit'. The Standard Unit for
-            the Narcotics Tracker is micrograms (mcg). Unless presenting a
-            dose to the user or requesting dosage information from the user
-            the program will handle and store all medication amounts in
-            micrograms.
+    This class defines Units of Measurements within the Narcotics Tracker.
+    Units are used by the Medication objects to denote how amounts of that
+    medication should be represented to the user and to convert the amount
+    into the standard unit.
 
     Units can be declared, created and managed using this class. Medications
-    will be limited to using the units stored in the units table.
+    are limited to using the units stored in the units table.
 
     Attributes:
 
@@ -130,19 +168,26 @@ class Unit:
        unit_code (str): Unique identifier of each unit type. Assigned by the
             user. Used to interact with the unit in the database.
 
-        unit_name (str): Name of the unit.
 
-        created_date (str): The date the unit type was created in the
-            table.
+        unit_name (str): Proper name of the unit.
 
-        modified_date (str): The date the unit type was last modified.
+        created_date (str): The date on which the unit was first created in
+            the units table.
+
+        modified_date (str): The date on which the unit was last modified in
+            the database.
 
         modified_by (str): Identifier of the user who last modified the
-            unit type.
+            unit in the database.
 
     Initializer:
 
+        def __init__(self, builder=None) -> None:
+
+            Initializes an instance of an Unit using the UnitBuilder.
+
     Instance Methods:
+
         __repr__: Returns a string expression of the unit.
 
         save: Saves a new unit to the units table in the database.
@@ -162,7 +207,7 @@ class Unit:
         """Initializes an instance of an Unit using the UnitBuilder.
 
         Units are complex objects with many attributes. The Builder
-        Pattern was used to separate the creation of Units to the
+        Pattern is used to separate the creation of Units to the
         Builder Package.
 
         Refer to the documentation for the UnitBuilder Class for more
@@ -193,13 +238,13 @@ class Unit:
     def save(self, db_connection: sqlite3.Connection) -> None:
         """Saves a new unit to the units table in the database.
 
-        The save method will only write the unit into the table if it does
-        not already exist. Use the update method to update the unit's
-        attributes.
+        This method will not overwrite a Unit already saved in the database.
+        Use the `update()` to adjust a Unit's attributes.
 
         Assigns a created_date and modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The database connection.
         """
         sql_query = """INSERT OR IGNORE INTO units VALUES (
@@ -216,14 +261,17 @@ class Unit:
     def read(self, db_connection: sqlite3.Connection) -> tuple:
         """Returns the data of the unit from the database as a tuple.
 
-        This function will make no changes to the data.
+        This method makes no changes to the data.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
         Returns:
-            tuple: A tuple containing the unit's attribute values.
+
+            tuple: A tuple containing the unit's attribute values in the
+                order of the table's columns.
         """
         sql_query = """SELECT * from units WHERE unit_code = ?"""
 
@@ -236,27 +284,15 @@ class Unit:
     def update(self, db_connection: sqlite3.Connection) -> None:
         """Updates the unit in the units table of the database.
 
-        The update method will overwrite the unit's data if it already
-        exists within the database. Use the save method to store new
-        units in the database.
-
-        How to use:
-            Use the units.return_units() method to return a list
-            of units.
-
-            Use the database.load_unit() method, passing in the
-            unit_code of the unit you wish to update.
-
-            Modify the attributes as necessary and call this method to update
-            the attributes in the database.
-
-            If you are changing the unit_code use the save() method to create
-            a new unit entry in the table and use the delete method to
-            remove the old entry.
+        This method will overwrite the Unit's data if it already exists within
+        the database. An error will be returned if the unit_id does not
+        already exist in the database. Use the save method to save new units
+        in the database.
 
         Assigns a new modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
@@ -266,6 +302,21 @@ class Unit:
 
             IndexError: An Index Error will be raised if the unit_code is not
             found on the units table.
+
+        How to use:
+
+            1. Use the `units.return_units()` method to return a list of
+                units. Identify the unit_code of the unit you wish to update.
+
+            2. Use the database.load_unit() method, passing in the unit_code
+                and assigning it to a variable to create a Unit Object.
+
+            3. Modify the attributes as necessary and call this method on the
+                Unit Object to send the new values to the database.
+
+            #! Note: If the unit_code is being changed use the save() method
+            #! to create a new unit entry in the table and use the delete
+            #! method to remove the old entry.
         """
         sql_query = """UPDATE units 
             SET unit_id = ?, 
@@ -288,10 +339,10 @@ class Unit:
         """Returns the attributes of the units object as a tuple.
 
         Returns:
+
             tuple: The attributes of the units. Follows the order
             of the columns in the units table.
         """
-
         return (
             self.unit_id,
             self.unit_code,
@@ -305,9 +356,12 @@ class Unit:
         """Deletes the unit from the database.
 
         The delete method will delete the unit from the database
-        entirely. Note: This is irreversible.
+        entirely.
+
+        #! Note: Deleting an item from the database is irreversible.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """
