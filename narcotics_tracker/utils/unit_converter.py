@@ -1,4 +1,4 @@
-"""Contains the UnitConverter class which converts between units.
+"""Assists in converting medications between different units of measurement.
 
 Classes:
     UnitConverter: Converts between different units of measurement.
