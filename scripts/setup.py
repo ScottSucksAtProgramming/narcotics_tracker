@@ -41,7 +41,7 @@ from narcotics_tracker.builders import (
 )
 from narcotics_tracker.setup import standard_items
 
-# Create Database.
+
 def create_database(database_file_name: str = None) -> sqlite3.Connection:
     """Creates the database file and returns a connection to it.
 
@@ -62,7 +62,6 @@ def create_database(database_file_name: str = None) -> sqlite3.Connection:
     return database_file_name
 
 
-# Create Tables.
 def create_containers_table(db_connection: sqlite3.Connection) -> None:
     """Creates the containers table.
 
