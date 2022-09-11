@@ -2,4 +2,7 @@
 
 Modules:
 
+    standard_items: Contains a library of pre-defined database items for the 
+        Narcotics Tracker.
+
 """

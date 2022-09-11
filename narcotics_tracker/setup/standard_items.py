@@ -1,20 +1,72 @@
-"""Contains a library of database items which come packaged with the program.
+"""Contains a library of pre-defined database items for the Narcotics Tracker.
 
 The builders and modules allow for the creation of new items to be saved into 
-the database. There are some common items which come built in with the 
-Narcotics Tracker. They are contained in this module.
-
-The setup.py script makes use of the items in this module.
+the database. The items defined in this module are used as part of the 
+setup.py script to populate the database with the default items.
 
 Classes:
 
+    None
 
 Functions:
 
+    None
+
+Items:
+
+    Events:
+
+        Common events which adjust the amount of medication in the inventory.
+
+        Import Event
+
+        Order Event
+
+        Use Event
+
+        Waste Event
+
+        Destroy Event
+
+        Loss Event
+
+    Units:
+
+        Common units which controlled substance medications are measured in.
+
+        Micrograms (mcg)
+
+        Milligrams (mg)
+
+        Grams (g)
+
+        Milliliters (ml)
+
+    Containers:
+
+        Common containers that controlled substance medications come in.
+
+        Vial
+
+        Pre-filled Syringe
+
+        Pre-mixed Bag
+
+    Statuses:
+
+        Common statuses used for controlled substance medications and other 
+            database items.
+
+        Active (ACTIVE)
+
+        Inactive (INACTIVE)
+
+        Open (OPEN)
+
+        Cancelled (CANCELLED)
+
+        Closed (CLOSED)
 """
-
-# Standard Event Types
-
 STANDARD_EVENTS = [
     {
         "event_id": None,
@@ -78,8 +130,6 @@ STANDARD_EVENTS = [
     },
 ]
 
-# Standard Units
-
 STANDARD_UNITS = [
     {
         "unit_id": None,
@@ -115,8 +165,6 @@ STANDARD_UNITS = [
     },
 ]
 
-# Standard Containers
-
 STANDARD_CONTAINERS = [
     {
         "container_id": None,
@@ -143,8 +191,6 @@ STANDARD_CONTAINERS = [
         "modified_by": "Setup",
     },
 ]
-
-# Standard Statuses
 
 STANDARD_STATUSES = [
     {
