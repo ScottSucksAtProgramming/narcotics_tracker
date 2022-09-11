@@ -1,5 +1,9 @@
 """Contains the concrete builder for the Adjustment class.
 
+Concrete builders contain the implementation of the builder interface defined 
+in the abstract builder class. They are used to build objects for the 
+Narcotics Tracker in a modular step-wise approach.
+
 Adjustments are entries saved to the inventory table which add or remove 
 medication amounts from the stock. 
 
@@ -47,10 +51,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
             ```adj_builder = adjustment_builder.AdjustmentBuilder(database_connection)```
 
         3. Call the following methods and pass the required values:
-        ```set_adjustment_id()```; ```set_adjustment_date()```;
-        ```set_event_code()```; ```set_medication_code()```;
-        ```set_adjustment_amount()```; ```set_reference_id()```; and
-        ```set_modified_by()```;
+        ```set_adjustment_date()```; ```set_event_code()```;
+        ```set_medication_code()```; ```set_adjustment_amount()```;
+        ```set_reference_id()```; and ```set_modified_by()```;
 
         4. Call the `build()` method to return an Adjustment object. The
         ```build()``` method will convert the adjustment_amount to the
@@ -146,10 +149,10 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.modified_by = None
 
     def build(self) -> "inventory.Adjustment":
-        """Returns the Adjustment object. Assigns the Adjustment's properties.
+        """Returns the Adjustment object. Assigns the Adjustment's attributes.
 
         This is the last method to be called as part of the building process.
-        It will return the Adjustment object with all of its properties set.
+        It will return the Adjustment object with all of its attributes set.
 
         Returns:
             inventory.Adjustment: The inventory adjustment object.
@@ -227,7 +230,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.reference_id = reference_id
 
     def set_modified_by(self, modified_by: str) -> None:
-        """Sets the identifier of the user who created the adjustment.
+        """Sets the identifier of the user who modified the Adjustment.
 
         Args:
             modified_by (str): The identifier of the user who created the
@@ -236,9 +239,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.modified_by = modified_by
 
     def assign_all_attributes(self, attributes: dict) -> None:
-        """Assigns all attributes of the adjustment.
+        """Assigns all attributes of the Adjustment.
 
-        This method is intended to be called when loading and Adjustment from
+        This method is intended to be called when loading an Adjustment from
         the database.
 
         Args:

@@ -151,7 +151,7 @@ def populate_database_with_standard_containers(
     cont_builder = container_builder.ContainerBuilder()
 
     for container in standard_containers:
-        cont_builder.set_all_properties(container)
+        cont_builder.assign_all_attributes(container)
         built_container = cont_builder.build()
         built_container.save(db_connection)
 

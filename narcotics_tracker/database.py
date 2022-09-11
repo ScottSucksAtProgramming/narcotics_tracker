@@ -401,7 +401,7 @@ class Database:
         container_data = containers.parse_container_data(result)
 
         cont_builder = container_builder.ContainerBuilder()
-        cont_builder.set_all_properties(container_data)
+        cont_builder.assign_all_attributes(container_data)
         loaded_container = cont_builder.build()
 
         return loaded_container

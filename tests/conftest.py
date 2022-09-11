@@ -123,11 +123,11 @@ def test_container() -> containers.Container:
 
     cont_builder = container_builder.ContainerBuilder()
 
-    cont_builder.set_container_id(-7)
+    cont_builder.assign_container_id(-7)
     cont_builder.set_container_code("supp")
     cont_builder.set_container_name("Suppository")
-    cont_builder.set_created_date("2022-08-01 00:00:00")
-    cont_builder.set_modified_date("2022-08-01 00:00:00")
+    cont_builder.assign_created_date("2022-08-01 00:00:00")
+    cont_builder.assign_modified_date("2022-08-01 00:00:00")
     cont_builder.set_modified_by("Elodin")
 
     test_container = cont_builder.build()
