@@ -1,5 +1,5 @@
-"""This script will creates the medications which I use at my agency and 
-writes them to the table."""
+"""Creates the medications which I use at my agency and writes them to the 
+table."""
 
 
 from narcotics_tracker import (
