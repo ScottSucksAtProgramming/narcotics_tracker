@@ -210,8 +210,8 @@ def test_medication() -> "medications.Medication":
     med_builder.set_dose_and_unit(69.420, "mg")
     med_builder.set_fill_amount(9_001)
     med_builder.set_medication_status("Discontinued")
-    med_builder.assign_created_date("01-02-1986")
-    med_builder.assign_modified_date("08-09-2022")
+    med_builder.assign_created_date("1986-01-02")
+    med_builder.assign_modified_date("2022-08-09")
     med_builder.set_modified_by("Kvothe")
 
     test_med = med_builder.build()

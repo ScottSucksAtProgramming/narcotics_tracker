@@ -283,7 +283,7 @@ class Test_MedicationAttributes:
         """
         test_medication = test_medication
 
-        assert test_medication.created_date == "01-02-1986"
+        assert test_medication.created_date == 505008000
 
     def test_medications_return_expected_modified_date(self, test_medication):
         """Tests that the medication's modified_date is returned correctly.
@@ -294,7 +294,7 @@ class Test_MedicationAttributes:
         """
         test_medication = test_medication
 
-        assert test_medication.modified_date == "08-09-2022"
+        assert test_medication.modified_date == 1660003200
 
     def test_medications_return_expected_modified_by(self, test_medication):
         """Tests that the medication's modified_by is returned correctly.
@@ -366,8 +366,8 @@ class Test_MedicationMethods:
             "mg",
             7.712476391512054,
             "Discontinued",
-            "01-02-1986",
-            "08-09-2022",
+            505008000,
+            1660003200,
             "Kvothe",
         )
 
