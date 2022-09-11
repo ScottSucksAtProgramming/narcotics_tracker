@@ -17,7 +17,7 @@ class Event(ABC):
         pass
 
     @abstractmethod
-    def set_event_id(self) -> None:
+    def assign_event_id(self) -> None:
         pass
 
     @abstractmethod
@@ -37,11 +37,11 @@ class Event(ABC):
         pass
 
     @abstractmethod
-    def set_created_date(self) -> None:
+    def assign_created_date(self) -> None:
         pass
 
     @abstractmethod
-    def set_modified_date(self) -> None:
+    def assign_modified_date(self) -> None:
         pass
 
     @abstractmethod

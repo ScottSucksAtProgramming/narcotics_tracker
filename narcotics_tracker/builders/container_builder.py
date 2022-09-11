@@ -13,7 +13,8 @@ from narcotics_tracker.builders import container_builder_template
 
 
 class ContainerBuilder(container_builder_template.Container):
-    """The ContainerBuilder class is used to construct Container objects.
+    """Builds and returns Container objects.
+
     There are two types of methods: 'set' methods can be called to manually
     set attributes for the object; 'assign' methods perform calculations and
     are used as part of the build method to assign other attributes like the
@@ -62,7 +63,7 @@ class ContainerBuilder(container_builder_template.Container):
 
         assign_all_attributes(): Assigns all attributes of the Container.
 
-        assign_container_id(): Sets the container's id number. Should not be
+        assign_container_id(): Manually sets the Container's id. Should not be
             called by the user.
 
         assign_created_date(); Manually sets the created_date attribute.
@@ -142,7 +143,7 @@ class ContainerBuilder(container_builder_template.Container):
         self.set_modified_by(attributes["modified_by"])
 
     def assign_container_id(self, container_id: int) -> None:
-        """Sets the container's id number. Should not be called by the user.
+        """Manually sets the Container's id. Should not be called by the user.
 
         This method will set the container's id number. The id number is
         generally set by the database using its row id. This method is useful

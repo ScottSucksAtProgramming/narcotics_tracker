@@ -171,7 +171,7 @@ def populate_database_with_standard_events(db_connection: sqlite3.Connection) ->
     e_builder = event_builder.EventBuilder()
 
     for event in standard_events:
-        e_builder.set_all_properties(event)
+        e_builder.assign_all_attributes(event)
         built_event = e_builder.build()
         built_event.save(db_connection)
 

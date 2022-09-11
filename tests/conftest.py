@@ -165,13 +165,13 @@ def test_event() -> events.Event:
             testing.
     """
     e_builder = event_builder.EventBuilder()
-    e_builder.set_event_id(2001)
+    e_builder.assign_event_id(2001)
     e_builder.set_event_code("TEST")
     e_builder.set_event_name("Test Event")
     e_builder.set_description("Used for testing the Event Class.")
     e_builder.set_operator(-1)
-    e_builder.set_created_date("2022-08-26 00:00:00")
-    e_builder.set_modified_date("2022-08-01 00:00:00")
+    e_builder.assign_created_date("2022-08-26 00:00:00")
+    e_builder.assign_modified_date("2022-08-01 00:00:00")
     e_builder.set_modified_by("Bast")
 
     test_event = e_builder.build()

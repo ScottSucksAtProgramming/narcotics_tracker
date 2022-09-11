@@ -280,7 +280,7 @@ class Database:
         event_data = events.parse_event_data(result)
 
         e_builder = event_builder.EventBuilder()
-        e_builder.set_all_properties(event_data)
+        e_builder.assign_all_attributes(event_data)
         loaded_med = e_builder.build()
 
         return loaded_med
