@@ -67,7 +67,10 @@ class Test_StatusModule:
 
             statuses_list = statuses.return_statuses(db)
 
-        assert "Status -19: Active. Code: 'ACTIVE'." in statuses_list[0]
+        assert (
+            "Status -19: Active. Code: 'ACTIVE'. Used for items which are currently in use."
+            in statuses_list[0]
+        )
 
     def test_parse_status_data_returns_correct_values(
         self, reset_database, test_status
