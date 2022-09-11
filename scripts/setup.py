@@ -191,7 +191,7 @@ def populate_database_with_standard_units(db_connection: sqlite3.Connection) -> 
     unt_builder = unit_builder.UnitBuilder()
 
     for unit in standard_units:
-        unt_builder.set_all_properties(unit)
+        unt_builder.assign_all_attributes(unit)
         built_unit = unt_builder.build()
         built_unit.save(db_connection)
 
@@ -211,7 +211,7 @@ def populate_database_with_standard_statuses(db_connection: sqlite3.Connection) 
     stat_builder = status_builder.StatusBuilder()
 
     for status in standard_statuses:
-        stat_builder.set_all_properties(status)
+        stat_builder.assign_all_attributes(status)
         built_status = stat_builder.build()
         built_status.save(db_connection)
 

@@ -25,24 +25,23 @@ class ReportingPeriodBuilder(reporting_period_builder_template.ReportingPeriod):
 
     How To Use:
 
-        1. Create a database connection using the database.Database() context
-        manager.
+        1. Initialize the builder by assigning it to a variable:
 
-        2. Initialize the builder by assigning it to a variable and passing a
-        database connection:
-            ```p_builder = reporting_period_builder.ReportingPeriodBuilder(database_connection)```
+            `p_builder = reporting_period_builder.ReportingPeriodBuilder()`
 
-        3. Call the following methods and pass the required values:
-        ```set_starting_date()```; ```set_ending_date()```; and
-        ```set_modified_by()```;
+        2. Call the following methods and pass the required values:
 
-        4. Call the `build()` method to return an Reporting Period object.
+        `set_starting_date()`; `set_ending_date()`; and
+
+        `set_modified_by()`;
+
+        3. Call the `build()` method to return an Reporting Period object.
 
     Initializer:
 
         def __init__(self) -> None:
-        ```Initializes the Reporting Period Builder. Sets all attributes to
-        None.```
+
+        Initializes the Reporting Period Builder. Sets all attributes to None.
 
     Instance Methods:
 

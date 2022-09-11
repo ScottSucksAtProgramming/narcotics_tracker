@@ -355,7 +355,7 @@ class Database:
         unit_data = units.parse_unit_data(result)
 
         unt_builder = unit_builder.UnitBuilder()
-        unt_builder.set_all_properties(unit_data)
+        unt_builder.assign_all_attributes(unit_data)
         loaded_unit = unt_builder.build()
 
         return loaded_unit
@@ -378,7 +378,7 @@ class Database:
         status_data = statuses.parse_status_data(result)
 
         unt_builder = status_builder.StatusBuilder()
-        unt_builder.set_all_properties(status_data)
+        unt_builder.assign_all_attributes(status_data)
         loaded_status = unt_builder.build()
 
         return loaded_status

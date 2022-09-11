@@ -286,12 +286,12 @@ def test_status() -> statuses.Status:
 
     stat_builder = status_builder.StatusBuilder()
 
-    stat_builder.set_status_id(-19)
+    stat_builder.assign_status_id(-19)
     stat_builder.set_status_code("ACTIVE")
     stat_builder.set_status_name("Active")
     stat_builder.set_description("Used for items which are currently in use.")
-    stat_builder.set_created_date("2022-08-01 00:00:00")
-    stat_builder.set_modified_date("2022-08-01 00:00:00")
+    stat_builder.assign_created_date("2022-08-01 00:00:00")
+    stat_builder.assign_modified_date("2022-08-01 00:00:00")
     stat_builder.set_modified_by("Abenthy")
 
     test_status = stat_builder.build()
@@ -332,11 +332,11 @@ def test_unit() -> units.Unit:
 
     u_builder = unit_builder.UnitBuilder()
 
-    u_builder.set_unit_id(821)
+    u_builder.assign_unit_id(821)
     u_builder.set_unit_code("tn")
     u_builder.set_unit_name("Tina")
-    u_builder.set_created_date("2022-08-01 00:00:00")
-    u_builder.set_modified_date("2022-08-01 00:00:00")
+    u_builder.assign_created_date("2022-08-01 00:00:00")
+    u_builder.assign_modified_date("2022-08-01 00:00:00")
     u_builder.set_modified_by("Denna")
 
     test_unit = u_builder.build()

@@ -25,17 +25,15 @@ class EventBuilder(event_builder_template.Event):
 
     How To Use:
 
-        1. Create a database connection using the database.Database() context
-        manager.
+        1. Initialize the builder by assigning it to a variable:
 
-        2. Initialize the builder by assigning it to a variable and passing a
-        database connection:
-            ```e_builder = event_builder.EventBuilder(database_connection)```
+            `e_builder = event_builder.EventBuilder()`
 
         3. Call the following methods and pass the required values:
-        ```set_event_code()```; ```set_event_name()```;
-        ```set_event_description()```; ```set_operator()```; and
-        ```set_modified_by()```;
+
+            `set_event_code()`; `set_event_name()`; `set_event_description()`;
+
+            `set_operator()`; and `set_modified_by()`;
 
         4. Call the `build()` method to return an Event object.
 

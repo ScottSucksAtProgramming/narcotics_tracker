@@ -17,7 +17,7 @@ class Unit(ABC):
         pass
 
     @abstractmethod
-    def set_unit_id(self) -> None:
+    def assign_unit_id(self) -> None:
         pass
 
     @abstractmethod
@@ -29,11 +29,11 @@ class Unit(ABC):
         pass
 
     @abstractmethod
-    def set_created_date(self) -> None:
+    def assign_created_date(self) -> None:
         pass
 
     @abstractmethod
-    def set_modified_date(self) -> None:
+    def assign_modified_date(self) -> None:
         pass
 
     @abstractmethod
@@ -41,7 +41,7 @@ class Unit(ABC):
         pass
 
     @abstractmethod
-    def set_all_properties(self) -> None:
+    def assign_all_attributes(self) -> None:
         pass
 
     @abstractmethod

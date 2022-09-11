@@ -1,16 +1,5 @@
 """Assists with building complex objects for the narcotics tracker.
 
-
-Builders are used to construct objects. The abstract builder templates define 
-the interface for the concrete builders which are used to define the object's 
-attributes and instantiate them.
-
-Using the builders is the preferred method for creating objects in the 
-narcotics tracker. They allow for an easy-to-understand, step-by step-approach 
-to building to objects as well as performing other calculations and obtaining 
-information from the database as necessary.
-
-
 Many objects in the narcotics tracker are complex and have a large number of 
 attributes. The builder design pattern was used to separate the creation of 
 the objects from their representations allowing objects to be created in a 
@@ -24,41 +13,81 @@ the building process. Abstract builders are postfixed with the word
 Tests for the builders' package are located in the tests/unit/builders_test.py
 
 Modules:
- medication_builder_template: Abstract builder for medication objects.
 
- medication_builder: Concrete builder for medication objects.
+    Abstract Builder Templates:
+
+        adjustment_builder_template: Contains the template for the Adjustment 
+            Builder.
+        
+        container_builder_template: Contains the template for the Container 
+            Builder.
+        
+        event_builder_template: Contains the template for the Event Builder.
+        
+        medication_builder_template: Contains the template for the Medication 
+            Builder.
+        
+        reporting_period_builder_template: Contains the template for the 
+            Reporting Period Builder.
+        
+        status_builder_template: Contains the template for the Status Builder.
+        
+        unit_builder_template: Contains the template for the Unit Builder.
+
+    Concrete Builder Modules:
+
+        adjustment_builder: Contains the concrete builder for the Adjustment 
+            class.
+        
+        container_builder: Contains the concrete builder for the Container 
+            class.
+        
+        event_builder: Contains the concrete builder for the Event class.
+        
+        medication_builder: Contains the concrete builder for the Medication 
+            class.
+        
+        reporting_period_builder: ‌Contains the concrete builder for the 
+            ReportingPeriod class
+        
+        status_builder: Contains the concrete builder for the Status class.
+        
+        unit_builder: Contains the concrete builder for the Unit class.
+
 
 How to Use the Builders:
-To use the builder import the builder for the object you want to build.
+    
+    1. Import the builder for the object you want to build.
+    
+    2. If needed make a connection with the database using the 
+        database.Database() context manager. Review documentation of Database 
+        Module for more information.
+    
+    3. Initialize the builder by assigning it to a variable and passing any
+        information required by its __init__ method.
 
- ```python
- from narcotics_tracker.builders import medication_builder
- ```
+    4. Call the various 'set' methods and pass in the required information.
 
-Create an instance of the builder and set the attributes using the available 
-methods. Methods are prefixed with `set_` and are listed in the documentation 
-for the concrete builder.
+    5. Call the builder's `build()` method and assign it to a variable.
 
- ```python
- med_builder = medication_builder.MedicationBuilder()
+Example:
 
- med_builder.set_medication_id(None)
- med_builder.set_name("Aspirin")
- med_builder.set_code("ASA")
- med_builder.set_fill_amount(10)
- med_builder.set_container(containers.Container.AMPULE)
- med_builder.set_dose_and_unit(10, units.Unit.MCG)
- med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
- med_builder.set_created_date(None)
- med_builder.set_modified_date(None)
- med_builder.set_modified_by("SRK")
- ```
+    ```python
+    from narcotics_tracker.builders import medication_builder
 
-Once the attributes are set, call the `build` method to create the object. 
-Once the build method has been called the object is created and all of its 
-methods and attributes are available.
+    med_builder = medication_builder.MedicationBuilder()
 
- ```python
- aspirin = med_builder.build()
- ```
+    med_builder.set_medication_id(None)
+    med_builder.set_name("Aspirin")
+    med_builder.set_code("ASA")
+    med_builder.set_fill_amount(10)
+    med_builder.set_container(containers.Container.AMPULE)
+    med_builder.set_dose_and_unit(10, units.Unit.MCG)
+    med_builder.set_status(medication_statuses.MedicationStatus.ACTIVE)
+    med_builder.set_created_date(None)
+    med_builder.set_modified_date(None)
+    med_builder.set_modified_by("SRK")
+
+    aspirin = med_builder.build()
+    ```
  """

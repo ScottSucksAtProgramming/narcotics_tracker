@@ -25,18 +25,17 @@ class ContainerBuilder(container_builder_template.Container):
 
     How To Use:
 
-        1. Create a database connection using the database.Database() context
-        manager.
-
-        2. Initialize the builder by assigning it to a variable and passing a
+        1. Initialize the builder by assigning it to a variable and passing a
         database connection:
-            ```cont_builder = container_builder.ContainerBuilder(database_connection)```
 
-        3. Call the following methods and pass the required values:
-        ```set_container_code()```; ```set_container_name()```; and
-        ```set_modified_by()```;
+            `cont_builder = container_builder.ContainerBuilder(database_connection)`
 
-        4. Call the `build()` method to return a Container object.
+        2. Call the following methods and pass the required values:
+
+            `set_container_code()`; `set_container_name()`; and
+            `set_modified_by()`;
+
+        3. Call the `build()` method to return a Container object.
 
     Initializer:
 

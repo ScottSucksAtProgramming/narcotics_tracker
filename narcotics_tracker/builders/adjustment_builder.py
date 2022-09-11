@@ -46,20 +46,27 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         1. Create a database connection using the database.Database() context
         manager.
 
+            `with database.Database('filename.db') as db:`
+
         2. Initialize the builder by assigning it to a variable and passing a
         database connection:
-            ```adj_builder = adjustment_builder.AdjustmentBuilder(database_connection)```
+
+            `adj_builder = adjustment_builder.AdjustmentBuilder(db)`
 
         3. Call the following methods and pass the required values:
-        ```set_adjustment_date()```; ```set_event_code()```;
-        ```set_medication_code()```; ```set_adjustment_amount()```;
-        ```set_reference_id()```; and ```set_modified_by()```;
 
-        4. Call the `build()` method to return an Adjustment object. The
-        ```build()``` method will convert the adjustment_amount to the
-        amount_in_mcg and assign the correct reporting_period based on the
-        adjustment_date. If you would like assign these manually it's
-        recommended to do so after the object has been created.
+            `set_adjustment_date()`; `set_event_code()`;
+
+            `set_medication_code()`; `set_adjustment_amount()`;
+
+            `set_reference_id()`; and `set_modified_by()`;
+
+        4. Call the `build()` method to return an Adjustment object.
+
+            The `build()` method will convert the adjustment_amount to the
+            amount_in_mcg and assign the correct reporting_period based on the
+            adjustment_date. If you would like assign these manually it's
+            recommended to do so after the object has been created.
 
     Initializer:
 
@@ -67,21 +74,9 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
 
         Initializes the adjustment builder.
 
-        '''Sets the database_connection to the passed connection object. Sets all
+        Sets the database_connection to the passed connection object. Sets all
         other attributes to None.
-        '''
-        self.database_connection = db_connection
-        self.adjustment_id = None
-        self.adjustment_date = None
-        self.event_code = None
-        self.medication_code = None
-        self.amount_in_preferred_unit = None
-        self.amount_in_mcg = None
-        self.reporting_period_id = None
-        self.reference_id = None
-        self.created_date = None
-        self.modified_date = None
-        self.modified_by = None
+
 
     Instance Methods:
 

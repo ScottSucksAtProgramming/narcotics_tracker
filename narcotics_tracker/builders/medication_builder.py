@@ -26,25 +26,25 @@ class MedicationBuilder(medication_builder_template.Medication):
 
     How To Use:
 
-        1. Create a database connection using the database.Database() context
-        manager.
+        1. Initialize the builder by assigning it to a variable:
 
-        2. Initialize the builder by assigning it to a variable and passing a
-        database connection:
-            ```e_builder = medication_builder.MedicationBuilder(database_connection)```
+            `e_builder = medication_builder.MedicationBuilder()`
 
-        3. Call the following methods and pass the required values:
-        ```set_medication_name()```; ```set_medication_code()```;
-        ```set_container()```; ```set_fill_amount()```;
-        ```set_dose_and_unit()```; ```set_medication_status()``` and
-        ```set_modified_by()```;
+        2. Call the following methods and pass the required values:
 
-        4. Call the `build()` method to return an Medication object.
+            `set_medication_name()`; `set_medication_code()`; `set_container()`;
+
+            `set_fill_amount()`; `set_dose_and_unit()`; `set_medication_status()`
+
+            and `set_modified_by()`;
+
+        3. Call the `build()` method to return an Medication object.
 
     Initializer:
 
         def __init__(self) -> None:
-        ```Initializes the medication builder. Sets all attributes to None.```
+
+        Initializes the medication builder. Sets all attributes to None.
 
     Instance Methods:
 
