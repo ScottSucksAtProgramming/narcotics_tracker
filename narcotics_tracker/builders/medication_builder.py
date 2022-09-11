@@ -8,7 +8,6 @@ Classes:
 
     MedicationBuilder: Builds and returns Medication objects.
 """
-
 from narcotics_tracker import database, medications
 from narcotics_tracker.builders import medication_builder_template
 from narcotics_tracker.utils import unit_converter

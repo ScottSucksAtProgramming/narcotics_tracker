@@ -247,11 +247,11 @@ def test_period() -> reporting_periods.ReportingPeriod:
 
     period_builder = reporting_period_builder.ReportingPeriodBuilder()
 
-    period_builder.set_period_id(9001)
+    period_builder.assign_period_id(9001)
     period_builder.set_starting_date("2001-01-01 00:00:00")
     period_builder.set_ending_date("2100-06-30 00:00:00")
-    period_builder.set_created_date("2022-08-01 00:00:00")
-    period_builder.set_modified_date("2022-08-01 00:00:00")
+    period_builder.assign_created_date("2022-08-01 00:00:00")
+    period_builder.assign_modified_date("2022-08-01 00:00:00")
     period_builder.set_modified_by("Cinder")
 
     test_period = period_builder.build()

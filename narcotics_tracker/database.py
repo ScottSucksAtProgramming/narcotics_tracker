@@ -305,7 +305,7 @@ class Database:
         period_data = reporting_periods.parse_reporting_period_data(result)
 
         period_builder = reporting_period_builder.ReportingPeriodBuilder()
-        period_builder.set_all_properties(period_data)
+        period_builder.assign_all_attributes(period_data)
         loaded_period = period_builder.build()
 
         return loaded_period
