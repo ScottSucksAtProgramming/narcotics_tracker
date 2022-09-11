@@ -203,15 +203,15 @@ def test_medication() -> "medications.Medication":
         test_med (medication.Medication): A medication object for testing.
     """
     med_builder = medication_builder.MedicationBuilder()
-    med_builder.set_medication_id(1)
-    med_builder.set_name("Unobtanium")
-    med_builder.set_code("Un-69420-9001")
+    med_builder.assign_medication_id(1)
+    med_builder.set_medication_name("Unobtanium")
+    med_builder.set_medication_code("Un-69420-9001")
     med_builder.set_container("Vial")
     med_builder.set_dose_and_unit(69.420, "mg")
     med_builder.set_fill_amount(9_001)
-    med_builder.set_status("Discontinued")
-    med_builder.set_created_date("01-02-1986")
-    med_builder.set_modified_date("08-09-2022")
+    med_builder.set_medication_status("Discontinued")
+    med_builder.assign_created_date("01-02-1986")
+    med_builder.assign_modified_date("08-09-2022")
     med_builder.set_modified_by("Kvothe")
 
     test_med = med_builder.build()

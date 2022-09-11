@@ -54,7 +54,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = 69420
 
-        med_builder.set_medication_id(expected)
+        med_builder.assign_medication_id(expected)
 
         assert med_builder.medication_id == expected
 
@@ -66,7 +66,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "Aspirin"
 
-        med_builder.set_name("Aspirin")
+        med_builder.set_medication_name("Aspirin")
 
         assert med_builder.name == expected
 
@@ -78,7 +78,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "ASA"
 
-        med_builder.set_code("ASA")
+        med_builder.set_medication_code("ASA")
 
         assert med_builder.medication_code == expected
 
@@ -147,7 +147,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = 45
 
-        med_builder.set_concentration(expected)
+        med_builder.assign_concentration(expected)
 
         assert med_builder.concentration == expected
 
@@ -158,7 +158,7 @@ class Test_MedicationBuilder:
         """
         med_builder = medication_builder.MedicationBuilder()
 
-        med_builder.set_status("Active")
+        med_builder.set_medication_status("Active")
         expected = "Active"
 
         assert med_builder.status == expected
@@ -171,7 +171,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "01/01/2019"
 
-        med_builder.set_created_date(expected)
+        med_builder.assign_created_date(expected)
 
         assert med_builder.created_date == expected
 
@@ -183,7 +183,7 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = "08/21/1986"
 
-        med_builder.set_modified_date(expected)
+        med_builder.assign_modified_date(expected)
 
         assert med_builder.modified_date == expected
 
@@ -222,15 +222,15 @@ class Test_MedicationBuilder:
         med_builder = medication_builder.MedicationBuilder()
         expected = medications.Medication
 
-        med_builder.set_medication_id(None)
-        med_builder.set_name("Aspirin")
-        med_builder.set_code("ASA")
+        med_builder.assign_medication_id(None)
+        med_builder.set_medication_name("Aspirin")
+        med_builder.set_medication_code("ASA")
         med_builder.set_fill_amount(10)
         med_builder.set_container("Ampule")
         med_builder.set_dose_and_unit(10, "mcg")
-        med_builder.set_status("Active")
-        med_builder.set_created_date(None)
-        med_builder.set_modified_date(None)
+        med_builder.set_medication_status("Active")
+        med_builder.assign_created_date(None)
+        med_builder.assign_modified_date(None)
         med_builder.set_modified_by("SRK")
 
         aspirin = med_builder.build()

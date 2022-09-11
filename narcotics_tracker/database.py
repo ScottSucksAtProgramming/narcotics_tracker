@@ -259,7 +259,7 @@ class Database:
         medication_data = medications.parse_medication_data(result)
 
         med_builder = medication_builder.MedicationBuilder()
-        med_builder.set_all_properties(medication_data)
+        med_builder.assign_all_attributes(medication_data)
         loaded_med = med_builder.build()
 
         return loaded_med

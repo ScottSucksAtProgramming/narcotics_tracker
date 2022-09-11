@@ -47,12 +47,12 @@ def build_medication(medication_properties: list):
     """Uses the MedicationBuilder to create medication objects."""
     med_builder = medication_builder.MedicationBuilder()
 
-    med_builder.set_code(medication_properties[0])
-    med_builder.set_name(medication_properties[1])
+    med_builder.set_medication_code(medication_properties[0])
+    med_builder.set_medication_name(medication_properties[1])
     med_builder.set_container(medication_properties[2])
     med_builder.set_dose_and_unit(medication_properties[3], medication_properties[4])
     med_builder.set_fill_amount(medication_properties[5])
-    med_builder.set_status(medication_properties[6])
+    med_builder.set_medication_status(medication_properties[6])
 
     return med_builder.build()
 

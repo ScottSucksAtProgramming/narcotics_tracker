@@ -43,38 +43,30 @@ class EventBuilder(event_builder_template.Event):
 
         def __init__(self) -> None:
         '''Initializes the event_type builder. Sets all attributes to None.'''
-        self.event_id = None
-        self.event_code = None
-        self.event_name = None
-        self.description = None
-        self.operator = None
-        self.created_date = None
-        self.modified_date = None
-        self.modified_by = None
 
     Instance Methods:
 
-        build(): Returns the Event object. Assigns the Event's properties.
+        build: Returns the Event object. Assigns the Event's attributes.
 
-        set_event_code(): Sets the Event's code.
+        set_event_code: Sets the Event's code.
 
-        set_event_name(): Sets the Event's name.
+        set_event_name: Sets the Event's name.
 
-        set_description(): Sets the Event's description.
+        set_description: Sets the Event's description.
 
-        set_operator(); Sets the Event's operator.
+        set_operator: Sets the Event's operator.
 
-        set_modified_by(): ets the identifier of the user who modified the
+        set_modified_by: ets the identifier of the user who modified the
             Event.
 
-        assign_all_attributes(): Assigns all attributes of the Event.
+        assign_all_attributes: Assigns all attributes of the Event.
 
-        assign_event_id(): Manually sets the Container's id. Should not be
+        assign_event_id: Manually sets the Container's id. Should not be
             called by the user.
 
-        assign_created_date(): Manually sets the created_date attribute.
+        assign_created_date: Manually sets the created_date attribute.
 
-        assign_modified_date(): Manually sets the modified_date attribute.
+        assign_modified_date: Manually sets the modified_date attribute.
     """
 
     def __init__(self) -> None:
@@ -89,10 +81,10 @@ class EventBuilder(event_builder_template.Event):
         self.modified_by = None
 
     def build(self) -> "events.Event":
-        """Returns the Event object. Assigns the Event's properties.
+        """Returns the Event object. Assigns the Event's attributes.
 
         This is the last method to be called as part of the building process.
-        It will return the Event object with all of its properties set.
+        It will return the Event object with all of its attributes set.
 
 
         Returns:

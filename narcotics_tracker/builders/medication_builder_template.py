@@ -17,15 +17,15 @@ class Medication(ABC):
         pass
 
     @abstractmethod
-    def set_medication_id(self) -> None:
+    def assign_medication_id(self) -> None:
         pass
 
     @abstractmethod
-    def set_name(self) -> None:
+    def set_medication_name(self) -> None:
         pass
 
     @abstractmethod
-    def set_code(self) -> None:
+    def set_medication_code(self) -> None:
         pass
 
     @abstractmethod
@@ -41,19 +41,19 @@ class Medication(ABC):
         pass
 
     @abstractmethod
-    def set_concentration(self) -> None:
+    def assign_concentration(self) -> None:
         pass
 
     @abstractmethod
-    def set_status(self) -> None:
+    def set_medication_status(self) -> None:
         pass
 
     @abstractmethod
-    def set_created_date(self) -> None:
+    def assign_created_date(self) -> None:
         pass
 
     @abstractmethod
-    def set_modified_date(self) -> None:
+    def assign_modified_date(self) -> None:
         pass
 
     @abstractmethod
