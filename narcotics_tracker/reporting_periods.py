@@ -49,7 +49,8 @@ def return_table_creation_query() -> str:
     """Returns the query needed to create the 'reporting_periods' table.
 
     Returns:
-        str: The sql query needed to create the Reporting Periods Table.
+
+        str: The sql query needed to create the 'reporting_periods' table.
     """
     return """CREATE TABLE IF NOT EXISTS reporting_periods (
             PERIOD_ID INTEGER PRIMARY KEY,
@@ -170,16 +171,17 @@ class ReportingPeriod:
     def __init__(self, builder=None) -> None:
         """Initializes an instance of a Reporting Period using the builder.
 
-        EventTypes are complex objects with many attributes. The Builder
-        Pattern was used to separate the creation of EventTypes to the
-        Builder Package.
+        Reporting Periods are complex objects with many attributes. The
+        Builder Pattern was used to separate the creation of Reporting Periods
+        to the Builder Package.
 
-        Refer to the documentation for the EventTypeBuilder Class for more
-        information.
+        Refer to the documentation for the ReportingPeriodBuilder Class for
+        more information.
 
         Args:
-            builder (event_type_builder.EventTypeBuilder): The builder used to
-                construct the EventType object.
+
+            builder (reporting_period_builder.ReportingPeriodBuilder: The
+                builder used to construct the Reporting Period Object.
         """
         self.period_id = builder.period_id
         self.starting_date = builder.starting_date
@@ -189,10 +191,10 @@ class ReportingPeriod:
         self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
-        """Returns a string expression of the reporting period object.
+        """Returns a string expression of the reporting period Object.
 
         Returns:
-            str: The string describing the reporting period object
+            str: The string describing the reporting period Object
         """
 
         starting_date = database.format_datetime_from_unixepoch(self.starting_date)
@@ -264,8 +266,6 @@ class ReportingPeriod:
 
             db_connection (sqlite3.Connection): The connection to the
             database.
-
-            period_id (int): The numeric identifier of the Reporting Period.
 
         Raises:
 

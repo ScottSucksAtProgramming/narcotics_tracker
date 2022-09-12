@@ -1,34 +1,62 @@
-"""Defines the representation of controlled substance medications.
+"""Contains the implementation and representation of Medication Objects.
 
-Inventory tracking of controlled substance medications requires information 
-from the medications themselves. This module defines the Medication class 
-which stores the information needed to track medications. The Medication class 
-also handles the saving, updating and deleting of medications from the 
-database.
+#* Background
 
-See the builder module for information on creating medications.
-See the database module for information on interacting with the database.
-Tests are located in the tests/unit/medication_tests.py file.
+In order for the Narcotics Tracker to track the inventory of controlled 
+substances the medications have to be defined and their attributes stored.
 
-Classes:
+Medications are the back bone of this program and a lot of detail went in 
+designing medications which can provide the information needed to manage an 
+agency's inventory. Refer to the Medication Class documentation for a 
+breakdown of the attributes.
 
-    Medication: Represents controlled substance medications.
+#* Intended Use
 
-Functions:
+This module and the Medication Class defined below allow for the creation of 
+Medication Objects. It is highly recommended to use the Medication Builder 
+Module contained within the Builders Package to create these objects. 
+Instructions for using builders can be found within that package.
 
-    return_table_creation_query: Returns query to create medication table.
+#* Medications in the Database
 
-    parse_medication_data: Returns medication data from database as dictionary.
+Medications are stored in the 'medications' table of the database with their 
+numeric id, code, name, container type, fill amount, dose and unit of 
+measurement, concentration, status and creation / modification information 
+specified. Inventory Adjustments must specify which medication were effected 
+and are limited to the Medications listed in the table.
+
+#* Classes:
+
+    Medication: Defines Medications and instantiates them as objects.
+
+#* Functions:
+
+    return_table_creation_query: Returns the query needed to create the table.
+
+    return_medications: Returns the 'medications' table as lists of strings 
+        and values.
+
+    parse_medication_data: Returns a Medications's attributes as a dictionary.
+
+    return_preferred_unit: Queries the medications table for the preferred 
+        unit of the medication.
 """
 
 
 import sqlite3
+from typing import Union
 
 from narcotics_tracker import database
+from narcotics_tracker.utils import unit_converter
 
 
 def return_table_creation_query() -> str:
-    """Returns the sql query needed to create the medication table."""
+    """Returns the query needed to create the 'medications' table.
+
+    Returns:
+
+        str: The sql query needed to create the 'medications' table.
+    """
     return """CREATE TABLE IF NOT EXISTS medications (
             MEDICATION_ID INTEGER PRIMARY KEY,
             MEDICATION_CODE TEXT UNIQUE,
@@ -48,55 +76,74 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_medication(db_connection: sqlite3.Connection) -> list[str]:
-    """Returns the contents of the medications table as a list of strings.
+def return_medications(db_connection: sqlite3.Connection) -> Union[list[str], list]:
+    """Returns the 'medications' table as lists of strings and values.
 
     Args:
+
         db_connection (sqlite3.Connection): The database connection.
 
     Returns:
-        table_contents (list[str]): The contents of the table as a list of
-            strings.
-    """
-    sql_query = """SELECT * FROM medications"""
 
-    medications_list = []
+        medications_string_list (list[str]): The contents of the table as a
+        list of strings.
+
+        medications_values_list (list): The contents of the table as a list of
+            values.
+    """
+    sql_query = """SELECT medication_code, name, fill_amount, dose_in_mcg, preferred_unit FROM medications"""
+
+    medications_string_list = []
+    medications_values_list = []
 
     medications_data = db_connection.return_data(sql_query)
-    for event in medications_data:
-        medications_list.append(
-            f"{event[2]} {event[5]} {event[6]} in {event[4]} ml. Code: {event[1]}."
+    for medication in medications_data:
+
+        if medication[4] == "g":
+            converted_dose = unit_converter.UnitConverter.to_G(medication[3], "mcg")
+        if medication[4] == "mg":
+            converted_dose = unit_converter.UnitConverter.to_mg(medication[3], "mcg")
+        else:
+            converted_dose = medication[5]
+
+        medications_string_list.append(
+            f"{medication[1]} {converted_dose} {medication[4]} in {medication[2]} ml. Code: {medication[0]}."
+        )
+        medications_values_list.append(
+            (medication[0], medication[1], medication[2], converted_dose, medication[4])
         )
 
-    return medications_list
+    return medications_string_list, medications_values_list
 
 
 def parse_medication_data(medication_data) -> dict:
-    """Returns medication data from the database as a dictionary.
+    """Returns a Medications's attributes as a dictionary.
 
     Args:
-        medication_data (list): The medication data
+
+        medication_data (list): The Medication's data.
 
     Returns:
-        properties (dict): Dictionary objects contains the properties of
-            the medication."""
 
-    properties = {}
+        attributes (dict): Dictionary object containing the attributes of the
+            Medication.
+    """
+    attributes = {}
 
-    properties["medication_id"] = medication_data[0][0]
-    properties["name"] = medication_data[0][2]
-    properties["medication_code"] = medication_data[0][1]
-    properties["container_type"] = medication_data[0][3]
-    properties["fill_amount"] = medication_data[0][4]
-    properties["dose"] = medication_data[0][5]
-    properties["unit"] = medication_data[0][6]
-    properties["concentration"] = medication_data[0][7]
-    properties["status"] = medication_data[0][8]
-    properties["created_date"] = medication_data[0][9]
-    properties["modified_date"] = medication_data[0][10]
-    properties["modified_by"] = medication_data[0][11]
+    attributes["medication_id"] = medication_data[0][0]
+    attributes["name"] = medication_data[0][2]
+    attributes["medication_code"] = medication_data[0][1]
+    attributes["container_type"] = medication_data[0][3]
+    attributes["fill_amount"] = medication_data[0][4]
+    attributes["dose"] = medication_data[0][5]
+    attributes["unit"] = medication_data[0][6]
+    attributes["concentration"] = medication_data[0][7]
+    attributes["status"] = medication_data[0][8]
+    attributes["created_date"] = medication_data[0][9]
+    attributes["modified_date"] = medication_data[0][10]
+    attributes["modified_by"] = medication_data[0][11]
 
-    return properties
+    return attributes
 
 
 def return_preferred_unit(
@@ -125,96 +172,90 @@ def return_preferred_unit(
 
 
 class Medication:
-    """Represents controlled substance medications in the Narcotics Tracker.
+    """Defines Medications and instantiates them as objects.
 
-    Each medication has attributes that assist in tracking the medication
-    including it's dose, fill amount, and concentration. This class defines
-    the attributes and behaviors of controlled substance medications and
-    handles the storing, updating and deletion of medication data within the
-    database. Any aspect related to medication should be handled by this
-    class.
+    This call defines Medications within the Narcotics Tracker. They
+    attributes are used to calculate the amounts of each Medication in the
+    inventory.
+
+    Medications can be declared, created and managed using this class.
+    Adjustments are limited to affecting the Medications stored in the
+    'medications' table.
 
     Initializer:
 
         def __init__(self, builder=None) -> None:
 
-            Initializes the medication object using the MedicationBuilder.
-
-            Medications are complex objects with many attributes. The Builder
-            Pattern was used to separate the creation of medications to the
-            Builder Package. Refer to the documentation for the
-            MedicationBuilder for more information.
-
-            Args:
-                builder (builder.MedicationMedicationBuilder): The builder
-                    used to construct the medication object.
+            Initializes an instance of a Medication using the builder.
 
     Attributes:
 
-        medication_id (int): The numeric identifier of the medication in the
+        medication_id (int): The numeric identifier of the Medication in the
+            database. Assigned by the database.
+
+        code (str): The unique identifier for the specific Medication.
+            Assigned by the user. Used to interact with the Medication in the
             database.
 
-        code (str): The unique identifier for the specific medication.
+        name (str): The proper name of the Medication.
 
-        name (str): The name of the medication.
-
-        container_type (containers.Container): The type of container the
-            medication comes in.
+        container_type (str): The type of container the
+            Medication comes in. Limited by the items stored in the
+            'containers' table.
 
         fill_amount (float): The amount of the solvent in the container.
             Measured in milliliters (ml).
 
-        dose (float): The amount of medication in the container.
+        dose (float): The amount of Medication in the container.
 
-        preferred_unit (units.Unit): The unit of measurement the medication is
-            commonly measured in.
+        preferred_unit (str): The unit of measurement the Medication is
+            commonly measured in. Limited to the items stored in the 'units'
+            table.
 
-        concentration (float): The concentration of the medication to its
+        concentration (float): The concentration of the Medication to its
             solvent.
 
-        status (medication_status.MedicationStatus): The status of the
-            medication.
+        status (str): The status of the Medication. Limited to the items
+            stored in the 'statuses' table.
 
-        created_date (str): The date the medication was first entered into the
-            database.
+        created_date (str): The date the Medication was created in the
+            table.
 
-        modified_date (str): The date the medication was last modified in the
-            database
+        modified_date (str): The date the Medication was last modified.
 
-        modified_by (str): The user who last modified the medication in the
-            database.
+        modified_by (str): Identifier of the person who last modified the
+            Medication.
 
     Instance Methods:
 
-        __repr__: Returns a string expression of the medication object.
+        __repr__: Returns a string expression of the Medication object.
 
-        save: Saves a new medication to the database.
+        save: Saves a new Medication to the table in the database.
 
-        update: Updates an existing medication in the database.
+        read: Returns the data of the Medication as a tuple.
 
-        delete: Deletes a medication from the database.
+        update: Updates the Medication in the 'medications' table.
 
-        return_attributes: Returns a medication's attributes.
+        return_attributes: Returns the attributes of the Medication Object as
+            a tuple.
 
-    Static Methods:
-
-        parse_medication_data: Converts medication data into a dictionary.
-
-        return_table_creation_query: Returns SQL query to for medication table.
-
+        delete: Deletes the Medication from the database.
     """
 
     def __init__(self, builder=None) -> None:
-        """Initializes the medication object using the MedicationBuilder.
+        """Initializes an instance of a Medication using the builder.
 
         Medications are complex objects with many attributes. The Builder
-        Pattern was used to separate the creation of medications to the
-        Builder Package. Refer to the documentation for the MedicationBuilder
-        for more information.
+        Pattern was used to separate the creation of Medication to the Builder
+        Package.
+
+        Refer to the documentation for the MedicationBuilder Class for more
+        information.
 
         Args:
-            builder (builder.MedicationBuilder): The builder used to
-            construct the medication object.
+
+            builder (medication_builder.MedicationBuilder): The builder used
+                to construct the Medication Object.
         """
 
         self.medication_id = builder.medication_id
@@ -231,10 +272,10 @@ class Medication:
         self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
-        """Returns a string expression of the medication object.
+        """Returns a string expression of the Medication Object.
 
         Returns:
-            str: The string describing the medication object
+            str: The string describing the Medication Object.
         """
 
         return (
@@ -243,16 +284,15 @@ class Medication:
         )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
-        """Saves a new medication to the database.
+        """Saves a new Medication to the table in the database.
 
-        The save method will only write the medication into the table if it
-        does not already exist. Use the update method to update the
-        medication'a attributes.
+        This method will not overwrite a Medication already saved in the
+        database. Use the `update()` to adjust a Medication's attributes.
 
-        Uses the date module to set the created if it is None. Sets the
-        modified date.
+        Assigns a created_date and modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The database connection.
         """
 
@@ -268,16 +308,19 @@ class Medication:
         db_connection.write_data(sql_query, values)
 
     def read(self, db_connection: sqlite3.Connection) -> tuple:
-        """Returns the data of the medication from the database as a tuple.
+        """Returns the data of the Medication as a tuple.
 
-        This function will make no changes to the data.
+        This method makes no changes to the data.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
         Returns:
-            tuple: A tuple containing the medication's attribute values.
+
+            tuple: A tuple containing the Medication's attribute values
+                in the order of the 'medications' table's columns.
         """
         sql_query = """SELECT * from medications WHERE medication_code = ?"""
 
@@ -287,20 +330,43 @@ class Medication:
 
         return data
 
-    def update(self, db_connection: sqlite3.Connection, code: str) -> None:
-        """Updates an existing medication in the database.
+    def update(self, db_connection: sqlite3.Connection) -> None:
+        """Updates the Medication in the 'medications' table.
 
-        This method will overwrite the medication's data if it already
-        exists within the database. Sets the modified date, and will set the
-        created date if it is None.
+        This method will overwrite the Medication's data if it already exists
+        within the database. An error will be returned if the medication_code
+        does
+        not already exist in the database. Use the save method to save new
+        Medications in the database.
 
-        Use the save method to create a new medication.
+        Assigns a new modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
-            code (str): The unique identifier for the medication.
+        Raises:
+
+            IndexError: An Index Error will be raised if the medication_code
+            is not found on the medications table.
+
+        How to use:
+
+            1. Use the `medications.return_medications()` method to return a
+                list of medications. Identify the medication_code of the
+                medication you wish to update.
+
+            2. Use the database.load_medication() method, passing in the
+                medication_code and assigning it to a variable to create a
+                Medication Object.
+
+            3. Modify the attributes as necessary and call this method on the
+                Medication Object to send the new values to the database.
+
+            #! Note: If the medication_code is being changed use the save()
+            #! method to create a new medication entry in the table and use
+            #! the delete() method to remove the old entry.
         """
         sql_query = """UPDATE medications 
             SET MEDICATION_ID = ?, 
@@ -321,16 +387,17 @@ class Medication:
             self.created_date = database.return_datetime()
         self.modified_date = database.return_datetime()
 
-        values = self.return_attributes() + (code,)
+        values = self.return_attributes() + (self.medication_code,)
 
         db_connection.write_data(sql_query, values)
 
     def return_attributes(self) -> tuple:
-        """Returns the attributes of the medication as a tuple.
+        """Returns the attributes of the Medication Object as a tuple.
 
         Returns:
-            tuple: The attributes of the medication. Follows the order of the
-                columns in the medication table.
+
+            tuple: The attributes of the Medication. Follows the order of the
+                columns in the 'medications' table.
         """
         return (
             self.medication_id,
@@ -348,13 +415,15 @@ class Medication:
         )
 
     def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Deletes the medication from the database.
+        """Deletes the Medication from the database.
 
-        This function deletes the medication from the database entirely.
+        The delete method will delete the Medication from the database
+        entirely.
 
-        #! Important: This is irreversible.
+        #! Note: Deleting an item from the database is irreversible.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """
