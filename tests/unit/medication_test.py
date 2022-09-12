@@ -131,7 +131,8 @@ class Test_MedicationModule:
             medication_list = medications.return_medications(db)
 
         assert (
-            "Unobtanium 69.42 mg in 9001.0 ml. Code: Un-69420-9001." in medication_list
+            "Unobtanium 69.42 mg in 9001.0 ml. Code: Un-69420-9001."
+            in medication_list[0]
         )
 
     def test_return_preferred_unit_returns_correct_unit_as_string(
