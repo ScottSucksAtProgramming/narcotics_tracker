@@ -67,7 +67,7 @@ class Test_EventsModule:
 
             test_event.save(db)
 
-            events_list = events.return_events(db)
+            events_list = events.return_events(db)[0]
 
         assert (
             "Event Test Event. Code: TEST. Used for testing the Event Class."
