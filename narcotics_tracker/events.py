@@ -39,7 +39,6 @@ the Standard Items Module inside the Setup Package for more information.
 
     parse_event_data: Returns an Event's attributes as a dictionary.
 """
-
 import sqlite3
 from typing import Union
 
