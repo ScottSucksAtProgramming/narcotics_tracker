@@ -1,44 +1,52 @@
-"""Contains the implementation and representation of reporting periods.
+"""Contains the implementation and representation of Reporting Period Objects.
 
-The reporting_periods table stores periods of time defined by a starting and 
-ending date which are used for report generation.
+#* Background
 
-In New York State the Department of Health and Bureau of EMS and Trauma 
-Systems requires narcotics reporting to be completed twice a year. The two 
-reporting periods are from January 1st to June 30th, and from July 1st to 
-December 31st.
+EMS agencies need to report all changes to their controlled substance 
+inventory periodically. Grouping Inventory Adjustments in to reporting periods 
+keeps them organized and is helpful when generating reports. 
 
-This module handles the creation of the reporting_periods table, returns 
-reporting period data from the database and parses raw data from the database 
-into a usable format. It houses the ReportingPeriod Class which defines and 
-instantiates the reporting periods as objects.
+#* Intended Use
 
-The Inventory Module and Adjustment Class make use of the Reporting Periods in 
-order to organize inventory adjustments.
+This module and the ReportingPeriods Class defined below allow for the 
+creation of Reporting Period Objects. It is highly recommended to use the 
+Reporting Period Builder Module contained within the Builders Package to 
+create these objects. Instructions for using builders can be found within that 
+package.
 
-The Reporting Periods Builder Module contains information on creating 
-reporting periods and specifying their attributes.
+#* Reporting Periods in the Database
 
-The database module contains information on communicating with the database.
+Reporting Periods are stored in the 'reporting_periods' table of the database 
+with their numeric id, starting date, ending date, and creation / modification 
+information specified. Inventory Adjustments will be assigned to a Reporting 
+Period based on the date on which they occurred and are limited to the 
+Reporting Periods listed in the table.
 
-Classes:
-    ReportingPeriod: Defines the representation of reporting periods for the 
-        project.
+#* Classes:
 
-Functions:
+    ReportingPeriod: Defines Reporting Periods and instantiates them as 
+        objects.
 
-    return_table_creation_query: Returns the query needed to create the Table.
+#* Functions:
 
-    return_periods: Returns the contents of the reporting_periods table.
+    return_table_creation_query: Returns the query needed to create the 
+        'reporting_periods' table.
+
+    return_periods: Returns the 'reporting_periods' table as lists of strings 
+        and values.
+
+    parse_reporting_period_data: Returns a Reporting Periods's attributes as a 
+        dictionary.
 """
 
 import sqlite3
+from typing import Union
 
 from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:
-    """Returns the sql query needed to create the Reporting Periods Table.
+    """Returns the query needed to create the 'reporting_periods' table.
 
     Returns:
         str: The sql query needed to create the Reporting Periods Table.
@@ -53,14 +61,20 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_periods(db_connection: sqlite3.Connection) -> str:
-    """Returns the contents of the reporting_periods table.
+def return_periods(db_connection: sqlite3.Connection) -> Union[list[str], list]:
+    """Returns the 'reporting_periods' table as lists of strings and values.
 
     Args:
+
         db_connection (sqlite3.Connection): The database connection.
 
     Returns:
-        table_contents (str): The contents of the table as a string.
+
+        period_string_list (list[str]): The contents of the table as a list of
+            strings.
+
+        period_values_list (list): The contents of the table as a list of
+            values.
     """
     sql_query = (
         """SELECT period_id, starting_date, ending_date FROM reporting_periods"""
@@ -80,73 +94,81 @@ def return_periods(db_connection: sqlite3.Connection) -> str:
 
 
 def parse_reporting_period_data(reporting_period_data) -> dict:
-    """Returns event_type data from the database as a dictionary.
+    """Returns a Reporting Periods's attributes as a dictionary.
 
     Args:
-        reporting_period_data (list): The event_type data
+
+        reporting_period_data (list): The Reporting Period's data.
 
     Returns:
-        properties (dict): Dictionary objects contains the properties of
-            the event_type."""
 
-    properties = {}
+        attributes (dict): Dictionary object containing the attributes of the
+            Reporting Period.
+    """
+    attributes = {}
 
-    properties["period_id"] = reporting_period_data[0][0]
-    properties["starting_date"] = reporting_period_data[0][1]
-    properties["ending_date"] = reporting_period_data[0][2]
-    properties["created_date"] = reporting_period_data[0][3]
-    properties["modified_date"] = reporting_period_data[0][4]
-    properties["modified_by"] = reporting_period_data[0][5]
+    attributes["period_id"] = reporting_period_data[0][0]
+    attributes["starting_date"] = reporting_period_data[0][1]
+    attributes["ending_date"] = reporting_period_data[0][2]
+    attributes["created_date"] = reporting_period_data[0][3]
+    attributes["modified_date"] = reporting_period_data[0][4]
+    attributes["modified_by"] = reporting_period_data[0][5]
 
-    return properties
+    return attributes
 
 
 class ReportingPeriod:
-    """Defines the representation of reporting periods for the project.
+    """Defines Reporting Periods and instantiates them as objects.
+
+    This class defines Reporting Periods within the Narcotics Tracker.
+    Reporting Periods are to organize Inventory Adjustments base on the date
+    they occurred.
+
+    Reporting Periods can be declared, created and managed using this class.
+    Adjustments are limited to using the Reporting Periods stored in the
+    'reporting_periods' table.
+
+    Attributes:
+
+        period_id (int): Numeric identifier of each Reporting Period.
+            Assigned by the database. Used to interact with the Reporting
+            Period in the database.
+
+        starting_date (str): The date when the Reporting Period starts.
+
+        ending_date (str): The date when the Reporting Period ends.
+
+        created_date (str): The date the Reporting Period was created in the
+            table.
+
+        modified_date (str): The date the Reporting Period was last modified.
+
+        modified_by (str): Identifier of the person who last modified the
+            Reporting Period.
 
     Initializer:
         def __init__(self, starting_date: str, ending_date: str) -> None:
 
-            Creates an instance of ReportingPeriod and assigns attributes.
-
-            Arguments:
-                starting_date (str): The date when the reporting period
-                    starts.
-
-                ending_date (str): The date when the reporting period ends.
-
-    Attributes:
-        period_id (int): Unique identifier of each reporting period.
-            Assigned by the database.
-
-        starting_date (str): The date when the reporting period starts.
-
-        ending_date (str): The date when the reporting period ends.
-
-        created_date (str): The date the reporting period was created in the
-            table.
-
-        modified_date (str): The date the reporting period was last modified.
-
-        modified_by (str): Identifier of the person who last modified the
-            reporting period.
+            Initializes an instance of a Reporting Period using the
+                ReportingPeriodBuilder.
 
     Instance Methods:
-        __repr__: Returns a string expression of the reporting period object.
+        __repr__: Returns a string expression of the Reporting Period object.
 
-        save: Saves a new reporting period to the database.
+        save: Saves a new Reporting Period to the table in the database.
 
-        update_starting_date: Updates the starting date of the period.
+        read: Returns the data of the Reporting Period as a tuple.
 
-        update_ending_date: Updates the ending date of the reporting period.
+        update: Updates the Reporting Period in the 'reporting_periods' table.
 
-        delete: Deletes the reporting period from the database.
+        return_attributes:Returns the attributes of the Reporting Period
+            Object as a tuple.
 
-        return_attributes: Returns the period's attributes as a tuple.
+        delete: Deletes the Reporting Period from the database.
     """
 
     def __init__(self, builder=None) -> None:
-        """Initializes an instance of an EventType using the EventTypeBuilder.
+        """Initializes an instance of a Reporting Period using the builder.
 
         EventTypes are complex objects with many attributes. The Builder
         Pattern was used to separate the creation of EventTypes to the
@@ -182,16 +204,16 @@ class ReportingPeriod:
         )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
-        """Saves a new reporting period to the database.
+        """Saves a new Reporting Period to the table in the database.
 
-        The save method will only write the period into the table if it does
-        not already exist. Use the update method to update the period's
+        This method will not overwrite a Reporting Period already saved in the
+        database. Use the `update()` to adjust a Reporting Period's
         attributes.
 
-        Use the date module to set the created date if it is None. Sets the
-        modified date.
+        Assigns a created_date and modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The database connection.
         """
         sql_query = """INSERT OR IGNORE INTO reporting_periods VALUES (
@@ -206,16 +228,19 @@ class ReportingPeriod:
         db_connection.write_data(sql_query, values)
 
     def read(self, db_connection: sqlite3.Connection) -> tuple:
-        """Returns the reporting period's data from the database as a tuple.
+        """Returns the data of the Reporting Period as a tuple.
 
-        This function will make no changes to the data.
+        This method makes no changes to the data.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
         Returns:
-            tuple: A tuple containing the reporting period's attribute values.
+
+            tuple: A tuple containing the Reporting Period's attribute values
+                in the order of the 'reporting_periods' table's columns.
         """
         sql_query = """SELECT * from reporting_periods WHERE period_id = ?"""
 
@@ -226,38 +251,44 @@ class ReportingPeriod:
         return data
 
     def update(self, db_connection: sqlite3.Connection) -> None:
-        """Updates the reporting period in the database.
+        """Updates the Reporting Period in the 'reporting_periods' table.
 
-        The update method will overwrite the reporting_period's data if it
-        already exists within the database. Use the save method to store new
-        reporting periods in the database.
-
-        How to use:
-            Use the reporting_periods.return_reporting_periods() method to
-            return a list of reporting periods.
-
-            Use the database.load_reporting_period() method, passing in the
-            period_id of the reporting period you wish to update.
-
-            Modify the attributes as necessary and call this method to update
-            the attributes in the database.
-
-            If you are changing the period_id use the save() method to create
-            a new reporting period entry in the table and use the delete
-            method to remove the old entry.
+        This method will overwrite the Reporting Period's data if it already
+        exists within the database. An error will be returned if the period_id
+        does not already exist in the database. Use the save method to save
+        new Reporting Periods in the database.
 
         Assigns a new modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
-            period_id (int): The numeric identifier of the reporting_period.
+            period_id (int): The numeric identifier of the Reporting Period.
 
         Raises:
 
             IndexError: An Index Error will be raised if the period_id is not
             found on the reporting_periods table.
+
+        How to use:
+
+            1. Use the `reporting_periods.return_periods()` method to return a
+            list of Reporting Periods. Identify the period_id of the period
+            you wish to update.
+
+            2. Use the database.load_reporting_period() method, passing in the
+                period_id and assigning it to a variable to create a Reporting
+                Periods Object.
+
+            3. Modify the attributes as necessary and call this method on the
+                Reporting Period Object to send the new values to the
+                database.
+
+            #! Note: If the period_id is being changed use the save() method
+            #! to create a new reporting period entry in the table and use the
+            #! delete() method to remove the old entry.
         """
         sql_query = """UPDATE reporting_periods 
             SET PERIOD_ID = ?, 
@@ -278,11 +309,12 @@ class ReportingPeriod:
         db_connection.write_data(sql_query, values)
 
     def return_attributes(self) -> tuple:
-        """Returns the attributes of the reporting period as a tuple.
+        """Returns the attributes of the Reporting Period Object as a tuple.
 
         Returns:
-            tuple: The attributes of the reporting period. Follows the order
-                of the columns in the reporting_periods table.
+
+            tuple: The attributes of the Reporting Period. Follows the order
+            of the columns in the 'reporting_periods' table.
         """
 
         return (
@@ -295,12 +327,15 @@ class ReportingPeriod:
         )
 
     def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Deletes the reporting period from the database.
+        """Deletes the Reporting Period from the database.
 
-        The delete method will delete the reporting period from the database
-        entirely. Note: This is irreversible.
+        The delete method will delete the Reporting Period from the database
+        entirely.
+
+        #! Note: Deleting an item from the database is irreversible.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """

@@ -68,7 +68,7 @@ def return_table_creation_query() -> str:
 
 
 def return_statuses(db_connection: sqlite3.Connection) -> Union[list[str], list]:
-    """Returns the statuses table as lists of strings and values.
+    """Returns the 'statuses' table as lists of strings and values.
 
     Args:
 
@@ -105,11 +105,11 @@ def parse_status_data(status_data) -> dict:
 
     Args:
 
-        status_data (list): The status data
+        status_data (list): The Status' data.
 
     Returns:
 
-        properties (dict): Dictionary objects contains the attributes of the
+        attributes (dict): Dictionary object containing the attributes of the
             status.
     """
     attributes = {}
@@ -132,7 +132,7 @@ class Status:
     used by various objects to denote their current condition.
 
     Statuses can be declared, created and managed using this class.
-    Database items are be limited to using the status stored in the 'statuses'
+    Database items are limited to using the status stored in the 'statuses'
     table.
 
     Attributes:
@@ -291,7 +291,7 @@ class Status:
                 Status Object to send the new values to the database.
 
             #! Note: If the status_code is being changed use the save() method
-            #! to create a new status entry in the table and use the delete
+            #! to create a new status entry in the table and use the delete()
             #! method to remove the old entry.
         """
         sql_query = """UPDATE statuses 
@@ -318,7 +318,7 @@ class Status:
         Returns:
 
             tuple: The attributes of the Status. Follows the order
-            of the columns in the statuses' table.
+            of the columns in the 'statuses' table.
         """
 
         return (
