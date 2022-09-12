@@ -356,9 +356,8 @@ class Adjustment:
         Returns:
 
             tuple: The attributes of the Adjustment. Follows the order of the
-                columns in the 'inventory table.
+                columns in the 'inventory` table.
         """
-
         return (
             self.adjustment_id,
             self.adjustment_date,
@@ -385,7 +384,6 @@ class Adjustment:
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """
-
         sql_query = """DELETE FROM inventory WHERE adjustment_id = ?"""
         values = (self.adjustment_id,)
         db_connection.write_data(sql_query, values)

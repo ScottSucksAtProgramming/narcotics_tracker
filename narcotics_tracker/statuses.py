@@ -1,4 +1,4 @@
-"""Contains implementation and representation of Object Statuses.
+"""Contains the implementation and representation of Object Statuses.
 
 #* Background
 
@@ -24,7 +24,7 @@ ID, code, name, description and creation / modification information specified.
 Medication objects must specify their status and are limited to the statuses 
 listed in the table.
 
-The Narcotics tracker comes with a selection of pre-defined statuses. Refer to 
+The Narcotics Tracker comes with a selection of pre-defined statuses. Refer to 
 the Standard Items Module inside the Setup Package for more information.
 
 #* Classes:
