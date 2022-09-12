@@ -273,7 +273,7 @@ class Test_EventMethods:
         test_event = test_event
 
         assert str(test_event) == (
-            f"Event Type Test Event. Code: TEST. Used for testing the " f"Event Class."
+            f"Event Test Event. Code: TEST. Used for testing the " f"Event Class."
         )
 
     def test_can_save_event_type_to_database(self, test_event, reset_database) -> None:
