@@ -1,39 +1,60 @@
-"""Contains implementation and representation of Statuses.
+"""Contains implementation and representation of Object Statuses.
 
-The status table is a vocabulary control table which stores a library of 
-different Statuses which can be used to define various item attributes within 
-the Narcotics Tracker.
+#* Background
 
-This module handles the creation of the status table, returns various 
-status data from the database and parses the raw data returned from the 
-database into a usable format. It houses the status Class which defines and 
-instantiates the status as objects.
+It is likely that information in the inventory will be changed over time. 
+Statuses were added to the Narcotics Tracker to record those changes and 
+present users with information on items which are no longer being used, or are 
+waiting for an update. An EMS agency may switch from one concentration of a 
+controlled substance medication to a different one, or track a purchase order 
+of medications through various stages. Statuses will assist the user in 
+keeping track of these changes.
 
-The Medication Module makes use of the status.
+#* Intended Use
 
-The database module contains information on communicating with the database.
+This module and the Status Class defined below allow for the creation of 
+Status Objects. It is highly recommended to use the Status Builder Module 
+contained within the Builders Package to create these objects. Instructions 
+for using builders can be found within that package.
 
-Classes:
-    status: Defines status and instantiates them as objects.
+#* Statuses in the Database
+
+Statuses are stored in the 'statuses' table of the database with their numeric 
+ID, code, name, description and creation / modification information specified. 
+Medication objects must specify their status and are limited to the statuses 
+listed in the table.
+
+The Narcotics tracker comes with a selection of pre-defined statuses. Refer to 
+the Standard Items Module inside the Setup Package for more information.
+
+#* Classes:
+
+    Status: Defines statuses and instantiates them as objects.
     
-Functions:
+#* Functions:
 
-    return_table_creation_query: Returns the query needed to create the table.
+    return_table_creation_query: Returns the query needed to create the 
+        'statuses' table.
 
-    return_status: Returns contents of status as a list of strings.
+    return_status: Returns the contents of the statuses table as lists of 
+        strings and values.
 
-    parse_status_data: Returns status data as a dictionary.
+    parse_status_data: Returns a Status's attributes from the database as a 
+        dictionary.
 """
+
 import sqlite3
+from typing import Union
 
 from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:
-    """Returns the sql query needed to create the status Table.
+    """Returns the query needed to create the 'statuses' table.
 
     Returns:
-        str: The sql query needed to create the status Table.
+
+        str: The sql query needed to create the 'statuses' table.
     """
     return """CREATE TABLE IF NOT EXISTS statuses (
             STATUS_ID INTEGER PRIMARY KEY,
@@ -46,64 +67,80 @@ def return_table_creation_query() -> str:
             )"""
 
 
-def return_statuses(db_connection: sqlite3.Connection) -> list[str]:
-    """Returns the contents of the status table as a list of strings.
+def return_statuses(db_connection: sqlite3.Connection) -> Union[list[str], list]:
+    """Returns the statuses table as lists of strings and values.
 
     Args:
+
         db_connection (sqlite3.Connection): The database connection.
 
     Returns:
-        table_contents (list[str]): The contents of the table as a list of
-            strings.
-    """
-    sql_query = """SELECT * FROM statuses"""
 
-    status_list = []
+        status_string_list (list[str]): The contents of the table as a list of
+            strings.
+
+        status_values_list (list): The contents of the table as a list of
+            values.
+    """
+    sql_query = (
+        """SELECT status_id, status_code, status_name, description FROM statuses"""
+    )
+
+    status_string_list = []
+    status_values_list = []
 
     status_data = db_connection.return_data(sql_query)
+
     for status in status_data:
-        status_list.append(
+        status_string_list.append(
             f"Status {status[0]}: {status[2]}. Code: '{status[1]}'. {status[3]}"
         )
+        status_values_list.append((status[0], status[1], status[2], status[3]))
 
-    return status_list
+    return status_string_list, status_values_list
 
 
 def parse_status_data(status_data) -> dict:
-    """Returns status data from the database as a dictionary.
+    """Returns a Status's attributes from the database as a dictionary.
 
     Args:
+
         status_data (list): The status data
 
     Returns:
-        properties (dict): Dictionary objects contains the properties of
-            the status."""
 
-    properties = {}
+        properties (dict): Dictionary objects contains the attributes of the
+            status.
+    """
+    attributes = {}
 
-    properties["status_id"] = status_data[0][0]
-    properties["status_code"] = status_data[0][1]
-    properties["status_name"] = status_data[0][2]
-    properties["description"] = status_data[0][3]
-    properties["created_date"] = status_data[0][4]
-    properties["modified_date"] = status_data[0][5]
-    properties["modified_by"] = status_data[0][6]
+    attributes["status_id"] = status_data[0][0]
+    attributes["status_code"] = status_data[0][1]
+    attributes["status_name"] = status_data[0][2]
+    attributes["description"] = status_data[0][3]
+    attributes["created_date"] = status_data[0][4]
+    attributes["modified_date"] = status_data[0][5]
+    attributes["modified_by"] = status_data[0][6]
 
-    return properties
+    return attributes
 
 
 class Status:
-    """Defines status and instantiates them as objects.
+    """Defines Statuses and instantiates them as objects.
 
-    status can be declared, created and managed using this class. Medications
-    will be limited to using the status stored in the status table.
+    This class defines Statuses within the Narcotics Tracker. Statuses are
+    used by various objects to denote their current condition.
+
+    Statuses can be declared, created and managed using this class.
+    Database items are be limited to using the status stored in the 'statuses'
+    table.
 
     Attributes:
 
-        status_id (int): Numeric identifier of each unit. Assigned by the
+        status_id (int): Numeric identifier of each Status. Assigned by the
             database.
 
-       status_code (str): Unique identifier of each unit type. Assigned by the
+        status_code (str): Unique identifier of each unit type. Assigned by the
             user. Used to interact with the unit in the database.
 
         status_code (str): Name of the unit.
@@ -121,35 +158,39 @@ class Status:
 
     Initializer:
 
+        def __init__(self, builder=None) -> None:
+
+            Initializes an instance of a Status using the StatusBuilder.
+
     Instance Methods:
-        __repr__: Returns a string expression of the unit.
+        __repr__: Returns a string expression of the Status.
 
-        save: Saves a new unit to the status table in the database.
+        save: Saves a new Status to the 'statuses' table in the database.
 
-        read: Returns the data of the unit from the database as a tuple.
+        read: Returns the data of the Status from the database as a tuple.
 
-        update: Updates the unit in the status table of the
-            database.
+        update: Updates the Status in the 'statuses' table of the database.
 
-        delete: Deletes the unit from the database.
+        return_attributes: Returns the attributes of the Status Object as a
+            tuple.
 
-        return_attributes: Returns the attributes of the status object as
-            a tuple.
+        delete: Deletes the Status from the database.
     """
 
     def __init__(self, builder=None) -> None:
-        """Initializes an instance of an Unit using the UnitBuilder.
+        """Initializes an instance of a Status using the StatusBuilder.
 
-        status are complex objects with many attributes. The Builder
+        Statuses are complex objects with many attributes. The Builder
         Pattern was used to separate the creation of status to the
         Builder Package.
 
-        Refer to the documentation for the UnitBuilder Class for more
+        Refer to the documentation for the StatusBuilder Class for more
         information.
 
         Args:
-            builder (unit_builder.UnitBuilder): The builder used to
-                construct the Unit object.
+
+            builder (status_builder.StatusBuilder): The builder used to
+                construct the Status object.
         """
         self.status_id = builder.status_id
         self.status_code = builder.status_code
@@ -160,24 +201,24 @@ class Status:
         self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
-        """Returns a string expression of the unit.
+        """
 
-        Returns:
-            str: The string describing the unit specifying the event
-                type's name, code and description.
+        Returns:Returns a string expression of the Status.
+
+            str: The string describing the Status.
         """
         return f"Status {self.status_id}: {self.status_name}. Code: '{self.status_code}'. {self.description}"
 
     def save(self, db_connection: sqlite3.Connection) -> None:
-        """Saves a new unit to the status table in the database.
+        """Saves a new Status to the 'statuses' table in the database.
 
-        The save method will only write the unit into the table if it does
-        not already exist. Use the update method to update the unit's
-        attributes.
+        This method will not overwrite a Status already saved in the database.
+        Use the `update()` to adjust a Status's attributes.
 
         Assigns a created_date and modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The database connection.
         """
         sql_query = """INSERT OR IGNORE INTO statuses VALUES (
@@ -192,16 +233,19 @@ class Status:
         db_connection.write_data(sql_query, values)
 
     def read(self, db_connection: sqlite3.Connection) -> tuple:
-        """Returns the data of the unit from the database as a tuple.
+        """Returns the data of the Status from the database as a tuple.
 
-        This function will make no changes to the data.
+        This method makes no changes to the data.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
         Returns:
-            tuple: A tuple containing the unit's attribute values.
+
+            tuple: A tuple containing the Status's attribute values in the
+                order of the table's columns.
         """
         sql_query = """SELECT * from statuses WHERE status_code = ?"""
 
@@ -212,38 +256,43 @@ class Status:
         return data
 
     def update(self, db_connection: sqlite3.Connection) -> None:
-        """Updates the unit in the status table of the database.
+        """Updates the Status in the 'statuses' table of the database.
 
-        The update method will overwrite the unit's data if it already
-        exists within the database. Use the save method to store new
-        status in the database.
-
-        How to use:
-            Use the status.return_status() method to return a list
-            of status.
-
-            Use the database.load_unit() method, passing in the
-            status_code of the unit you wish to update.
-
-            Modify the attributes as necessary and call this method to update
-            the attributes in the database.
-
-            If you are changing the status_code use the save() method to create
-            a new unit entry in the table and use the delete method to
-            remove the old entry.
+        This method will overwrite the Status's data if it already exists within
+        the database. An error will be returned if the Status_id does not
+        already exist in the database. Use the save method to save new
+        statuses in the database.
 
         Assigns a new modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
-            status_code (str): The unique identifier of the unit.
+            status_code (str): The unique identifier of the Status.
 
         Raises:
 
             IndexError: An Index Error will be raised if the status_code is not
-            found on the status table.
+            found on the statuses table.
+
+        How to use:
+
+            1. Use the `statuses.return_status()` method to return a list of
+                statuses. Identify the status_code of the status you wish to
+                update.
+
+            2. Use the database.load_status() method, passing in the
+                status_code and assigning it to a variable to create a Status
+                Object.
+
+            3. Modify the attributes as necessary and call this method on the
+                Status Object to send the new values to the database.
+
+            #! Note: If the status_code is being changed use the save() method
+            #! to create a new status entry in the table and use the delete
+            #! method to remove the old entry.
         """
         sql_query = """UPDATE statuses 
             SET status_id = ?, 
@@ -264,11 +313,12 @@ class Status:
         db_connection.write_data(sql_query, values)
 
     def return_attributes(self) -> tuple:
-        """Returns the attributes of the status object as a tuple.
+        """Returns the attributes of the Status Object as a tuple.
 
         Returns:
-            tuple: The attributes of the status. Follows the order
-            of the columns in the status table.
+
+            tuple: The attributes of the Status. Follows the order
+            of the columns in the statuses' table.
         """
 
         return (
@@ -282,12 +332,15 @@ class Status:
         )
 
     def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Deletes the unit from the database.
+        """Deletes the Status from the database.
 
-        The delete method will delete the unit from the database
-        entirely. Note: This is irreversible.
+        The delete method will delete the Status from the database
+        entirely.
+
+        #! Note: Deleting an item from the database is irreversible.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """

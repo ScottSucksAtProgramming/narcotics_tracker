@@ -47,12 +47,15 @@ the Unit Converter can be found within that module.
     #! between Grams, milligrams, and micrograms. This will be reviewed in a 
     #! later update.
 
-#* Units in the Database.
+#* Units in the Database
 
 Units are stored within the 'units' table of the database with their numeric 
 ID, name, code, and creation / modification information specified. Medication 
 objects must specify their preferred unit and are limited to the units listed 
 in the units table.
+
+The Narcotics Tracker comes with a selection of pre-defined units. Refer to 
+the Standard Items Module inside the Setup Package for more information.
 
 #* Classes:
 
@@ -60,7 +63,8 @@ in the units table.
     
 #* Functions:
 
-    return_table_creation_query: Returns the query needed to create the table.
+    return_table_creation_query: Returns the query needed to create the 
+        'units' table.
 
     return_units: Returns the contents of the units table as lists of strings 
         and values.
@@ -69,19 +73,18 @@ in the units table.
         dictionary.
 """
 
-from typing import Union
-
 import sqlite3
+from typing import Union
 
 from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:
-    """Returns the sql query needed to create the Units Table.
+    """Returns the query needed to create the 'units' table.
 
     Returns:
 
-        str: The sql query needed to create the Units Table.
+        str: The sql query needed to create the 'units' Table.
     """
     return """CREATE TABLE IF NOT EXISTS units (
             UNIT_ID INTEGER PRIMARY KEY,
@@ -104,7 +107,7 @@ def return_units(db_connection: sqlite3.Connection) -> Union[list[str], list]:
 
         units_string_list (list): The Units in the table as a list of strings.
 
-        units_values_list
+        units_values_list (list ): The Units in the table as a list of values.
     """
     sql_query = """SELECT unit_id, unit_code, unit_name FROM units"""
 
@@ -134,19 +137,19 @@ def parse_unit_data(unit_data) -> dict:
 
     Returns:
 
-        properties (dict): Dictionary objects contains the properties of
-            the unit."""
+        attributes (dict): Dictionary objects contains the attributes of
+            the unit.
+    """
+    attributes = {}
 
-    properties = {}
+    attributes["unit_id"] = unit_data[0][0]
+    attributes["unit_code"] = unit_data[0][1]
+    attributes["unit_name"] = unit_data[0][2]
+    attributes["created_date"] = unit_data[0][3]
+    attributes["modified_date"] = unit_data[0][4]
+    attributes["modified_by"] = unit_data[0][5]
 
-    properties["unit_id"] = unit_data[0][0]
-    properties["unit_code"] = unit_data[0][1]
-    properties["unit_name"] = unit_data[0][2]
-    properties["created_date"] = unit_data[0][3]
-    properties["modified_date"] = unit_data[0][4]
-    properties["modified_by"] = unit_data[0][5]
-
-    return properties
+    return attributes
 
 
 class Unit:
@@ -165,7 +168,7 @@ class Unit:
         unit_id (int): Numeric identifier of each unit. Assigned by the
             database.
 
-       unit_code (str): Unique identifier of each unit type. Assigned by the
+        unit_code (str): Unique identifier of each unit type. Assigned by the
             user. Used to interact with the unit in the database.
 
 
@@ -197,10 +200,10 @@ class Unit:
         update: Updates the unit in the units table of the
             database.
 
-        delete: Deletes the unit from the database.
+        return_attributes: Returns the attributes of the units object as a
+            tuple.
 
-        return_attributes: Returns the attributes of the units object as
-            a tuple.
+        delete: Deletes the unit from the database.
     """
 
     def __init__(self, builder=None) -> None:
@@ -214,6 +217,7 @@ class Unit:
         information.
 
         Args:
+
             builder (unit_builder.UnitBuilder): The builder used to
                 construct the Unit object.
         """
@@ -225,11 +229,11 @@ class Unit:
         self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
-        """Returns a string expression of the unit.
+        """Returns a string expression of the Unit.
 
         Returns:
-            str: The string describing the unit specifying the event
-                type's name, code and description.
+
+            str: The string describing the Unit.
         """
         return (
             f"Unit Number {self.unit_id}: {self.unit_name}. Code: '{self.unit_code}'."
@@ -336,11 +340,11 @@ class Unit:
         db_connection.write_data(sql_query, values)
 
     def return_attributes(self) -> tuple:
-        """Returns the attributes of the units object as a tuple.
+        """Returns the attributes of the Units object as a tuple.
 
         Returns:
 
-            tuple: The attributes of the units. Follows the order
+            tuple: The attributes of the Units. Follows the order
             of the columns in the units table.
         """
         return (
@@ -353,9 +357,9 @@ class Unit:
         )
 
     def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Deletes the unit from the database.
+        """Deletes the Unit from the database.
 
-        The delete method will delete the unit from the database
+        The delete method will delete the Unit from the database
         entirely.
 
         #! Note: Deleting an item from the database is irreversible.
