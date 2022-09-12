@@ -174,7 +174,7 @@ def return_preferred_unit(
 class Medication:
     """Defines Medications and instantiates them as objects.
 
-    This call defines Medications within the Narcotics Tracker. They
+    This class defines Medications within the Narcotics Tracker. Their
     attributes are used to calculate the amounts of each Medication in the
     inventory.
 
@@ -275,6 +275,7 @@ class Medication:
         """Returns a string expression of the Medication Object.
 
         Returns:
+
             str: The string describing the Medication Object.
         """
 
@@ -335,9 +336,8 @@ class Medication:
 
         This method will overwrite the Medication's data if it already exists
         within the database. An error will be returned if the medication_code
-        does
-        not already exist in the database. Use the save method to save new
-        Medications in the database.
+        does not already exist in the database. Use the save method to save
+        new Medications in the database.
 
         Assigns a new modified_date.
 

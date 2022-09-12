@@ -1,27 +1,41 @@
 """Contains the implementation and representation of inventory adjustments.
 
+#* Background
+
 The inventory table is the main table used in the Narcotics Tracker. It stores 
-Adjustments which are the specific events that make changes to the inventory, 
-such as administration to a patient or sending drugs to a reverse distributor 
-for destruction.
+Adjustments which are the specific events that make changes to the amount of 
+controlled substances in the inventory, such as administration to a patient or 
+sending drugs to a reverse distributor for destruction.
 
 Multiple modules including Event Types, Medication, and the Database module 
 will interact heavily with this table.
 
-This module handles the creation of the inventory table. The Adjustment class 
-defines the representation of the inventory adjustments.
+#* Intended Use
 
-See the database module for information on interacting with the database.
+This module and the Adjustment Class defined below allow for the creation of 
+Adjustment Objects. It is highly recommended to use the Adjustment Builder 
+Module contained within the Builders Package to create these objects. 
+Instructions for using builders can be found within that package.
 
-Classes:
+#* Adjustments in the Database
 
-    Adjustment: Defines the events that adjust the inventory amounts.
+Adjustments are stored in the 'inventory' table of the database with their 
+numeric id, adjustment date, event code, medication code, amount, 
+reporting period, reference id, and creation / modification information 
+specified. Reports will make use of Adjustment's in the table to calculate 
+medication amount on hand and print out various information for reporting to 
+oversight organization.
 
-Functions:
+#* Classes:
 
-    return_table_creation_query: Returns query to create the inventory table.
+    Adjustment: Defines Inventory Adjustments and instantiates them as objects.
 
-    parse_adjustment_data: Returns adjustment data as dictionary.
+#* Functions:
+
+    return_table_creation_query: Returns the query needed to create the 
+        'inventory' table.
+
+    parse_adjustment_data: Returns an Adjustment's attributes as a dictionary.
 """
 
 import sqlite3
@@ -30,7 +44,12 @@ from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:
-    """Returns the sql query needed to create the inventory table."""
+    """Returns the query needed to create the 'inventory' table.
+
+    Returns:
+
+        str: The sql query needed to create the 'inventory' table.
+    """
     return """CREATE TABLE IF NOT EXISTS inventory (
             ADJUSTMENT_ID INTEGER PRIMARY KEY,
             ADJUSTMENT_DATE INTEGER,
@@ -49,52 +68,108 @@ def return_table_creation_query() -> str:
 
 
 def parse_adjustment_data(adjustment_data) -> dict:
-    """Returns adjustment data from the database as a dictionary.
+    """Returns an Adjustment's attributes as a dictionary.
 
     Args:
-        adjustment_data (list): The adjustment's attributes
+
+        adjustment_data (list): The Adjustment's data.
 
     Returns:
-        properties (dict): Dictionary objects contains the properties of
-            the adjustment."""
 
-    properties = {}
+        attributes (dict): Dictionary object containing the attributes of the
+            Adjustment.
+    """
+    attributes = {}
 
-    properties["adjustment_id"] = adjustment_data[0][0]
-    properties["adjustment_date"] = adjustment_data[0][1]
-    properties["event_code"] = adjustment_data[0][2]
-    properties["medication_code"] = adjustment_data[0][3]
-    properties["amount_in_mcg"] = adjustment_data[0][4]
-    properties["reporting_period_id"] = adjustment_data[0][5]
-    properties["reference_id"] = adjustment_data[0][6]
-    properties["created_date"] = adjustment_data[0][7]
-    properties["modified_date"] = adjustment_data[0][8]
-    properties["modified_by"] = adjustment_data[0][9]
+    attributes["adjustment_id"] = adjustment_data[0][0]
+    attributes["adjustment_date"] = adjustment_data[0][1]
+    attributes["event_code"] = adjustment_data[0][2]
+    attributes["medication_code"] = adjustment_data[0][3]
+    attributes["amount_in_mcg"] = adjustment_data[0][4]
+    attributes["reporting_period_id"] = adjustment_data[0][5]
+    attributes["reference_id"] = adjustment_data[0][6]
+    attributes["created_date"] = adjustment_data[0][7]
+    attributes["modified_date"] = adjustment_data[0][8]
+    attributes["modified_by"] = adjustment_data[0][9]
 
-    return properties
+    return attributes
 
 
 class Adjustment:
-    """Defines the representation of inventory changes.
+    """Defines Inventory Adjustments and instantiates them as objects.
 
-    Event Types have been declared in the events module and EventTypes
-    class. Take a look at those items for information on created and declaring
-    new event types.
+    This class defines Adjustments within the Narcotics Tracker. Adjustments
+    are the individual entries which change the amount of medication in the
+    inventory.
 
-    This Adjustment class handles the creation and management of the specific
-    adjustments that change the stock. All of these adjustments will live
-    within the inventory table. Each adjustment specifies the specific medication
-    which was adjusted using it's code, the amount of medication which was
-    changed (in the preferred unit) and which adjustment occurred.
+    Adjustments can be declared, created and managed using this class. They
+    are stored in the 'inventory' table.
+
+    Initializer:
+
+        def __init__(self, builder=None) -> None:
+
+            Initializes an instance of an Adjustment using the builder.
+
+    Attributes:
+
+        adjustment_id (int): The numeric identifier of the Adjustment in the
+            database. Assigned by the database.
+
+        adjustment_date (int): The date on which the adjustment occurred.
+
+        event_code (str): The unique event_code of the adjustment.
+
+        medication_code (str): The unique medication_code of the medication
+            which was effected by the adjustment.
+
+        adjustment_amount (float): The amount of medication changed in this
+            adjustment.
+
+        reference_id (str): The identifier of the reference material which
+            contains additional information regarding the adjustment.
+
+        created_date (str): The date the Adjustment was created in the
+            table.
+
+        modified_date (str): The date the Adjustment was last modified.
+
+        modified_by (str): Identifier of the person who last modified the
+            Adjustment.
+
+    Instance Methods:
+
+        __repr__: Returns a string expression of the Adjustment Object.
+
+        save: Saves a new Adjustment to the table in the database.
+
+        read: Returns the data of the Adjustment as a tuple.
+
+        update: Updates the Adjustment in the 'inventory' table.
+
+        check_and_convert_amount_in_mcg: Checks if the event operator was
+            changed and updates the amount.
+
+        return_attributes: Returns the attributes of the Adjustment Object as
+            a tuple.
+
+        delete: Deletes the Adjustment from the database.
     """
 
     def __init__(self, builder=None) -> None:
-        """Initializes the adjustment object using the AdjustmentBuilder.
+        """Initializes an instance of an Adjustment using the builder.
 
-        Adjustments have a handful of attributes and require combining data
-        from multiple tables. The Builder Pattern will allow for an easier to
-        understand step-wise approach to building these objects. Refer to the
-        documentation for the AdjustmentBuilder for more information.
+        Adjustments are complex objects with many attributes. The Builder
+        Pattern was used to separate the creation of Adjustments to the Builder
+        Package.
+
+        Refer to the documentation for the AdjustmentBuilder Class for more
+        information.
+
+        Args:
+
+            builder (adjustment_builder.AdjustmentBuilder): The builder used
+                to construct the Adjustment Object.
         """
         self.database_connection = builder.database_connection
         self.adjustment_id = builder.adjustment_id
@@ -110,10 +185,11 @@ class Adjustment:
         self.modified_by = builder.modified_by
 
     def __repr__(self) -> str:
-        """Returns a string expression of the adjustment object.
+        """Returns a string expression of the Adjustment Object.
 
         Returns:
-            str: The string describing the adjustment object
+
+            str: The string describing the Adjustment Object.
         """
         with database.Database("inventory.db") as db:
 
@@ -140,17 +216,16 @@ class Adjustment:
             )
 
     def save(self, db_connection: sqlite3.Connection) -> None:
-        """Saves a new adjustment to the database.
+        """Saves a new Adjustment to the table in the database.
 
-        The save method will only write the adjustment into the table if it
-        does not already exist. Use the update methods to update the
-        adjustment's attributes.
+        This method will not overwrite a Adjustment already saved in the
+        database. Use the `update()` to adjust a Adjustment's attributes.
 
-        Sets created date if created date is None.
+        Assigns a created_date and modified_date.
 
         Args:
-            db_connection (sqlite3.Connection): The connection to the
-                database.
+
+            db_connection (sqlite3.Connection): The database connection.
         """
 
         sql_query = """INSERT OR IGNORE INTO inventory VALUES (
@@ -165,16 +240,19 @@ class Adjustment:
         db_connection.write_data(sql_query, values)
 
     def read(self, db_connection: sqlite3.Connection) -> tuple:
-        """Returns the data of the adjustment from the database as a tuple.
+        """Returns the data of the Adjustment as a tuple.
 
-        This function will make no changes to the data.
+        This method makes no changes to the data.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
         Returns:
-            tuple: A tuple containing the adjustment's attribute values.
+
+            tuple: A tuple containing the Adjustment's attribute values
+                in the order of the 'inventory' table's columns.
         """
         sql_query = """SELECT * from inventory WHERE adjustment_id = ?"""
 
@@ -185,33 +263,41 @@ class Adjustment:
         return data
 
     def update(self, db_connection: sqlite3.Connection) -> None:
-        """Updates the adjustment in the inventory table of the database.
+        """Updates the Adjustment in the 'inventory' table.
 
-        The update method will overwrite the adjustment's data if it already
-        exists within the database. Use the save method to store new
-        adjustments in the database.
-
-        How to use:
-            Use the inventory.return_adjustment() method to return a list
-            of adjustments.
-
-            Use the database.load_adjustment() method, passing in the
-            adjustment_id of the adjustment you wish to update.
-
-            Modify the attributes as necessary and call this method to update
-            the attributes in the database.
-
-            If you are changing the adjustment_id use the save() method to
-            create a new adjustment entry in the table and use the delete
-            method to remove the old entry.
+        This method will overwrite the Adjustment's data if it already exists
+        within the database. An error will be returned if the adjustment_id
+        does not already exist in the database. Use the save method to save
+        new Adjustments in the database.
 
         Assigns a new modified_date.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
             database.
 
-            adjustment_id (str): The numeric identifier of the adjustment.
+        Raises:
+
+            IndexError: An Index Error will be raised if the adjustment_code
+            is not found on the inventory table.
+
+        How to use:
+
+            1. Use the `inventory.return_adjustments()` method to return a
+                list of adjustments. Identify the adjustment_id of the
+                Adjustment you wish to update.
+
+            2. Use the database.load_adjustment() method, passing in the
+                adjustment_id and assigning it to a variable to create a
+                Adjustment Object.
+
+            3. Modify the attributes as necessary and call this method on the
+                Adjustment Object to send the new values to the database.
+
+            #! Note: If the adjustment_id is being changed use the save()
+            #! method to create a new adjustment entry in the table and use
+            #! the delete() method to remove the old entry.
         """
         sql_query = """UPDATE inventory 
             SET ADJUSTMENT_ID = ?, 
@@ -236,12 +322,18 @@ class Adjustment:
 
         db_connection.write_data(sql_query, values)
 
-    def check_and_convert_amount_in_mcg(self, db_connection) -> None:
+    def check_and_convert_amount_in_mcg(
+        self, db_connection: sqlite3.Connection
+    ) -> None:
         """Checks if the event operator was changed and updates the amount.
 
         This method is called when an Adjustment is updated. It pulls the
         original operator from the events table, compares it to the new
         operator. If they are different the amount is adjusted appropriately.
+
+        Args:
+
+        db_connection (sqlite3.Connection): The database connection.
         """
         old_event_code = db_connection.return_data(
             f"""SELECT event_code FROM inventory WHERE adjustment_id='{self.adjustment_id}'"""
@@ -259,11 +351,12 @@ class Adjustment:
             self.amount_in_mcg = self.amount_in_mcg * -1
 
     def return_attributes(self) -> tuple:
-        """Returns the attributes of the medication as a tuple.
+        """Returns the attributes of the Adjustment Object as a tuple.
 
-        Returns:-10
-            tuple: The attributes of the medication. Follows the order of the
-                columns in the medication table.
+        Returns:
+
+            tuple: The attributes of the Adjustment. Follows the order of the
+                columns in the 'inventory table.
         """
 
         return (
@@ -280,12 +373,15 @@ class Adjustment:
         )
 
     def delete(self, db_connection: sqlite3.Connection) -> None:
-        """Delete the adjustment from the database.
+        """Deletes the Adjustment from the database.
 
-        The delete will delete the adjustment from the database entirely.
-        Note: This is irreversible.
+        The delete method will delete the Adjustment from the database
+        entirely.
+
+        #! Note: Deleting an item from the database is irreversible.
 
         Args:
+
             db_connection (sqlite3.Connection): The connection to the
                 database.
         """

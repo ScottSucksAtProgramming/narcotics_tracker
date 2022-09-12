@@ -83,7 +83,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         build(): Returns the Adjustment object. Assigns the Adjustment's
             properties.
 
-        set_adjustment_date(): ets the date which the adjustment occurred.
+        set_adjustment_date(): Sets the date which the adjustment occurred.
 
         set_event_code(): Sets the unique event_code of the adjustment.
 
@@ -93,8 +93,8 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         set_adjustment_amount(): Sets the amount of medication changed in this
             adjustment.
 
-        set_reference_id(): Sets the identifier of the user who created the
-            adjustment.
+        set_reference_id(): Sets the identifier of the reference material
+            which contains additional information regarding the adjustment.
 
         set_modified_by(): Sets the identifier of the user who created the
             adjustment.
