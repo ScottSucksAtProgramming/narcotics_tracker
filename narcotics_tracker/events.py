@@ -9,7 +9,7 @@ require an event to be specified.
 
 #* Intended Use
 
-The module and the Events class defined below allow for the creation of Event 
+The module and the Event class defined below allow for the creation of Event 
 Objects. It is highly recommended to use the Event Builder Module contained 
 within the Builders Package to create these objects. Instructions for using 
 builders can be found within that package.
