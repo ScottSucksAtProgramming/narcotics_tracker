@@ -403,7 +403,7 @@ class Test_MedicationMethods:
 
             test_medication = test_medication
             test_medication.save(db)
-            test_medication.update(db, test_medication.medication_code)
+            test_medication.update(db)
 
             data = test_medication.read(db)[0]
         expected = [
@@ -470,10 +470,10 @@ class Test_MedicationMethods:
             med_code = "Un-69420-9001"
             loaded_med = db.load_medication(med_code)
             loaded_med.status = "Active"
-            loaded_med.update(db, med_code)
+            loaded_med.update(db)
 
             data = db.return_data(
-                """SELECT status FROM medications WHERE MEDICATION_CODE=(?)""",
+                """SELECT status FROM medications WHERE medication_code=(?)""",
                 [med_code],
             )
 
