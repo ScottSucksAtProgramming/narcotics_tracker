@@ -13,15 +13,52 @@ Classes:
     Database: Interacts with the SQLite3 database.
 """
 
+
 import os
-from typing import TYPE_CHECKING
 import sqlite3
 
-from narcotics_tracker import medication
-from narcotics_tracker.builders import medication_builder
+from narcotics_tracker import (
+    containers,
+    events,
+    inventory,
+    medications,
+    reporting_periods,
+    statuses,
+    units,
+)
+from narcotics_tracker.builders import (
+    adjustment_builder,
+    container_builder,
+    event_builder,
+    medication_builder,
+    reporting_period_builder,
+    status_builder,
+    unit_builder,
+)
 
-if TYPE_CHECKING:
-    from narcotics_tracker import medication
+
+def return_datetime(string_date_time: str = None) -> int:
+    """Returns current local date time as unixepoch formatted integer."""
+    with Database("inventory.db") as db:
+
+        sql_query = """SELECT unixepoch();"""
+
+        if string_date_time:
+            sql_query = f"""SELECT unixepoch('{string_date_time}');"""
+
+        data = db.return_data(sql_query)[0][0]
+
+    return data
+
+
+def format_datetime_from_unixepoch(unix_date_time: int) -> str:
+    """Formats a unixepoch datetime to readable format."""
+    with Database("test_database.db") as db:
+
+        sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
+        values = [unix_date_time]
+
+        return db.return_data(sql_query, values)[0][0]
 
 
 class Database:
@@ -56,27 +93,35 @@ class Database:
 
     """
 
-    def __init__(self) -> None:
-        """Initializes the database object and sets connection to None."""
-        self.database_connection = None
+    def __init__(self, filename: str = "inventory.db") -> None:
+        """Initializes the database object and sets it's connection to None.
 
-    def connect(self, database_file: str) -> sqlite3.Connection:
-        """Creates a connection to the database.
+        Sets the connection to None. Sets the filename to the passed filename.
 
         Args:
-            database_file (str): The database file located in the data/
-                directory.
+            filename (str): the filename of the database the object will
+                connect to.
+        """
+        self.connection = None
+        self.filename = filename
+
+    def __enter__(self) -> "Database":
+        """Creates a connection to the database and returns the cursor.
 
         Returns:
-            database_connection (sqlite3.Connection): The connection to the
-                database.
+            sqlite3.cursor: The cursor object which executes sql queries.
         """
         try:
-            self.database_connection = sqlite3.connect("data/" + database_file)
+            self.connection = sqlite3.connect("data/" + self.filename)
         except sqlite3.Error as e:
+            print("Database connection error.")
             print(e)
+        finally:
+            return self
 
-        return self.database_connection
+    def __exit__(self, type, value, traceback) -> None:
+        """Closes the database connection."""
+        self.connection.close()
 
     def delete_database(self, database_file: str) -> None:
         """Deletes a database from the data/ directory.
@@ -86,10 +131,8 @@ class Database:
                 directory.
         """
         try:
-            self.database_connection.close()
             os.remove("data/" + database_file)
-            self.database_connection = None
-        except sqlite3.Error as e:
+        except Exception as e:
             print(e)
 
     def create_table(self, sql_query: str) -> None:
@@ -99,7 +142,7 @@ class Database:
             sql_query (str): The SQL query to create the table. i.e.
                 "CREATE TABLE table_name (column_name column_type)"
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
 
     def return_table_names(self) -> list:
@@ -108,7 +151,7 @@ class Database:
         Returns:
             table_list (list): The list of tables in the database.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(
             """SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name"""
         )
@@ -123,7 +166,7 @@ class Database:
             sql_query (str): The SQL query to return the column names. i.e.
                 'SELECT * FROM table_name'
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
         return [description[0] for description in cursor.description]
 
@@ -134,9 +177,9 @@ class Database:
             sql_query (str): The SQL query to delete the table. i.e. DROP
                 TABLE IF EXISTS table_name
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
-        self.database_connection.commit()
+        self.connection.commit()
 
     def update_table(self, sql_query: str) -> None:
         """Updates a table using the ALTER TABLE statement.
@@ -150,9 +193,9 @@ class Database:
             Rename Column: ALTER TABLE table_name RENAME COLUMN column_name
                 TO new_column_name
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query)
-        self.database_connection.commit()
+        self.connection.commit()
 
     def return_data(self, sql_query: str, values: list = None) -> list:
         """Returns queried data as a list.
@@ -166,7 +209,7 @@ class Database:
         Returns:
             data (list): The data returned from the query.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         if values is None:
             cursor.execute(sql_query)
         else:
@@ -182,9 +225,9 @@ class Database:
 
             values (list): The values to be passed to the query.
         """
-        cursor = self.database_connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(sql_query, values)
-        self.database_connection.commit()
+        self.connection.commit()
 
     @staticmethod
     def created_date_is_none(object) -> bool:
@@ -201,7 +244,7 @@ class Database:
         else:
             return False
 
-    def load_medication(self, code: str) -> "medication.Medication":
+    def load_medication(self, code: str) -> "medications.Medication":
         """Create a medication object from data in the database.
 
         Args:
@@ -210,14 +253,156 @@ class Database:
         Returns:
             medication (medication.Medication): The medication object.
         """
-        sql_query = """SELECT * FROM medication WHERE CODE = ?"""
+        sql_query = """SELECT * FROM medications WHERE MEDICATION_CODE = ?"""
         values = (code,)
 
         result = self.return_data(sql_query, values)
-        medication_data = medication.parse_medication_data(result)
+        medication_data = medications.parse_medication_data(result)
 
         med_builder = medication_builder.MedicationBuilder()
-        med_builder.set_all_properties(medication_data)
+        med_builder.assign_all_attributes(medication_data)
         loaded_med = med_builder.build()
 
         return loaded_med
+
+    def load_event(self, event_code: str) -> "events.Event":
+        """Create an Event object from data in the database.
+
+        Args:
+            event_code (str): The event_code of the Event to be loaded.
+
+        Returns:
+            event (event_types.Event): The Event object.
+        """
+        sql_query = """SELECT * FROM events WHERE event_code = ?"""
+        values = (event_code,)
+
+        result = self.return_data(sql_query, values)
+        event_data = events.parse_event_data(result)
+
+        e_builder = event_builder.EventBuilder()
+        e_builder.assign_all_attributes(event_data)
+        loaded_med = e_builder.build()
+
+        return loaded_med
+
+    def load_reporting_period(
+        self, period_id: int
+    ) -> "reporting_periods.ReportingPeriod":
+        """Create a ReportingPeriod object from data in the database.
+
+        Args:
+            period_id (int): The numeric identifier of the ReportingPeriod to
+                be loaded.
+
+        Returns:
+            loaded_period (reporting_periods.ReportingPeriod): The
+                ReportingPeriod object.
+        """
+        sql_query = """SELECT * FROM reporting_periods WHERE period_id = ?"""
+        values = (period_id,)
+
+        result = self.return_data(sql_query, values)
+        period_data = reporting_periods.parse_reporting_period_data(result)
+
+        period_builder = reporting_period_builder.ReportingPeriodBuilder()
+        period_builder.assign_all_attributes(period_data)
+        loaded_period = period_builder.build()
+
+        return loaded_period
+
+    def load_adjustment(
+        self, adjustment_id: int, db_connection: sqlite3.Connection
+    ) -> "inventory.Adjustment":
+        """Create an Adjustment object from data in the database.
+
+        Args:
+            adjustment_id (int): The numeric identifier of the Adjustment to
+                be loaded.
+
+            db_connection (sqlite3.Connection): Connection to the database.
+
+        Returns:
+            loaded_adjustment (inventory.Adjustment): The
+                Adjustment object.
+        """
+        sql_query = """SELECT * FROM inventory WHERE adjustment_id = ?"""
+        values = (adjustment_id,)
+
+        result = self.return_data(sql_query, values)
+        adjustment_data = inventory.parse_adjustment_data(result)
+
+        adj_builder = adjustment_builder.AdjustmentBuilder(db_connection)
+        adj_builder.assign_all_attributes(adjustment_data)
+        loaded_adjustment = adj_builder.build()
+
+        return loaded_adjustment
+
+    def load_unit(self, unit_code: str) -> "units.Unit":
+        """Create an Unit object from data in the database.
+
+        Args:
+            unit_id (str): The numeric identifier of the Unit to
+                be loaded.
+
+        Returns:
+            loaded_unit (units.Unit): The
+                Unit object.
+        """
+        sql_query = """SELECT * FROM units WHERE unit_code = ?"""
+        values = (unit_code,)
+
+        result = self.return_data(sql_query, values)
+        unit_data = units.parse_unit_data(result)
+
+        unt_builder = unit_builder.UnitBuilder()
+        unt_builder.assign_all_attributes(unit_data)
+        loaded_unit = unt_builder.build()
+
+        return loaded_unit
+
+    def load_status(self, status_code: str) -> "statuses.status":
+        """Create an status object from data in the database.
+
+        Args:
+            status_id (str): The numeric identifier of the status to
+                be loaded.
+
+        Returns:
+            loaded_status (statuses.status): The
+                status object.
+        """
+        sql_query = """SELECT * FROM statuses WHERE status_code = ?"""
+        values = (status_code,)
+
+        result = self.return_data(sql_query, values)
+        status_data = statuses.parse_status_data(result)
+
+        unt_builder = status_builder.StatusBuilder()
+        unt_builder.assign_all_attributes(status_data)
+        loaded_status = unt_builder.build()
+
+        return loaded_status
+
+    def load_container(self, container_code: str) -> "containers.Container":
+        """Create a container object from data in the database.
+
+        Args:
+            container_code (str): The unique identifier of the container to
+                be loaded.
+
+        Returns:
+            loaded_container (containers.Container): The
+                container object.
+        """
+        sql_query = """SELECT * FROM containers WHERE container_code = ?"""
+        values = (container_code,)
+
+        result = self.return_data(sql_query, values)
+        container_data = containers.parse_container_data(result)
+
+        cont_builder = container_builder.ContainerBuilder()
+        cont_builder.assign_all_attributes(container_data)
+        loaded_container = cont_builder.build()
+
+        return loaded_container

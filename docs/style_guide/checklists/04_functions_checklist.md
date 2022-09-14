@@ -27,3 +27,25 @@
 
 ## Contents
 * [ ] Function definitions use type declarations when possible.
+
+## Examples / Templates
+
+### Docstring Template
+```python
+"""Summary line. Does this; Returns that.
+
+Explanation paragraph as necessary.
+
+How To Use:
+    Paragragh explaing how to use the function / method if necessary. 
+
+Args:
+    argument1 (type): Explanation of argument.
+
+    argument2 (type): Explanation of argument.
+  
+Returns:
+    result (type): Explanation of returned data.
+"""
+```
+  

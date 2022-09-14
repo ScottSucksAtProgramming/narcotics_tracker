@@ -1,9 +1,8 @@
-"""Contains the UnitConverter class which converts between units.
+"""Assists in converting medications between different units of measurement.
 
 Classes:
     UnitConverter: Converts between different units of measurement.
 """
-from narcotics_tracker.enums.units import Unit
 
 
 class UnitConverter:
@@ -15,25 +14,27 @@ class UnitConverter:
         to_G: Converts from a specified unit to grams.
     """
 
-    def to_mcg(amount: float, unit: Unit) -> float:
+    def to_mcg(amount: float, starting_unit: str) -> float:
         """Converts from a specified unit to micrograms.
 
         Args:
             amount (float): The amount to convert.
 
+            unit
+
         Returns:
             amount (float): The amount converted to micrograms.
         """
-        if unit == Unit.MG.value:
+        if starting_unit == "mg":
             return amount * 10**3
 
-        elif unit == Unit.G.value:
+        elif starting_unit == "g":
             return amount * 10**6
 
-        elif unit == Unit.MCG.value:
+        elif starting_unit == "mcg":
             return amount
 
-    def to_mg(amount: float, unit: Unit) -> float:
+    def to_mg(amount: float, starting_unit: str) -> float:
         """Converts from a specified unit to milligrams.
 
         Args:
@@ -42,16 +43,16 @@ class UnitConverter:
         Returns:
             float: The amount converted to milligrams.
         """
-        if unit == Unit.G.value:
+        if starting_unit == "g":
             return amount * 10**3
 
-        elif unit == Unit.MCG.value:
+        elif starting_unit == "mcg":
             return amount / 10**3
 
-        elif unit == Unit.MG.value:
+        elif starting_unit == "mg":
             return amount
 
-    def to_G(amount: float, unit: Unit) -> float:
+    def to_G(amount: float, starting_unit: str) -> float:
         """Converts from a specified unit to grams.
 
         Args:
@@ -60,11 +61,11 @@ class UnitConverter:
         Returns:
             float: The amount converted to Grams.
         """
-        if unit == Unit.MG.value:
+        if starting_unit == "mg":
             return amount / 10**3
 
-        elif unit == Unit.MCG.value:
+        elif starting_unit == "mcg":
             return amount / 10**6
 
-        elif unit == Unit.G.value:
+        elif starting_unit == "g":
             return amount

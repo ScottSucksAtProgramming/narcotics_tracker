@@ -79,20 +79,24 @@ There are a bunch of requirements outlined above which can be broken down a few 
     2. The creation of a Reporting Period class to handle reporting periods.
     3. The ability for reporting periods to be created, read, updated, and deleted from the table.
 
-### Event Class
-    1. The creation of an Event Class to handle the actual events as objects.
-    2. The ability for users to create new events, specify their details, and save them into the Inventory Table.
+### EventType Class
+    1. The creation of an EventTypes Class to handle the actual events as objects.
+    2. The ability for users to create new event types, specify their details, and save them into the Event Types Table.
     3. The ability for users to read and update events already saved in the table.
-    4. The ability for users to delete events from the Inventory Table (this may be removed in the future).
-    5. A mechanism where new events are assigned the appropriate `reporting_period_id` and `created_date`.
-    6. A mechanism to assign a `modified_date` when events are updated.
+    4. The ability for users to delete event types from the Table (this may be removed in the future).
+    
 
 ### Inventory Table
     1. Creation of the Inventory Table.
+    2. Creation of an Adjustment Class to handle actual inventory changes.
+    3. Ability for users to create adjustments, specify their details and save them into the inventory table.
+    4. Ability for events to multiply the operator against the amount that was changed.
+    5. Ability for the amount to be converted from the preferred unit to the standard unit (mcg).
+    5. A mechanism where new events are assigned the appropriate `reporting_period_id', `created_date`, and medication information.
+    6. A mechanism to assign a `modified_date` when events are updated.
 
 
 ## Conclusion
 It looks like I’ve got my work cut out for me. In the next part of this series I’ll start implementing those requirements.
 
 LINK
-

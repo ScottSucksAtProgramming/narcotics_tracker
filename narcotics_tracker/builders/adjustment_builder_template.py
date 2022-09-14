@@ -1,27 +1,31 @@
-"""Contains the template for the Medication Builder.
+"""Contains the template for the Adjustment Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
 Reporting Period Builder module for more information.
 
 Classes:
-    Medication: Defines the interface for the Medication Builder.
+    Adjustment: Defines the interface for the Adjustment Builder.
 """
 from abc import ABC, abstractmethod
 
 
-class Medication(ABC):
-    """Defines the interface for the Medication Builder."""
+class Adjustment(ABC):
+    """Defines the interface for the Adjustment Builder."""
 
     @abstractmethod
     def __init__(self) -> None:
         pass
 
     @abstractmethod
-    def assign_medication_id(self) -> None:
+    def assign_adjustment_id(self) -> None:
         pass
 
     @abstractmethod
-    def set_medication_name(self) -> None:
+    def set_adjustment_date(self) -> None:
+        pass
+
+    @abstractmethod
+    def set_event_code(self) -> None:
         pass
 
     @abstractmethod
@@ -29,23 +33,11 @@ class Medication(ABC):
         pass
 
     @abstractmethod
-    def set_container(self) -> None:
+    def set_adjustment_amount(self) -> None:
         pass
 
     @abstractmethod
-    def set_fill_amount(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_dose_and_unit(self) -> None:
-        pass
-
-    @abstractmethod
-    def assign_concentration(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_medication_status(self) -> None:
+    def set_reference_id(self) -> None:
         pass
 
     @abstractmethod

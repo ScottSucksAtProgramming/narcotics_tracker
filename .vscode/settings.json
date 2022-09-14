@@ -39,7 +39,8 @@
         "narcotics_tracker/date/__pycache__": true,
         "narcotics_tracker/builders/__pycache__": true,
         "narcotics_tracker/enums/__pycache__": true,
-        "narcotics_tracker/utils/__pycache__": true
+        "narcotics_tracker/utils/__pycache__": true,
+        "scripts/cli/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -75,7 +76,8 @@
         "narcotics_tracker/date/__pycache__",
         "narcotics_tracker/builders/__pycache__",
         "narcotics_tracker/enums/__pycache__",
-        "narcotics_tracker/utils/__pycache__"
+        "narcotics_tracker/utils/__pycache__",
+        "scripts/cli/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
@@ -112,13 +114,26 @@
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
     "cSpell.words": [
+        "Abenthy",
+        "Denna",
+        "Elodin",
         "fent",
         "Kvothe",
+        "meds",
         "midaz",
         "MIDAZOLAM",
         "unitconverter",
+        "unixepoch",
         "Unobtainium",
         "Unobtanium"
     ],
-    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/"
+    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/",
+
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "isort.args": ["--profile", "black"]
 }

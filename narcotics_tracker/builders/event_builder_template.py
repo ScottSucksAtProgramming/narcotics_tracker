@@ -1,51 +1,39 @@
-"""Contains the template for the Medication Builder.
+"""Contains the template for the Event Builder.
 
 Abstract builders contain no implementation. Look at the documentation for the 
 Reporting Period Builder module for more information.
 
 Classes:
-    Medication: Defines the interface for the Medication Builder.
+    Event: Defines the interface for the Event Builder.
 """
 from abc import ABC, abstractmethod
 
 
-class Medication(ABC):
-    """Defines the interface for the Medication Builder."""
+class Event(ABC):
+    """Defines the interface for the Event Builder."""
 
     @abstractmethod
     def __init__(self) -> None:
         pass
 
     @abstractmethod
-    def assign_medication_id(self) -> None:
+    def assign_event_id(self) -> None:
         pass
 
     @abstractmethod
-    def set_medication_name(self) -> None:
+    def set_event_code(self) -> None:
         pass
 
     @abstractmethod
-    def set_medication_code(self) -> None:
+    def set_event_name(self) -> None:
         pass
 
     @abstractmethod
-    def set_container(self) -> None:
+    def set_description(self) -> None:
         pass
 
     @abstractmethod
-    def set_fill_amount(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_dose_and_unit(self) -> None:
-        pass
-
-    @abstractmethod
-    def assign_concentration(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_medication_status(self) -> None:
+    def set_operator(self) -> None:
         pass
 
     @abstractmethod
