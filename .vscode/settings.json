@@ -127,5 +127,13 @@
         "Unobtainium",
         "Unobtanium"
     ],
-    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/"
+    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/",
+
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "isort.args": ["--profile", "black"]
 }
