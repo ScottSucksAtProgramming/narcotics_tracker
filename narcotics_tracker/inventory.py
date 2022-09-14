@@ -1,4 +1,4 @@
-"""Contains the implementation and representation of inventory adjustments.
+"""Contains the implementation and representation of Inventory Adjustments.
 
 #* Background
 

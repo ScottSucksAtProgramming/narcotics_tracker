@@ -14,7 +14,8 @@ Classes:
 """
 
 
-import os, sqlite3
+import os
+import sqlite3
 
 from narcotics_tracker import (
     containers,

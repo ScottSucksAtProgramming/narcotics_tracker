@@ -1,4 +1,4 @@
-"""Contains the implementation and representation of events.
+"""Contains the implementation and representation of Events.
 
 #* Background
 
