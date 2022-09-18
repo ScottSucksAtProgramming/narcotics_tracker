@@ -101,7 +101,11 @@
         },
         {
             "icon": "src",
-            "extensions": ["src", "source", "narcotics_tracker"],
+            "extensions": [
+                "src",
+                "source",
+                "narcotics_tracker"
+            ],
             "forma;t": "svg",
             "overrides": "src"
         }
@@ -109,7 +113,10 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestPath": "/Users/scottkostolni/Programming Projects/narcotics_tracker/venv/bin/pytest",
-    "python.testing.pytestArgs": ["tests", "-vvs"],
+    "python.testing.pytestArgs": [
+        "tests",
+        "-vvs"
+    ],
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
@@ -128,12 +135,17 @@
         "Unobtanium"
     ],
     "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/",
-
     "[python]": {
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
     },
-    "isort.args": ["--profile", "black"]
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
+    ]
 }
