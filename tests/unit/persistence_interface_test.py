@@ -1,4 +1,4 @@
-"""Contains tests for the database_rf Module."""
+"""Contains tests for the Persistence Interface Module."""
 
 from abc import ABC
 
@@ -8,7 +8,7 @@ from narcotics_tracker import persistence_interface
 
 
 class Test_PersistenceInterface_Module:
-    """Tests the behaviors of the Persistence Module.
+    """Tests the behaviors of the Persistence Interface Module.
 
     Behaviors Tested:
         - Persistence Interface Module can be accessed.
