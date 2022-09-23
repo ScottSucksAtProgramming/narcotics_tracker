@@ -23,15 +23,7 @@ class PersistenceInterface(ABC):
 
     @abstractmethod
     def __init__(self):
-        """Initializes the database object and sets it's connection to None.
-
-        Validates the file name. Sets the connection to None. Sets the path to
-        the database files to the data directory.
-
-        Args:
-            filename (str): the filename of the database the object will
-                connect to.
-        """
+        """Initializes the object."""
 
     @abstractmethod
     def create(self):
@@ -39,11 +31,7 @@ class PersistenceInterface(ABC):
 
     @abstractmethod
     def read(self) -> list:
-        """Returns data from storage as a list.
-
-        Returns:
-            data (list): The data returned from the query.
-        """
+        """Returns data from storage as a list."""
 
     @abstractmethod
     def update(self):
