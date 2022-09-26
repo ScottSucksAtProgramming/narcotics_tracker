@@ -2,8 +2,8 @@
 
 import sqlite3
 
-from narcotics_tracker.database_interface import DatabaseInterface
-from narcotics_tracker.persistence_interface import PersistenceInterface
+from narcotics_tracker.interfaces.database_interface import DatabaseInterface
+from narcotics_tracker.interfaces.persistence_interface import PersistenceInterface
 
 
 class TableManager(PersistenceInterface, DatabaseInterface):
