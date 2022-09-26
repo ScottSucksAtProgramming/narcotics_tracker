@@ -4,7 +4,7 @@ from abc import ABC
 
 import pytest
 
-from narcotics_tracker import database_interface
+from narcotics_tracker.interfaces import database_interface
 
 
 class Test_DatabaseInterface_Module:

@@ -4,7 +4,7 @@ from abc import ABC
 
 import pytest
 
-from narcotics_tracker import persistence_interface
+from narcotics_tracker.interfaces import persistence_interface
 
 
 class Test_PersistenceInterface_Module:
