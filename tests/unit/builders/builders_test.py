@@ -8,8 +8,8 @@ import pytest
 
 from narcotics_tracker import database, inventory, medications, units
 from narcotics_tracker.builders import (
-    adjustment_builder_template,
     adjustment_builder,
+    adjustment_builder_template,
     container_builder,
     container_builder_template,
     event_builder,
