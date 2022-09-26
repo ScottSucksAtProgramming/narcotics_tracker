@@ -23,8 +23,9 @@ Fixtures:
     reset_database: Resets test_database.db for testing functions.
 """
 
-from pytest import fixture
 from typing import TYPE_CHECKING
+
+from pytest import fixture
 
 from narcotics_tracker import (
     containers,
