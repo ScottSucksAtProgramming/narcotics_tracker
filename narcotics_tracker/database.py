@@ -6,17 +6,19 @@ retrieving information in the database tables and functions as the receiver
 for database commands.
 
 Classes:
+    SQLiteManager: Sends and receives information from the SQlite database.
 
 Functions:
 
 Exceptions:
+    None
 """
 
 import sqlite3
 
 
-class DatabaseManager:
-    """Sends SQL statements to the database, returns a cursor with results.
+class SQLiteManager:
+    """Sends and receives information from the SQlite database.
 
     Methods:
         create_table: Adds a table to the database using the given name and
@@ -25,8 +27,8 @@ class DatabaseManager:
         delete: Deletes a row from the given table using the given criteria.
         select: Returns a cursor containing data for the given table and
             criteria.
-
-
+        return_datetime: Returns a cursor containing the current unixepoch
+            datetime.
     """
 
     def __init__(self, filename: str) -> None:
@@ -137,3 +139,9 @@ class DatabaseManager:
             sql_query += f" ORDER BY {order_by}"
 
         return self._execute(sql_query, tuple(criteria.values()))
+
+    def return_datetime(self) -> sqlite3.Cursor:
+        """Returns a cursor containing the current unixepoch datetime."""
+        sql_query = """SELECT unixepoch();"""
+
+        self._execute(sql_query)
