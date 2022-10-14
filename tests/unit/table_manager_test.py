@@ -30,6 +30,8 @@ class Test_TableManager:
         - Tests that TableManager can rename a column in a table.
         - Tests that TableManager can delete a table.
         - Tests that delete() raises ValueError if given a bad table_name.
+
+
     """
 
     def test_TableManager_class_exists(self):

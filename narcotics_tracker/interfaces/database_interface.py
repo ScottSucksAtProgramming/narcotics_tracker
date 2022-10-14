@@ -22,7 +22,6 @@ class DatabaseInterface(ABC):
         - _filename:
     """
 
-    @abstractmethod
     def __init__(self, filename: str = "inventory.db") -> "DatabaseInterface":
         """Initializes the database object and sets it's connection to None.
 
