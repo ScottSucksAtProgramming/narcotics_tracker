@@ -28,3 +28,11 @@ class DatabaseManager:
         """
         self.connection = None
         self.filename = filename
+
+    def __enter__(self) -> sqlite3.Connection:
+        """Sets the connection to the database file as a instance variable."""
+        self.connection = sqlite3.connect("data/" + self.filename)
+
+    def __exit__(self, type, value, traceback) -> None:
+        """Closes the database connection."""
+        self.connection.close()
