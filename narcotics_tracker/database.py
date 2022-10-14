@@ -1,17 +1,11 @@
-"""This module is responsible for communicating with the SQlite database.
+"""Manages Communication with the SQlite3 database.
 
 All information about controlled substance medications and their activities 
-are saved within an SQLite3 database. This module handles handles storing and 
-retrieving information in the database tables and functions as the receiver 
-for database commands.
+are stored within an SQLite3 database. This module contains the objects 
+responsible for communicating with the database.
 
 Classes:
     SQLiteManager: Sends and receives information from the SQlite database.
-
-Functions:
-
-Exceptions:
-    None
 """
 
 import sqlite3
@@ -20,6 +14,10 @@ import sqlite3
 class SQLiteManager:
     """Sends and receives information from the SQlite database.
 
+    Attributes:
+        connection (sqlite3.Connection): The connection to the SQlite database.
+        filename (str): The name of the database file.
+
     Methods:
         create_table: Adds a table to the database using the given name and
             column info.
@@ -27,12 +25,10 @@ class SQLiteManager:
         delete: Deletes a row from the given table using the given criteria.
         select: Returns a cursor containing data for the given table and
             criteria.
-        return_datetime: Returns a cursor containing the current unixepoch
-            datetime.
     """
 
     def __init__(self, filename: str) -> None:
-        """Initialize the DatabaseManager and stores the database file.
+        """Initialize the DatabaseManager and stores the database filename.
 
         If the database files doe not exist, it will be created.
 
@@ -43,15 +39,21 @@ class SQLiteManager:
         self.filename = filename
 
     def __enter__(self) -> sqlite3.Connection:
-        """Sets the connection to the database file as a instance variable."""
+        """Connects to the database upon entering the context manager."""
         self.connection = sqlite3.connect("data/" + self.filename)
 
     def __exit__(self, type, value, traceback) -> None:
-        """Closes the database connection."""
+        """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
     def _execute(self, sql_statement: str, values: tuple[str] = None) -> sqlite3.Cursor:
-        """Executes the sql statement, returns a cursor with any results."""
+        """Executes the sql statement, returns a cursor with any results.
+
+        Args:
+            sql_statement (str): The SQL statement to be executed.
+            values (tuple[str], optional): Any value required to execute the
+                sql statement.
+        """
         cursor = self.connection.cursor()
         cursor.execute(sql_statement, values or [])
 
@@ -120,10 +122,10 @@ class SQLiteManager:
 
         Args:
             table_name (str): The name of the table.
-            criteria (dict[str]): A dictionary mapping column names to values
-                used to select rows from which to pull the data. Optional.
-            order_by (str): The name of the column by which to order the data.
-                Optional.
+            criteria (dict[str], optional): A dictionary mapping column names
+                to values used to select rows from which to pull the data.
+            order_by (str, optional): The name of the column by which to order
+                the data.
 
         Returns:
             sqlite3.Cursor: A cursor contains the returned data.
@@ -139,9 +141,3 @@ class SQLiteManager:
             sql_query += f" ORDER BY {order_by}"
 
         return self._execute(sql_query, tuple(criteria.values()))
-
-    def return_datetime(self) -> sqlite3.Cursor:
-        """Returns a cursor containing the current unixepoch datetime."""
-        sql_query = """SELECT unixepoch();"""
-
-        self._execute(sql_query)
