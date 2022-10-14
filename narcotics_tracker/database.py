@@ -36,3 +36,10 @@ class DatabaseManager:
     def __exit__(self, type, value, traceback) -> None:
         """Closes the database connection."""
         self.connection.close()
+
+    def _execute(self, sql_statement: str, values: tuple[str] = None) -> sqlite3.Cursor:
+        """Executes the sql statement, returns a cursor with any results."""
+        cursor = self.connection.cursor()
+        cursor.execute(sql_statement, values or [])
+
+        return cursor
