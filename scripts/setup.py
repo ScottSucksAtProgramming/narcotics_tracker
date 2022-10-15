@@ -25,7 +25,6 @@ import sqlite3
 
 from narcotics_tracker import (
     containers,
-    database,
     events,
     inventory,
     medications,
@@ -40,6 +39,7 @@ from narcotics_tracker.builders import (
     unit_builder,
 )
 from narcotics_tracker.setup import standard_items
+from persistence import database
 
 
 def create_database(database_file_name: str = None) -> sqlite3.Connection:

@@ -8,7 +8,8 @@ Classes:
 
 import os
 
-from narcotics_tracker import database, events, medications, reporting_periods
+from narcotics_tracker import events, medications, reporting_periods
+from persistence import database
 
 
 class Test_Database:

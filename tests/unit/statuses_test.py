@@ -9,7 +9,8 @@ Classes:
     Test_StatusMethods: Contains unit tests for the Status' methods.
 """
 
-from narcotics_tracker import database, statuses
+from narcotics_tracker import statuses
+from persistence import database
 
 
 class Test_StatusModule:

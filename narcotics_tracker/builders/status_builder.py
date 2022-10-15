@@ -8,8 +8,9 @@ Classes:
 
     StatusBuilder: Builds and returns Status objects.
 """
-from narcotics_tracker import database, statuses
+from narcotics_tracker import statuses
 from narcotics_tracker.builders import status_builder_template
+from persistence import database
 
 
 class StatusBuilder(status_builder_template.Status):

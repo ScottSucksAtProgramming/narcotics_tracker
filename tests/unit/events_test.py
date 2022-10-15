@@ -9,7 +9,8 @@ Classes:
     Test_EventsMethods: Contains unit tests for the Event's methods.
 """
 
-from narcotics_tracker import database, events
+from narcotics_tracker import events
+from persistence import database
 
 
 class Test_EventsModule:

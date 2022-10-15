@@ -46,8 +46,8 @@ and are limited to the Medications listed in the table.
 import sqlite3
 from typing import Union
 
-from narcotics_tracker import database
 from narcotics_tracker.utils import unit_converter
+from persistence import database
 
 
 def return_table_creation_query() -> str:

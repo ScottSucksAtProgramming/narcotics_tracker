@@ -2,13 +2,8 @@
 table."""
 
 
-from narcotics_tracker import (
-    database,
-)
-from narcotics_tracker.builders import (
-    medication_builder,
-    reporting_period_builder,
-)
+from narcotics_tracker.builders import medication_builder, reporting_period_builder
+from persistence import database
 
 FENTANYL_PROPERTIES = [
     "fentanyl",

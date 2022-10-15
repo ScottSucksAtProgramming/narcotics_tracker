@@ -29,7 +29,6 @@ from pytest import fixture
 
 from narcotics_tracker import (
     containers,
-    database,
     events,
     inventory,
     reporting_periods,
@@ -45,6 +44,7 @@ from narcotics_tracker.builders import (
     status_builder,
     unit_builder,
 )
+from persistence import database
 
 if TYPE_CHECKING:
     from narcotics_tracker import medications
