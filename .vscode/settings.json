@@ -40,7 +40,8 @@
         "narcotics_tracker/builders/__pycache__": true,
         "narcotics_tracker/enums/__pycache__": true,
         "narcotics_tracker/utils/__pycache__": true,
-        "scripts/cli/__pycache__": true
+        "scripts/cli/__pycache__": true,
+        "persistence/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -77,7 +78,8 @@
         "narcotics_tracker/builders/__pycache__",
         "narcotics_tracker/enums/__pycache__",
         "narcotics_tracker/utils/__pycache__",
-        "scripts/cli/__pycache__"
+        "scripts/cli/__pycache__",
+        "persistence/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
