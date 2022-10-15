@@ -6,7 +6,13 @@
 
 **Message from ScottSucksAtProgramming:**
 
-> Hey! Thanks for looking at the release notes for version 0.2.0 of the
+> Welcome to the Newly Refactored version of the Narcotics Tracker. After
+> version 0.2.0 the code was quite a bit of a mess. I focused on restructuring
+> the code and reducing coupling. The ultimate effect is code which is much
+> more pleasant to work with and easier to understand. Read on to see the
+> larger changes.
+
+## Structural Changes
 
 ## Command Pattern
 
@@ -22,9 +28,8 @@ All modules related to communications with SQLite3 have been moved into the
 which sends and receives information from the database. It's designed to be
 used as a context manager, and handles closing of the database connection
 automatically. The Date Manager module contains the **DateTimeFormatter** which
-returns the current datetime from the database, convert a unixepoch datetime to
-a readable string, and converts a readable string, formatted as MM-DD-YYYY
-HH:MM:SS to a unixepoch integer.
+returns the current datetime from the database and converts between a unix
+timestamp and a human-readable date formatted as (MM-DD-YYYY HH:MM:SS).
 
 ## Invokers
 
