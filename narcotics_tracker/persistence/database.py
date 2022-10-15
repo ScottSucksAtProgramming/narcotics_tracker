@@ -8,6 +8,7 @@ Classes:
     SQLiteManager: Sends and receives information from the SQlite database.
 """
 
+import os
 import sqlite3
 
 
@@ -40,9 +41,11 @@ class SQLiteManager:
         self.connection = None
         self.filename = filename
 
-    def __enter__(self) -> sqlite3.Connection:
+    def __enter__(self):
         """Connects to the database upon entering the context manager."""
         self.connection = sqlite3.connect("data/" + self.filename)
+
+        return self
 
     def __exit__(self, type, value, traceback) -> None:
         """Closes the database connection upon exiting the context manager."""
@@ -61,6 +64,11 @@ class SQLiteManager:
 
         return cursor
 
+    def delete_database(self):
+        """Deletes the database file. Closes connection."""
+        os.remove(f"data/{self.filename}")
+        self.connection.close()
+
     def create_table(self, table_name: str, column_info: dict[str]):
         """Adds a table to the database using the given name and column info.
 
@@ -72,7 +80,7 @@ class SQLiteManager:
                 datatype and restraints.
         """
         columns_with_details = [
-            f" {column_name} {details}" for column_name, details in columns.items()
+            f" {column_name} {details}" for column_name, details in column_info.items()
         ]
 
         columns_with_details = ", ".join(columns_with_details)

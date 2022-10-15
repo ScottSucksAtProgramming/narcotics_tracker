@@ -23,6 +23,7 @@ Fixtures:
     reset_database: Resets test_database.db for testing functions.
 """
 
+import os
 from typing import TYPE_CHECKING
 
 from pytest import fixture
@@ -351,5 +352,5 @@ def reset_database():
 
     This function deletes 'data/test_database.db'.
     """
-    with database.Database("test_database.db") as db:
-        db.delete_database("test_database.db")
+    if os.path.exists("data/test_database.db"):
+        os.remove("data/test_database.db")
