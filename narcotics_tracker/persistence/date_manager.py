@@ -5,10 +5,10 @@ This module contains the DateTimeFormatter which can obtain the current
 datetime as well as convert between the unixepoch format and the string 
 format 'MM-DD-YYYY HH:MM:SS'
 """
-
+import datetime
 import sqlite3
 
-from database import SQLiteManager
+from narcotics_tracker.persistence.database import SQLiteManager
 
 
 class DateTimeFormatter(SQLiteManager):
@@ -33,11 +33,16 @@ class DateTimeFormatter(SQLiteManager):
             unixepoch format.
     """
 
+    @property
+    def _format(self):
+        """Returns the format for human-readable datetime."""
+        return "%m-%d-%Y %H:%M:%S"
+
     def return_datetime(self) -> sqlite3.Cursor:
         """Returns a cursor containing the current unixepoch datetime."""
         sql_query = """SELECT unixepoch();"""
 
-        self._execute(sql_query)
+        return self._execute(sql_query)
 
     def convert_to_string(self, unix_date_time: int) -> sqlite3.Cursor:
         """Converts a unixepoch datetime to a human readable format.
@@ -49,21 +54,24 @@ class DateTimeFormatter(SQLiteManager):
             sqlite3.Cursor: A cursor containing the datetime in the format
                 'MM-DD-YYYY HH:MM:SS'
         """
-        sql_query = """SELECT datetime(?, 'unixepoch', 'localtime');"""
+        sql_query = (
+            f"""SELECT strftime('{self._format}',?, 'unixepoch', 'localtime');"""
+        )
         values = [unix_date_time]
 
         return self._execute(sql_query, values)
 
-    def convert_to_unixepoch(self, string_date_time: str) -> sqlite3.Cursor:
-        """Converts a human-readable datetime to the unixepoch format.
+    def convert_to_unixepoch(self, string_date_time: str) -> int:
+        """Returns the unixepoch timestamp from a formatted string datetime.
 
         Args:
             string_date_time (str): The datetime in the format
                 'MM-DD-YYYY HH:MM:SS'
 
         Returns:
-            sqlite3.Cursor: A cursor containing the unixepoch datetime.
+            int: The unixepoch timestamp.
         """
-        sql_query = f"""SELECT unixepoch('{string_date_time}');"""
+        datetime_object = datetime.datetime.strptime(string_date_time, self._format)
+        unix_epoch_time = datetime.datetime.strftime(datetime_object, "%s")
 
-        return self._execute(sql_query)
+        return int(unix_epoch_time)
