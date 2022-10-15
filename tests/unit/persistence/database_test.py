@@ -2,21 +2,17 @@
 
 Classes:
 
-    Test_Database: Contains all unit tests for the database module.
+    Test_SQLiteManager: Tests the SQLiteManager class.
 
 """
 
 import os
 
-from narcotics_tracker import events, medications, reporting_periods
 from narcotics_tracker.persistence.database import SQLiteManager
 
 
 class Test_SQLiteManager:
-    """Contains all unit tests for the database module.
-
-    Attributes:
-        test_database: The database file used for testing.
+    """Tests the SQLiteManager class.
 
     SQLiteManager Behaviors Tested:
         - Can be instantiated.
