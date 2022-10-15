@@ -1,4 +1,10 @@
-"""Obtains and formats datetimes."""
+"""Obtains and formats datetimes.
+
+The SQLite3 database provides and stores datetimes in the unixepoch format. 
+This module contains the DateTimeFormatter which can obtain the current 
+datetime as well as convert between the unixepoch format and the string 
+format 'MM-DD-YYYY HH:MM:SS'
+"""
 
 import sqlite3
 
