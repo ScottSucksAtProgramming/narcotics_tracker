@@ -8,7 +8,7 @@ Classes:
 """
 
 from narcotics_tracker import inventory
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class Test_InventoryModule:

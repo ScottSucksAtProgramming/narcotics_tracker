@@ -11,7 +11,7 @@ Classes:
 """
 
 from narcotics_tracker import medications
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class Test_MedicationModule:

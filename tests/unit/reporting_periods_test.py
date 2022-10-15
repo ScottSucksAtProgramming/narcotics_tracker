@@ -9,7 +9,7 @@ Classes:
 """
 
 from narcotics_tracker import reporting_periods
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class Test_PeriodsModule:

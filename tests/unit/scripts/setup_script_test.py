@@ -5,7 +5,7 @@ Classes:
 
 import os
 
-from persistence import database
+from narcotics_tracker.persistence import database
 from scripts import setup
 
 

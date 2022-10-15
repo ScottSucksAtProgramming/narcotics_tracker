@@ -10,7 +10,7 @@ Classes:
 """
 
 from narcotics_tracker import containers
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class Test_ContainersModule:

@@ -21,7 +21,7 @@ from narcotics_tracker.builders import (
     unit_builder,
     unit_builder_template,
 )
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class Test_MedicationBuilder:

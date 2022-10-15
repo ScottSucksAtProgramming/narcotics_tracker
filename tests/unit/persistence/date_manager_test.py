@@ -5,7 +5,6 @@ Classes:
     Test_DateTimeFormatter: Tests the DateTimeFormatter class.
 
 """
-import os
 
 from narcotics_tracker.persistence.date_manager import DateTimeFormatter
 

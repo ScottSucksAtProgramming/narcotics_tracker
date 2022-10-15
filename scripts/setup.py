@@ -38,8 +38,8 @@ from narcotics_tracker.builders import (
     status_builder,
     unit_builder,
 )
+from narcotics_tracker.persistence import database
 from narcotics_tracker.setup import standard_items
-from persistence import database
 
 
 def create_database(database_file_name: str = None) -> sqlite3.Connection:
