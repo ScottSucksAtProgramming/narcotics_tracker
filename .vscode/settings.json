@@ -43,7 +43,9 @@
         "scripts/cli/__pycache__": true,
         "persistence/__pycache__": true,
         "tests/unit/builders/__pycache__": true,
-        "tests/unit/interfaces/__pycache__": true
+        "tests/unit/interfaces/__pycache__": true,
+        "tests/unit/persistence/__pycache__": true,
+        "narcotics_tracker/persistence/__pycache__": true
     },
     "hide-files.files": [
         "venv",
@@ -83,7 +85,9 @@
         "scripts/cli/__pycache__",
         "persistence/__pycache__",
         "tests/unit/builders/__pycache__",
-        "tests/unit/interfaces/__pycache__"
+        "tests/unit/interfaces/__pycache__",
+        "tests/unit/persistence/__pycache__",
+        "narcotics_tracker/persistence/__pycache__"
     ],
     "vsicons.associations.folders": [
         {
