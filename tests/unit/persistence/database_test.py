@@ -1,4 +1,4 @@
-"""Contains the Test_Database class used to test the database module.
+"""Contains classes to test the Database Module.
 
 Classes:
 
@@ -9,7 +9,8 @@ Classes:
 import os
 
 from narcotics_tracker import events, medications, reporting_periods
-from persistence import database
+
+from narcotics_tracker.persis
 
 
 class Test_Database:
@@ -37,20 +38,21 @@ class Test_Database:
     """
 
     def test_database_object_can_be_created(self):
-        """Tests that Database object can be created.
+        """Tests that SQLiteManager object can be created.
 
         Asserts that the object is an instance of Database.
         """
-        with database.Database("test_database.db") as db:
+        with database.SQLiteManager("test_database.db") as db:
+            print(type(db))
 
-            assert isinstance(db, database.Database)
+            assert isinstance(db, SQLiteManager)
 
     def test_database_can_create_database_file(self, reset_database):
         """Tests that Database can create a database file.
 
         Asserts that the database file exists in os path.
         """
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             assert os.path.exists("data/test_database.db")
 
     def test_database_can_connect_to_database(self, reset_database):
@@ -58,7 +60,7 @@ class Test_Database:
 
         Asserts that the database_connection is not None.
         """
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             assert db.connection is not None
 
     def test_database_can_delete_database(self, reset_database):
@@ -67,7 +69,7 @@ class Test_Database:
         Creates a database, then deletes it.
         Asserts that the database is not in the list of databases
         """
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             db.delete_database("test_database.db")
 
         assert os.path.exists("data/test_database.db") == False
@@ -79,7 +81,7 @@ class Test_Database:
 
         Asserts that the data written is returned when querying the table.
         """
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             db.create_table("""CREATE TABLE IF NOT EXISTS test_table (data TEXT)""")
 
             db.write_data(
@@ -102,7 +104,7 @@ class Test_Database:
         """
         test_medication = test_medication
 
-        assert database.Database.created_date_is_none(test_medication) == False
+        assert SQLiteManager.created_date_is_none(test_medication) == False
 
     def test_created_date_set_is_none_returns_true_when_set_to_None(
         self, test_medication
@@ -117,7 +119,7 @@ class Test_Database:
         test_medication = test_medication
         test_medication.created_date = None
 
-        assert database.Database.created_date_is_none(test_medication) == True
+        assert SQLiteManager.created_date_is_none(test_medication) == True
 
     def test_medication_can_be_loaded_from_stored_data(
         self, test_medication, reset_database
@@ -132,7 +134,7 @@ class Test_Database:
         """
         test_medication = test_medication
 
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             db.create_table(medications.return_table_creation_query())
             test_medication.save(db)
 
@@ -151,7 +153,7 @@ class Test_Database:
         """
         test_event = test_event
 
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             db.create_table(events.return_table_creation_query())
             test_event.save(db)
 
@@ -172,7 +174,7 @@ class Test_Database:
         """
         test_period = test_period
 
-        with database.Database("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             db.create_table(reporting_periods.return_table_creation_query())
             test_period.save(db)
 
