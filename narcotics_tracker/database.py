@@ -14,6 +14,8 @@ import sqlite3
 class SQLiteManager:
     """Sends and receives information from the SQlite database.
 
+    This class is designed to be used as a context manager.
+
     Attributes:
         connection (sqlite3.Connection): The connection to the SQlite database.
         filename (str): The name of the database file.
