@@ -10,7 +10,7 @@ Classes:
 """
 from narcotics_tracker import statuses
 from narcotics_tracker.builders import status_builder_template
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class StatusBuilder(status_builder_template.Status):

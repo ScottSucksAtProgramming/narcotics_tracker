@@ -44,7 +44,7 @@ from narcotics_tracker.builders import (
     status_builder,
     unit_builder,
 )
-from persistence import database
+from narcotics_tracker.persistence import database
 
 if TYPE_CHECKING:
     from narcotics_tracker import medications

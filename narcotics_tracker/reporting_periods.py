@@ -42,7 +42,7 @@ Reporting Periods listed in the table.
 import sqlite3
 from typing import Union
 
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 def return_table_creation_query() -> str:

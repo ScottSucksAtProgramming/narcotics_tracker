@@ -10,8 +10,8 @@ Classes:
 """
 from narcotics_tracker import medications
 from narcotics_tracker.builders import medication_builder_template
+from narcotics_tracker.persistence import database
 from narcotics_tracker.utils import unit_converter
-from persistence import database
 
 
 class MedicationBuilder(medication_builder_template.Medication):

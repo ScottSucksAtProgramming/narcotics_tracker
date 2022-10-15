@@ -40,7 +40,7 @@ oversight organization.
 
 import sqlite3
 
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 def return_table_creation_query() -> str:

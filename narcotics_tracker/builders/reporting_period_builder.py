@@ -10,7 +10,7 @@ Classes:
 """
 from narcotics_tracker import reporting_periods
 from narcotics_tracker.builders import reporting_period_builder_template
-from persistence import database
+from narcotics_tracker.persistence import database
 
 
 class ReportingPeriodBuilder(reporting_period_builder_template.ReportingPeriod):

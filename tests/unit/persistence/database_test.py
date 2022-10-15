@@ -9,8 +9,7 @@ Classes:
 import os
 
 from narcotics_tracker import events, medications, reporting_periods
-
-from narcotics_tracker.persis
+from narcotics_tracker.persistence.database import SQLiteManager
 
 
 class Test_Database:
@@ -42,7 +41,7 @@ class Test_Database:
 
         Asserts that the object is an instance of Database.
         """
-        with database.SQLiteManager("test_database.db") as db:
+        with SQLiteManager("test_database.db") as db:
             print(type(db))
 
             assert isinstance(db, SQLiteManager)
