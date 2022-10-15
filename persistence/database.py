@@ -30,7 +30,7 @@ class SQLiteManager:
     """
 
     def __init__(self, filename: str) -> None:
-        """Initialize the DatabaseManager and stores the database filename.
+        """Initialize the SQLiteManager and stores the database filename.
 
         If the database files doe not exist, it will be created.
 
