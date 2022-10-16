@@ -6,6 +6,7 @@ Classes:
 from dataclasses import dataclass
 
 from narcotics_tracker.items.database_items import DatabaseItem
+from narcotics_tracker.persistence.sqlite_command import SQLiteCommand
 
 
 @dataclass
@@ -39,15 +40,48 @@ class Adjustment(DatabaseItem):
     adjustment_amount: float
     reference_id: str
 
-    def add(self):
+    def add(self, target: SQLiteCommand) -> None:
         """Adds the adjustment to the inventory table."""
+        adjustment_date = {
+            "adjustment_date": str(self.adjustment_date),
+            "event_code": str(self.event_code),
+            "medication_code": str(self.medication_code),
+            "amount_in_mcg": converted_amount,  # use a converter class to obtain the information required to convert between the units and to return the converted amounts.
+            "reference_id": str(self.reference_id),
+            "created_date": self.created_date or None,
+            "modified_date": None,
+            "modified_by": None,
+        }
+        target.execute()
 
-    def delete(self):
+        # TODO: Next Steps
+        """I need to be able to convert between the preferred units and the 
+        standard units when exchanging information with the database. 
+        Conversions should be compeleted in their own object, these item 
+        classes are only responsible for storing the data required to build 
+        the object. Manipulating that data should not happen within the class, 
+        which would be mutation. Instead maniuplate the data just before it's 
+        saved in the persistence layer, or just before it's return to the 
+        user.
+        
+        The user interface should always use the preferred unit, as that's how 
+        the users are going to be able to understand the medication.
+        """
+
+        """The DatabaseItem symbol should be changed to DataItems incase a new 
+        persistence mechanism is implemented.
+        """
+
+    def delete(self, target: SQLiteCommand) -> None:
         """Removes the adjustment from the inventory table."""
+        target.execute()
 
-    def update(self):
+    def update(self, target: SQLiteCommand) -> None:
         """Updates the adjustment in the inventory table."""
+        target.execute()
 
     @classmethod
-    def load(self):
+    def load(self) -> "Adjustment":
         """Loads an adjustment object from data in the inventory table."""
+
+    # Todo: Implement.
