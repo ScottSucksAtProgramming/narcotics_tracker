@@ -42,7 +42,7 @@ class Adjustment(DataItem):
 
     def add(self, target: SQLiteCommand) -> None:
         """Adds the adjustment to the inventory table."""
-        adjustment_date = {
+        adjustment_data = {
             "adjustment_date": str(self.adjustment_date),
             "event_code": str(self.event_code),
             "medication_code": str(self.medication_code),
@@ -81,7 +81,7 @@ class Adjustment(DataItem):
         target.execute()
 
     @classmethod
-    def load(self) -> "Adjustment":
+    def load(cls) -> "Adjustment":
         """Loads an adjustment object from data in the inventory table."""
 
     # Todo: Implement.
