@@ -1,6 +1,8 @@
-"""Defines the Abstract Base Class for items which are stored in the database.
+"""Contains the interface for items to be stored in the database.
 
 Classes: 
+    DatabaseItems: Defines the interface for items which are stored in the 
+        database.
 """
 
 

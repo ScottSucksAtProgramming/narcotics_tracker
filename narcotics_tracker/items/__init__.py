@@ -2,6 +2,8 @@
 
 Modules:
 
+    Database_Items: Contains the interface for items to be stored in the 
+        database.
     Adjustments: 
     Containers: 
     Events: 
