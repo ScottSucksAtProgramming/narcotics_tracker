@@ -5,12 +5,12 @@ Classes:
 
 from dataclasses import dataclass
 
-from narcotics_tracker.items.database_items import DatabaseItem
+from narcotics_tracker.items.data_items import DataItem
 from narcotics_tracker.persistence.sqlite_command import SQLiteCommand
 
 
 @dataclass
-class Adjustment(DatabaseItem):
+class Adjustment(DataItem):
     """The Adjustments which affect the inventory amounts.
 
     Attributes:

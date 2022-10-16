@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class DatabaseItem(ABC):
+class DataItem(ABC):
     """Defines the interface for items which are stored in the database.
     
     Attributes:
