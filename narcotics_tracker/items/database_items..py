@@ -45,5 +45,9 @@ class DatabaseItems(ABC):
         """Delete the item from the database."""
 
     @abstractmethod
+    def load(self):
+        """Loads data from the database as an object."""
+
+    @abstractmethod
     def update(self):
         """Updates the item in the database"""
