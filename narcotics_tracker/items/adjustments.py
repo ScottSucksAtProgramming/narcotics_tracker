@@ -5,21 +5,21 @@ Classes:
 
 from dataclasses import dataclass
 
-from narcotics_tracker.items import database_items
+from narcotics_tracker.items.database_items import DatabaseItem
 
 
 @dataclass
-class Adjustment(database_items.DatabaseItem):
+class Adjustment(DatabaseItem):
     """The Adjustments which affect the inventory amounts.
 
     Attributes:
         adjustment_date (int): The date the adjustment took place.
-        event_code (str): The code of the event that triggered the adjustment. Must
-            match an event_code from the events table.
-        medication_code (str): The code of the medication which is being adjusted.
-            Must match a medication_code from the medications table.
-        adjustment_amount (float): The amount of medication (in the preferred unit)
-            which was adjusted during the event.
+        event_code (str): The code of the event that triggered the adjustment.
+            Must match an event_code from the events table.
+        medication_code (str): The code of the medication which is being
+            adjusted. Must match a medication_code from the medications table.
+        adjustment_amount (float): The amount of medication (in the preferred
+            unit) which was adjusted during the event.
         reference_id (str): The identifier of the document containing
             additional information about the adjustment. (i.e. PCR Number,
             Purchase Order Number)
