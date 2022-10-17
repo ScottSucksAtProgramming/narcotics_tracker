@@ -38,8 +38,11 @@ class DateTimeFormatter(SQLiteManager):
         """Returns the format for human-readable datetime."""
         return "%m-%d-%Y %H:%M:%S"
 
+    @classmethod
     def return_datetime(self) -> sqlite3.Cursor:
         """Returns a cursor containing the current unixepoch datetime."""
+        if self.connection is None:
+            self._connect()
         sql_query = """SELECT unixepoch();"""
 
         return self._execute(sql_query)
