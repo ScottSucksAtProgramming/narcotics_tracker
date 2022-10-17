@@ -37,6 +37,10 @@ class DataItem(ABC):
     modified_by: str
 
     @abstractmethod
+    def __str__(self) -> str:
+        """Returns a string representation of the item."""
+
+    @abstractmethod
     def add(self):
         """Saves the item in the database."""
 
