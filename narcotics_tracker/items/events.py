@@ -3,7 +3,7 @@
 Classes:
 """
 
-from dataclasses import dataclass, dataclasses
+from dataclasses import dataclass
 
 from narcotics_tracker.items.data_items import DataItem
 from narcotics_tracker.persistence.sqlite_command import SQLiteCommand
@@ -24,6 +24,10 @@ class Event(DataItem):
     event_name: str
     description: str
     modifier: int
+
+    def __str__(self):
+        """Returns a string representation of the event."""
+        return f"ID: {self.id} | {self.event_name}: {self.description}"
 
     def add(self, target: SQLiteCommand) -> None:
         """Adds a new event to the Events Table."""
