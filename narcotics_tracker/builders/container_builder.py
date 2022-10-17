@@ -8,9 +8,8 @@ Classes:
 
     ContainerBuilder: Builds and returns Container objects.
 """
-from narcotics_tracker import containers
+from narcotics_tracker import containers, database
 from narcotics_tracker.builders import container_builder_template
-from narcotics_tracker.persistence import database
 
 
 class ContainerBuilder(container_builder_template.Container):

@@ -41,7 +41,7 @@ class DataItem(ABC):
         """Returns a string representation of the item."""
 
     @abstractmethod
-    def add(self):
+    def save(self):
         """Saves the item in the database."""
 
     @abstractmethod

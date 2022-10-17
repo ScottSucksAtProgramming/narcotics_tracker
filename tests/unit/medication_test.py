@@ -10,8 +10,7 @@ Classes:
     
 """
 
-from narcotics_tracker import medications
-from narcotics_tracker.persistence import database
+from narcotics_tracker import database, medications
 
 
 class Test_MedicationModule:

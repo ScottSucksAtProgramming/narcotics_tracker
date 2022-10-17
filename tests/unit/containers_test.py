@@ -9,8 +9,7 @@ Classes:
     Test_ContainerMethods: Contains unit tests for the Unit's methods.
 """
 
-from narcotics_tracker import containers
-from narcotics_tracker.persistence import database
+from narcotics_tracker import containers, database
 
 
 class Test_ContainersModule:

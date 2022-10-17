@@ -6,7 +6,7 @@ Classes:
 """
 import pytest
 
-from narcotics_tracker import inventory, medications, units
+from narcotics_tracker import database, inventory, medications, units
 from narcotics_tracker.builders import (
     adjustment_builder,
     adjustment_builder_template,
@@ -21,7 +21,6 @@ from narcotics_tracker.builders import (
     unit_builder,
     unit_builder_template,
 )
-from narcotics_tracker.persistence import database
 
 
 class Test_MedicationBuilder:

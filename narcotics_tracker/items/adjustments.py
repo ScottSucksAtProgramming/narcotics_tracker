@@ -6,7 +6,7 @@ Classes:
 from dataclasses import dataclass
 
 from narcotics_tracker.items.data_items import DataItem
-from narcotics_tracker.persistence.sqlite_command import SQLiteCommand
+from narcotics_tracker.sqlite_command import SQLiteCommand
 
 
 @dataclass

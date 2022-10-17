@@ -19,9 +19,8 @@ Classes:
 """
 import sqlite3
 
-from narcotics_tracker import inventory, medications, reporting_periods
+from narcotics_tracker import database, inventory, medications, reporting_periods
 from narcotics_tracker.builders import adjustment_builder_template
-from narcotics_tracker.persistence import database
 from narcotics_tracker.utils import unit_converter
 
 

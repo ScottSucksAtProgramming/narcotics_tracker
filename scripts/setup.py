@@ -25,6 +25,7 @@ import sqlite3
 
 from narcotics_tracker import (
     containers,
+    database,
     events,
     inventory,
     medications,
@@ -38,7 +39,6 @@ from narcotics_tracker.builders import (
     status_builder,
     unit_builder,
 )
-from narcotics_tracker.persistence import database
 from narcotics_tracker.setup import standard_items
 
 

@@ -8,8 +8,7 @@ Classes:
     Test_PeriodMethods: Contains all unit tests for the Period Class' methods.
 """
 
-from narcotics_tracker import reporting_periods
-from narcotics_tracker.persistence import database
+from narcotics_tracker import database, reporting_periods
 
 
 class Test_PeriodsModule:

@@ -9,8 +9,7 @@ Classes:
     Test_UnitsMethods: Contains unit tests for the Unit's methods.
 """
 
-from narcotics_tracker import units
-from narcotics_tracker.persistence import database
+from narcotics_tracker import database, units
 
 
 class Test_UnitsModule:

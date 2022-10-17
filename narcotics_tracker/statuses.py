@@ -46,7 +46,7 @@ the Standard Items Module inside the Setup Package for more information.
 import sqlite3
 from typing import Union
 
-from narcotics_tracker.persistence import database
+from narcotics_tracker import database
 
 
 def return_table_creation_query() -> str:

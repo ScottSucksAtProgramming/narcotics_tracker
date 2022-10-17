@@ -7,8 +7,7 @@ Classes:
     Test_AdjustmentAttributes: Contains unit tests for the class' attributes.
 """
 
-from narcotics_tracker import inventory
-from narcotics_tracker.persistence import database
+from narcotics_tracker import database, inventory
 
 
 class Test_InventoryModule:
