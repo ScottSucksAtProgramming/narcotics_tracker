@@ -37,7 +37,7 @@ class DataItem(ABC):
     modified_by: str
 
     @abstractmethod
-    def save(self):
+    def add(self):
         """Saves the item in the database."""
 
     @abstractmethod
