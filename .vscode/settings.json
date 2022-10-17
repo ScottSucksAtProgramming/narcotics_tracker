@@ -7,8 +7,6 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "venv": true,
-        ".vscode": true,
-        "__pycache__": true,
         ".pytest_cache": true,
         "narcotics_tracker/.pytest_cache": true,
         "narcotics_tracker/__pycache__": true,
@@ -45,12 +43,13 @@
         "tests/unit/builders/__pycache__": true,
         "tests/unit/interfaces/__pycache__": true,
         "tests/unit/persistence/__pycache__": true,
-        "narcotics_tracker/persistence/__pycache__": true
+        "narcotics_tracker/persistence/__pycache__": true,
+        "__pycache__": true,
+        ".vscode": true,
+        "narcotics_tracker/.vscode": true
     },
     "hide-files.files": [
         "venv",
-        ".vscode",
-        "__pycache__",
         ".pytest_cache",
         "narcotics_tracker/.pytest_cache",
         "narcotics_tracker/__pycache__",
@@ -87,7 +86,10 @@
         "tests/unit/builders/__pycache__",
         "tests/unit/interfaces/__pycache__",
         "tests/unit/persistence/__pycache__",
-        "narcotics_tracker/persistence/__pycache__"
+        "narcotics_tracker/persistence/__pycache__",
+        "__pycache__",
+        ".vscode",
+        "narcotics_tracker/.vscode"
     ],
     "vsicons.associations.folders": [
         {
@@ -158,5 +160,6 @@
     ],
     "githubPullRequests.ignoredPullRequestBranches": [
         "master"
-    ]
+    ],
+    "python.terminal.activateEnvironment": false
 }
