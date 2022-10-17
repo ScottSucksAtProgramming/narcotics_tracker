@@ -27,6 +27,11 @@ class SaveAdjustment(SQLiteCommand):
         """Executes the command."""
         self.target.add(table_name=self.table_name, data=adjustment_data)
 
+    class CreateEventsTable(SQLiteCommand):
+        """Creates the Events Table."""
+        
+        def __init__():
+
     class SaveEvent(SQLiteCommand):
         """Adds an Event to the Events Table of the SQLite3 database."""
 
