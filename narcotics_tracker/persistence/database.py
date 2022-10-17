@@ -64,6 +64,10 @@ class SQLiteManager:
 
         return cursor
 
+    def _connect(self) -> None:
+        """Connects to the database file."""
+        self.connection = sqlite3.connect("data/" + self.filename)
+
     def delete_database(self):
         """Deletes the database file. Closes connection."""
         os.remove(f"data/{self.filename}")
