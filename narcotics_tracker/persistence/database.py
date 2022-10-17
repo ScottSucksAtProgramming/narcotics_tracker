@@ -15,8 +15,6 @@ import sqlite3
 class SQLiteManager:
     """Sends and receives information from the SQlite database.
 
-    This class is designed to be used as a context manager.
-
     Attributes:
         connection (sqlite3.Connection): The connection to the SQlite database.
         filename (str): The name of the database file.
@@ -38,16 +36,10 @@ class SQLiteManager:
         Args:
             filename (str): The filename of the database file.
         """
-        self.connection = None
+        self.connection = sqlite3.connect("data/" + filename)
         self.filename = filename
 
-    def __enter__(self):
-        """Connects to the database upon entering the context manager."""
-        self.connection = sqlite3.connect("data/" + self.filename)
-
-        return self
-
-    def __exit__(self, type, value, traceback) -> None:
+    def __del__(self) -> None:
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
@@ -59,10 +51,11 @@ class SQLiteManager:
             values (tuple[str], optional): Any value required to execute the
                 sql statement.
         """
-        cursor = self.connection.cursor()
-        cursor.execute(sql_statement, values or [])
+        with self.connection:
+            cursor = self.connection.cursor()
+            cursor.execute(sql_statement, values or [])
 
-        return cursor
+            return cursor
 
     def _connect(self) -> None:
         """Connects to the database file."""

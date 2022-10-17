@@ -27,68 +27,67 @@ class Test_SQLiteManager:
     """
 
     def test_SQLiteManager_object_can_be_instantiated(self):
-        with SQLiteManager("test_database.db") as db:
+        db = SQLiteManager("test_database.db")
 
-            assert isinstance(db, SQLiteManager)
+        assert isinstance(db, SQLiteManager)
 
     def test_SQLiteManager_can_create_database_file(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            assert os.path.exists("data/test_database.db")
+        db = SQLiteManager("test.db")
+        assert os.path.exists("data/test.db")
+        db.delete_database()
 
     def test_SQLiteManager_can_connect_to_database(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            assert db.connection is not None
+        db = SQLiteManager("test_database.db")
+        assert db.connection is not None
 
     def test_SQLiteManager_can_delete_database_file(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            db.delete_database()
+        db = SQLiteManager("test_database.db")
+        db.delete_database()
 
         assert os.path.exists("data/test_database.db") == False
 
     def test_SQLiteManager_can_create_tables(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            db.create_table("test_table", {"data": "TEXT NOT NULL"})
+        db = SQLiteManager("test_database.db")
+        db.create_table("test_table", {"data": "TEXT NOT NULL"})
 
-        with SQLiteManager("test_database.db") as db:
-            cursor = db._execute(
-                """SELECT name FROM sqlite_master WHERE type = 'table'"""
-            )
-            table_name = cursor.fetchall()[0][0]
+        db = SQLiteManager("test_database.db")
+        cursor = db._execute("""SELECT name FROM sqlite_master WHERE type = 'table'""")
+        table_name = cursor.fetchall()[0][0]
 
         assert table_name == "test_table"
 
     def test_SQLiteManager_can_add_data(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            db.create_table("test_table", {"data": "TEXT"})
+        db = SQLiteManager("test_database.db")
+        db.create_table("test_table", {"data": "TEXT"})
 
-            db.add("test_table", {"data": "Hello"})
+        db.add("test_table", {"data": "Hello"})
 
-            cursor = db.select("test_table")
-            data = cursor.fetchall()[0][0]
+        cursor = db.select("test_table")
+        data = cursor.fetchall()[0][0]
 
         assert data == "Hello"
 
     def test_SQLiteManager_can_delete_data(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            db.create_table("test_table", {"data": "TEXT"})
-            db.add("test_table", {"data": "Hello"})
+        db = SQLiteManager("test_database.db")
+        db.create_table("test_table", {"data": "TEXT"})
+        db.add("test_table", {"data": "Hello"})
 
-            db.delete("test_table", {"data": "Hello"})
+        db.delete("test_table", {"data": "Hello"})
 
-            cursor = db.select("test_table")
-            data = cursor.fetchall()
+        cursor = db.select("test_table")
+        data = cursor.fetchall()
 
         assert data == []
 
     def test_SQLiteManager_can_order_returned_data(self, reset_database):
-        with SQLiteManager("test_database.db") as db:
-            db.create_table("test_table", {"number": "INTEGER"})
-            db.add("test_table", {"number": "17"})
-            db.add("test_table", {"number": "1"})
-            db.add("test_table", {"number": "99999999"})
-            db.add("test_table", {"number": "8211986"})
+        db = SQLiteManager("test_database.db")
+        db.create_table("test_table", {"number": "INTEGER"})
+        db.add("test_table", {"number": "17"})
+        db.add("test_table", {"number": "1"})
+        db.add("test_table", {"number": "99999999"})
+        db.add("test_table", {"number": "8211986"})
 
-            cursor = db.select("test_table", order_by="number")
-            data = cursor.fetchall()
+        cursor = db.select("test_table", order_by="number")
+        data = cursor.fetchall()
 
         assert data == [(1,), (17,), (8211986,), (99999999,)]
