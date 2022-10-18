@@ -15,7 +15,7 @@ class Test_Adjustment:
         - Adjustments class can be accessed.
         - Adjustments return expected id.
         - Adjustments return expected adjustment_date.
-        - Adjustments return expected event_code.s
+        - Adjustments return expected event_code.
         - Adjustments return expected medication_code.
         - Adjustments return expected adjustment_amount.
         - Adjustments return expected reporting_period_id.
@@ -30,15 +30,15 @@ class Test_Adjustment:
     test_adjustment = Adjustment(
         table="inventory",
         id=-1,
-        created_date=1666061200,
-        modified_date=1666061200,
-        modified_by="SRK",
         adjustment_date=524990800,
         event_code="BIRTH",
         medication_code="TINA",
         adjustment_amount=1,
         reference_id="Tina's Mom",
         reporting_period_id=-36,
+        created_date=1666061200,
+        modified_date=1666061200,
+        modified_by="SRK",
     )
 
     def test_adjustment_class_can_be_accessed(self) -> None:
