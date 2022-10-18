@@ -26,16 +26,13 @@ class BuilderInterface(ABC):
         """Initializes the builder with an empty DataItem object."""
         self._reset()
 
-    def set_table(self, table_name: str = None) -> "BuilderInterface":
+    def set_table(self, table_name: str) -> "BuilderInterface":
         """Sets the table attribute.
 
         Args:
-            table_name (str, optional): Name of the table. Defaults to None.
+            table_name (str): Name of the table.
         """
-        if self._table_name:
-            self._dataitem.table = self._table_name
-        else:
-            self._dataitem.table = table_name
+        self._dataitem.table = table_name
 
         return self
 

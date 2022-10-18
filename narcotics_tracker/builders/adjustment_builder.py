@@ -37,11 +37,10 @@ class AdjustmentBuilder(BuilderInterface):
         reference_id=None,
         reporting_period_id=None,
     )
-    _table_name = "inventory"
 
     def _reset(self) -> None:
         """Prepares the builder to create a new Adjustment."""
-        self._adjustment = Adjustment(
+        self._dataitem = Adjustment(
             table=None,
             id=None,
             created_date=None,
@@ -57,7 +56,7 @@ class AdjustmentBuilder(BuilderInterface):
 
     def build(self) -> Adjustment:
         """Returns the constructed Adjustment."""
-        adjustment = self._adjustment
+        adjustment = self._dataitem
         self._reset()
         return adjustment
 
@@ -68,7 +67,7 @@ class AdjustmentBuilder(BuilderInterface):
             adjustment_date (int): Unix timestamp of when the adjustment
                 occurred.
         """
-        self._adjustment.adjustment_date = adjustment_date
+        self._dataitem.adjustment_date = adjustment_date
         return self
 
     def set_event_code(self, event_code: str) -> BuilderInterface:
@@ -77,7 +76,7 @@ class AdjustmentBuilder(BuilderInterface):
         event_code (str): Unique code of the event which occurred. Must match
             an event stored in the events table.
         """
-        self._adjustment.event_code = event_code
+        self._dataitem.event_code = event_code
         return self
 
     def set_medication_code(self, medication_code: str) -> BuilderInterface:
@@ -86,7 +85,7 @@ class AdjustmentBuilder(BuilderInterface):
         medication_code (str): Unique code of the event which occurred. Must
         match a medication stored in the medications table.
         """
-        self._adjustment.medication_code = medication_code
+        self._dataitem.medication_code = medication_code
         return self
 
     def set_adjustment_amount(self, adjustment_amount: float) -> BuilderInterface:
@@ -95,7 +94,7 @@ class AdjustmentBuilder(BuilderInterface):
         Args:
             adjustment_amount (float): The amount of medication being adjusted.
         """
-        self._adjustment.adjustment_amount = adjustment_amount
+        self._dataitem.adjustment_amount = adjustment_amount
         return self
 
     def set_reference_id(self, reference_id: str) -> BuilderInterface:
@@ -108,5 +107,18 @@ class AdjustmentBuilder(BuilderInterface):
         Returns:
             self: The instance of the builder.
         """
-        self._adjustment.reference_id = reference_id
+        self._dataitem.reference_id = reference_id
+        return self
+
+    def set_reporting_period_id(self, reporting_period_id: int) -> BuilderInterface:
+        """Sets the reporting period id attribute to the passed integer.
+
+        Args:
+            reporting_period_id (str): Identifier of the document containing
+                additional information regarding the adjustment.
+
+        Returns:
+            self: The instance of the builder.
+        """
+        self._dataitem.reporting_period_id = reporting_period_id
         return self
