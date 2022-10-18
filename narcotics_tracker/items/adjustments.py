@@ -1,4 +1,4 @@
-"""Defines the changes where occur to the inventory.
+"""Defines the changes which occur to the inventory.
 
 Classes: 
     Adjustment: A change which occurred to the inventory.

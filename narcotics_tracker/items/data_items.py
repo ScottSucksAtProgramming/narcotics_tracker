@@ -1,4 +1,4 @@
-"""Contains the interface for items to be stored in the database.
+"""Defines the interface for items stored in the database.
 
 Classes: 
     DatabaseItems: The interface for items which are stored in the database.

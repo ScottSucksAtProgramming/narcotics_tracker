@@ -1,7 +1,7 @@
-"""Defines the controlled substance medications which are to be tracked.
+"""Defines the medications which are tracked.
 
 Classes:
-    Medication: A controlled substance medication which is to be tracked.
+    Medication: A controlled substance medication which is tracked.
 """
 
 from dataclasses import dataclass
