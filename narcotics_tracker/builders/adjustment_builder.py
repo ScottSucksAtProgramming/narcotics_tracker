@@ -73,8 +73,9 @@ class AdjustmentBuilder(BuilderInterface):
     def set_event_code(self, event_code: str) -> BuilderInterface:
         """Sets the event code attribute to the passed string.
 
-        event_code (str): Unique code of the event which occurred. Must match
-            an event stored in the events table.
+        Args:
+            event_code (str): Unique code of the event which occurred. Must
+                match an event stored in the events table.
         """
         self._dataitem.event_code = event_code
         return self
@@ -82,8 +83,10 @@ class AdjustmentBuilder(BuilderInterface):
     def set_medication_code(self, medication_code: str) -> BuilderInterface:
         """Sets the medication code to the passed string.
 
-        medication_code (str): Unique code of the medication being adjusted.
-            Must match a medication stored in the medications table.
+        Args:
+            medication_code (str): Unique code of the medication being
+                adjusted. Must match a medication stored in the medications
+                table.
         """
         self._dataitem.medication_code = medication_code
         return self
