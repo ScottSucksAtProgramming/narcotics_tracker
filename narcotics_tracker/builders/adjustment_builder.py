@@ -1,4 +1,4 @@
-"""Contains the concrete builder for the Adjustment DataItems.
+"""Contains the concrete builder for Adjustment DataItems.
 
 Classes:
 

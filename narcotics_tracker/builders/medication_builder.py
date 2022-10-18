@@ -1,4 +1,4 @@
-"""Contains the concrete builder for the Medication DataItems.
+"""Contains the concrete builder for Medication DataItems.
 
 Classes:
 
