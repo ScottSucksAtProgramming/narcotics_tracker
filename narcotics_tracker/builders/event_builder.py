@@ -8,8 +8,9 @@ Classes:
 
     EventBuilder: Builds and returns Event objects.
 """
-from narcotics_tracker import database, events
+from narcotics_tracker import database
 from narcotics_tracker.builders import event_builder_template
+from narcotics_tracker.items import events
 
 
 class EventBuilder(event_builder_template.Event):

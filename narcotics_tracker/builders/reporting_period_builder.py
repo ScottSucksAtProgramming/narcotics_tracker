@@ -8,8 +8,9 @@ Classes:
 
     ReportingPeriodBuilder: Builds and returns ReportingPeriod objects.
 """
-from narcotics_tracker import database, reporting_periods
+from narcotics_tracker import database
 from narcotics_tracker.builders import reporting_period_builder_template
+from narcotics_tracker.items import reporting_periods
 
 
 class ReportingPeriodBuilder(reporting_period_builder_template.ReportingPeriod):

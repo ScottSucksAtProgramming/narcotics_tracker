@@ -19,8 +19,9 @@ Classes:
 """
 import sqlite3
 
-from narcotics_tracker import database, inventory, medications, reporting_periods
+from narcotics_tracker import database
 from narcotics_tracker.builders import adjustment_builder_template
+from narcotics_tracker.items import adjustments, medications, reporting_periods
 from narcotics_tracker.utils import unit_converter
 
 
@@ -138,7 +139,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         self.modified_date = None
         self.modified_by = None
 
-    def build(self) -> "inventory.Adjustment":
+    def build(self) -> "adjustments.Adjustment":
         """Returns the Adjustment object. Assigns the Adjustment's attributes.
 
         This is the last method to be called as part of the building process.
@@ -153,7 +154,7 @@ class AdjustmentBuilder(adjustment_builder_template.Adjustment):
         if self.reporting_period_id == None:
             self.assign_reporting_period(self.database_connection)
 
-        return inventory.Adjustment(self)
+        return adjustments.Adjustment(self)
 
     def set_adjustment_date(self, adjustment_date: str) -> None:
         """Sets the date which the adjustment occurred.

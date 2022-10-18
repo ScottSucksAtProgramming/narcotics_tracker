@@ -28,23 +28,21 @@ from typing import TYPE_CHECKING
 
 from pytest import fixture
 
-from narcotics_tracker import (
-    containers,
-    database,
-    events,
-    inventory,
-    reporting_periods,
-    statuses,
-    units,
-)
+from narcotics_tracker import database
 from narcotics_tracker.builders import (
     adjustment_builder,
-    container_builder,
     event_builder,
     medication_builder,
     reporting_period_builder,
     status_builder,
     unit_builder,
+)
+from narcotics_tracker.items import (
+    adjustments,
+    events,
+    reporting_periods,
+    statuses,
+    units,
 )
 
 if TYPE_CHECKING:
@@ -97,44 +95,6 @@ def test_adjustment() -> "inventory.Adjustment":
         test_adjustment = adj_builder.build()
 
         return test_adjustment
-
-
-@fixture
-def test_container() -> containers.Container:
-    """Builds and returns a test object from the Container Class.
-
-    Medications come in different containers. These objects are used in the
-    containers vocabulary control table and the medications table. This
-    function uses the builder pattern to build a adjustment which can be used
-    for testing.
-
-    Review the Database Module for more information on interacting with the
-    database.
-
-    Review the Medications Module for more information on Medications and the
-    container_type attribute which uses containers.
-
-    How To Use:
-        Pass 'test_container' into the test function.
-
-        Assign test_container to a variable and use as needed.
-
-    Returns:
-        test_container (container.Container): A container object for testing.
-    """
-
-    cont_builder = container_builder.ContainerBuilder()
-
-    cont_builder.assign_container_id(-7)
-    cont_builder.set_container_code("supp")
-    cont_builder.set_container_name("Suppository")
-    cont_builder.assign_created_date("2022-08-01 00:00:00")
-    cont_builder.assign_modified_date("2022-08-01 00:00:00")
-    cont_builder.set_modified_by("Elodin")
-
-    test_container = cont_builder.build()
-
-    return test_container
 
 
 @fixture

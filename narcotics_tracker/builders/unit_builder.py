@@ -8,8 +8,9 @@ Classes:
 
     UnitBuilder: Builds and returns Unit objects.
 """
-from narcotics_tracker import database, units
+from narcotics_tracker import database
 from narcotics_tracker.builders import unit_builder_template
+from narcotics_tracker.items import units
 
 
 class UnitBuilder(unit_builder_template.Unit):
