@@ -82,8 +82,8 @@ class AdjustmentBuilder(BuilderInterface):
     def set_medication_code(self, medication_code: str) -> BuilderInterface:
         """Sets the medication code to the passed string.
 
-        medication_code (str): Unique code of the event which occurred. Must
-        match a medication stored in the medications table.
+        medication_code (str): Unique code of the medication being adjusted.
+            Must match a medication stored in the medications table.
         """
         self._dataitem.medication_code = medication_code
         return self
