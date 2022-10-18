@@ -1,94 +1,79 @@
 Mermaid Code!
 
+```mermaid
 classDiagram
 
-```mermaid
-class DatabaseItems {
-    <<Abstract Base Class>>
-    + String Table_Name
-    + Dict Column_Info
-    + Integer ID
-    + Integer Created_Date
-    + Integer Modified_Date
-    + String Modified_By
-    + Save(CommandInterface)
-    + Load(CommandInterface)
-    + Update(CommandInterface)
-    }
-
-class Adjustments {
-    <<DataClass / Invoker>>
-    + Unixepoch AdjustmentDate
-    + String EventCode*
-    + String MedicationCode*
-    + Integer AdjustmentAmount
-    + String ReferenceID
-}
-class Events {
-    <<DataClass / Invoker>>
-    + String Code
-    + String Name
-    + String Description
-    + Integer Modifier
-
+class DataItem {
+    <<Interface>>
+    +String table
+    +Dict column_info
+    +Integer id
+    +Integer created_date
+    +Integer modified_date
+    +String modified_by
+    -__str__() String
 }
 
-class Medications {
-    <<DataClass / Invoker>>
-    + String MedicationCode
-    + String MedicationName
-    + Float FillAmount
-    + Float MedicationAmount
-    + Unit PreferredUnit*
-    + Float Concentration
-}
-class ReportingPeriods {
-    <<DataClass / Invoker>>
-    + Unixepoch StartDate
-    + Unixepoch EndDate
-}
-class Statuses {
-    <<DataClass / Invoker>>
-    + String StatusCode
-    + String StatusName
-    + String Description
-}
-class Units {
-    <<DataClass / Invoker>>
-    + String UnitCode
-    + String UnitName
-    + Integer Decimals
+
+class Adjustment {
+    +Integer adjustment_date
+    +String event_code
+    +String medication_code
+    +Integer adjustment_amount
+    +String reference_id
+    -__str__() String
 }
 
-class Database {
-    <<Receiver>>
-    + Table Events
-    + Table Inventory
-    + Table Medications
-    + Table ReportingPeriods
-    + Table Statuses
-    + Table Units
+class Event {
+    +String event_code
+    +String event_name
+    +String description
+    +Integer modifier
+    +__str__() String
 }
 
-class CommandInterface {
-    <<Protocol>>
-    + execute()
+
+class Medication {
+    +String medication_code
+    +String medication_name
+    +Float fill_amount
+    +Float medication_amount
+    +String preferred_unit
+    +Float concentration
+    +String status
+    -__str__() String
 }
 
-class Commands {
-    + CommandInterface
+
+class ReportingPeriod {
+    +int start_date
+    +int end_date
+    +String status
+    -__str__() String
 }
 
-DatabaseItems <|-- Events : Inherits From
-DatabaseItems <|-- Adjustments : Inherits From
-DatabaseItems <|-- Medications : Inherits From
-DatabaseItems <|-- ReportingPeriods : Inherits From
-DatabaseItems <|-- Statuses : Inherits From
-DatabaseItems <|-- Units : Inherits From
+class Status {
+    +String status_code
+    +String status_name
+    +String description
+    -__str__() String
+}
 
-Commands ..|> CommandInterface : Implements
+class Unit {
+    +String unit_code
+    +String unit_name
+    +Integer decimals
+    -__str__() String
+}
 
-CommandInterface <|.. DatabaseItems : Uses
 
-Database <-- Commands : Acts On
+
+DataItem <|-- Event : Inherits From
+DataItem <|-- Adjustment : Inherits From
+DataItem <|-- Medication : Inherits From
+DataItem <|-- ReportingPeriod : Inherits From
+DataItem <|-- Status : Inherits From
+DataItem <|-- Unit : Inherits From
+
+
 ```
