@@ -14,17 +14,30 @@
 
 ## Structural Changes
 
+### Builders Package
+
+This package contains modules which can be used to build all of the DataItems
+which are stored within the SQLite3 database. Full documentation is available
+within that package and its modules. The previous templates were removed and
+replaced with a single BuilderInterface class and modules for each of the six
+DataItems.
+
+The number of tests for this package has been greatly reduced due to the change
+in responsibility of the DataItems class. Many tests for those behaviors have
+been moved to the other parts of the test suite.
+
 ### Items Package
 
 This package contain the modules for all items which are stored within the
 database. The DataItem class defines an interface for all Data Items.
 
+The number of tests for this package has been reduced and are available within
+the Items sub-package within the Unit Tests package.
+
 ## Command Pattern
 
-After learning about the **Command Design Pattern** it felt like a great way to
-structure storing and retrieving data from the SQLite3 Database. It should
-allow flexibility to create and extend the reporting module when that is
-implemented.
+The **Command Design Pattern** was implemented to interact with the SQLite3
+database.
 
 ### Receivers
 
@@ -42,8 +55,9 @@ Not yet implemented.
 
 ## Interface
 
-Not yet implemented.
+The interface for SQLite3 Commands is located in the
+`sqlite_command_interface.py` module.
 
 ## Commands
 
-Not yet implemented.
+Commands are located within the `commands.py` module.
