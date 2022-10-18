@@ -15,8 +15,6 @@ class DataItem(ABC):
 
     Attributes:
         table (str): Name of the table the item belongs to.
-        column_info (dict[str]): Column information for the table, mapped as
-            column names to their datatypes and constraints.
         id (int): Numeric identifier of the item.
         created_date (int): Unix timestamp when the item was first added.
         modified_date (int): Unix timestamp when the item was last modified.
@@ -24,7 +22,7 @@ class DataItem(ABC):
     """
 
     table: str
-    column_info: dict[str]
+    column_names: list[str]
     id: int
     created_date: int
     modified_date: int
