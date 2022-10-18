@@ -22,7 +22,6 @@ class DataItem(ABC):
     """
 
     table: str
-    column_names: list[str]
     id: int
     created_date: int
     modified_date: int
