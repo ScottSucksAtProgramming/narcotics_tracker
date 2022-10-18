@@ -12,6 +12,9 @@ from narcotics_tracker.items.data_items import DataItem
 class BuilderInterface(ABC):
     """Defines the interface for concrete DataItem builders."""
 
+    def reset(self) -> None:
+        """Resets the builder to build a new DataItem."""
+
     def set_table(self) -> None:
         """Sets the name of the table the DataItem belongs to."""
 
