@@ -10,7 +10,7 @@ from narcotics_tracker.items.data_items import DataItem
 
 
 @dataclass
-class Status(DataItem):
+class Unit(DataItem):
     """A unit of measurement for medications.
 
     Attributes:
