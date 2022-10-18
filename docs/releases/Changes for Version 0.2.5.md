@@ -14,6 +14,11 @@
 
 ## Structural Changes
 
+### Items Package
+
+This package contain the modules for all items which are stored within the
+database. The DataItem class defines an interface for all Data Items.
+
 ## Command Pattern
 
 After learning about the **Command Design Pattern** it felt like a great way to
