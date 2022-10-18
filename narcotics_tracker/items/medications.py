@@ -1,17 +1,27 @@
-"""Represents controlled substance medications within the Narcotics Tracker.
+"""Defines the controlled substance medications which are to be tracked.
 
 Classes:
+    Medication: A controlled substance medication which is to be tracked.
 """
 
 from dataclasses import dataclass
 
 from narcotics_tracker.items.data_items import DataItem
-from narcotics_tracker.sqlite_command import SQLiteCommand
 
 
 @dataclass
 class Medication(DataItem):
-    """Representation of a controlled substance medication."""
+    """A controlled substance medication which is to be tracked.
+
+    Attributes:
+        medication_code (str): Unique code identifying the medication.
+        medication_name (str): Name of the medication.
+        fill_amount (float): Amount of liquid the medication is dissolved in.
+        medication_amount (float): Amount of medication.
+        preferred_unit (str): The unit of measurement for the medication.
+        concentration (float): The ratio of medication to liquid.
+        status (str): Status of the medication.
+    """
 
     medication_code: str
     medication_name: str
@@ -19,27 +29,7 @@ class Medication(DataItem):
     medication_amount: float
     preferred_unit: str
     concentration: float
+    status: str
 
-    def add(self, target: SQLiteCommand) -> None:
-        """Adds a new medication to the medications table."""
-        medication_data = {
-            "medication_code": self.medication_code,
-            "medication_name": self.medication_name,
-            "fill_amount": self.fill_amount,
-            "medication_amount": self.medication_amount,
-            "preferred_unit": self.preferred_unit,
-            "concentration": self.concentration,
-            "created_date": self.created_date or None,
-            "modified_date": self.modified_date or None,
-            "modified_by": None,
-        }
-
-    def delete(self, target: SQLiteCommand) -> None:
-        """Removes a medication from the medication table."""
-
-    def update(self, target: SQLiteCommand) -> None:
-        """Updates a medication in the medication table."""
-
-    @classmethod
-    def load(cls) -> "Medication":
-        """Loads a medication object from data in the medication table."""
+    def __str__(self):
+        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code} {self.medication_amount} {self.preferred_unit} in {self.fill_amount} ml."
