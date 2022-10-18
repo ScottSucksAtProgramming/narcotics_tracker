@@ -32,4 +32,4 @@ class Medication(DataItem):
     status: str
 
     def __str__(self):
-        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code} {self.medication_amount} {self.preferred_unit} in {self.fill_amount} ml."
+        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code}) {self.medication_amount} {self.preferred_unit} in {self.fill_amount} ml."
