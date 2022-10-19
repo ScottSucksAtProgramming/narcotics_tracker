@@ -8,10 +8,9 @@ import time
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.sqlite_interface import SQLiteCommand
 
-sq = SQLiteManager("inventory.db")
-
 
 class CreateEventsTable(SQLiteCommand):
+
     table_name = "events"
     column_info = {
         "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
@@ -24,9 +23,12 @@ class CreateEventsTable(SQLiteCommand):
         "modified_by": "TEXT NOT NULL",
     }
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the events table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info)
+        self.receiver.create_table(self.table_name, self.column_info)
 
 
 class CreateInventoryTable(SQLiteCommand):
@@ -50,9 +52,14 @@ class CreateInventoryTable(SQLiteCommand):
         "FOREIGN KEY (reporting_period_id) REFERENCES reporting_periods (id) ON UPDATE CASCADE",
     ]
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the inventory table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info, self.foreign_key_info)
+        self.receiver.create_table(
+            self.table_name, self.column_info, self.foreign_key_info
+        )
 
 
 class CreateMedicationsTable(SQLiteCommand):
@@ -76,9 +83,14 @@ class CreateMedicationsTable(SQLiteCommand):
         "FOREIGN KEY (medication_status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
     ]
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the medications table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info, self.foreign_key_info)
+        self.receiver.create_table(
+            self.table_name, self.column_info, self.foreign_key_info
+        )
 
 
 class CreateReportingPeriodsTable(SQLiteCommand):
@@ -92,9 +104,12 @@ class CreateReportingPeriodsTable(SQLiteCommand):
         "modified_by": "TEXT NOT NULL",
     }
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the reporting periods table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info)
+        self.receiver.create_table(self.table_name, self.column_info)
 
 
 class CreateStatusesTable(SQLiteCommand):
@@ -109,9 +124,12 @@ class CreateStatusesTable(SQLiteCommand):
         "modified_by": "TEXT NOT NULL",
     }
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the statuses table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info)
+        self.receiver.create_table(self.table_name, self.column_info)
 
 
 class CreateUnitsTable(SQLiteCommand):
@@ -126,49 +144,9 @@ class CreateUnitsTable(SQLiteCommand):
         "modified_by": "TEXT NOT NULL",
     }
 
+    def __init__(self, receiver: SQLiteManager) -> None:
+        self.receiver = receiver
+
     def execute(self):
         """Creates the units table in the SQLite3 database."""
-        sq.create_table(self.table_name, self.column_info)
-
-
-class SaveAdjustment(SQLiteCommand):
-    """Adds an adjustment to the inventory table of the SQLite3 database."""
-
-    def __init__(self, receiver: SQLiteManager) -> None:
-        """Initializes the SaveAdjustment Command.
-
-        Args:
-            receiver (SQLiteManager): The target to receive the command.
-            adjustment_data (dict[str]): A dictionary of adjustment data
-                mapping column names to values.
-        """
-        self.table_name = "inventory"
-        self.target = receiver
-
-    def execute(self, adjustment_data: dict[str]) -> None:
-        """Executes the command."""
-        self.target.add(table_name=self.table_name, data=adjustment_data)
-
-    class SaveEvent(SQLiteCommand):
-        """Adds an Event to the Events Table of the SQLite3 database."""
-
-        def __init__(self, receiver: SQLiteManager) -> None:
-            """Initializes the command and pairs it with a receiver instance.
-
-            Args:
-                receiver (SQLiteManager): The target of the command.
-            """
-            self.table_name = "events"
-            self.target = receiver
-
-        def execute(self, event_data: dict[str]) -> str:
-            """Executes the command, returns a message if successful.
-
-            Args:
-                event_data (dict[str]): A dictionary of event data mapping
-                    column names to values.
-            """
-            current_timestamp = int(time.time())
-            event_data["created_date"] = current_timestamp
-            event_data["modified_date"] = current_timestamp
-            self.target.add(self.table_name, event_data)
+        self.receiver.create_table(self.table_name, self.column_info)
