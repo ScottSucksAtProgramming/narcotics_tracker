@@ -50,7 +50,7 @@ class Test_AdjustmentBuilder:
             "adjustment_date": 1666117887,
             "event_code": "TEST",
             "medication_code": "FakeMed",
-            "adjustment_amount": 10,
+            "amount": 10,
             "reference_id": "TestReferenceID",
             "reporting_period_id": 0,
         }

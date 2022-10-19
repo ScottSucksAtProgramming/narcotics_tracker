@@ -33,7 +33,7 @@ class Test_Adjustment:
         adjustment_date=524990800,
         event_code="BIRTH",
         medication_code="TINA",
-        adjustment_amount=1,
+        amount=1,
         reference_id="Tina's Mom",
         reporting_period_id=-36,
         created_date=1666061200,
@@ -57,7 +57,7 @@ class Test_Adjustment:
         assert self.test_adjustment.medication_code == "TINA"
 
     def test_adjustments_return_expected_adjustment_amount(self) -> None:
-        assert self.test_adjustment.adjustment_amount == 1
+        assert self.test_adjustment.amount == 1
 
     def test_adjustments_return_expected_reporting_period_id(self) -> None:
         assert self.test_adjustment.reporting_period_id == -36
@@ -90,7 +90,7 @@ class Test_Adjustment:
             "adjustment_date": 524990800,
             "event_code": "BIRTH",
             "medication_code": "TINA",
-            "adjustment_amount": 1,
+            "amount": 1,
             "reference_id": "Tina's Mom",
             "reporting_period_id": -36,
         }

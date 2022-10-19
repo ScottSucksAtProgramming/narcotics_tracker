@@ -33,7 +33,7 @@ class AdjustmentBuilder(BuilderInterface):
         adjustment_date=None,
         event_code=None,
         medication_code=None,
-        adjustment_amount=None,
+        amount=None,
         reference_id=None,
         reporting_period_id=None,
     )
@@ -49,7 +49,7 @@ class AdjustmentBuilder(BuilderInterface):
             adjustment_date=None,
             event_code=None,
             medication_code=None,
-            adjustment_amount=None,
+            amount=None,
             reference_id=None,
             reporting_period_id=None,
         )
@@ -97,7 +97,7 @@ class AdjustmentBuilder(BuilderInterface):
         Args:
             adjustment_amount (float): The amount of medication being adjusted.
         """
-        self._dataitem.adjustment_amount = adjustment_amount
+        self._dataitem.amount = adjustment_amount
         return self
 
     def set_reference_id(self, reference_id: str) -> BuilderInterface:
