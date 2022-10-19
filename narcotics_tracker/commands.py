@@ -5,8 +5,8 @@ Classes:
 """
 import time
 
-from database import SQLiteManager
-from sqlite_interface import SQLiteCommand
+from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.sqlite_interface import SQLiteCommand
 
 sq = SQLiteManager("inventory.db")
 
