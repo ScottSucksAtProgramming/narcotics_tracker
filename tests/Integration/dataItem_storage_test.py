@@ -57,9 +57,9 @@ class Test_AdjustmentStorage:
 
         sqlite_commands.SaveItemToDatabase(receiver=sq_man, item=adjustment).execute()
 
-        cursor = sq_man.select(table_name="inventory", criteria={"id": -77})
+        cursor = sq_man.select(table_name="inventory")
         adjustment_ids = return_ids(cursor)
-        assert -77 in adjustment_ids
+        assert -1 in adjustment_ids
 
 
 class Test_EventStorage:

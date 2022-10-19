@@ -34,7 +34,7 @@ def adjustment() -> "Adjustment":
     adj_builder = (
         AdjustmentBuilder()
         .set_table("inventory")
-        .set_id(-77)
+        .set_id(-1)
         .set_created_date(1666117887)
         .set_modified_date(1666117887)
         .set_modified_by("System")
