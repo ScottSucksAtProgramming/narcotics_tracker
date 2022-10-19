@@ -13,41 +13,6 @@ import sqlite3
 from narcotics_tracker import sqlite_commands
 from narcotics_tracker.database import SQLiteManager
 
-# def return_expected_columns_from_command(
-#     command: sqlite_commands.SQLiteCommand,
-# ) -> list[str]:
-#     """Returns a list of column names created from the given command."""
-#     columns = []
-#     for item in command.column_info.keys():
-#         columns.append(item)
-#     return columns
-
-
-# def return_column_names_from_db(db: SQLiteManager, table_name: str) -> list[str]:
-#     """Returns a list of column names from the passed SQLiteManager and table."""
-#     column_names = []
-
-#     cursor = db.select(table_name)
-#     data = cursor.description
-
-#     for _tuple in data:
-#         column_names.append(_tuple[0])
-
-#     return column_names
-
-
-# def return_table_names_from_db(db: SQLiteManager) -> list[str]:
-#     """Returns a list of table names from the passed SQLiteManager."""
-
-#     cursor = db._execute("""SELECT name FROM sqlite_master WHERE type = 'table'""")
-#     table_names = []
-#     data = cursor.fetchall()
-
-#     for item in data:
-#         table_names.append(item[0])
-
-#     return table_names
-
 
 def return_ids(cursor: sqlite3.Cursor) -> list[int]:
     """Returns id numbers of DataItems returned from the database.
