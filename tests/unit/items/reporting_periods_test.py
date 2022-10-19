@@ -54,7 +54,6 @@ class Test_ReportingPeriod:
         )
 
     def test_periods_return_expected_dictionary(self) -> None:
-        print(vars(self.test_period))
         assert vars(self.test_period) == {
             "table": "reporting_periods",
             "id": -1,
