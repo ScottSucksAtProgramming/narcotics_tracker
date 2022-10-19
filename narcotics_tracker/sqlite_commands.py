@@ -5,7 +5,7 @@ Classes:
 """
 
 from narcotics_tracker.database import SQLiteManager
-from narcotics_tracker.sqlite_interface import SQLiteCommand
+from narcotics_tracker.sqlite_commands_interface import SQLiteCommand
 
 
 class CreateEventsTable(SQLiteCommand):
