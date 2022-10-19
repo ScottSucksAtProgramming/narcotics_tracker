@@ -11,7 +11,7 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import commands, database
+from narcotics_tracker import database, sqlite_commands
 from narcotics_tracker.builders import event_builder, status_builder, unit_builder
 from narcotics_tracker.setup import standard_items
 
@@ -82,12 +82,12 @@ def main() -> None:
     sq = database.SQLiteManager("inventory.db")
 
     create_table_commands = [
-        commands.CreateEventsTable,
-        commands.CreateInventoryTable,
-        commands.CreateMedicationsTable,
-        commands.CreateReportingPeriodsTable,
-        commands.CreateStatusesTable,
-        commands.CreateUnitsTable,
+        sqlite_commands.CreateEventsTable,
+        sqlite_commands.CreateInventoryTable,
+        sqlite_commands.CreateMedicationsTable,
+        sqlite_commands.CreateReportingPeriodsTable,
+        sqlite_commands.CreateStatusesTable,
+        sqlite_commands.CreateUnitsTable,
     ]
 
     for command in create_table_commands:
