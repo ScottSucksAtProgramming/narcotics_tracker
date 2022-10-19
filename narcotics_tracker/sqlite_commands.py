@@ -4,7 +4,10 @@ Classes:
 
 """
 
+from typing import Union
+
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.data_items import DataItem
 from narcotics_tracker.sqlite_commands_interface import SQLiteCommand
 
 
@@ -37,7 +40,7 @@ class CreateInventoryTable(SQLiteCommand):
         "adjustment_date": "INTEGER NOT NULL",
         "event_code": "TEXT NOT NULL",
         "medication_code": "TEXT NOT NULL",
-        "amount_in_mcg": "INTEGER NOT NULL",
+        "amount": "INTEGER NOT NULL",
         "reporting_period_id": "INTEGER NOT NULL",
         "reference_id": "TEXT NOT NULL",
         "created_date": "INTEGER NOT NULL",
@@ -151,3 +154,31 @@ class CreateUnitsTable(SQLiteCommand):
     def execute(self):
         """Creates the units table in the SQLite3 database."""
         self.receiver.create_table(self.table_name, self.column_info)
+
+
+class SaveItemToDatabase(SQLiteCommand):
+    """Saves a data item to the appropriate table in the database."""
+
+    def __init__(self, receiver: SQLiteManager, item: DataItem) -> None:
+        self.receiver = receiver
+        self.dataitem = item
+
+    def execute(self) -> None:
+        self._extract_item_info()
+        table_name = self._extract_table_name()
+
+        self.receiver.add(table_name, self.item_info)
+
+    def _extract_item_info(self) -> None:
+        """Extracts item attributes and stored as a dictionary."""
+        self.item_info = vars(self.dataitem)
+
+    def _extract_table_name(self) -> str:
+        """Removes and returns the table name from DataItem information.
+
+        #! Note: The 'table' key and value are removed from self.item_info.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.item_info.pop("table")
