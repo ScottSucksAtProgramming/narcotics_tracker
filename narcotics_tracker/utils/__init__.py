@@ -1,5 +1,4 @@
-"""The Utilities Package contains modules and functions that assist with 
-controlled substance inventory management.
+"""Contains utility helper modules and functions.
 
 Modules:
     unit_converter: Assists in converting medications between different units 

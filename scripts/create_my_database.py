@@ -2,7 +2,7 @@
 table."""
 
 from narcotics_tracker import commands
-from narcotics_tracker.sqlite_command_interface import SQLiteCommand
+from narcotics_tracker.sqlite_interface import SQLiteCommand
 
 
 def create_tables(tables=list[SQLiteCommand]):

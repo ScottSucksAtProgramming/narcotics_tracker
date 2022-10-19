@@ -1,4 +1,4 @@
-"""Contains the commands which affect the SQLite3 database.
+"""Contains the commands for the SQLite3 Database.
 
 Classes:
 
@@ -6,7 +6,7 @@ Classes:
 import time
 
 from database import SQLiteManager
-from sqlite_command import SQLiteCommand
+from sqlite_interface import SQLiteCommand
 
 sq = SQLiteManager("inventory.db")
 

@@ -1,4 +1,4 @@
-"""Contains the protocol for any commands which affect the SQLite3 database.
+"""Defines the protocol for commands which interact with the SQLite3 database.
 
 Classes: 
     SQLiteCommand: The interface for SQLite3 database commands.

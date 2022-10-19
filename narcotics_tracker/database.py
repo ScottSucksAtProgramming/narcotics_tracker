@@ -1,4 +1,4 @@
-"""Manages Communication with the SQlite3 database.
+"""Manages Communication with the SQLite3 Database.
 
 All information about controlled substance medications and their activities 
 are stored within an SQLite3 database. This module contains the objects 

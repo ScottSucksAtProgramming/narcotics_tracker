@@ -1,10 +1,11 @@
 """Tracks the inventory of controlled substances used at EMS agencies.
 
-Version: 0.2.0
+#* Title: Narcotics Tracker
+#* Version: 0.2.0
+#* Author: Scott Kostolni - (https://github.com/ScottSucksAtProgramming)
 
-Author: Scott Kostolni - (https://github.com/ScottSucksAtProgramming)
+#*  Special Thanks:
 
-Special Thanks:
     Mom, thanks for being my software design mentor and entertaining my 
     onslaught of questions.
 
@@ -12,20 +13,23 @@ Special Thanks:
     for reading my documentation to ensure I sound a little less like an idiot 
     than I actually am.
 
-Purpose:
+#*  Purpose:
+
     Welcome to the Narcotics Tracker! This software is designed to assist 
     controlled substance agents working at EMS agencies with inventory 
     tracking and periodic reporting of controlled substance activities to 
     their governing agencies.
 
-Motivation:
+#*  Motivation:
+
     I am a controlled substance agent working in New York State. The tracking 
     of controlled substances is complicated and requires multiple forms and 
     processes. I have wished for a single place where all of that information 
     can be stored and easily accessed. This software is intended to fill that 
     need.
 
-Current Completed Features:
+#*  Current Completed Features:
+
     Database Object Creation - Medications, Medication Containers, Units of 
     Measurement, Events, Inventory Adjustments, Reporting Periods and Statuses 
     can be created using the Builder Modules for each item.
@@ -34,63 +38,42 @@ Current Completed Features:
     Objects and can be stored. The Database Class now functions as a context 
     manager for better resource management.
 
-Planned Features:
-    Inventory Tracking (v0.2.0 - alpha) - Completed!
+#*  Planned Features:
 
-    Code Architecture Improvement (v0.2.5 - Alpha)
+    #✓ Medications and Initial Development (v0.1.0 - Alpha) - Completed!
+    #✓ Inventory Tracking (v0.2.0 - Alpha) - Completed!
+    #Todo Code Architecture Improvement (v0.2.5 - Alpha) - In Progress
+    #! Basic Report Generation (v0.3.0 - Alpha)
+    #! Command Line Tools (v0.0.0 - Beta)
+    #! Order Tracking (v0.1.0 - Beta)
+    #! Lot Tracking (v0.2.0 - Beta)
+    #! Destruction Tracking (v0.3.0 - Beta)
+    #! User and Agent Management (v0.4.0 - Beta)
+    #! Command Line Tools Redux (v0.5.0 - Beta)
+    #! Console Interface (v1.6.0)
+    #! GUI Interface (v1.7.0)
 
-    Command Line Tools (v1.0.0)
+#*  Packages:
 
-    Order Tracking (v1.1.0)
+    Builders: Contains the builders for the DataItems used in the 
+        Narcotics Tracker.
+    Items: Contains the items which are stored in the database.
+    Scripts: Contains various scripts which help to setup and use the 
+        Narcotics Tracker.
+    Setup: Contains the modules needed to set up the Narcotics Tracker 
+        software.
+    Utils: Contains utility helper modules and functions.
 
-    Lot Tracking (v1.2.0)
+#*  Modules:
 
-    Destruction Tracking (v1.3.0)
-
-    User and Agent Management (v1.4.0)
-
-    Report Generation (v1.5.0)
-
-    Console Interface (v1.6.0)
-
-    GUI Interface (v1.7.0)
-
-Packages:
-    Builders: Assists with the building of complex objects.
-
-    Enums: Package Removed in v0.2.0 - alpha.
-
-    Setup: Contains standard items for populating the database.
-
-    Utils: Contains utility functions used in the software.
-
-Modules:
-
-    Containers: Contains implementation and representation of Medication 
-        Containers.
-
-    Database: Defines the database model for the narcotics tracker.
-
-    Events: Contains the implementation and representation of Events.
-
-    Inventory: Contains the implementation and representation of Inventory 
-        Adjustments.
-
-    Medications: Contains the implementation and representation of Medication 
-        Objects.
-
-    Reporting Periods: Contains the implementation and representation of 
-        Reporting Period Objects.
-
-    Statuses: Contains the implementation and representation of Object 
-        Statuses.
-
-    Units: Contains implementation and representation of Units of Measurement.
+    Commands: Contains the commands for the SQLite3 Database.
+    Database: Manages Communication with the SQLite3 Database.
+    SQlite3 Interface: Defines the protocol for commands which interact with 
+        the SQLite3 database.
 
 
-Release Notes:
+#*  Release Notes:
 
-Version 0.1.0 - https://github.com/ScottSucksAtProgramming/narcotics_tracker/releases/tag/v0.1.0-alpha
-
-Version 0.2.0 - https://github.com/ScottSucksAtProgramming/narcotics_tracker/releases/tag/v0.2.0-alpha
+        Version 0.1.0 - https://github.com/ScottSucksAtProgramming/narcotics_tracker/releases/tag/v0.1.0-alpha
+        Version 0.2.0 - https://github.com/ScottSucksAtProgramming/narcotics_tracker/releases/tag/v0.2.0-alpha
 """
