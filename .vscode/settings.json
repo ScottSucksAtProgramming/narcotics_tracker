@@ -1,12 +1,12 @@
 {
     "files.exclude": {
-        ".vscode": true,
         "**/__pycache__": true,
         "**/.DS_Store": true,
         "**/.git": true,
         "**/.hg": true,
         "**/.pytest_cache": true,
         "**/.svn": true,
+        "**/.vscode": true,
         "**/CVS": true,
         "**/Thumbs.db": true
     },
