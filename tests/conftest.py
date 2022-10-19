@@ -8,8 +8,35 @@ Fixtures:
 """
 
 import os
+from typing import TYPE_CHECKING
 
 from pytest import fixture
+
+from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.adjustments import Adjustment
+
+
+@fixture
+def adjustment() -> "Adjustment":
+    """returns an Adjustment DataItem for testing."""
+    adj_builder = (
+        AdjustmentBuilder()
+        .set_table("inventory")
+        .set_id(-77)
+        .set_created_date(1666117887)
+        .set_modified_date(1666117887)
+        .set_modified_by("System")
+        .set_adjustment_date(1666117887)
+        .set_event_code("TEST")
+        .set_medication_code("FakeMed")
+        .set_adjustment_amount(10)
+        .set_reference_id("TestReferenceID")
+        .set_reporting_period_id(0)
+    )
+
+    return adj_builder.build()
 
 
 @fixture

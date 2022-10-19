@@ -22,26 +22,6 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
 
 
-@pytest.fixture
-def adjustment() -> "Adjustment":
-    adj_builder = (
-        AdjustmentBuilder()
-        .set_table("inventory")
-        .set_id(-77)
-        .set_created_date(1666117887)
-        .set_modified_date(1666117887)
-        .set_modified_by("System")
-        .set_adjustment_date(1666117887)
-        .set_event_code("TEST")
-        .set_medication_code("FakeMed")
-        .set_adjustment_amount(10)
-        .set_reference_id("TestReferenceID")
-        .set_reporting_period_id(0)
-    )
-
-    return adj_builder.build()
-
-
 # def return_expected_columns_from_command(
 #     command: sqlite_commands.SQLiteCommand,
 # ) -> list[str]:
