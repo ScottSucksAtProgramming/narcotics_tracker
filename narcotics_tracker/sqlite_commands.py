@@ -72,11 +72,11 @@ class CreateMedicationsTable(SQLiteCommand):
         "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
         "medication_code": "TEXT NOT NULL UNIQUE",
         "medication_name": "TEXT NOT NULL",
-        "dose_in_mcg": "REAL NOT NULL",
+        "medication_amount": "REAL NOT NULL",
         "preferred_unit": "TEXT NOT NULL",
         "fill_amount": "REAL NOT NULL",
         "concentration": "REAL NOT NULL",
-        "medication_status": "TEXT NOT NULL",
+        "status": "TEXT NOT NULL",
         "created_date": "INTEGER NOT NULL",
         "modified_date": "INTEGER NOT NULL",
         "modified_by": "TEXT NOT NULL",
@@ -84,7 +84,7 @@ class CreateMedicationsTable(SQLiteCommand):
 
     foreign_key_info = [
         "FOREIGN KEY (preferred_unit) REFERENCES units (unit_code) ON UPDATE CASCADE",
-        "FOREIGN KEY (medication_status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
+        "FOREIGN KEY (status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
     ]
 
     def __init__(self, receiver: SQLiteManager) -> None:
