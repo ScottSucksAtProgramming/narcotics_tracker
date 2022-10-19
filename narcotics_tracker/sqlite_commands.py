@@ -164,11 +164,14 @@ class SaveItemToDatabase(SQLiteCommand):
         self.receiver = receiver
         self.dataitem = item
 
-    def execute(self) -> None:
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
         self._extract_item_info()
         table_name = self._extract_table_name()
 
         self.receiver.add(table_name, self.item_info)
+
+        return f"Item added to {table_name} table."
 
     def _extract_item_info(self) -> None:
         """Extracts item attributes and stored as a dictionary."""
@@ -183,3 +186,23 @@ class SaveItemToDatabase(SQLiteCommand):
             string: Name of the table.
         """
         return self.item_info.pop("table")
+
+
+class DeleteItemFromDatabaseByID(SQLiteCommand):
+    """Deletes a DataItem from the database using the passed ID."""
+
+    def __init__(
+        self, receiver: SQLiteManager, table_name: str, target_id: int
+    ) -> None:
+        """Sets the SQLiteManager, table_name, and target's id number."""
+        self.receiver = receiver
+        self.target_id = target_id
+        self.table_name = table_name
+
+    def execute(self) -> str:
+        """Executes the command, returns a success message."""
+        self.receiver.delete(
+            table_name=self.table_name, criteria={"id": self.target_id}
+        )
+
+        return f"Item deleted from {self.table_name} table."
