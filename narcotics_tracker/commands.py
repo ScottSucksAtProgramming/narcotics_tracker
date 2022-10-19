@@ -3,7 +3,6 @@
 Classes:
 
 """
-import time
 
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.sqlite_interface import SQLiteCommand
