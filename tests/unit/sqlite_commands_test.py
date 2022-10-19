@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
-from narcotics_tracker.sqlite_commands import SaveItemToDatabase
+from narcotics_tracker.sqlite_commands import SaveItem
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
@@ -47,7 +47,7 @@ class Test_SaveItemToDatabase:
 
     def test_SaveItemToDatabase_extracts_item_data_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItemToDatabase(None, test_med)
+        command = SaveItem(None, test_med)
 
         command._extract_item_info()
 
@@ -68,7 +68,7 @@ class Test_SaveItemToDatabase:
 
     def test_SaveItemToDatabase_extracts_table_name_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItemToDatabase(None, test_med)
+        command = SaveItem(None, test_med)
         command._extract_item_info()
         table_name = command._extract_table_name()
 

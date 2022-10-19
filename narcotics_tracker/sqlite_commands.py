@@ -159,7 +159,7 @@ class CreateUnitsTable(SQLiteCommand):
 
 
 # * Item Storage Commands
-class SaveItemToDatabase(SQLiteCommand):
+class SaveItem(SQLiteCommand):
     """Saves a data item to the appropriate table in the database."""
 
     def __init__(self, receiver: SQLiteManager, item: DataItem) -> None:
