@@ -23,7 +23,7 @@ Functions:
 
 import sqlite3
 
-from narcotics_tracker import database
+from narcotics_tracker import commands, database
 from narcotics_tracker.builders import event_builder, status_builder, unit_builder
 from narcotics_tracker.setup import standard_items
 
@@ -203,21 +203,24 @@ def populate_database_with_standard_statuses(db_connection: sqlite3.Connection) 
 
 def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
-    database_name = create_database()
-    with database.Database(database_name) as db:
+    sq = database.SQLiteManager("inventory.db")
 
-        create_containers_table(db)
-        create_events_table(db)
-        create_inventory_table(db)
-        create_medications_table(db)
-        create_reporting_periods_table(db)
-        create_statuses_table(db)
-        create_units_table(db)
+    create_table_commands = [
+        commands.CreateEventsTable,
+        commands.CreateInventoryTable,
+        commands.CreateMedicationsTable,
+        commands.CreateReportingPeriodsTable,
+        commands.CreateStatusesTable,
+        commands.CreateUnitsTable,
+    ]
 
-        populate_database_with_standard_units(db)
-        populate_database_with_standard_events(db)
-        populate_database_with_standard_containers(db)
-        populate_database_with_standard_statuses(db)
+    for command in create_table_commands:
+        command(sq).execute()
+
+        # populate_database_with_standard_units(db)
+        # populate_database_with_standard_events(db)
+        # populate_database_with_standard_containers(db)
+        # populate_database_with_standard_statuses(db)
 
 
 if __name__ == "__main__":
