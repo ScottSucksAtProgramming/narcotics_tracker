@@ -139,5 +139,6 @@
     "explorer.decorations.badges": true,
     "explorer.excludeGitIgnore": false,
     "explorer.sortOrder": "filesFirst",
-    "vsicons.presets.hideExplorerArrows": true
+    "vsicons.presets.hideExplorerArrows": true,
+    "explorer.fileNesting.enabled": false
 }
