@@ -1,4 +1,4 @@
-"""Contains integration tests for SQLiteCommands.
+"""Integration tests for creating tables within the SQLite3 database.
 
 Classes:
     Test_TableCreationCommands: Performs integration testing for commands 
@@ -53,22 +53,12 @@ def return_table_names_from_db(db: SQLiteManager) -> list[str]:
     return table_names
 
 
-class Test_TableCreationCommands:
-    """Performs integration testing for commands that create tables.
+class Test_EventsTableCreation:
+    """Tests that 'events' table is created by CreateEventsTable command.
 
     Behaviors Tested:
-        - CreateEventsTable Command creates expected table.
-        - CreateEventsTable Command creates expected columns.
-        - CreateInventoryTable Command creates expected table.
-        - CreateInventoryTable Command creates expected columns.
-        - CreateMedicationsTable Command creates expected table.
-        - CreateMedicationsTable Command creates expected columns.
-        - CreateReportingPeriodsTable Command creates expected table.
-        - CreateReportingPeriodsTable Command creates expected columns.
-        - CreateStatusesTable Command creates expected table.
-        - CreateStatusesTable Command creates expected columns.
-        - CreateUnitesTable Command creates expected table.
-        - CreateUnitesTable Command creates expected columns.
+        - The 'events' table is created in the database.
+        - All expected columns are created in the table.
     """
 
     def test_CreateEventsTable_creates_table(self, reset_database) -> None:
@@ -98,6 +88,15 @@ class Test_TableCreationCommands:
             print(missing_columns)
 
         assert missing_columns == []
+
+
+class Test_InventoryTableCreation:
+    """Tests that 'inventory' table is created by CreateInventoryTable command.
+
+    Behaviors Tested:
+        - The 'inventory' table is created in the database.
+        - All expected columns are created in the table.
+    """
 
     def test_CreateInventoryTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
@@ -130,6 +129,15 @@ class Test_TableCreationCommands:
 
         assert missing_columns == []
 
+
+class Test_MedicationsTableCreation:
+    """Tests that 'medications' table is created by CreateMedicationsTable command.
+
+    Behaviors Tested:
+        - The 'medications' table is created in the database.
+        - All expected columns are created in the table.
+    """
+
     def test_CreateMedicationsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
@@ -159,6 +167,15 @@ class Test_TableCreationCommands:
             print(missing_columns)
 
         assert missing_columns == []
+
+
+class Test_ReportingPeriodsTableCreation:
+    """Tests that the table is created by CreateReportingPeriodsTable command.
+
+    Behaviors Tested:
+        - The 'reporting_periods' table is created in the database.
+        - All expected columns are created in the table.
+    """
 
     def test_CreateReportingPeriodsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
@@ -191,6 +208,15 @@ class Test_TableCreationCommands:
 
         assert missing_columns == []
 
+
+class Test_StatusesTableCreation:
+    """Tests that the 'statues' table is created by CreateStatusesTable command.
+
+    Behaviors Tested:
+        - The 'statuses' table is created in the database.
+        - All expected columns are created in the table.
+    """
+
     def test_CreateStatusesTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
@@ -218,6 +244,15 @@ class Test_TableCreationCommands:
             print(missing_columns)
 
         assert missing_columns == []
+
+
+class Test_UnitsTableCreation:
+    """Tests that the 'units' table is created by CreateUnitsTable command.
+
+    Behaviors Tested:
+        - The 'units' table is created in the database.
+        - All expected columns are created in the table.
+    """
 
     def test_CreateUnitsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")

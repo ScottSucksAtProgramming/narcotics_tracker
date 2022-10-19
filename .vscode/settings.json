@@ -1,14 +1,14 @@
 {
     "files.exclude": {
-        "**/__pycache__": true,
-        "**/.DS_Store": true,
         "**/.git": true,
-        "**/.hg": true,
-        "**/.pytest_cache": true,
         "**/.svn": true,
-        "**/.vscode": true,
+        "**/.hg": true,
         "**/CVS": true,
+        "**/.DS_Store": true,
         "**/Thumbs.db": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.vscode": true,
         "**/venv": true
     },
     "hide-files.files": [
