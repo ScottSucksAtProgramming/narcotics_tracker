@@ -51,20 +51,39 @@ class Test_AdjustmentStorage:
         assert -77 in adjustment_ids
 
 
-class Test_AdjustmentStorage:
-    """Tests Adjustment Storage in the SQLite3 database.
+class Test_EventStorage:
+    """Tests Event Storage in the SQLite3 database.
 
     Behaviors Tested:
-        - Adjustments can be added to the inventory table.
+        - Events can be added to the events table.
     """
 
-    def test_adjustments_can_be_added_to_db(self, reset_database, adjustment) -> None:
-        adjustment = adjustment
+    def test_events_can_be_added_to_db(self, reset_database, event) -> None:
+        event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateInventoryTable(sq_man).execute()
+        sqlite_commands.CreateEventsTable(sq_man).execute()
 
-        sqlite_commands.SaveItemToDatabase(receiver=sq_man, item=adjustment).execute()
+        sqlite_commands.SaveItemToDatabase(receiver=sq_man, item=event).execute()
 
-        cursor = sq_man.select(table_name="inventory", criteria={"id": -77})
-        adjustment_ids = return_ids(cursor)
-        assert -77 in adjustment_ids
+        cursor = sq_man.select(table_name="events")
+        event_ids = return_ids(cursor)
+        assert -77 in event_ids
+
+
+class Test_MedicationStorage:
+    """Tests Medication Storage in the SQLite3 database.
+
+    Behaviors Tested:
+        - Medications can be added to the medications table.
+    """
+
+    def test_medications_can_be_added_to_db(self, reset_database, medication) -> None:
+        medication = medication
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateMedicationsTable(sq_man).execute()
+
+        sqlite_commands.SaveItemToDatabase(receiver=sq_man, item=medication).execute()
+
+        cursor = sq_man.select(table_name="medications")
+        medication_ids = return_ids(cursor)
+        assert -1 in medication_ids
