@@ -20,3 +20,6 @@ def reset_database():
     """
     if os.path.exists("data/test_database.db"):
         os.remove("data/test_database.db")
+
+    if os.path.exists("data/table_creation_tests.db"):
+        os.remove("data/table_creation_tests.db")

@@ -57,7 +57,9 @@ class CreateInventoryTable(SQLiteCommand):
     def execute(self):
         """Creates the inventory table in the SQLite3 database."""
         self.receiver.create_table(
-            self.table_name, self.column_info, self.foreign_key_info
+            table_name=self.table_name,
+            column_info=self.column_info,
+            foreign_key_info=self.foreign_key_info,
         )
 
 
