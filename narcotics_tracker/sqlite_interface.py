@@ -7,9 +7,14 @@ Classes:
 
 from typing import Protocol
 
+from narcotics_tracker.database import SQLiteManager
+
 
 class SQLiteCommand(Protocol):
     """The interface for SQLite3 database commands."""
+
+    def __init__(self, receiver: SQLiteManager) -> None:
+        ...
 
     def execute(self) -> None:
         ...
