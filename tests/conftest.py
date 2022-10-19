@@ -103,7 +103,6 @@ def reporting_period() -> "ReportingPeriod":
         .set_start_date(1666061200)
         .set_end_date(1666061200)
         .set_status("unfinished")
-        .build()
     )
 
     return reporting_period_builder.build()
