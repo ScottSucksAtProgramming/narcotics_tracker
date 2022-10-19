@@ -50,8 +50,8 @@
     #! Destruction Tracking (v0.3.0 - Beta)
     #! User and Agent Management (v0.4.0 - Beta)
     #! Command Line Tools Redux (v0.5.0 - Beta)
-    #! Console Interface (v1.6.0)
-    #! GUI Interface (v1.7.0)
+    #! Console Interface (v0.6.0)
+    #! GUI Interface (v0.7.0)
 
 #*  Packages:
 
