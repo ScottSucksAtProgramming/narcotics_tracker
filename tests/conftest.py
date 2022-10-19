@@ -14,12 +14,12 @@ from pytest import fixture
 
 @fixture
 def reset_database():
-    """Resets test_database.db for testing functions.
-
-    This function deletes 'data/test_database.db'.
-    """
+    """Resets test_database.db for testing methods."""
     if os.path.exists("data/test_database.db"):
         os.remove("data/test_database.db")
 
     if os.path.exists("data/table_creation_tests.db"):
         os.remove("data/table_creation_tests.db")
+
+    if os.path.exists("data/data_item_storage_tests.db"):
+        os.remove("data/data_item_storage_tests.db")
