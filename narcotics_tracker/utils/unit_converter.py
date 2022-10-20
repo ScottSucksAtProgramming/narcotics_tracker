@@ -1,71 +1,67 @@
-"""Assists in converting medications between different units of measurement.
+"""Handles conversion between different units.
 
 Classes:
     UnitConverter: Converts between different units of measurement.
 """
 
 
+from typing import Union
+
+
 class UnitConverter:
     """Converts between different units of measurement.
 
     Methods:
-        to_mcg: Converts from a specified unit to micrograms.
-        to_mg: Converts from a specified unit to milligrams.
-        to_G: Converts from a specified unit to grams.
+
+        to_standard: Converts the amount from the preferred to standard unit.
+
+        to_preferred: Converts the amount from the standard to preferred unit.
+
+        to_milliliters: Converts and returns the amount in milliliters.
     """
 
-    def to_mcg(amount: float, starting_unit: str) -> float:
-        """Converts from a specified unit to micrograms.
+    def __init__(
+        self,
+        amount: Union[int, float],
+        preferred_unit: str,
+        concentration: float = None,
+    ) -> None:
+        """Sets the amount and preferred_unit.
 
         Args:
-            amount (float): The amount to convert.
+            amount (int / float): Amount to be converted.
 
-            unit
+            preferred_unit (str): The preferred unit of measurement's
+                abbreviation. Must be 'g' mg' 'mcg' or, 'ml'.
+
+            concentration (float, optional): Medications concentration. Needed
+                for unit to milliliter conversion.
+        """
+        self.amount = amount
+        self.preferred_unit = preferred_unit
+        self.concentration = concentration or None
+
+    def to_standard(self) -> int:
+        """Converts the amount from the preferred to standard unit.
 
         Returns:
-            amount (float): The amount converted to micrograms.
+            int: The converted amount.
         """
-        if starting_unit == "mg":
-            return amount * 10**3
+        decimals = {"mcg": -6, "mg": -3, "g": 0}
+        exponent = decimals[self.preferred_unit] + 6
 
-        elif starting_unit == "g":
-            return amount * 10**6
+        return self.amount * (10**exponent)
 
-        elif starting_unit == "mcg":
-            return amount
+    def to_preferred(self) -> int:
+        """Converts the amount from the standard to preferred unit."""
+        decimals = {"mcg": 6, "mg": 3, "g": 0}
 
-    def to_mg(amount: float, starting_unit: str) -> float:
-        """Converts from a specified unit to milligrams.
+        exponent = decimals[self.preferred_unit] - 6
+        return self.amount * (10**exponent)
 
-        Args:
-            amount (float): The amount to convert.
+    def to_milliliters(self) -> float:
+        """Converts and returns the amount in milliliters."""
 
-        Returns:
-            float: The amount converted to milligrams.
-        """
-        if starting_unit == "g":
-            return amount * 10**3
+        adjusted_amount = self.to_preferred()
 
-        elif starting_unit == "mcg":
-            return amount / 10**3
-
-        elif starting_unit == "mg":
-            return amount
-
-    def to_G(amount: float, starting_unit: str) -> float:
-        """Converts from a specified unit to grams.
-
-        Args:
-            amount (float): The amount to convert.
-
-        Returns:
-            float: The amount converted to Grams.
-        """
-        if starting_unit == "mg":
-            return amount / 10**3
-
-        elif starting_unit == "mcg":
-            return amount / 10**6
-
-        elif starting_unit == "g":
-            return amount
+        return adjusted_amount / self.concentration

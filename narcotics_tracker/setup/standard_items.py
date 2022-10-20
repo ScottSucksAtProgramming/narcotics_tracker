@@ -67,103 +67,103 @@ Items:
 
         Closed (CLOSED)
 """
-STANDARD_EVENTS = [
-    {
-        "event_id": None,
-        "event_code": "IMPORT",
-        "event_name": "imported",
-        "description": "Used when adding pre-existing stock to the table.",
-        "operator": +1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "event_id": None,
-        "event_code": "ORDER",
-        "event_name": "ordered",
-        "description": "Used when adding new stock from a purchase order.",
-        "operator": +1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "event_id": None,
-        "event_code": "USE",
-        "event_name": "used",
-        "description": "Used when subtracting medication that was administered to a patient.",
-        "operator": -1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "event_id": None,
-        "event_code": "WASTE",
-        "event_name": "wasted",
-        "description": "Used when subtracting medication which was wasted.",
-        "operator": -1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "event_id": None,
-        "event_code": "DESTROY",
-        "event_name": "destroyed",
-        "description": "Used when subtracting medication which was destroyed through a reverse distributor.",
-        "operator": -1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "event_id": None,
-        "event_code": "LOSS",
-        "event_name": "lost",
-        "description": "Used when subtracting medication which were lost or stolen.",
-        "operator": -1,
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-]
+from narcotics_tracker.items.events import Event
+from narcotics_tracker.items.units import Unit
 
-STANDARD_UNITS = [
-    {
-        "unit_id": None,
-        "unit_code": "mcg",
-        "unit_name": "Micrograms",
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "unit_id": None,
-        "unit_code": "mg",
-        "unit_name": "Milligrams",
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "unit_id": None,
-        "unit_code": "g",
-        "unit_name": "Grams",
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-    {
-        "unit_id": None,
-        "unit_code": "ml",
-        "unit_name": "Milliliters",
-        "created_date": None,
-        "modified_date": None,
-        "modified_by": "Setup",
-    },
-]
+STANDARD_EVENTS = []
+
+import_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "IMPORT",
+    "Imported",
+    "Used when adding pre-existing stock to the inventory.",
+    +1,
+)
+STANDARD_EVENTS.append(import_event)
+
+order_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "ORDER",
+    "Ordered",
+    "Used when adding new stock from a purchase order.",
+    +1,
+)
+STANDARD_EVENTS.append(order_event)
+
+use_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "USE",
+    "Used",
+    "Used when subtracting medication that was administered to a patient.",
+    -1,
+)
+STANDARD_EVENTS.append(use_event)
+
+waste_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "WASTE",
+    "Wasted",
+    "Used when subtracting medication which was wasted.",
+    -1,
+)
+STANDARD_EVENTS.append(waste_event)
+
+destroy_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "DESTROY",
+    "Destroyed",
+    "Used when subtracting medication which was destroyed through a reverse distributor.",
+    -1,
+)
+STANDARD_EVENTS.append(destroy_event)
+
+loss_event = Event(
+    "events",
+    None,
+    None,
+    None,
+    "Setup",
+    "LOSS",
+    "Lost",
+    "Used when subtracting medication which were lost or stolen.",
+    -1,
+)
+STANDARD_EVENTS.append(loss_event)
+
+
+STANDARD_UNITS = []
+microgram = Unit("units", None, None, None, "Setup", "mcg", "microgram", 6)
+STANDARD_UNITS.append(microgram)
+
+milligram = Unit("units", None, None, None, "Setup", "mg", "milligram", 3)
+STANDARD_UNITS.append(milligram)
+
+gram = Unit("units", None, None, None, "Setup", "g", "gram", 0)
+STANDARD_UNITS.append(gram)
+
+milliliter = Unit("units", None, None, None, "Setup", "ml", "milliliter", 3)
+STANDARD_UNITS.append(milliliter)
+
 
 STANDARD_CONTAINERS = [
     {
@@ -239,3 +239,5 @@ STANDARD_STATUSES = [
         "modified_by": "Setup",
     },
 ]
+
+print(STANDARD_EVENTS)
