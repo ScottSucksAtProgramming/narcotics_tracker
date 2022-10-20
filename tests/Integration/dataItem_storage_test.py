@@ -20,9 +20,14 @@ Functions:
 
 
 import sqlite3
+from typing import TYPE_CHECKING
 
 from narcotics_tracker import sqlite_commands
+from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
 from narcotics_tracker.database import SQLiteManager
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.adjustments import Adjustment
 
 
 def return_ids(cursor: sqlite3.Cursor) -> list[int]:
@@ -49,6 +54,7 @@ class Test_AdjustmentStorage:
     Behaviors Tested:
         - Adjustments can be added to the inventory table.
         - Adjustments can be removed from the inventory table.
+        - Adjustments can be read from the inventory table.
     """
 
     def test_adjustments_can_be_added_to_db(self, reset_database, adjustment) -> None:
@@ -74,6 +80,16 @@ class Test_AdjustmentStorage:
         adjustment_ids = return_ids(cursor)
         assert -1 not in adjustment_ids
 
+    def test_adjustments_can_be_read_from_db(self, reset_database, adjustment):
+        adjustment = adjustment
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateInventoryTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=adjustment).execute()
+
+        data = sqlite_commands.ListAdjustments(sq_man).execute()
+
+        assert data != None
+
 
 class Test_EventStorage:
     """Tests Event Storage in the SQLite3 database.
@@ -81,6 +97,7 @@ class Test_EventStorage:
     Behaviors Tested:
         - Events can be added to the events table.
         - Events can be removed from the inventory table.
+        - Events can be read from the inventory table.
     """
 
     def test_events_can_be_added_to_db(self, event) -> None:
@@ -118,6 +135,16 @@ class Test_EventStorage:
         event_id = return_ids(cursor)
         assert -1 not in event_id
 
+    def test_events_can_be_read_from_db(self, reset_database, event):
+        event = event
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateEventsTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+
+        data = sqlite_commands.ListEvents(sq_man).execute()
+
+        assert data != None
+
 
 class Test_MedicationStorage:
     """Tests Medication Storage in the SQLite3 database.
@@ -125,6 +152,7 @@ class Test_MedicationStorage:
     Behaviors Tested:
         - Medications can be added to the medications table.
         - Medications can be removed from the inventory table.
+        - Medications can be read from the inventory table.
     """
 
     def test_medications_can_be_added_to_db(self, medication) -> None:
@@ -170,6 +198,16 @@ class Test_MedicationStorage:
         medication_id = return_ids(cursor)
         assert -1 not in medication_id
 
+    def test_medications_can_be_read_from_db(self, reset_database, medication):
+        medication = medication
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateMedicationsTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+
+        data = sqlite_commands.ListMedications(sq_man).execute()
+
+        assert data != None
+
 
 class Test_ReportingPeriodStorage:
     """Tests ReportingPeriod Storage in the SQLite3 database.
@@ -177,6 +215,7 @@ class Test_ReportingPeriodStorage:
     Behaviors Tested:
         - ReportingPeriods can be added to the reporting_periods table.
         - ReportingPeriods can be removed from the inventory table.
+        - ReportingPeriods can be read from the inventory table.
     """
 
     def test_ReportingPeriods_can_be_added_to_db(self, reporting_period) -> None:
@@ -206,6 +245,18 @@ class Test_ReportingPeriodStorage:
         reporting_period_id = return_ids(cursor)
         assert -1 not in reporting_period_id
 
+    def test_ReportingPeriods_can_be_read_from_db(
+        self, reset_database, reporting_period
+    ):
+        reporting_period = reporting_period
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateReportingPeriodsTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
+
+        data = sqlite_commands.ListReportingPeriods(sq_man).execute()
+
+        assert data != None
+
 
 class Test_StatusStorage:
     """Tests Status Storage in the SQLite3 database.
@@ -213,6 +264,7 @@ class Test_StatusStorage:
     Behaviors Tested:
         - Statuses can be added to the status table.
         - Statuses can be removed from the inventory table.
+        - Statuses can be read from the inventory table.
     """
 
     def test_Statuses_can_be_added_to_db(self, status) -> None:
@@ -252,6 +304,16 @@ class Test_StatusStorage:
         status_id = return_ids(cursor)
         assert -1 not in status_id
 
+    def test_statuses_can_be_read_from_db(self, reset_database, status):
+        status = status
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateStatusesTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+
+        data = sqlite_commands.ListStatuses(sq_man).execute()
+
+        assert data != None
+
 
 class Test_UnitStorage:
     """Tests Unit Storage in the SQLite3 database.
@@ -259,6 +321,7 @@ class Test_UnitStorage:
     Behaviors Tested:
         - Units can be added to the units table.
         - Units can be removed from the inventory table.
+        - Units can be read from the inventory table.
     """
 
     def test_Units_can_be_added_to_db(self, unit) -> None:
@@ -295,3 +358,13 @@ class Test_UnitStorage:
         cursor = sq_man.select(table_name="units")
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
+
+    def test_units_can_be_read_from_db(self, reset_database, unit):
+        unit = unit
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        sqlite_commands.CreateUnitsTable(sq_man).execute()
+        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+
+        data = sqlite_commands.ListUnits(sq_man).execute()
+
+        assert data != None

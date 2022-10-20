@@ -190,6 +190,7 @@ class SaveItem(SQLiteCommand):
         return self.item_info.pop("table")
 
 
+# * Item Deletion Commands
 class DeleteAdjustment(SQLiteCommand):
     """Deletes an Adjustment from the database by its ID."""
 
@@ -338,3 +339,184 @@ class DeleteUnit(SQLiteCommand):
         self.receiver.delete("units", criteria)
 
         return f"Unit {self.target_identifier} deleted."
+
+
+# * Item Retrieval Commands
+class ListAdjustments(SQLiteCommand):
+    """Returns a list of Adjustments."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of adjustments to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Adjustments."""
+
+        cursor = self.receiver.select("inventory", self.criteria, self.order_by)
+        return cursor.fetchall()
+
+
+class ListEvents(SQLiteCommand):
+    """Returns a list of Events."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of Events to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Events."""
+
+        cursor = self.receiver.select("events", self.criteria, self.order_by)
+        return cursor.fetchall()
+
+
+class ListMedications(SQLiteCommand):
+    """Returns a list of Medications."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of medications to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Medications."""
+
+        cursor = self.receiver.select("medications", self.criteria, self.order_by)
+        return cursor.fetchall()
+
+
+class ListReportingPeriods(SQLiteCommand):
+    """Returns a list of Reporting Periods."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of Reporting Periods to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Reporting Periods."""
+
+        cursor = self.receiver.select("reporting_periods", self.criteria, self.order_by)
+        return cursor.fetchall()
+
+
+class ListStatuses(SQLiteCommand):
+    """Returns a list of Statuses."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of Statuses to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Statuses."""
+
+        cursor = self.receiver.select("statuses", self.criteria, self.order_by)
+        return cursor.fetchall()
+
+
+class ListUnits(SQLiteCommand):
+    """Returns a list of Units."""
+
+    def __init__(
+        self,
+        receiver: SQLiteManager,
+        criteria: dict[str] = {},
+        order_by: str = None,
+    ):
+        """Sets the SQLiteManager, criteria and order_by column.
+
+        Args:
+            receiver (SQLiteManager): SQLiteManager connected to the database.
+
+            criteria (dict[str, any], optional): Criteria of Units to be
+                returned as a dictionary mapping column names to values.
+
+            order_by (str, optional): Column name by which to sort the results.
+        """
+        self.receiver = receiver
+        self.criteria = criteria
+        self.order_by = order_by
+
+    def execute(self) -> list[tuple]:
+        """Executes the command and returns a list of Units."""
+
+        cursor = self.receiver.select("units", self.criteria, self.order_by)
+        return cursor.fetchall()
