@@ -520,3 +520,112 @@ class ListUnits(SQLiteCommand):
 
         cursor = self.receiver.select("units", self.criteria, self.order_by)
         return cursor.fetchall()
+
+
+# * Item Update Commands
+class UpdateAdjustment(SQLiteCommand):
+    """Update an Adjustment with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("inventory", self.data, self.criteria)
+
+        return f"Adjustment data updated."
+
+
+class UpdateEvent(SQLiteCommand):
+    """Update an Event with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("events", self.data, self.criteria)
+
+        return f"Event data updated."
+
+
+class UpdateMedication(SQLiteCommand):
+    """Update a Medication with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("medications", self.data, self.criteria)
+
+        return f"Medication data updated."
+
+
+class UpdateReportingPeriod(SQLiteCommand):
+    """Update a ReportingPeriod with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("reporting_periods", self.data, self.criteria)
+
+        return f"Reporting Period data updated."
+
+
+class UpdateStatus(SQLiteCommand):
+    """Update a Status with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("statuses", self.data, self.criteria)
+
+        return f"Status data updated."
+
+
+class UpdateUnit(SQLiteCommand):
+    """Update a Unit with the given data and criteria."""
+
+    def __init__(
+        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
+    ) -> None:
+        """Sets the SQLiteManager, updates data, and selection criteria."""
+        self.receiver = receiver
+        self.data = data
+        self.criteria = criteria
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self.receiver.update("units", self.data, self.criteria)
+
+        return f"Unit data updated."
