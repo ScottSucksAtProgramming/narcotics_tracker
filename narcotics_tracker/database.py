@@ -159,3 +159,31 @@ class SQLiteManager:
             sql_query += f" ORDER BY {order_by}"
 
         return self._execute(sql_query, tuple(criteria.values()))
+
+    def update(self, table_name: str, data: dict[str], criteria: dict[str]) -> None:
+        """Updates a row in the given table with given data and criteria.
+
+        Args:
+            table_name (str): The name of the table.
+
+            data (dict[str]): New data as a dictionary mapping column names to
+                updated values.
+
+            criteria (dict[str]): A dictionary mapping column names to values
+                used to select which row to update.
+        """
+        sql_statement = f"""UPDATE {table_name} SET """
+
+        data_placeholders = ", ".join([f"{column} = ?" for column in data.keys()])
+        criteria_placeholders = [f"{column} = ?" for column in criteria.keys()]
+        criteria_columns = " AND ".join(criteria_placeholders)
+
+        sql_statement += f"{data_placeholders} WHERE {criteria_columns};"
+
+        values = [item for item in data.values()]
+        for item in criteria.values():
+            values.append(item)
+
+        values = tuple(values)
+
+        self._execute(sql_statement, values)

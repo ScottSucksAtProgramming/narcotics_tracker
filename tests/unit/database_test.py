@@ -23,7 +23,7 @@ class Test_SQLiteManager:
         - Can add data.
         - Can delete data.
         - Can order returned data.
-
+        - Can update data.
     """
 
     def test_SQLiteManager_object_can_be_instantiated(self):
@@ -91,3 +91,14 @@ class Test_SQLiteManager:
         data = cursor.fetchall()
 
         assert data == [(1,), (17,), (8211986,), (99999999,)]
+
+    def test_SQLiteManager_can_update_data(self, reset_database):
+        db = SQLiteManager("test_database.db")
+        db.create_table("test_table", {"number": "INTEGER", "word": "TEXT"})
+        db.add("test_table", {"number": 17, "word": "Cow"})
+
+        db.update("test_table", {"number": 7, "word": "Pig"}, {"number": 17})
+
+        cursor = db.select("test_table")
+        results = cursor.fetchall()
+        assert results == [(7, "Pig")]
