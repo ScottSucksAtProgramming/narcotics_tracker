@@ -1,71 +1,48 @@
-"""Contains a library of pre-defined database items for the Narcotics Tracker.
-
-The builders and modules allow for the creation of new items to be saved into 
-the database. The items defined in this module are used as part of the 
-setup.py script to populate the database with the default items.
+"""Defines the standard DataItems used for inventory tracking.
 
 Classes:
 
-    None
-
-Functions:
-
-    None
+    StandardItemCreator: Creates and returns all
 
 Items:
 
     Events:
 
-        Common events which adjust the amount of medication in the inventory.
-
-        Import Event
-
-        Order Event
-
-        Use Event
-
-        Waste Event
-
-        Destroy Event
-
-        Loss Event
+        Destroyed (DESTROY) Used when subtracting medication which was 
+            destroyed through a reverse distributor.
+        
+        Imported (IMPORT) Used when adding pre-existing stock to the inventory.
+        
+        Lost (LOSS) Used when subtracting medication which were lost or stolen.
+        
+        Ordered (ORDER) Used when adding new stock from a purchase order.
+        
+        Used (USE) Used when subtracting medication that was administered to a 
+            patient.
+        
+        Wasted (WASTE) Used when subtracting medication which was wasted.
 
     Units:
 
-        Common units which controlled substance medications are measured in.
-
-        Micrograms (mcg)
-
-        Milligrams (mg)
-
-        Grams (g)
-
-        Milliliters (ml)
-
-    Containers:
-
-        Common containers that controlled substance medications come in.
-
-        Vial
-
-        Pre-filled Syringe
-
-        Pre-mixed Bag
+        microgram (mcg).
+        
+        milligram (mg).
+        
+        gram (g).
+        
+        milliliter (ml).
 
     Statuses:
-
-        Common statuses used for controlled substance medications and other 
-            database items.
-
-        Active (ACTIVE)
-
-        Inactive (INACTIVE)
-
-        Open (OPEN)
-
-        Cancelled (CANCELLED)
-
-        Closed (CLOSED)
+        
+        Active (ACTIVE) Used for items which are still being used.
+        
+        Inactive (INACTIVE) Used for items which are no longer being used.
+        
+        Open (OPEN) Used for items which have not been completed.
+        
+        Closed (CLOSED) Used for items which have been completed.
+        
+        Cancelled (CANCELLED) Used for items which have been cancelled.
 """
 from typing import TYPE_CHECKING
 
@@ -87,6 +64,7 @@ class StandardItemCreator:
 
         self._create_standard_events()
         self._create_standard_units()
+        self._create_standard_statuses()
 
         return self.standard_items
 
