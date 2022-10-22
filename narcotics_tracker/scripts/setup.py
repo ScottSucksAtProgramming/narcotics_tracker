@@ -9,6 +9,7 @@ Functions:
     main: Sets up the Narcotics Tracker database and populates the tables.
 """
 
+import sqlite3
 from typing import TYPE_CHECKING
 
 from narcotics_tracker import sqlite_commands
@@ -42,8 +43,12 @@ def populate_database(
     counter = 0
 
     for item in items:
-        sqlite_commands.SaveItem(storage_manager, item, dt_manager).execute()
-        counter += 1
+        try:
+            sqlite_commands.SaveItem(storage_manager, item, dt_manager).execute()
+        except sqlite3.IntegrityError as e:  # Items likely in the database already.
+            pass
+        else:
+            counter += 1
 
     print(f"{counter} items added to the database.")
 
