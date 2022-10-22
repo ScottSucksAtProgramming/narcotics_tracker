@@ -18,7 +18,7 @@ class CreateEventsTable(SQLiteCommand):
     table_name = "events"
     column_info = {
         "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-        "event_code": "TEXT NOT NULL",
+        "event_code": "TEXT NOT NULL UNIQUE",
         "event_name": "TEXT NOT NULL",
         "description": "TEXT NOT NULL",
         "modifier": "INTEGER NOT NULL",
