@@ -17,7 +17,7 @@ class CreateEventsTable(SQLiteCommand):
 
     table_name = "events"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "event_code": "TEXT NOT NULL UNIQUE",
         "event_name": "TEXT NOT NULL",
         "description": "TEXT NOT NULL",
@@ -38,7 +38,7 @@ class CreateEventsTable(SQLiteCommand):
 class CreateInventoryTable(SQLiteCommand):
     table_name = "inventory"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "adjustment_date": "INTEGER NOT NULL",
         "event_code": "TEXT NOT NULL",
         "medication_code": "TEXT NOT NULL",
@@ -71,7 +71,7 @@ class CreateInventoryTable(SQLiteCommand):
 class CreateMedicationsTable(SQLiteCommand):
     table_name = "medications"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "medication_code": "TEXT NOT NULL UNIQUE",
         "medication_name": "TEXT NOT NULL",
         "medication_amount": "REAL NOT NULL",
@@ -102,7 +102,7 @@ class CreateMedicationsTable(SQLiteCommand):
 class CreateReportingPeriodsTable(SQLiteCommand):
     table_name = "reporting_periods"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "start_date": "INTEGER NOT NULL",
         "end_date": "INTEGER NOT NULL",
         "status": "TEXT NOT NULL",
@@ -122,7 +122,7 @@ class CreateReportingPeriodsTable(SQLiteCommand):
 class CreateStatusesTable(SQLiteCommand):
     table_name = "statuses"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "status_code": "TEXT NOT NULL UNIQUE",
         "status_name": "TEXT NOT NULL",
         "description": "TEXT NOT NULL",
@@ -142,7 +142,7 @@ class CreateStatusesTable(SQLiteCommand):
 class CreateUnitsTable(SQLiteCommand):
     table_name = "units"
     column_info = {
-        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "id": "INTEGER PRIMARY KEY",
         "unit_code": "TEXT NOT NULL UNIQUE",
         "unit_name": "TEXT NOT NULL",
         "decimals": "INTEGER NOT NULL",
