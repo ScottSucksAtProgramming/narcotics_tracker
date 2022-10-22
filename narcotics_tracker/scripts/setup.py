@@ -9,6 +9,7 @@ Functions:
     main: Sets up the Narcotics Tracker database and populates the tables.
 """
 
+import os
 import sqlite3
 from typing import TYPE_CHECKING
 
@@ -50,15 +51,22 @@ def populate_database(
         else:
             counter += 1
 
-    print(f"{counter} items added to the database.")
+    print(f"- {counter} items added to the database.")
+
+
+def clear_screen():
+    clear = "cls" if os.name == "nt" else "clear"
+    os.system(clear)
 
 
 def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
+    clear_screen()
+
     print("Welcome to the Narcotics Tracker!\n")
 
     sq = SQLiteManager("inventory.db")
-    print("Persistence manager initialized.\n")
+    print("Preparing to setup Inventory Database.\n")
 
     TABLES_LIST = [
         sqlite_commands.CreateEventsTable,
@@ -73,12 +81,14 @@ def main() -> None:
     create_tables(sq, TABLES_LIST)
     print("\nTable creation complete!!\n")
 
-    print("Preparing to add standard items.\n")
+    print("Preparing to add standard items:\n")
     item_creator = StandardItemCreator()
     items = item_creator.create()
     dtm = DateTimeManager()
     populate_database(sq, items, dtm)
-    print("Standard items added successfully.\n")
+    print("\nStandard items added successfully.")
+    print("\nNarcotics Tracker database setup complete.")
+    input("Press ENTER to continue.")
 
 
 if __name__ == "__main__":
