@@ -73,7 +73,7 @@ class EventBuilder(BuilderInterface):
         return self
 
     def set_description(self, description: str) -> BuilderInterface:
-        """SSets the event description to the passed string.
+        """Sets the event description to the passed string.
 
         Args:
             description (str): Description of the event.
