@@ -70,6 +70,40 @@ class Test_SaveItemToDatabase:
         test_med = test_med
         command = SaveItem(None, test_med)
         command._extract_item_info()
-        table_name = command._extract_table_name()
+        table_name = command._pop_table_name()
 
         assert table_name == "medications"
+
+    def test_SaveItemToDatabase_returns_true_if_created_date_is_none(
+        self, test_med
+    ) -> None:
+        test_med = test_med
+        test_med.created_date = None
+
+        command = SaveItem(None, test_med)
+        assert command._item_created_date_is_none() == True
+
+    def test_SaveItemToDatabase_returns_false_if_created_date_is_set(
+        self, test_med
+    ) -> None:
+        test_med = test_med
+
+        command = SaveItem(None, test_med)
+        assert command._item_created_date_is_none() == False
+
+    def test_SaveItemToDatabase_returns_true_if_modified_date_is_none(
+        self, test_med
+    ) -> None:
+        test_med = test_med
+        test_med.modified_date = None
+
+        command = SaveItem(None, test_med)
+        assert command._item_modified_date_is_none() == True
+
+    def test_SaveItemToDatabase_returns_false_if_modified_date_is_set(
+        self, test_med
+    ) -> None:
+        test_med = test_med
+
+        command = SaveItem(None, test_med)
+        assert command._item_modified_date_is_none() == False
