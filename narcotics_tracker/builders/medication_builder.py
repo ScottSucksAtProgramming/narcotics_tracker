@@ -27,7 +27,7 @@ class MedicationBuilder(BuilderInterface):
     """
 
     _dataitem = Medication(
-        table=None,
+        table="medications",
         id=None,
         created_date=None,
         modified_date=None,
@@ -44,7 +44,7 @@ class MedicationBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new Medication."""
         self._dataitem = Medication(
-            table=None,
+            table="medications",
             id=None,
             created_date=None,
             modified_date=None,
