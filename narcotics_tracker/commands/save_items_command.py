@@ -3,9 +3,9 @@
 Please see Package documentation for more information.
 """
 
+from narcotics_tracker.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.data_items import DataItem
-from narcotics_tracker.sqlite_commands_interface import SQLiteCommand
 from narcotics_tracker.utils.date_and_time import DateTimeManager
 
 

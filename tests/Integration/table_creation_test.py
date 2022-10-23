@@ -14,6 +14,7 @@ Methods:
 """
 
 
+from narcotics_tracker.command_interface import SQLiteCommand
 from narcotics_tracker.commands import CreateEventsTable, CreateMedicationsTable
 from narcotics_tracker.commands.database_table_commands import (
     CreateInventoryTable,
@@ -22,7 +23,6 @@ from narcotics_tracker.commands.database_table_commands import (
     CreateUnitsTable,
 )
 from narcotics_tracker.database import SQLiteManager
-from narcotics_tracker.sqlite_commands_interface import SQLiteCommand
 
 
 def return_expected_columns_from_command(
