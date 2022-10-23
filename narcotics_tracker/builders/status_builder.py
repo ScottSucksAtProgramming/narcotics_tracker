@@ -23,7 +23,7 @@ class StatusBuilder(BuilderInterface):
     """
 
     _dataitem = Status(
-        table=None,
+        table="statuses",
         id=None,
         created_date=None,
         modified_date=None,
@@ -36,7 +36,7 @@ class StatusBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new Status."""
         self._dataitem = Status(
-            table=None,
+            table="statuses",
             id=None,
             created_date=None,
             modified_date=None,

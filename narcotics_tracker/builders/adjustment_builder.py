@@ -25,7 +25,7 @@ class AdjustmentBuilder(BuilderInterface):
     """
 
     _dataitem = Adjustment(
-        table=None,
+        table="inventory",
         id=None,
         created_date=None,
         modified_date=None,
@@ -41,7 +41,7 @@ class AdjustmentBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new Adjustment."""
         self._dataitem = Adjustment(
-            table=None,
+            table="inventory",
             id=None,
             created_date=None,
             modified_date=None,

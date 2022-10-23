@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
+from narcotics_tracker.builders.reporting_period_builder import ReportingPeriodBuilder
 from narcotics_tracker.commands import SaveItem
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.scripts.setup import (
@@ -15,6 +16,7 @@ from narcotics_tracker.utils.date_and_time import DateTimeManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
+    from narcotics_tracker.items.reporting_periods import ReportingPeriod
 
 db = SQLiteManager("wlvac_inventory.db")
 dt = DateTimeManager()
@@ -34,6 +36,7 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("ACTIVE")
+        .set_modified_by("SRK")
         .build()
     )
     morphine = (
@@ -44,6 +47,7 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration()
         .set_status("ACTIVE")
+        .set_modified_by("SRK")
         .build()
     )
     versed = (
@@ -54,6 +58,7 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration()
         .set_status("ACTIVE")
+        .set_modified_by("SRK")
         .build()
     )
     wlvac_medications.append(fentanyl)
@@ -68,15 +73,48 @@ def add_standard_items():
     populate_database(db, items, dt)
 
 
+def build_2022_reporting_periods() -> list["ReportingPeriod"]:
+    periods = []
+
+    period_builder = ReportingPeriodBuilder()
+
+    jan_to_june = (
+        period_builder.set_start_date(dt.convert_to_timestamp("01-20-2022 00:00:00"))
+        .set_end_date(dt.convert_to_timestamp("07-22-2022 23:59:59"))
+        .set_status("CLOSED")
+        .set_id(2200000)
+        .set_modified_by("SRK")
+        .build()
+    )
+
+    july_to_december = (
+        period_builder.set_start_date(dt.convert_to_timestamp("07-23-2022 00:00:00"))
+        .set_status("OPEN")
+        .set_id(2200000)
+        .set_modified_by("SRK")
+        .build()
+    )
+
+    periods.append(jan_to_june)
+    periods.append(july_to_december)
+
+    return periods
+
+
 def main():
-    create_tables(db, return_tables_list())
-    add_standard_items()
+    """Main"""
+    # create_tables(db, return_tables_list())
+    # add_standard_items()
 
-    meds = build_wlvac_meds()
+    # meds = build_wlvac_meds()
 
-    for medication in meds:
-        print(repr(medication))
-        SaveItem(db, medication, dt).execute()
+    # for medication in meds:
+    #     SaveItem(db, medication, dt).execute()
+
+    periods = build_2022_reporting_periods()
+
+    for period in periods:
+        SaveItem(db, period, dt).execute()
 
 
 if __name__ == "__main__":

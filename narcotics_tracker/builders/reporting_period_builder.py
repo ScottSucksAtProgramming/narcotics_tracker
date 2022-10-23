@@ -23,7 +23,7 @@ class ReportingPeriodBuilder(BuilderInterface):
     """
 
     _dataitem = ReportingPeriod(
-        table=None,
+        table="reporting_periods",
         id=None,
         created_date=None,
         modified_date=None,
@@ -36,7 +36,7 @@ class ReportingPeriodBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new ReportingPeriod."""
         self._dataitem = ReportingPeriod(
-            table=None,
+            table="reporting_periods",
             id=None,
             created_date=None,
             modified_date=None,

@@ -24,7 +24,7 @@ class EventBuilder(BuilderInterface):
     """
 
     _dataitem = Event(
-        table=None,
+        table="events",
         id=None,
         created_date=None,
         modified_date=None,
@@ -38,7 +38,7 @@ class EventBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new Event."""
         self._dataitem = Event(
-            table=None,
+            table="events",
             id=None,
             created_date=None,
             modified_date=None,

@@ -23,7 +23,7 @@ class UnitBuilder(BuilderInterface):
     """
 
     _dataitem = Unit(
-        table=None,
+        table="units",
         id=None,
         created_date=None,
         modified_date=None,
@@ -36,7 +36,7 @@ class UnitBuilder(BuilderInterface):
     def _reset(self) -> None:
         """Prepares the builder to create a new Unit."""
         self._dataitem = Unit(
-            table=None,
+            table="units",
             id=None,
             created_date=None,
             modified_date=None,
