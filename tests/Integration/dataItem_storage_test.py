@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING
 from narcotics_tracker import commands
 from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
 from narcotics_tracker.database import SQLiteManager
-from narcotics_tracker.utils.date_and_time import DateTimeManager
+from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment

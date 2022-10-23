@@ -11,7 +11,7 @@ import pytest
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
 from narcotics_tracker.commands import SaveItem
-from narcotics_tracker.utils.date_and_time import DateTimeManager
+from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication

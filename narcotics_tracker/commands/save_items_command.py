@@ -6,7 +6,7 @@ Please see Package documentation for more information.
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.data_items import DataItem
-from narcotics_tracker.utils.date_and_time import DateTimeManager
+from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 
 class SaveItem(SQLiteCommand):

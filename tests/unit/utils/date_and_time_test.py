@@ -4,7 +4,7 @@ Classes:
 """
 
 
-from narcotics_tracker.utils.date_and_time import DateTimeManager
+from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 
 class Test_DateTimeManager:

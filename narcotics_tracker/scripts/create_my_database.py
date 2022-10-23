@@ -12,7 +12,7 @@ from narcotics_tracker.scripts.setup import (
     return_tables_list,
 )
 from narcotics_tracker.setup.standard_items import StandardItemCreator
-from narcotics_tracker.utils.date_and_time import DateTimeManager
+from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
