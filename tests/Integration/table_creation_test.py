@@ -14,8 +14,8 @@ Methods:
 """
 
 
-from narcotics_tracker.command_interface import SQLiteCommand
 from narcotics_tracker.commands import CreateEventsTable, CreateMedicationsTable
+from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.commands.database_table_commands import (
     CreateInventoryTable,
     CreateReportingPeriodsTable,

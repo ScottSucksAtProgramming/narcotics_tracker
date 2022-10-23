@@ -4,7 +4,7 @@ Please review the package documentation for information on using commands.
 """
 from typing import TYPE_CHECKING
 
-from narcotics_tracker.command_interface import SQLiteCommand
+from narcotics_tracker.commands.command_interface import SQLiteCommand
 
 if TYPE_CHECKING:
     from narcotics_tracker.database import SQLiteManager

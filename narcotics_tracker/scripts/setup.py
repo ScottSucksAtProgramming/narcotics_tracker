@@ -19,7 +19,7 @@ from narcotics_tracker.setup.standard_items import StandardItemCreator
 from narcotics_tracker.utils.date_and_time import DateTimeManager
 
 if TYPE_CHECKING:
-    from narcotics_tracker.command_interface import SQLiteCommand
+    from narcotics_tracker.commands.command_interface import SQLiteCommand
     from narcotics_tracker.items.data_items import DataItem
 
 
