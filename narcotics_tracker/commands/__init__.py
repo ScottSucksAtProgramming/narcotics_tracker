@@ -98,9 +98,9 @@ from narcotics_tracker.commands.medication_commands import (
     UpdateMedication,
 )
 from narcotics_tracker.commands.reporting_period_commands import (
-    DeleteAReportingPeriod,
-    ListAReportingPeriods,
-    UpdateAReportingPeriod,
+    DeleteReportingPeriod,
+    ListReportingPeriods,
+    UpdateReportingPeriod,
 )
 from narcotics_tracker.commands.save_items_command import SaveItem
 from narcotics_tracker.commands.status_commands import (
