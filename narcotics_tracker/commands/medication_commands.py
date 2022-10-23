@@ -23,20 +23,20 @@ class DeleteMedication(SQLiteCommand):
             medication_identifier (int OR str): Unique ID or Medication_code
                 of the Medication.
         """
-        self.receiver = receiver
-        self.target_identifier = medication_identifier
+        self._target = receiver
+        self._dataitem_id = medication_identifier
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        if type(self.target_identifier) is int:
-            criteria = {"id": self.target_identifier}
+        if type(self._dataitem_id) is int:
+            criteria = {"id": self._dataitem_id}
 
-        if type(self.target_identifier) is str:
-            criteria = {"medication_code": self.target_identifier}
+        if type(self._dataitem_id) is str:
+            criteria = {"medication_code": self._dataitem_id}
 
-        self.receiver.delete("medications", criteria)
+        self._target.delete("medications", criteria)
 
-        return f"Medication {self.target_identifier} deleted."
+        return f"Medication {self._dataitem_id} deleted."
 
 
 class ListMedications(SQLiteCommand):
@@ -58,14 +58,14 @@ class ListMedications(SQLiteCommand):
 
             order_by (str, optional): Column name by which to sort the results.
         """
-        self.receiver = receiver
-        self.criteria = criteria
-        self.order_by = order_by
+        self._target = receiver
+        self._criteria = criteria
+        self._order_by = order_by
 
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Medications."""
 
-        cursor = self.receiver.select("medications", self.criteria, self.order_by)
+        cursor = self._target.select("medications", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -76,12 +76,12 @@ class UpdateMedication(SQLiteCommand):
         self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
     ) -> None:
         """Sets the SQLiteManager, updates data, and selection criteria."""
-        self.receiver = receiver
-        self.data = data
-        self.criteria = criteria
+        self._target = receiver
+        self._data = data
+        self._criteria = criteria
 
     def execute(self) -> str:
         """Executes the update operation and returns a success message."""
-        self.receiver.update("medications", self.data, self.criteria)
+        self._target.update("medications", self._data, self._criteria)
 
         return f"Medication data updated."

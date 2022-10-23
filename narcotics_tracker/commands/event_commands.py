@@ -24,20 +24,20 @@ class DeleteEvent(SQLiteCommand):
             event_identifier (int OR str): Unique ID or event_code of the
                 event.
         """
-        self.receiver = receiver
-        self.target_identifier = event_identifier
+        self._target = receiver
+        self._dataitem_id = event_identifier
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        if type(self.target_identifier) is int:
-            criteria = {"id": self.target_identifier}
+        if type(self._dataitem_id) is int:
+            criteria = {"id": self._dataitem_id}
 
-        if type(self.target_identifier) is str:
-            criteria = {"event_code": self.target_identifier}
+        if type(self._dataitem_id) is str:
+            criteria = {"event_code": self._dataitem_id}
 
-        self.receiver.delete("events", criteria)
+        self._target.delete("events", criteria)
 
-        return f"Event {self.target_identifier} deleted."
+        return f"Event {self._dataitem_id} deleted."
 
 
 class ListEvents(SQLiteCommand):
@@ -59,14 +59,14 @@ class ListEvents(SQLiteCommand):
 
             order_by (str, optional): Column name by which to sort the results.
         """
-        self.receiver = receiver
-        self.criteria = criteria
-        self.order_by = order_by
+        self._target = receiver
+        self._criteria = criteria
+        self._order_by = order_by
 
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Events."""
 
-        cursor = self.receiver.select("events", self.criteria, self.order_by)
+        cursor = self._target.select("events", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -77,12 +77,12 @@ class UpdateEvent(SQLiteCommand):
         self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
     ) -> None:
         """Sets the SQLiteManager, updates data, and selection criteria."""
-        self.receiver = receiver
-        self.data = data
-        self.criteria = criteria
+        self._target = receiver
+        self._data = data
+        self._criteria = criteria
 
     def execute(self) -> str:
         """Executes the update operation and returns a success message."""
-        self.receiver.update("events", self.data, self.criteria)
+        self._target.update("events", self._data, self._criteria)
 
         return f"Event data updated."

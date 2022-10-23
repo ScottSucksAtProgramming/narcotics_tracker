@@ -12,14 +12,14 @@ class DeleteReportingPeriod(SQLiteCommand):
 
     def __init__(self, receiver: SQLiteManager, reporting_period_id: int) -> None:
         """Sets the SQLiteManager and reporting_period_id."""
-        self.receiver = receiver
-        self.target_id = reporting_period_id
+        self._target = receiver
+        self._dataitem_id = reporting_period_id
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        self.receiver.delete("reporting_periods", {"id": self.target_id})
+        self._target.delete("reporting_periods", {"id": self._dataitem_id})
 
-        return f"Reporting Period #{self.target_id} deleted."
+        return f"Reporting Period #{self._dataitem_id} deleted."
 
 
 class ListReportingPeriods(SQLiteCommand):
@@ -41,14 +41,16 @@ class ListReportingPeriods(SQLiteCommand):
 
             order_by (str, optional): Column name by which to sort the results.
         """
-        self.receiver = receiver
-        self.criteria = criteria
-        self.order_by = order_by
+        self._target = receiver
+        self._criteria = criteria
+        self._order_by = order_by
 
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Reporting Periods."""
 
-        cursor = self.receiver.select("reporting_periods", self.criteria, self.order_by)
+        cursor = self._target.select(
+            "reporting_periods", self._criteria, self._order_by
+        )
         return cursor.fetchall()
 
 
@@ -59,12 +61,12 @@ class UpdateReportingPeriod(SQLiteCommand):
         self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
     ) -> None:
         """Sets the SQLiteManager, updates data, and selection criteria."""
-        self.receiver = receiver
-        self.data = data
-        self.criteria = criteria
+        self._target = receiver
+        self._data = data
+        self._criteria = criteria
 
     def execute(self) -> str:
         """Executes the update operation and returns a success message."""
-        self.receiver.update("reporting_periods", self.data, self.criteria)
+        self._target.update("reporting_periods", self._data, self._criteria)
 
         return f"Reporting Period data updated."

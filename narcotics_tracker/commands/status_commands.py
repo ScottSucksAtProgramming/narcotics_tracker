@@ -22,20 +22,20 @@ class DeleteStatus(SQLiteCommand):
             status_identifier (int OR str): Unique ID or status_code
                 of the Status.
         """
-        self.receiver = receiver
-        self.target_identifier = status_identifier
+        self._target = receiver
+        self._dataitem_id = status_identifier
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        if type(self.target_identifier) is int:
-            criteria = {"id": self.target_identifier}
+        if type(self._dataitem_id) is int:
+            criteria = {"id": self._dataitem_id}
 
-        if type(self.target_identifier) is str:
-            criteria = {"status_code": self.target_identifier}
+        if type(self._dataitem_id) is str:
+            criteria = {"status_code": self._dataitem_id}
 
-        self.receiver.delete("statuses", criteria)
+        self._target.delete("statuses", criteria)
 
-        return f"Status {self.target_identifier} deleted."
+        return f"Status {self._dataitem_id} deleted."
 
 
 class ListStatuses(SQLiteCommand):
@@ -57,14 +57,14 @@ class ListStatuses(SQLiteCommand):
 
             order_by (str, optional): Column name by which to sort the results.
         """
-        self.receiver = receiver
-        self.criteria = criteria
-        self.order_by = order_by
+        self._target = receiver
+        self._criteria = criteria
+        self._order_by = order_by
 
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Statuses."""
 
-        cursor = self.receiver.select("statuses", self.criteria, self.order_by)
+        cursor = self._target.select("statuses", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -75,12 +75,12 @@ class UpdateStatus(SQLiteCommand):
         self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
     ) -> None:
         """Sets the SQLiteManager, updates data, and selection criteria."""
-        self.receiver = receiver
-        self.data = data
-        self.criteria = criteria
+        self._target = receiver
+        self._data = data
+        self._criteria = criteria
 
     def execute(self) -> str:
         """Executes the update operation and returns a success message."""
-        self.receiver.update("statuses", self.data, self.criteria)
+        self._target.update("statuses", self._data, self._criteria)
 
         return f"Status data updated."
