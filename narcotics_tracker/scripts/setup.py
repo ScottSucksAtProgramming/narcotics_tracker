@@ -59,6 +59,18 @@ def clear_screen():
     os.system(clear)
 
 
+def return_tables_list() -> list["DataItem"]:
+    tables_list = [
+        commands.CreateEventsTable,
+        commands.CreateInventoryTable,
+        commands.CreateMedicationsTable,
+        commands.CreateReportingPeriodsTable,
+        commands.CreateStatusesTable,
+        commands.CreateUnitsTable,
+    ]
+    return tables_list
+
+
 def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
     clear_screen()
@@ -68,17 +80,8 @@ def main() -> None:
     sq = SQLiteManager("inventory.db")
     print("Preparing to setup Inventory Database.\n")
 
-    TABLES_LIST = [
-        commands.CreateEventsTable,
-        commands.CreateInventoryTable,
-        commands.CreateMedicationsTable,
-        commands.CreateReportingPeriodsTable,
-        commands.CreateStatusesTable,
-        commands.CreateUnitsTable,
-    ]
-
     print("Preparing to create tables:")
-    create_tables(sq, TABLES_LIST)
+    create_tables(sq, return_tables_list())
     print("\nTable creation complete!!\n")
 
     print("Preparing to add standard items:\n")
