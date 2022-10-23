@@ -101,7 +101,7 @@ class CreateReportingPeriodsTable(SQLiteCommand):
     column_info = {
         "id": "INTEGER PRIMARY KEY",
         "start_date": "INTEGER NOT NULL",
-        "end_date": "INTEGER NOT NULL",
+        "end_date": "INTEGER",
         "status": "TEXT NOT NULL",
         "created_date": "INTEGER NOT NULL",
         "modified_date": "INTEGER NOT NULL",
