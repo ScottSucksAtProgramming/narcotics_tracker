@@ -11,7 +11,7 @@ from narcotics_tracker.items.units import Unit
 
 
 class UnitBuilder(BuilderInterface):
-    """Builds and returns an Unit Object.
+    """Builds and returns a Unit Object.
 
     Methods:
 
@@ -67,7 +67,7 @@ class UnitBuilder(BuilderInterface):
     def set_unit_name(self, unit_name: str) -> BuilderInterface:
         """Sets the unit_name attribute to the passed string.
 
-        Args:
+        Args:s
             unit_name (str): Name of the unit.
 
         Returns:
