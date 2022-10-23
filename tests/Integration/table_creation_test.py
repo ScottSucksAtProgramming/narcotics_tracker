@@ -13,12 +13,20 @@ Methods:
         SQLiteManager.
 """
 
-from narcotics_tracker import commands
+
+from narcotics_tracker.commands import CreateEventsTable, CreateMedicationsTable
+from narcotics_tracker.commands.database_table_commands import (
+    CreateInventoryTable,
+    CreateReportingPeriodsTable,
+    CreateStatusesTable,
+    CreateUnitsTable,
+)
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.sqlite_commands_interface import SQLiteCommand
 
 
 def return_expected_columns_from_command(
-    command: commands.SQLiteCommand,
+    command: SQLiteCommand,
 ) -> list[str]:
     """Returns a list of column names created from the given command."""
     columns = []
@@ -64,7 +72,7 @@ class Test_EventsTableCreation:
     def test_CreateEventsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateEventsTable(sq_manager).execute()
+        CreateEventsTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -72,12 +80,10 @@ class Test_EventsTableCreation:
 
     def test_CreateEventsTable_creates_expected_columns(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
-        expected_columns = return_expected_columns_from_command(
-            commands.CreateEventsTable
-        )
+        expected_columns = return_expected_columns_from_command(CreateEventsTable)
         missing_columns = []
 
-        commands.CreateEventsTable(sq_manager).execute()
+        CreateEventsTable(sq_manager).execute()
         column_names = return_column_names_from_db(sq_manager, "events")
 
         for column in expected_columns:
@@ -101,7 +107,7 @@ class Test_InventoryTableCreation:
     def test_CreateInventoryTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateInventoryTable(sq_manager).execute()
+        CreateInventoryTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -111,12 +117,10 @@ class Test_InventoryTableCreation:
         self, reset_database
     ) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
-        expected_columns = return_expected_columns_from_command(
-            commands.CreateInventoryTable
-        )
+        expected_columns = return_expected_columns_from_command(CreateInventoryTable)
         missing_columns = []
 
-        commands.CreateInventoryTable(sq_manager).execute()
+        CreateInventoryTable(sq_manager).execute()
 
         column_names = return_column_names_from_db(sq_manager, "inventory")
 
@@ -141,7 +145,7 @@ class Test_MedicationsTableCreation:
     def test_CreateMedicationsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateMedicationsTable(sq_manager).execute()
+        CreateMedicationsTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -151,12 +155,10 @@ class Test_MedicationsTableCreation:
         self, reset_database
     ) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
-        expected_columns = return_expected_columns_from_command(
-            commands.CreateMedicationsTable
-        )
+        expected_columns = return_expected_columns_from_command(CreateMedicationsTable)
         missing_columns = []
 
-        commands.CreateMedicationsTable(sq_manager).execute()
+        CreateMedicationsTable(sq_manager).execute()
         column_names = return_column_names_from_db(sq_manager, "medications")
 
         for column in expected_columns:
@@ -180,7 +182,7 @@ class Test_ReportingPeriodsTableCreation:
     def test_CreateReportingPeriodsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateReportingPeriodsTable(sq_manager).execute()
+        CreateReportingPeriodsTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -191,11 +193,11 @@ class Test_ReportingPeriodsTableCreation:
     ) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
         expected_columns = return_expected_columns_from_command(
-            commands.CreateReportingPeriodsTable
+            CreateReportingPeriodsTable
         )
         missing_columns = []
 
-        commands.CreateReportingPeriodsTable(sq_manager).execute()
+        CreateReportingPeriodsTable(sq_manager).execute()
 
         column_names = return_column_names_from_db(sq_manager, "reporting_periods")
 
@@ -220,7 +222,7 @@ class Test_StatusesTableCreation:
     def test_CreateStatusesTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateStatusesTable(sq_manager).execute()
+        CreateStatusesTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -228,12 +230,10 @@ class Test_StatusesTableCreation:
 
     def test_CreateStatusesTable_creates_expected_columns(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
-        expected_columns = return_expected_columns_from_command(
-            commands.CreateStatusesTable
-        )
+        expected_columns = return_expected_columns_from_command(CreateStatusesTable)
         missing_columns = []
 
-        commands.CreateStatusesTable(sq_manager).execute()
+        CreateStatusesTable(sq_manager).execute()
         column_names = return_column_names_from_db(sq_manager, "statuses")
 
         for column in expected_columns:
@@ -257,7 +257,7 @@ class Test_UnitsTableCreation:
     def test_CreateUnitsTable_creates_table(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
 
-        commands.CreateUnitsTable(sq_manager).execute()
+        CreateUnitsTable(sq_manager).execute()
 
         table_names = return_table_names_from_db(sq_manager)
 
@@ -265,12 +265,10 @@ class Test_UnitsTableCreation:
 
     def test_CreateUnitsTable_creates_expected_columns(self, reset_database) -> None:
         sq_manager = SQLiteManager("table_creation_tests.db")
-        expected_columns = return_expected_columns_from_command(
-            commands.CreateUnitsTable
-        )
+        expected_columns = return_expected_columns_from_command(CreateUnitsTable)
         missing_columns = []
 
-        commands.CreateUnitsTable(sq_manager).execute()
+        CreateUnitsTable(sq_manager).execute()
 
         column_names = return_column_names_from_db(sq_manager, "units")
 

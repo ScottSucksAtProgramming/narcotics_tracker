@@ -11,6 +11,7 @@ import pytest
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
 from narcotics_tracker.commands import SaveItem
+from narcotics_tracker.utils.date_and_time import DateTimeManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
@@ -37,6 +38,9 @@ def test_med() -> "Medication":
     return med_builder.build()
 
 
+dtm = DateTimeManager()
+
+
 class Test_SaveItemToDatabase:
     """Unit tests the SaveItemToDatabase command.
 
@@ -47,7 +51,7 @@ class Test_SaveItemToDatabase:
 
     def test_SaveItemToDatabase_extracts_item_data_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
 
         command._extract_item_info()
 
@@ -68,7 +72,7 @@ class Test_SaveItemToDatabase:
 
     def test_SaveItemToDatabase_extracts_table_name_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
         command._extract_item_info()
         table_name = command._pop_table_name()
 
@@ -80,7 +84,7 @@ class Test_SaveItemToDatabase:
         test_med = test_med
         test_med.created_date = None
 
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
         assert command._item_created_date_is_none() == True
 
     def test_SaveItemToDatabase_returns_false_if_created_date_is_set(
@@ -88,7 +92,7 @@ class Test_SaveItemToDatabase:
     ) -> None:
         test_med = test_med
 
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
         assert command._item_created_date_is_none() == False
 
     def test_SaveItemToDatabase_returns_true_if_modified_date_is_none(
@@ -97,7 +101,7 @@ class Test_SaveItemToDatabase:
         test_med = test_med
         test_med.modified_date = None
 
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
         assert command._item_modified_date_is_none() == True
 
     def test_SaveItemToDatabase_returns_false_if_modified_date_is_set(
@@ -105,5 +109,5 @@ class Test_SaveItemToDatabase:
     ) -> None:
         test_med = test_med
 
-        command = SaveItem(None, test_med)
+        command = SaveItem(None, test_med, dtm)
         assert command._item_modified_date_is_none() == False
