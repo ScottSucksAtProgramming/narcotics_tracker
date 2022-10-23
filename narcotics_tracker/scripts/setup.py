@@ -13,7 +13,7 @@ import os
 import sqlite3
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import sqlite_commands
+from narcotics_tracker import commands
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.setup.standard_items import StandardItemCreator
 from narcotics_tracker.utils.date_and_time import DateTimeManager
@@ -45,7 +45,7 @@ def populate_database(
 
     for item in items:
         try:
-            sqlite_commands.SaveItem(storage_manager, item, dt_manager).execute()
+            commands.SaveItem(storage_manager, item, dt_manager).execute()
         except sqlite3.IntegrityError as e:  # Items likely in the database already.
             pass
         else:
@@ -69,12 +69,12 @@ def main() -> None:
     print("Preparing to setup Inventory Database.\n")
 
     TABLES_LIST = [
-        sqlite_commands.CreateEventsTable,
-        sqlite_commands.CreateInventoryTable,
-        sqlite_commands.CreateMedicationsTable,
-        sqlite_commands.CreateReportingPeriodsTable,
-        sqlite_commands.CreateStatusesTable,
-        sqlite_commands.CreateUnitsTable,
+        commands.CreateEventsTable,
+        commands.CreateInventoryTable,
+        commands.CreateMedicationsTable,
+        commands.CreateReportingPeriodsTable,
+        commands.CreateStatusesTable,
+        commands.CreateUnitsTable,
     ]
 
     print("Preparing to create tables:")

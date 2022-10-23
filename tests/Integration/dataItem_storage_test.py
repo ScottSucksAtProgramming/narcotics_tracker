@@ -22,7 +22,7 @@ Functions:
 import sqlite3
 from typing import TYPE_CHECKING
 
-from narcotics_tracker import sqlite_commands
+from narcotics_tracker import commands
 from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
 from narcotics_tracker.database import SQLiteManager
 
@@ -61,9 +61,9 @@ class Test_AdjustmentStorage:
     def test_adjustments_can_be_added_to_db(self, reset_database, adjustment) -> None:
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateInventoryTable(sq_man).execute()
+        commands.CreateInventoryTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=adjustment).execute()
+        commands.SaveItem(receiver=sq_man, item=adjustment).execute()
 
         cursor = sq_man.select(table_name="inventory")
         adjustment_ids = return_ids(cursor)
@@ -72,10 +72,10 @@ class Test_AdjustmentStorage:
     def test_adjustments_can_be_removed_from_db(self, reset_database, adjustment):
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateInventoryTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=adjustment).execute()
+        commands.CreateInventoryTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=adjustment).execute()
 
-        sqlite_commands.DeleteAdjustment(receiver=sq_man, adjustment_id=-1).execute()
+        commands.DeleteAdjustment(receiver=sq_man, adjustment_id=-1).execute()
 
         cursor = sq_man.select(table_name="inventory")
         adjustment_ids = return_ids(cursor)
@@ -84,24 +84,24 @@ class Test_AdjustmentStorage:
     def test_adjustments_can_be_read_from_db(self, reset_database, adjustment):
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateInventoryTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=adjustment).execute()
+        commands.CreateInventoryTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=adjustment).execute()
 
-        data = sqlite_commands.ListAdjustments(sq_man).execute()
+        data = commands.ListAdjustments(sq_man).execute()
 
         assert data != None
 
     def test_adjustments_can_be_updated_in_db(self, reset_database, adjustment) -> None:
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateInventoryTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=adjustment).execute()
+        commands.CreateInventoryTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=adjustment).execute()
 
-        sqlite_commands.UpdateAdjustment(
+        commands.UpdateAdjustment(
             receiver=sq_man, data={"amount": 9999}, criteria={"id": -1}
         ).execute()
 
-        returned_adjustment = sqlite_commands.ListAdjustments(
+        returned_adjustment = commands.ListAdjustments(
             receiver=sq_man, criteria={"id": -1}
         ).execute()[0]
 
@@ -121,9 +121,9 @@ class Test_EventStorage:
     def test_events_can_be_added_to_db(self, event) -> None:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateEventsTable(sq_man).execute()
+        commands.CreateEventsTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+        commands.SaveItem(receiver=sq_man, item=event).execute()
 
         cursor = sq_man.select(table_name="events")
         event_ids = return_ids(cursor)
@@ -132,10 +132,10 @@ class Test_EventStorage:
     def test_events_can_be_removed_from_db_using_ID(self, reset_database, event):
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateEventsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+        commands.CreateEventsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=event).execute()
 
-        sqlite_commands.DeleteEvent(receiver=sq_man, event_identifier=-1).execute()
+        commands.DeleteEvent(receiver=sq_man, event_identifier=-1).execute()
 
         cursor = sq_man.select(table_name="events")
         event_id = return_ids(cursor)
@@ -144,10 +144,10 @@ class Test_EventStorage:
     def test_events_can_be_removed_from_db_using_code(self, reset_database, event):
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateEventsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+        commands.CreateEventsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=event).execute()
 
-        sqlite_commands.DeleteEvent(receiver=sq_man, event_identifier="TEST").execute()
+        commands.DeleteEvent(receiver=sq_man, event_identifier="TEST").execute()
 
         cursor = sq_man.select(table_name="events")
         event_id = return_ids(cursor)
@@ -156,26 +156,26 @@ class Test_EventStorage:
     def test_events_can_be_read_from_db(self, reset_database, event):
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateEventsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+        commands.CreateEventsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=event).execute()
 
-        data = sqlite_commands.ListEvents(sq_man).execute()
+        data = commands.ListEvents(sq_man).execute()
 
         assert data != None
 
     def test_events_can_be_updated_in_db(self, reset_database, event) -> None:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateEventsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=event).execute()
+        commands.CreateEventsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=event).execute()
 
-        sqlite_commands.UpdateEvent(
+        commands.UpdateEvent(
             receiver=sq_man,
             data={"event_code": "NEW CODE"},
             criteria={"event_code": "TEST"},
         ).execute()
 
-        returned_event = sqlite_commands.ListEvents(
+        returned_event = commands.ListEvents(
             receiver=sq_man, criteria={"id": -77}
         ).execute()[0]
 
@@ -195,9 +195,9 @@ class Test_MedicationStorage:
     def test_medications_can_be_added_to_db(self, medication) -> None:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateMedicationsTable(sq_man).execute()
+        commands.CreateMedicationsTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+        commands.SaveItem(receiver=sq_man, item=medication).execute()
 
         cursor = sq_man.select(table_name="medications")
         medication_ids = return_ids(cursor)
@@ -208,12 +208,10 @@ class Test_MedicationStorage:
     ):
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateMedicationsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+        commands.CreateMedicationsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=medication).execute()
 
-        sqlite_commands.DeleteMedication(
-            receiver=sq_man, medication_identifier=-1
-        ).execute()
+        commands.DeleteMedication(receiver=sq_man, medication_identifier=-1).execute()
 
         cursor = sq_man.select(table_name="medications")
         medication_id = return_ids(cursor)
@@ -224,10 +222,10 @@ class Test_MedicationStorage:
     ):
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateMedicationsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+        commands.CreateMedicationsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=medication).execute()
 
-        sqlite_commands.DeleteMedication(
+        commands.DeleteMedication(
             receiver=sq_man, medication_identifier="apap"
         ).execute()
 
@@ -238,26 +236,26 @@ class Test_MedicationStorage:
     def test_medications_can_be_read_from_db(self, reset_database, medication):
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateMedicationsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+        commands.CreateMedicationsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=medication).execute()
 
-        data = sqlite_commands.ListMedications(sq_man).execute()
+        data = commands.ListMedications(sq_man).execute()
 
         assert data != None
 
     def test_medications_can_be_updated_in_db(self, reset_database, medication) -> None:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateMedicationsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=medication).execute()
+        commands.CreateMedicationsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=medication).execute()
 
-        sqlite_commands.UpdateMedication(
+        commands.UpdateMedication(
             receiver=sq_man,
             data={"medication_code": "NEW CODE"},
             criteria={"medication_code": "apap"},
         ).execute()
 
-        returned_medication = sqlite_commands.ListMedications(
+        returned_medication = commands.ListMedications(
             receiver=sq_man, criteria={"id": -1}
         ).execute()[0]
 
@@ -277,9 +275,9 @@ class Test_ReportingPeriodStorage:
     def test_ReportingPeriods_can_be_added_to_db(self, reporting_period) -> None:
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateReportingPeriodsTable(sq_man).execute()
+        commands.CreateReportingPeriodsTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
+        commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
 
         cursor = sq_man.select(table_name="reporting_periods")
         reporting_period_ids = return_ids(cursor)
@@ -290,10 +288,10 @@ class Test_ReportingPeriodStorage:
     ):
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateReportingPeriodsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
+        commands.CreateReportingPeriodsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
 
-        sqlite_commands.DeleteReportingPeriod(
+        commands.DeleteReportingPeriod(
             receiver=sq_man, reporting_period_id=-1
         ).execute()
 
@@ -306,10 +304,10 @@ class Test_ReportingPeriodStorage:
     ):
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateReportingPeriodsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
+        commands.CreateReportingPeriodsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
 
-        data = sqlite_commands.ListReportingPeriods(sq_man).execute()
+        data = commands.ListReportingPeriods(sq_man).execute()
 
         assert data != None
 
@@ -318,16 +316,16 @@ class Test_ReportingPeriodStorage:
     ) -> None:
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateReportingPeriodsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
+        commands.CreateReportingPeriodsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=reporting_period).execute()
 
-        sqlite_commands.UpdateReportingPeriod(
+        commands.UpdateReportingPeriod(
             receiver=sq_man,
             data={"status": "NEW STATUS"},
             criteria={"id": -1},
         ).execute()
 
-        returned_reporting_period = sqlite_commands.ListReportingPeriods(
+        returned_reporting_period = commands.ListReportingPeriods(
             receiver=sq_man, criteria={"id": -1}
         ).execute()[0]
 
@@ -347,9 +345,9 @@ class Test_StatusStorage:
     def test_Statuses_can_be_added_to_db(self, status) -> None:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateStatusesTable(sq_man).execute()
+        commands.CreateStatusesTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+        commands.SaveItem(receiver=sq_man, item=status).execute()
 
         cursor = sq_man.select(table_name="statuses")
         status_ids = return_ids(cursor)
@@ -358,10 +356,10 @@ class Test_StatusStorage:
     def test_Statuses_can_be_removed_from_db_using_ID(self, reset_database, status):
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateStatusesTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+        commands.CreateStatusesTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=status).execute()
 
-        sqlite_commands.DeleteStatus(receiver=sq_man, status_identifier=-1).execute()
+        commands.DeleteStatus(receiver=sq_man, status_identifier=-1).execute()
 
         cursor = sq_man.select(table_name="statuses")
         status_id = return_ids(cursor)
@@ -370,12 +368,10 @@ class Test_StatusStorage:
     def test_Statuses_can_be_removed_from_db_using_code(self, reset_database, status):
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateStatusesTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+        commands.CreateStatusesTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=status).execute()
 
-        sqlite_commands.DeleteStatus(
-            receiver=sq_man, status_identifier="BROKEN"
-        ).execute()
+        commands.DeleteStatus(receiver=sq_man, status_identifier="BROKEN").execute()
 
         cursor = sq_man.select(table_name="statuses")
         status_id = return_ids(cursor)
@@ -384,26 +380,26 @@ class Test_StatusStorage:
     def test_statuses_can_be_read_from_db(self, reset_database, status):
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateStatusesTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+        commands.CreateStatusesTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=status).execute()
 
-        data = sqlite_commands.ListStatuses(sq_man).execute()
+        data = commands.ListStatuses(sq_man).execute()
 
         assert data != None
 
     def test_statuses_can_be_updated_in_db(self, reset_database, status) -> None:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateStatusesTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=status).execute()
+        commands.CreateStatusesTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=status).execute()
 
-        sqlite_commands.UpdateStatus(
+        commands.UpdateStatus(
             receiver=sq_man,
             data={"status_code": "NEW CODE"},
             criteria={"status_code": "BROKEN"},
         ).execute()
 
-        returned_status = sqlite_commands.ListStatuses(
+        returned_status = commands.ListStatuses(
             receiver=sq_man, criteria={"id": -1}
         ).execute()[0]
 
@@ -423,9 +419,9 @@ class Test_UnitStorage:
     def test_Units_can_be_added_to_db(self, unit) -> None:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateUnitsTable(sq_man).execute()
+        commands.CreateUnitsTable(sq_man).execute()
 
-        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+        commands.SaveItem(receiver=sq_man, item=unit).execute()
 
         cursor = sq_man.select(table_name="units")
         unit_ids = return_ids(cursor)
@@ -434,10 +430,10 @@ class Test_UnitStorage:
     def test_Units_can_be_removed_from_db_using_ID(self, reset_database, unit):
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateUnitsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+        commands.CreateUnitsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=unit).execute()
 
-        sqlite_commands.DeleteUnit(receiver=sq_man, unit_identifier=-1).execute()
+        commands.DeleteUnit(receiver=sq_man, unit_identifier=-1).execute()
 
         cursor = sq_man.select(table_name="units")
         unit_id = return_ids(cursor)
@@ -446,10 +442,10 @@ class Test_UnitStorage:
     def test_units_can_be_removed_from_db_using_code(self, reset_database, unit):
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateUnitsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+        commands.CreateUnitsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=unit).execute()
 
-        sqlite_commands.DeleteUnit(receiver=sq_man, unit_identifier="dg").execute()
+        commands.DeleteUnit(receiver=sq_man, unit_identifier="dg").execute()
 
         cursor = sq_man.select(table_name="units")
         unit_id = return_ids(cursor)
@@ -458,26 +454,26 @@ class Test_UnitStorage:
     def test_units_can_be_read_from_db(self, reset_database, unit):
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateUnitsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+        commands.CreateUnitsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=unit).execute()
 
-        data = sqlite_commands.ListUnits(sq_man).execute()
+        data = commands.ListUnits(sq_man).execute()
 
         assert data != None
 
     def test_units_can_be_updated_in_db(self, reset_database, unit) -> None:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
-        sqlite_commands.CreateUnitsTable(sq_man).execute()
-        sqlite_commands.SaveItem(receiver=sq_man, item=unit).execute()
+        commands.CreateUnitsTable(sq_man).execute()
+        commands.SaveItem(receiver=sq_man, item=unit).execute()
 
-        sqlite_commands.UpdateUnit(
+        commands.UpdateUnit(
             receiver=sq_man,
             data={"unit_code": "NEW CODE"},
             criteria={"unit_code": "dg"},
         ).execute()
 
-        returned_unit = sqlite_commands.ListUnits(
+        returned_unit = commands.ListUnits(
             receiver=sq_man, criteria={"id": -1}
         ).execute()[0]
 

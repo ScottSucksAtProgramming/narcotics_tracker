@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
-from narcotics_tracker.sqlite_commands import SaveItem
+from narcotics_tracker.commands import SaveItem
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
