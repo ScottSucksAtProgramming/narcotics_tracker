@@ -6,11 +6,11 @@ Classes:
 """
 
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 
 
-class ReportingPeriodBuilder(BuilderInterface):
+class ReportingPeriodBuilder(DataItemBuilder):
     """Builds and returns an ReportingPeriod Object.
 
     Methods:
@@ -52,7 +52,7 @@ class ReportingPeriodBuilder(BuilderInterface):
         self._reset()
         return reporting_period
 
-    def set_start_date(self, start_date: int) -> BuilderInterface:
+    def set_start_date(self, start_date: int) -> "ReportingPeriodBuilder":
         """Sets the start date attribute to the passed integer.
 
         Args:
@@ -65,7 +65,7 @@ class ReportingPeriodBuilder(BuilderInterface):
         self._dataitem.start_date = start_date
         return self
 
-    def set_end_date(self, end_date: int) -> BuilderInterface:
+    def set_end_date(self, end_date: int) -> "ReportingPeriodBuilder":
         """Sets the end date attribute to the passed integer.
 
         Args:
@@ -78,7 +78,7 @@ class ReportingPeriodBuilder(BuilderInterface):
         self._dataitem.end_date = end_date
         return self
 
-    def set_status(self, status: str) -> BuilderInterface:
+    def set_status(self, status: str) -> "ReportingPeriodBuilder":
         """Sets the status attribute to the passed string.
 
         Args:

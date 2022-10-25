@@ -5,12 +5,11 @@ Classes:
     MedicationBuilder: Builds and returns an Medication object.
 """
 
-
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
 
 
-class MedicationBuilder(BuilderInterface):
+class MedicationBuilder(DataItemBuilder):
     """Builds and returns an Medication Object.
 
     Methods:
@@ -64,7 +63,7 @@ class MedicationBuilder(BuilderInterface):
         self._reset()
         return medication
 
-    def set_medication_code(self, medication_code: str) -> BuilderInterface:
+    def set_medication_code(self, medication_code: str) -> "MedicationBuilder":
         """Sets the medication code to the passed string.
 
         Args:
@@ -76,7 +75,7 @@ class MedicationBuilder(BuilderInterface):
         self._dataitem.medication_code = medication_code
         return self
 
-    def set_medication_name(self, medication_name: str) -> BuilderInterface:
+    def set_medication_name(self, medication_name: str) -> "MedicationBuilder":
         """Sets the medication name attribute to the passed string.
 
         medication_name (str): Name of the medication.
@@ -87,7 +86,7 @@ class MedicationBuilder(BuilderInterface):
         self._dataitem.medication_name = medication_name
         return self
 
-    def set_fill_amount(self, fill_amount: int) -> BuilderInterface:
+    def set_fill_amount(self, fill_amount: int) -> "MedicationBuilder":
         """Sets the fill amount to the passed integer.
 
         Args:
@@ -100,7 +99,7 @@ class MedicationBuilder(BuilderInterface):
         self._dataitem.fill_amount = fill_amount
         return self
 
-    def set_medication_amount(self, medication_amount: int) -> BuilderInterface:
+    def set_medication_amount(self, medication_amount: int) -> "MedicationBuilder":
         """Sets the amount to the passed integer.
 
         Args:
@@ -113,7 +112,7 @@ class MedicationBuilder(BuilderInterface):
         self._dataitem.medication_amount = medication_amount
         return self
 
-    def set_preferred_unit(self, preferred_unit: str) -> BuilderInterface:
+    def set_preferred_unit(self, preferred_unit: str) -> "MedicationBuilder":
         """Sets the preferred unit to the passed string.
 
         Args:
@@ -126,7 +125,7 @@ class MedicationBuilder(BuilderInterface):
         self._dataitem.preferred_unit = preferred_unit
         return self
 
-    def set_concentration(self, concentration: float = None) -> BuilderInterface:
+    def set_concentration(self, concentration: float = None) -> "MedicationBuilder":
         """Calculates the concentration, unless overridden.
 
         Will calculate the concentration based on the fill_amount and
@@ -150,7 +149,7 @@ class MedicationBuilder(BuilderInterface):
 
         return self
 
-    def set_status(self, status: str) -> BuilderInterface:
+    def set_status(self, status: str) -> "MedicationBuilder":
         """Sets the status attribute to the passed string.
 
         Args:

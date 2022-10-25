@@ -6,11 +6,11 @@ Classes:
 """
 
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.events import Event
 
 
-class EventBuilder(BuilderInterface):
+class EventBuilder(DataItemBuilder):
     """Builds and returns an Event Object.
 
     Methods:
@@ -55,7 +55,7 @@ class EventBuilder(BuilderInterface):
         self._reset()
         return event
 
-    def set_event_code(self, event_code: str) -> BuilderInterface:
+    def set_event_code(self, event_code: str) -> "EventBuilder":
         """Sets the event code attribute to the passed string.
 
         event_code (str): Unique code of the event which occurred. Must match
@@ -64,7 +64,7 @@ class EventBuilder(BuilderInterface):
         self._dataitem.event_code = event_code
         return self
 
-    def set_event_name(self, event_name: str) -> BuilderInterface:
+    def set_event_name(self, event_name: str) -> "EventBuilder":
         """Sets the event name attribute to the passed string.
 
         event_name (str): Name of the event.
@@ -72,7 +72,7 @@ class EventBuilder(BuilderInterface):
         self._dataitem.event_name = event_name
         return self
 
-    def set_description(self, description: str) -> BuilderInterface:
+    def set_description(self, description: str) -> "EventBuilder":
         """Sets the event description to the passed string.
 
         Args:
@@ -81,7 +81,7 @@ class EventBuilder(BuilderInterface):
         self._dataitem.description = description
         return self
 
-    def set_modifier(self, modifier: int) -> BuilderInterface:
+    def set_modifier(self, modifier: int) -> "EventBuilder":
         """Sets the modifier attribute to the passed integer.
 
         Args:

@@ -6,11 +6,11 @@ Classes:
 """
 
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.statuses import Status
 
 
-class StatusBuilder(BuilderInterface):
+class StatusBuilder(DataItemBuilder):
     """Builds and returns an Status Object.
 
     Methods:
@@ -52,7 +52,7 @@ class StatusBuilder(BuilderInterface):
         self._reset()
         return status
 
-    def set_status_code(self, status_code: str) -> BuilderInterface:
+    def set_status_code(self, status_code: str) -> "StatusBuilder":
         """Sets the status_code attribute to the passed string.
 
         Args:
@@ -64,7 +64,7 @@ class StatusBuilder(BuilderInterface):
         self._dataitem.status_code = status_code
         return self
 
-    def set_status_name(self, status_name: str) -> BuilderInterface:
+    def set_status_name(self, status_name: str) -> "StatusBuilder":
         """Sets the status_name attribute to the passed string.
 
         Args:
@@ -76,7 +76,7 @@ class StatusBuilder(BuilderInterface):
         self._dataitem.status_name = status_name
         return self
 
-    def set_description(self, description: str) -> BuilderInterface:
+    def set_description(self, description: str) -> "StatusBuilder":
         """Sets the description attribute to the passed string.
 
         Args:

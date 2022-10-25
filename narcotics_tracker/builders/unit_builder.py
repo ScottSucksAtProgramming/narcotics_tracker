@@ -6,11 +6,11 @@ Classes:
 """
 
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.units import Unit
 
 
-class UnitBuilder(BuilderInterface):
+class UnitBuilder(DataItemBuilder):
     """Builds and returns a Unit Object.
 
     Methods:
@@ -52,7 +52,7 @@ class UnitBuilder(BuilderInterface):
         self._reset()
         return unit
 
-    def set_unit_code(self, unit_code: str) -> BuilderInterface:
+    def set_unit_code(self, unit_code: str) -> "UnitBuilder":
         """Sets the unit_code attribute to the passed string.
 
         Args:
@@ -64,7 +64,7 @@ class UnitBuilder(BuilderInterface):
         self._dataitem.unit_code = unit_code
         return self
 
-    def set_unit_name(self, unit_name: str) -> BuilderInterface:
+    def set_unit_name(self, unit_name: str) -> "UnitBuilder":
         """Sets the unit_name attribute to the passed string.
 
         Args:s
@@ -76,7 +76,7 @@ class UnitBuilder(BuilderInterface):
         self._dataitem.unit_name = unit_name
         return self
 
-    def set_decimals(self, decimals: int) -> BuilderInterface:
+    def set_decimals(self, decimals: int) -> "UnitBuilder":
         """Sets the decimals attribute to the passed integer.
 
         Args:

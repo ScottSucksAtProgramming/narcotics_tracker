@@ -6,11 +6,13 @@ Classes:
 """
 
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from typing import TYPE_CHECKING
+
+from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
 
 
-class AdjustmentBuilder(BuilderInterface):
+class AdjustmentBuilder(DataItemBuilder):
     """Builds and returns an Adjustment Object.
 
     Methods:
@@ -60,7 +62,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._reset()
         return adjustment
 
-    def set_adjustment_date(self, adjustment_date: int) -> BuilderInterface:
+    def set_adjustment_date(self, adjustment_date: int) -> "AdjustmentBuilder":
         """Sets the adjustment date to the passed integer.
 
         Args:
@@ -70,7 +72,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._dataitem.adjustment_date = adjustment_date
         return self
 
-    def set_event_code(self, event_code: str) -> BuilderInterface:
+    def set_event_code(self, event_code: str) -> "AdjustmentBuilder":
         """Sets the event code attribute to the passed string.
 
         Args:
@@ -80,7 +82,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._dataitem.event_code = event_code
         return self
 
-    def set_medication_code(self, medication_code: str) -> BuilderInterface:
+    def set_medication_code(self, medication_code: str) -> "AdjustmentBuilder":
         """Sets the medication code to the passed string.
 
         Args:
@@ -91,7 +93,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._dataitem.medication_code = medication_code
         return self
 
-    def set_adjustment_amount(self, adjustment_amount: float) -> BuilderInterface:
+    def set_adjustment_amount(self, adjustment_amount: float) -> "AdjustmentBuilder":
         """Sets the adjustment amount to the passed float.
 
         Args:
@@ -100,7 +102,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._dataitem.amount = adjustment_amount
         return self
 
-    def set_reference_id(self, reference_id: str) -> BuilderInterface:
+    def set_reference_id(self, reference_id: str) -> "AdjustmentBuilder":
         """Sets the reference id attribute to the passed string.
 
         Args:
@@ -113,7 +115,7 @@ class AdjustmentBuilder(BuilderInterface):
         self._dataitem.reference_id = reference_id
         return self
 
-    def set_reporting_period_id(self, reporting_period_id: int) -> BuilderInterface:
+    def set_reporting_period_id(self, reporting_period_id: int) -> "AdjustmentBuilder":
         """Sets the reporting period id attribute to the passed integer.
 
         Args:
