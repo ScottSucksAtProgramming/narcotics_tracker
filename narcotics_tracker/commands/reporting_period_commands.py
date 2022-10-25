@@ -17,7 +17,7 @@ class DeleteReportingPeriod(SQLiteCommand):
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        self._target.delete("reporting_periods", {"id": self._dataitem_id})
+        self._target.remove("reporting_periods", {"id": self._dataitem_id})
 
         return f"Reporting Period #{self._dataitem_id} deleted."
 
@@ -48,9 +48,7 @@ class ListReportingPeriods(SQLiteCommand):
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Reporting Periods."""
 
-        cursor = self._target.select(
-            "reporting_periods", self._criteria, self._order_by
-        )
+        cursor = self._target.read("reporting_periods", self._criteria, self._order_by)
         return cursor.fetchall()
 
 

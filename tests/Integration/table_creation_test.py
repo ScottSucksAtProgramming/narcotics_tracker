@@ -39,7 +39,7 @@ def return_column_names_from_db(db: SQLiteManager, table_name: str) -> list[str]
     """Returns a list of column names from the passed SQLiteManager and table."""
     column_names = []
 
-    cursor = db.select(table_name)
+    cursor = db.read(table_name)
     data = cursor.description
 
     for _tuple in data:

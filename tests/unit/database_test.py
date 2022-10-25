@@ -62,7 +62,7 @@ class Test_SQLiteManager:
 
         db.add("test_table", {"data": "Hello"})
 
-        cursor = db.select("test_table")
+        cursor = db.read("test_table")
         data = cursor.fetchall()[0][0]
 
         assert data == "Hello"
@@ -72,9 +72,9 @@ class Test_SQLiteManager:
         db.create_table("test_table", {"data": "TEXT"})
         db.add("test_table", {"data": "Hello"})
 
-        db.delete("test_table", {"data": "Hello"})
+        db.remove("test_table", {"data": "Hello"})
 
-        cursor = db.select("test_table")
+        cursor = db.read("test_table")
         data = cursor.fetchall()
 
         assert data == []
@@ -87,7 +87,7 @@ class Test_SQLiteManager:
         db.add("test_table", {"number": "99999999"})
         db.add("test_table", {"number": "8211986"})
 
-        cursor = db.select("test_table", order_by="number")
+        cursor = db.read("test_table", order_by="number")
         data = cursor.fetchall()
 
         assert data == [(1,), (17,), (8211986,), (99999999,)]
@@ -99,6 +99,6 @@ class Test_SQLiteManager:
 
         db.update("test_table", {"number": 7, "word": "Pig"}, {"number": 17})
 
-        cursor = db.select("test_table")
+        cursor = db.read("test_table")
         results = cursor.fetchall()
         assert results == [(7, "Pig")]

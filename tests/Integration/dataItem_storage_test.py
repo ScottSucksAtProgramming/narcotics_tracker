@@ -71,7 +71,7 @@ class Test_AdjustmentStorage:
             receiver=sq_man, item=adjustment, datetime_manager=dtm
         ).execute()
 
-        cursor = sq_man.select(table_name="inventory")
+        cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
         assert -1 in adjustment_ids
 
@@ -85,7 +85,7 @@ class Test_AdjustmentStorage:
 
         commands.DeleteAdjustment(receiver=sq_man, adjustment_id=-1).execute()
 
-        cursor = sq_man.select(table_name="inventory")
+        cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
         assert -1 not in adjustment_ids
 
@@ -137,7 +137,7 @@ class Test_EventStorage:
 
         commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
 
-        cursor = sq_man.select(table_name="events")
+        cursor = sq_man.read(table_name="events")
         event_ids = return_ids(cursor)
         assert -77 in event_ids
 
@@ -149,7 +149,7 @@ class Test_EventStorage:
 
         commands.DeleteEvent(receiver=sq_man, event_identifier=-1).execute()
 
-        cursor = sq_man.select(table_name="events")
+        cursor = sq_man.read(table_name="events")
         event_id = return_ids(cursor)
         assert -1 not in event_id
 
@@ -161,7 +161,7 @@ class Test_EventStorage:
 
         commands.DeleteEvent(receiver=sq_man, event_identifier="TEST").execute()
 
-        cursor = sq_man.select(table_name="events")
+        cursor = sq_man.read(table_name="events")
         event_id = return_ids(cursor)
         assert -1 not in event_id
 
@@ -213,7 +213,7 @@ class Test_MedicationStorage:
             receiver=sq_man, item=medication, datetime_manager=dtm
         ).execute()
 
-        cursor = sq_man.select(table_name="medications")
+        cursor = sq_man.read(table_name="medications")
         medication_ids = return_ids(cursor)
         assert -1 in medication_ids
 
@@ -229,7 +229,7 @@ class Test_MedicationStorage:
 
         commands.DeleteMedication(receiver=sq_man, medication_identifier=-1).execute()
 
-        cursor = sq_man.select(table_name="medications")
+        cursor = sq_man.read(table_name="medications")
         medication_id = return_ids(cursor)
         assert -1 not in medication_id
 
@@ -247,7 +247,7 @@ class Test_MedicationStorage:
             receiver=sq_man, medication_identifier="apap"
         ).execute()
 
-        cursor = sq_man.select(table_name="medications")
+        cursor = sq_man.read(table_name="medications")
         medication_id = return_ids(cursor)
         assert -1 not in medication_id
 
@@ -303,7 +303,7 @@ class Test_ReportingPeriodStorage:
             receiver=sq_man, item=reporting_period, datetime_manager=dtm
         ).execute()
 
-        cursor = sq_man.select(table_name="reporting_periods")
+        cursor = sq_man.read(table_name="reporting_periods")
         reporting_period_ids = return_ids(cursor)
         assert -1 in reporting_period_ids
 
@@ -321,7 +321,7 @@ class Test_ReportingPeriodStorage:
             receiver=sq_man, reporting_period_id=-1
         ).execute()
 
-        cursor = sq_man.select(table_name="reporting_periods")
+        cursor = sq_man.read(table_name="reporting_periods")
         reporting_period_id = return_ids(cursor)
         assert -1 not in reporting_period_id
 
@@ -379,7 +379,7 @@ class Test_StatusStorage:
 
         commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
 
-        cursor = sq_man.select(table_name="statuses")
+        cursor = sq_man.read(table_name="statuses")
         status_ids = return_ids(cursor)
         assert -1 in status_ids
 
@@ -391,7 +391,7 @@ class Test_StatusStorage:
 
         commands.DeleteStatus(receiver=sq_man, status_identifier=-1).execute()
 
-        cursor = sq_man.select(table_name="statuses")
+        cursor = sq_man.read(table_name="statuses")
         status_id = return_ids(cursor)
         assert -1 not in status_id
 
@@ -403,7 +403,7 @@ class Test_StatusStorage:
 
         commands.DeleteStatus(receiver=sq_man, status_identifier="BROKEN").execute()
 
-        cursor = sq_man.select(table_name="statuses")
+        cursor = sq_man.read(table_name="statuses")
         status_id = return_ids(cursor)
         assert -1 not in status_id
 
@@ -453,7 +453,7 @@ class Test_UnitStorage:
 
         commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
 
-        cursor = sq_man.select(table_name="units")
+        cursor = sq_man.read(table_name="units")
         unit_ids = return_ids(cursor)
         assert -1 in unit_ids
 
@@ -465,7 +465,7 @@ class Test_UnitStorage:
 
         commands.DeleteUnit(receiver=sq_man, unit_identifier=-1).execute()
 
-        cursor = sq_man.select(table_name="units")
+        cursor = sq_man.read(table_name="units")
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
 
@@ -477,7 +477,7 @@ class Test_UnitStorage:
 
         commands.DeleteUnit(receiver=sq_man, unit_identifier="dg").execute()
 
-        cursor = sq_man.select(table_name="units")
+        cursor = sq_man.read(table_name="units")
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
 

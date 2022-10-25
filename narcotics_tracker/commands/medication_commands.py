@@ -34,7 +34,7 @@ class DeleteMedication(SQLiteCommand):
         if type(self._dataitem_id) is str:
             criteria = {"medication_code": self._dataitem_id}
 
-        self._target.delete("medications", criteria)
+        self._target.remove("medications", criteria)
 
         return f"Medication {self._dataitem_id} deleted."
 
@@ -65,7 +65,7 @@ class ListMedications(SQLiteCommand):
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Medications."""
 
-        cursor = self._target.select("medications", self._criteria, self._order_by)
+        cursor = self._target.read("medications", self._criteria, self._order_by)
         return cursor.fetchall()
 
 

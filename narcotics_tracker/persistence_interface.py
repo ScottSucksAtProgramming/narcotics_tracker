@@ -1,0 +1,19 @@
+"""Defines the interface for persistent storage."""
+
+from typing import Protocol
+
+
+class PersistenceManager(Protocol):
+    """Interface for objects managing persistent storage."""
+
+    def add() -> None:
+        ...
+
+    def remove() -> None:
+        ...
+
+    def read() -> None:
+        ...
+
+    def update() -> None:
+        ...

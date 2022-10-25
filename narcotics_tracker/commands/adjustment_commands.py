@@ -2,8 +2,48 @@
 
 Please see the package documentation for more information.
 """
+from typing import TYPE_CHECKING
+
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.adjustments import Adjustment
+
+
+class AddAdjustment(SQLiteCommand):
+    """Adds and Adjustment to the database.
+
+    Attributes:
+        receiver: Persistence manager for the data repository.
+
+    """
+
+    def __init__(self, receiver: SQLiteManager, item: Adjustment) -> None:
+        self._target = receiver
+        self._dataitem = item
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_item_info()
+        table_name = self._pop_table_name()
+
+        self._target.add(table_name, self.item_info)
+
+        return f"Item added to {table_name} table."
+
+    def _extract_item_info(self) -> None:
+        """Extracts item attributes and stored as a dictionary."""
+        self.item_info = vars(self._dataitem)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from DataItem information.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.item_info.pop("table")
 
 
 class DeleteAdjustment(SQLiteCommand):
@@ -16,7 +56,7 @@ class DeleteAdjustment(SQLiteCommand):
 
     def execute(self) -> str:
         """Execute the delete operation and returns a success message."""
-        self._target.delete("inventory", {"id": self._dataitem_id})
+        self._target.remove("inventory", {"id": self._dataitem_id})
 
         return f"Adjustment #{self._dataitem_id} deleted."
 
@@ -47,7 +87,7 @@ class ListAdjustments(SQLiteCommand):
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Adjustments."""
 
-        cursor = self._target.select("inventory", self._criteria, self._order_by)
+        cursor = self._target.read("inventory", self._criteria, self._order_by)
         return cursor.fetchall()
 
 

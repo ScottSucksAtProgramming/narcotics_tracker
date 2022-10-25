@@ -11,8 +11,10 @@ Classes:
 import os
 import sqlite3
 
+from narcotics_tracker.persistence_interface import PersistenceManager
 
-class SQLiteManager:
+
+class SQLiteManager(PersistenceManager):
     """Sends and receives information from the SQlite database.
 
     Attributes:
@@ -116,7 +118,7 @@ class SQLiteManager:
 
         self._execute(sql_statement, column_values)
 
-    def delete(self, table_name: str, criteria: dict[str]):
+    def remove(self, table_name: str, criteria: dict[str]):
         """Deletes a row from the given table using the given criteria.
 
         Args:
@@ -133,7 +135,7 @@ class SQLiteManager:
 
         self._execute(sql_statement, criteria_values)
 
-    def select(
+    def read(
         self, table_name: str, criteria: dict[str] = {}, order_by: str = None
     ) -> sqlite3.Cursor:
         """Returns a cursor containing data for the given table and criteria.

@@ -34,7 +34,7 @@ class DeleteUnit(SQLiteCommand):
         if type(self._dataitem_id) is str:
             criteria = {"unit_code": self._dataitem_id}
 
-        self._target.delete("units", criteria)
+        self._target.remove("units", criteria)
 
         return f"Unit {self._dataitem_id} deleted."
 
@@ -65,7 +65,7 @@ class ListUnits(SQLiteCommand):
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Units."""
 
-        cursor = self._target.select("units", self._criteria, self._order_by)
+        cursor = self._target.read("units", self._criteria, self._order_by)
         return cursor.fetchall()
 
 

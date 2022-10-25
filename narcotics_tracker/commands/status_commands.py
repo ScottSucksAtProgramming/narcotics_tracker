@@ -33,7 +33,7 @@ class DeleteStatus(SQLiteCommand):
         if type(self._dataitem_id) is str:
             criteria = {"status_code": self._dataitem_id}
 
-        self._target.delete("statuses", criteria)
+        self._target.remove("statuses", criteria)
 
         return f"Status {self._dataitem_id} deleted."
 
@@ -64,7 +64,7 @@ class ListStatuses(SQLiteCommand):
     def execute(self) -> list[tuple]:
         """Executes the command and returns a list of Statuses."""
 
-        cursor = self._target.select("statuses", self._criteria, self._order_by)
+        cursor = self._target.read("statuses", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
