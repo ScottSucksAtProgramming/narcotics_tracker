@@ -1,8 +1,8 @@
-"""Contains the interface for concrete DataItem builders.
+"""Defines the builder for generic DataItems. Only meant to be inherited from.
 
 Classes:
 
-    BuilderInterface: Builds a generic DataItem. Intended to be inherited by 
+    DataItemBuilder: Builds a generic DataItem. Intended to be inherited by 
         other builders.
 
 """

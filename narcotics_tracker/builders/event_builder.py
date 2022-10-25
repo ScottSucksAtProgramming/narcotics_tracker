@@ -1,8 +1,8 @@
-"""Contains the concrete builder for the Event DataItems.
+"""Handles the defining and building of Event Objects.
 
 Classes:
 
-    EventBuilder: Builds and returns an Event object.
+    EventBuilder: Assigns attributes and returns Event Objects.
 """
 
 
@@ -11,7 +11,7 @@ from narcotics_tracker.items.events import Event
 
 
 class EventBuilder(DataItemBuilder):
-    """Builds and returns an Event Object.
+    """Assigns attributes and returns Event Objects.
 
     Methods:
 

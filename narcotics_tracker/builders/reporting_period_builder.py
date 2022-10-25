@@ -1,8 +1,9 @@
-"""Contains the concrete builder for the ReportingPeriod DataItems.
+"""Handles the defining and building of ReportingPeriod Objects.
 
 Classes:
 
-    ReportingPeriodBuilder: Builds and returns an ReportingPeriod object.
+    ReportingPeriodBuilder: Assigns attributes and returns ReportingPeriod 
+        Objects.
 """
 
 
@@ -11,7 +12,7 @@ from narcotics_tracker.items.reporting_periods import ReportingPeriod
 
 
 class ReportingPeriodBuilder(DataItemBuilder):
-    """Builds and returns an ReportingPeriod Object.
+    """Assigns attributes and returns ReportingPeriod Objects.
 
     Methods:
 

@@ -49,11 +49,19 @@
 
 #* Modules:
     Builder Interface: Contains the interface for concrete DataItem builders.
-    Adjustment Builder: Contains the concrete builder for Adjustment DataItems.
-    Event Builder: Contains the concrete builder for the Event DataItems.
-    Medication Builder: Contains the concrete builder for Medication DataItems.
-    Reporting Period Builder: Contains the concrete builder for ReportingPeriod 
-        DataItems.
-    Status Builder: Contains the concrete builder for the Status DataItems.
-    Unit Builder: Contains the concrete builder for the Unit DataItems.
+    
+    DataItemBuilder: Defines the builder for generic DataItems. Only meant to 
+        be inherited from.
+    
+    Adjustment Builder: Handles the defining and building of Adjustment Objects.
+    
+    Event Builder: Handles the defining and building of Event Objects.
+    
+    Medication Builder: Handles the defining and building of Medication Objects.
+    
+    Reporting Period Builder: Handles the defining and building of ReportingPeriod Objects.
+    
+    Status Builder: Handles the defining and building of Status Objects.
+    
+    Unit Builder: Handles the defining and building of Unit Objects.
 """

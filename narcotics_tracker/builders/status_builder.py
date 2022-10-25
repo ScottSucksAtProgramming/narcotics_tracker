@@ -1,8 +1,8 @@
-"""Contains the concrete builder for the Status DataItems.
+"""Handles the defining and building of Status Objects.
 
 Classes:
 
-    StatusBuilder: Builds and returns an Status object.
+    StatusBuilder: Assigns attributes and returns Status Objects.
 """
 
 
@@ -11,7 +11,7 @@ from narcotics_tracker.items.statuses import Status
 
 
 class StatusBuilder(DataItemBuilder):
-    """Builds and returns an Status Object.
+    """Assigns attributes and returns Status Objects.
 
     Methods:
 

@@ -1,8 +1,8 @@
-"""Contains the concrete builder for Medication DataItems.
+"""Handles the defining and building of Medication Objects.
 
 Classes:
 
-    MedicationBuilder: Builds and returns an Medication object.
+    MedicationBuilder: Assigns attributes and returns Medication Objects.
 """
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
@@ -10,7 +10,7 @@ from narcotics_tracker.items.medications import Medication
 
 
 class MedicationBuilder(DataItemBuilder):
-    """Builds and returns an Medication Object.
+    """Assigns attributes and returns Medication Objects.
 
     Methods:
 

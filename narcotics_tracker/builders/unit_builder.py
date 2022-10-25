@@ -1,8 +1,8 @@
-"""Contains the concrete builder for the Unit DataItems.
+"""Handles the defining and building of Unit Objects.
 
 Classes:
 
-    UnitBuilder: Builds and returns an Unit object.
+    UnitBuilder: Assigns attributes and returns Unit Objects.
 """
 
 
@@ -11,7 +11,7 @@ from narcotics_tracker.items.units import Unit
 
 
 class UnitBuilder(DataItemBuilder):
-    """Builds and returns a Unit Object.
+    """Assigns attributes and returns Unit Objects.
 
     Methods:
 

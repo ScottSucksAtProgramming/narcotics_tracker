@@ -1,8 +1,8 @@
-"""Contains the concrete builder for Adjustment DataItems.
+"""Handles the defining and building of Adjustment Objects.
 
 Classes:
 
-    AdjustmentBuilder: Builds and returns an Adjustment object.
+    AdjustmentBuilder: Assigns attributes and returns Adjustment Objects.
 """
 
 
@@ -13,7 +13,7 @@ from narcotics_tracker.items.adjustments import Adjustment
 
 
 class AdjustmentBuilder(DataItemBuilder):
-    """Builds and returns an Adjustment Object.
+    """Assigns attributes and returns Adjustment Objects.
 
     Methods:
 
