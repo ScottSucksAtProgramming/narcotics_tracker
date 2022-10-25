@@ -31,5 +31,5 @@ class Medication(DataItem):
     concentration: float
     status: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Medication #{self.id}: {self.medication_name} ({self.medication_code}) {self.medication_amount} {self.preferred_unit} in {self.fill_amount} ml."

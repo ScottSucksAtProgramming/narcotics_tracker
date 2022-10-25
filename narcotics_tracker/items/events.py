@@ -25,5 +25,5 @@ class Event(DataItem):
     description: str
     modifier: int
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Event #{self.id}: {self.event_name} ({self.event_code}) {self.description}"

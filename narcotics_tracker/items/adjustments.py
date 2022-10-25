@@ -29,5 +29,5 @@ class Adjustment(DataItem):
     reference_id: str
     reporting_period_id: int
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Adjustment #{self.id}: {self.medication_code} adjusted by {self.amount} due to {self.event_code} on {self.adjustment_date}."

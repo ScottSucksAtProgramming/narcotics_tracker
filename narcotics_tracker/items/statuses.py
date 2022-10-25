@@ -24,5 +24,5 @@ class Status(DataItem):
     status_name: str
     description: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Status #{self.id}: {self.status_name} ({self.status_code}) {self.description}"

@@ -24,5 +24,5 @@ class Unit(DataItem):
     unit_name: str
     decimals: int
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Unit #{self.id}: {self.unit_name} ({self.unit_code})."

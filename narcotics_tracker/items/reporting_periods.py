@@ -24,5 +24,5 @@ class ReportingPeriod(DataItem):
     end_date: int
     status: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Reporting Period #{self.id}: Start Date: {self.start_date}, End Date: {self.end_date}, Current Status: {self.status}."
