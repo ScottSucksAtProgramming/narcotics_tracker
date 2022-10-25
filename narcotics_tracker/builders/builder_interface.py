@@ -1,85 +1,29 @@
 """Contains the interface for concrete DataItem builders.
 
 Classes:
-
+    BuilderInterface: Defines the interface for concrete DataItem builders.
 """
 
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from narcotics_tracker.items.data_items import DataItem
+if TYPE_CHECKING:
+    from narcotics_tracker.items.data_items import DataItem
 
 
 class BuilderInterface(ABC):
     """Defines the interface for concrete DataItem builders.
 
-    Methods:
-        __init__: Initializes the builder with an empty DataItem object.
-        set_table: Sets the table attribute.
-        set_id: Sets the id attribute to None, unless overridden.
-        set_created_date: Sets the created date to None, unless overridden.
-        set_modified_date: Sets the modified date to None, unless overridden.
-        set_modified_by: Sets the modified by attribute to the passed string.
+    Abstract Methods:
+        build: Should return the constructed DataItem Object.
 
+        _reset: Should remove all attributes values.
     """
 
-    def __init__(self) -> None:
-        """Initializes the builder with an empty DataItem object."""
-        self._reset()
-
-    def set_table(self, table_name: str) -> "BuilderInterface":
-        """Sets the table attribute.
-
-        Args:
-            table_name (str): Name of the table.
-        """
-        self._dataitem.table = table_name
-
-        return self
-
-    def set_id(self, id_number: int = None) -> "BuilderInterface":
-        """Sets the id attribute to None, unless overridden.
-
-        Args:
-            id_number (int, optional): Numeric identifier of the DataItem.
-                Defaults to None.
-        """
-        self._dataitem.id = id_number
-        return self
-
-    def set_created_date(self, created_date: int = None) -> "BuilderInterface":
-        """Sets the created date attribute to None, unless overridden.
-
-        Args:
-            created_date (int, optional): Unix timestamp of when the DataItem
-                was created. Defaults to None.
-        """
-        self._dataitem.created_date = created_date
-        return self
-
-    def set_modified_date(self, modified_date: int = None) -> "BuilderInterface":
-        """Sets the modified date to None, unless overridden.
-
-        Args:
-            modified_date (int, optional): Unix timestamp of when the DataItem
-                was last modified. Defaults to None.
-        """
-        self._dataitem.modified_date = modified_date
-        return self
-
-    def set_modified_by(self, modified_by: str) -> "BuilderInterface":
-        """Sets the modified by attribute to the passed string.
-
-        Args:
-            modified_by (str): Identifier of the user who last modified the
-                DataItem.
-        """
-        self._dataitem.modified_by = modified_by
-        return self
-
     @abstractmethod
-    def build(self) -> DataItem:
-        """Returns the constructed DataItem."""
+    def build(self) -> "DataItem":
+        """Should return the constructed DataItem Object."""
 
     @abstractmethod
     def _reset(self) -> None:
-        """Resets the builder to build a new DataItem."""
+        """Should remove all attributes values."""
