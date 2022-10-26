@@ -51,6 +51,7 @@ def populate_events(storage_manager: PersistenceManager, events: list["Event"]) 
         try:
             commands.AddEvent(storage_manager, event).execute()
         except sqlite3.IntegrityError as e:  # Events likely in the database already.
+            print(e)
             pass
         else:
             counter += 1

@@ -15,18 +15,19 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.reporting_periods import ReportingPeriod
 
 
+dt_man = DateTimeManager()
+
+
 def main():
     """Sets up the narcotics database for WLVAC."""
     # * Initialize objects and Create Database File.
     sq_man = SQLiteManager("inventory_wlvac.db")
-    dt_man = DateTimeManager()
     std_creator = StandardItemCreator()
 
     # * Add Tables.
-    setup.create_tables(sq_man, setup.return_tables_list())
+    # setup.create_tables(sq_man, setup.return_tables_list())
 
     # * Populate Database with Standard Items.
-    items = std_creator.create()
     events = std_creator.create_events()
     setup.populate_events(sq_man, events)
 
@@ -37,16 +38,16 @@ def main():
     setup.populate_units(sq_man, units)
 
     # * Populate Database with WLVAC Medications.
-    meds = build_wlvac_meds()
+    # meds = build_wlvac_meds()
 
-    for medication in meds:
-        commands.SaveItem(sq_man, medication, dt_man).execute()
+    # for medication in meds:
+    #     commands.AddMedication(sq_man, medication).execute()
 
     # * Populate Database with Reporting Periods for 2022.
-    periods = build_2022_reporting_periods(dt_man)
+    # periods = build_reporting_periods(dt_man)
 
-    for period in periods:
-        commands.SaveItem(sq_man, period, dt_man).execute()
+    # for period in periods:
+    #     commands.AddReportingPeriod(sq_man, period).execute()
 
 
 def build_wlvac_meds() -> list["Medication"]:
@@ -62,6 +63,8 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("ACTIVE")
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
         .set_modified_by("SRK")
         .build()
     )
@@ -73,6 +76,8 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration(5)
         .set_status("ACTIVE")
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
         .set_modified_by("SRK")
         .build()
     )
@@ -84,6 +89,8 @@ def build_wlvac_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration(10)
         .set_status("ACTIVE")
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
         .set_modified_by("SRK")
         .build()
     )
@@ -95,7 +102,7 @@ def build_wlvac_meds() -> list["Medication"]:
     return wlvac_medications
 
 
-def build_2022_reporting_periods(
+def build_reporting_periods(
     dt_manager: DateTimeManager,
 ) -> list["ReportingPeriod"]:
     """Builds Reporting Period Objects for 2022 and returns them as a list."""
@@ -103,29 +110,62 @@ def build_2022_reporting_periods(
 
     period_builder = ReportingPeriodBuilder()
 
-    jan_to_june = (
+    jan_to_june_2021 = (
+        period_builder.set_start_date(
+            dt_manager.convert_to_timestamp("01-01-2021 00:00:00")
+        )
+        .set_end_date(dt_manager.convert_to_timestamp("06-30-2021 23:59:59"))
+        .set_status("CLOSED")
+        .set_id(2100000)
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
+        .set_modified_by("SRK")
+        .build()
+    )
+
+    july_to_december_2021 = (
+        period_builder.set_start_date(
+            dt_manager.convert_to_timestamp("07-01-2021 00:00:00")
+        )
+        .set_end_date(dt_manager.convert_to_timestamp("12-31-2021 23:59:59"))
+        .set_status("CLOSED")
+        .set_id()
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
+        .set_modified_by("SRK")
+        .build()
+    )
+
+    jan_to_june_2022 = (
         period_builder.set_start_date(
             dt_manager.convert_to_timestamp("01-20-2022 00:00:00")
         )
         .set_end_date(dt_manager.convert_to_timestamp("07-22-2022 23:59:59"))
         .set_status("CLOSED")
         .set_id(2200000)
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
         .set_modified_by("SRK")
         .build()
     )
 
-    july_to_december = (
+    july_to_december_2022 = (
         period_builder.set_start_date(
             dt_manager.convert_to_timestamp("07-23-2022 00:00:00")
         )
+        .set_end_date(None)
         .set_status("OPEN")
         .set_id()
+        .set_created_date(dt_man.return_current_datetime())
+        .set_modified_date(dt_man.return_current_datetime())
         .set_modified_by("SRK")
         .build()
     )
 
-    periods.append(jan_to_june)
-    periods.append(july_to_december)
+    periods.append(jan_to_june_2021)
+    periods.append(july_to_december_2021)
+    periods.append(jan_to_june_2022)
+    periods.append(july_to_december_2022)
 
     return periods
 

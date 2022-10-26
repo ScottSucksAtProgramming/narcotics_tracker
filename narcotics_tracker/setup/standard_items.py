@@ -87,153 +87,159 @@ class StandardItemCreator:
         destroy_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "DESTROY",
             "Destroyed",
             "Used when subtracting medication which was destroyed through a reverse distributor.",
             -1,
         )
-        self.standard_items.append(destroy_event)
+        self.standard_events.append(destroy_event)
 
         import_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "IMPORT",
             "Imported",
             "Used when adding pre-existing stock to the inventory.",
             +1,
         )
-        self.standard_items.append(import_event)
+        self.standard_events.append(import_event)
 
         loss_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "LOSS",
             "Lost",
             "Used when subtracting medication which were lost or stolen.",
             -1,
         )
-        self.standard_items.append(loss_event)
+        self.standard_events.append(loss_event)
 
         order_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "ORDER",
             "Ordered",
             "Used when adding new stock from a purchase order.",
             +1,
         )
-        self.standard_items.append(order_event)
+        self.standard_events.append(order_event)
 
         use_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "USE",
             "Used",
             "Used when subtracting medication that was administered to a patient.",
             -1,
         )
-        self.standard_items.append(use_event)
+        self.standard_events.append(use_event)
 
         waste_event = Event(
             "events",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "WASTE",
             "Wasted",
             "Used when subtracting medication which was wasted.",
             -1,
         )
-        self.standard_items.append(waste_event)
+        self.standard_events.append(waste_event)
 
     def _create_standard_units(self) -> None:
 
-        microgram = Unit("units", None, None, None, "Setup", "mcg", "microgram", 6)
-        self.standard_items.append(microgram)
+        microgram = Unit(
+            "units", None, 1666746384, 1666746384, "Setup", "mcg", "microgram", 6
+        )
+        self.standard_units.append(microgram)
 
-        milligram = Unit("units", None, None, None, "Setup", "mg", "milligram", 3)
-        self.standard_items.append(milligram)
+        milligram = Unit(
+            "units", None, 1666746384, 1666746384, "Setup", "mg", "milligram", 3
+        )
+        self.standard_units.append(milligram)
 
-        gram = Unit("units", None, None, None, "Setup", "g", "gram", 0)
-        self.standard_items.append(gram)
+        gram = Unit("units", None, 1666746384, 1666746384, "Setup", "g", "gram", 0)
+        self.standard_units.append(gram)
 
-        milliliter = Unit("units", None, None, None, "Setup", "ml", "milliliter", 3)
-        self.standard_items.append(milliliter)
+        milliliter = Unit(
+            "units", 1666746384, 1666746384, None, "Setup", "ml", "milliliter", 3
+        )
+        self.standard_units.append(milliliter)
 
     def _create_standard_statuses(self):
 
         active_status = Status(
             "statuses",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "ACTIVE",
             "Active",
             "Used for items which are still being used.",
         )
-        self.standard_items.append(active_status)
+        self.standard_units.append(active_status)
 
         inactive_status = Status(
             "statuses",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "INACTIVE",
             "Inactive",
             "Used for items which are no longer being used.",
         )
-        self.standard_items.append(inactive_status)
+        self.standard_units.append(inactive_status)
 
         open_status = Status(
             "statuses",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "OPEN",
             "Open",
             "Used for items which have not been completed.",
         )
-        self.standard_items.append(open_status)
+        self.standard_units.append(open_status)
 
         closed_status = Status(
             "statuses",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "CLOSED",
             "Closed",
             "Used for items which have been completed.",
         )
-        self.standard_items.append(closed_status)
+        self.standard_units.append(closed_status)
 
         cancelled_status = Status(
             "statuses",
             None,
-            None,
-            None,
+            1666746384,
+            1666746384,
             "Setup",
             "CANCELLED",
             "Cancelled",
             "Used for items which have been cancelled.",
         )
-        self.standard_items.append(cancelled_status)
+        self.standard_units.append(cancelled_status)
