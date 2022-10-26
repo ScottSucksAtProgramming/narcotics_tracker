@@ -21,7 +21,7 @@ from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:
@@ -44,7 +44,7 @@ def create_tables(
         print(f"- {command.table_name} table created.")
 
 
-def populate_events(storage_manager: PersistenceManager, events: list["Event"]) -> None:
+def populate_events(storage_manager: PersistenceService, events: list["Event"]) -> None:
     counter = 0
 
     for event in events:
@@ -60,7 +60,7 @@ def populate_events(storage_manager: PersistenceManager, events: list["Event"]) 
 
 
 def populate_medications(
-    storage_manager: PersistenceManager, medications: list["Medication"]
+    storage_manager: PersistenceService, medications: list["Medication"]
 ) -> None:
     counter = 0
 
@@ -76,7 +76,7 @@ def populate_medications(
 
 
 def populate_reporting_periods(
-    storage_manager: PersistenceManager, reporting_periods: list["ReportingPeriod"]
+    storage_manager: PersistenceService, reporting_periods: list["ReportingPeriod"]
 ) -> None:
     counter = 0
 
@@ -92,7 +92,7 @@ def populate_reporting_periods(
 
 
 def populate_statuses(
-    storage_manager: PersistenceManager, statuses: list["Status"]
+    storage_manager: PersistenceService, statuses: list["Status"]
 ) -> None:
     counter = 0
 
@@ -107,7 +107,7 @@ def populate_statuses(
     print(f"- {counter} statuses added to the database.")
 
 
-def populate_units(storage_manager: PersistenceManager, units: list["Unit"]) -> None:
+def populate_units(storage_manager: PersistenceService, units: list["Unit"]) -> None:
     counter = 0
 
     for unit in units:

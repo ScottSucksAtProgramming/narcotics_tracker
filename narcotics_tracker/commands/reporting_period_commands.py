@@ -6,7 +6,7 @@ Please see the package documentation for more information.
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
 class AddReportingPeriod(SQLiteCommand):
@@ -16,7 +16,7 @@ class AddReportingPeriod(SQLiteCommand):
         execute: Executes the command, returns success message."""
 
     def __init__(
-        self, receiver: PersistenceManager, reporting_period: ReportingPeriod
+        self, receiver: PersistenceService, reporting_period: ReportingPeriod
     ) -> None:
         """Initializes the command. Sets the receiver and ReportingPeriod.
 

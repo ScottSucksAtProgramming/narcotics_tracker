@@ -5,7 +5,7 @@ Please see the package documentation for more information.
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.items.adjustments import Adjustment
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
 class AddAdjustment(SQLiteCommand):
@@ -14,7 +14,7 @@ class AddAdjustment(SQLiteCommand):
     Methods:
         execute: Executes the command, returns success message."""
 
-    def __init__(self, receiver: PersistenceManager, adjustment: Adjustment) -> None:
+    def __init__(self, receiver: PersistenceService, adjustment: Adjustment) -> None:
         """Initializes the command. Sets the receiver and adjustment.
 
         Args:
@@ -56,7 +56,7 @@ class DeleteAdjustment(SQLiteCommand):
         execute: Executes the delete operation and returns a success message.
     """
 
-    def __init__(self, receiver: PersistenceManager, adjustment_id: int) -> None:
+    def __init__(self, receiver: PersistenceService, adjustment_id: int) -> None:
         """Initializes the command. Sets the receiver and adjustment.
 
         Args:
@@ -80,7 +80,7 @@ class ListAdjustments(SQLiteCommand):
 
     def __init__(
         self,
-        receiver: PersistenceManager,
+        receiver: PersistenceService,
         criteria: dict[str] = {},
         order_by: str = None,
     ):
@@ -110,7 +110,7 @@ class UpdateAdjustment(SQLiteCommand):
 
     def __init__(
         self,
-        receiver: PersistenceManager,
+        receiver: PersistenceService,
         data: dict[str, any],
         criteria: dict[str, any],
     ) -> None:

@@ -7,7 +7,7 @@ from typing import Union
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.statuses import Status
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
 class AddStatus(SQLiteCommand):
@@ -17,7 +17,7 @@ class AddStatus(SQLiteCommand):
         execute: Executes the command, returns success message.
     """
 
-    def __init__(self, receiver: PersistenceManager, status: Status) -> None:
+    def __init__(self, receiver: PersistenceService, status: Status) -> None:
         """Initializes the command. Sets the receiver and Status.
 
         Args:

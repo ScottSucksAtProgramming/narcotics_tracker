@@ -9,7 +9,7 @@ from typing import Union
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.events import Event
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
 class AddEvent(SQLiteCommand):
@@ -19,7 +19,7 @@ class AddEvent(SQLiteCommand):
         execute: Executes the command, returns success message.
     """
 
-    def __init__(self, receiver: PersistenceManager, event: Event) -> None:
+    def __init__(self, receiver: PersistenceService, event: Event) -> None:
         """Initializes the command. Sets the receiver and Event.
 
         Args:

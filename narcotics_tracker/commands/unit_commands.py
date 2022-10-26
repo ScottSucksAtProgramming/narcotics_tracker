@@ -8,7 +8,7 @@ from typing import Union
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.units import Unit
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
 class AddUnit(SQLiteCommand):
@@ -18,7 +18,7 @@ class AddUnit(SQLiteCommand):
         execute: Executes the command, returns success message.
     """
 
-    def __init__(self, receiver: PersistenceManager, unit: Unit) -> None:
+    def __init__(self, receiver: PersistenceService, unit: Unit) -> None:
         """Initializes the command. Sets the receiver and Unit.
 
         Args:

@@ -1,9 +1,10 @@
 """Defines the interface for persistent storage."""
 
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 
-class PersistenceManager(Protocol):
+@runtime_checkable
+class PersistenceService(Protocol):
     """Interface for objects managing persistent storage."""
 
     def add() -> None:

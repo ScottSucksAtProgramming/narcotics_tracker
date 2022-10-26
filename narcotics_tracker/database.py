@@ -11,10 +11,10 @@ Classes:
 import os
 import sqlite3
 
-from narcotics_tracker.persistence_interface import PersistenceManager
+from narcotics_tracker.persistence_interface import PersistenceService
 
 
-class SQLiteManager(PersistenceManager):
+class SQLiteManager(PersistenceService):
     """Sends and receives information from the SQlite database.
 
     Attributes:

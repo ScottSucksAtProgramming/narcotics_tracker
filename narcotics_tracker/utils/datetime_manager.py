@@ -1,16 +1,13 @@
 """Handles date and time functions fro the Narcotics Tracker.
 
 """
+
 import pendulum
 
+from narcotics_tracker.datetime_interface import DateTimeService
 
-class DateTimeManager:
-    """#* Requirements
-    # Todo: Get current date and time.
-    # Todo: Convert String DateTime to Unix Timestamp.
-    # Todo: Convert Unix Timestamp to String DateTime.
-    """
 
+class DateTimeManager(DateTimeService):
     def __init__(
         self, datetime_package=pendulum, timezone: str = "America/New_York"
     ) -> None:
