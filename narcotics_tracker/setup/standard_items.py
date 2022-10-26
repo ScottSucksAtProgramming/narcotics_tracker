@@ -59,14 +59,26 @@ class StandardItemCreator:
 
     standard_items = []
 
-    def create(self) -> list["DataItem"]:
-        """Creates all items and returns them in a list."""
+    def create_events(self) -> list["Event"]:
+        """Creates standard events and returns them in a list."""
 
         self._create_standard_events()
-        self._create_standard_units()
+
+        return self.standard_events
+
+    def create_statuses(self) -> list["Status"]:
+        """Creates standard statuses and returns them in a list."""
+
         self._create_standard_statuses()
 
-        return self.standard_items
+        return self.standard_statuses
+
+    def create_units(self) -> list["Unit"]:
+        """Creates standard units and returns them in a list."""
+
+        self._create_standard_units()
+
+        return self.standard_units
 
     def _create_standard_events(self) -> None:
 

@@ -1,7 +1,7 @@
 """Contains the unit tests for the Commands Module.
 
 Classes:
-    Test_SaveItemToDatabase: Unit tests the SaveItemToDatabase command.
+    Test_AddMedication: Unit tests the AddMedication command.
 """
 
 
@@ -10,8 +10,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
-from narcotics_tracker.commands import SaveItem
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
+from narcotics_tracker.commands import AddMedication
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
@@ -38,24 +37,21 @@ def test_med() -> "Medication":
     return med_builder.build()
 
 
-dtm = DateTimeManager()
-
-
-class Test_SaveItemToDatabase:
-    """Unit tests the SaveItemToDatabase command.
+class Test_AddMedication:
+    """Unit tests the AddMedication command.
 
     Behaviors Tested:
         - DataItem information is extracted correctly.
         - Table name is extracted correctly.
     """
 
-    def test_SaveItemToDatabase_extracts_item_data_correctly(self, test_med) -> None:
+    def test_AddMedication_extracts_medication_data_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItem(None, test_med, dtm)
+        command = AddMedication(None, test_med)
 
-        command._extract_item_info()
+        command._extract_medication_info()
 
-        assert command.item_info == {
+        assert command.medication_info == {
             "table": "medications",
             "id": -1,
             "created_date": 1666061200,
@@ -70,44 +66,10 @@ class Test_SaveItemToDatabase:
             "status": "unknown",
         }
 
-    def test_SaveItemToDatabase_extracts_table_name_correctly(self, test_med) -> None:
+    def test_AddMedication_extracts_table_name_correctly(self, test_med) -> None:
         test_med = test_med
-        command = SaveItem(None, test_med, dtm)
-        command._extract_item_info()
+        command = AddMedication(None, test_med)
+        command._extract_medication_info()
         table_name = command._pop_table_name()
 
         assert table_name == "medications"
-
-    def test_SaveItemToDatabase_returns_true_if_created_date_is_none(
-        self, test_med
-    ) -> None:
-        test_med = test_med
-        test_med.created_date = None
-
-        command = SaveItem(None, test_med, dtm)
-        assert command._item_created_date_is_none() == True
-
-    def test_SaveItemToDatabase_returns_false_if_created_date_is_set(
-        self, test_med
-    ) -> None:
-        test_med = test_med
-
-        command = SaveItem(None, test_med, dtm)
-        assert command._item_created_date_is_none() == False
-
-    def test_SaveItemToDatabase_returns_true_if_modified_date_is_none(
-        self, test_med
-    ) -> None:
-        test_med = test_med
-        test_med.modified_date = None
-
-        command = SaveItem(None, test_med, dtm)
-        assert command._item_modified_date_is_none() == True
-
-    def test_SaveItemToDatabase_returns_false_if_modified_date_is_set(
-        self, test_med
-    ) -> None:
-        test_med = test_med
-
-        command = SaveItem(None, test_med, dtm)
-        assert command._item_modified_date_is_none() == False

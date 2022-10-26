@@ -28,7 +28,7 @@ class AddUnit(SQLiteCommand):
             Unit: The Unit to be added to the database.
         """
         self._receiver = receiver
-        self._unit = Unit
+        self._unit = unit
 
     def execute(self) -> str:
         """Executes the command, returns success message."""

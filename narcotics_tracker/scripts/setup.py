@@ -15,6 +15,12 @@ from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.events import Event
+from narcotics_tracker.items.medications import Medication
+from narcotics_tracker.items.reporting_periods import ReportingPeriod
+from narcotics_tracker.items.statuses import Status
+from narcotics_tracker.items.units import Unit
+from narcotics_tracker.persistence_interface import PersistenceManager
 from narcotics_tracker.setup.standard_items import StandardItemCreator
 from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
@@ -38,20 +44,80 @@ def create_tables(
         print(f"- {command.table_name} table created.")
 
 
-def populate_database(
-    storage_manager: SQLiteManager, items: list["DataItem"], dt_manager: DateTimeManager
-) -> None:
+def populate_events(storage_manager: PersistenceManager, events: list["Event"]) -> None:
     counter = 0
 
-    for item in items:
+    for event in events:
         try:
-            commands.SaveItem(storage_manager, item, dt_manager).execute()
-        except sqlite3.IntegrityError as e:  # Items likely in the database already.
+            commands.AddEvent(storage_manager, event).execute()
+        except sqlite3.IntegrityError as e:  # Events likely in the database already.
             pass
         else:
             counter += 1
 
-    print(f"- {counter} items added to the database.")
+    print(f"- {counter} events added to the database.")
+
+
+def populate_medications(
+    storage_manager: PersistenceManager, medications: list["Medication"]
+) -> None:
+    counter = 0
+
+    for medication in medications:
+        try:
+            commands.AddMedication(storage_manager, medication).execute()
+        except sqlite3.IntegrityError as e:  # medications likely in the database already.
+            pass
+        else:
+            counter += 1
+
+    print(f"- {counter} medications added to the database.")
+
+
+def populate_reporting_periods(
+    storage_manager: PersistenceManager, reporting_periods: list["ReportingPeriod"]
+) -> None:
+    counter = 0
+
+    for reporting_period in reporting_periods:
+        try:
+            commands.AddReportingPeriod(storage_manager, reporting_period).execute()
+        except sqlite3.IntegrityError as e:  # reporting_periods likely in the database already.
+            pass
+        else:
+            counter += 1
+
+    print(f"- {counter} reporting_periods added to the database.")
+
+
+def populate_statuses(
+    storage_manager: PersistenceManager, statuses: list["Status"]
+) -> None:
+    counter = 0
+
+    for status in statuses:
+        try:
+            commands.AddStatus(storage_manager, status).execute()
+        except sqlite3.IntegrityError as e:  # Statuses likely in the database already.
+            pass
+        else:
+            counter += 1
+
+    print(f"- {counter} statuses added to the database.")
+
+
+def populate_units(storage_manager: PersistenceManager, units: list["Unit"]) -> None:
+    counter = 0
+
+    for unit in units:
+        try:
+            commands.AddUnit(storage_manager, unit).execute()
+        except sqlite3.IntegrityError as e:  # Units likely in the database already.
+            pass
+        else:
+            counter += 1
+
+    print(f"- {counter} units added to the database.")
 
 
 def clear_screen():
@@ -86,9 +152,15 @@ def main() -> None:
 
     print("Preparing to add standard items:\n")
     item_creator = StandardItemCreator()
-    items = item_creator.create()
-    dtm = DateTimeManager()
-    populate_database(sq, items, dtm)
+
+    events = item_creator.create_events()
+    populate_events(sq, events)
+
+    statuses = item_creator.create_statuses()
+    populate_statuses(sq, statuses)
+
+    units = item_creator.create_units()
+    populate_units(sq, units)
     print("\nStandard items added successfully.")
     print("\nNarcotics Tracker database setup complete.")
     input("Press ENTER to continue.")

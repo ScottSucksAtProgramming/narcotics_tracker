@@ -23,7 +23,6 @@ import sqlite3
 
 from narcotics_tracker import commands
 from narcotics_tracker.database import SQLiteManager
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 
 def return_ids(cursor: sqlite3.Cursor) -> list[int]:
@@ -44,9 +43,6 @@ def return_ids(cursor: sqlite3.Cursor) -> list[int]:
     return ids
 
 
-dtm = DateTimeManager()
-
-
 class Test_AdjustmentStorage:
     """Tests Adjustment Storage in the SQLite3 database.
 
@@ -62,9 +58,7 @@ class Test_AdjustmentStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
 
-        commands.SaveItem(
-            receiver=sq_man, item=adjustment, datetime_manager=dtm
-        ).execute()
+        commands.AddAdjustment(receiver=sq_man, adjustment=adjustment).execute()
 
         cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
@@ -74,9 +68,7 @@ class Test_AdjustmentStorage:
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=adjustment, datetime_manager=dtm
-        ).execute()
+        commands.AddAdjustment(receiver=sq_man, adjustment=adjustment).execute()
 
         commands.DeleteAdjustment(receiver=sq_man, adjustment_id=-1).execute()
 
@@ -88,9 +80,7 @@ class Test_AdjustmentStorage:
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=adjustment, datetime_manager=dtm
-        ).execute()
+        commands.AddAdjustment(receiver=sq_man, adjustment=adjustment).execute()
 
         data = commands.ListAdjustments(sq_man).execute()
 
@@ -100,9 +90,7 @@ class Test_AdjustmentStorage:
         adjustment = adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=adjustment, datetime_manager=dtm
-        ).execute()
+        commands.AddAdjustment(receiver=sq_man, adjustment=adjustment).execute()
 
         commands.UpdateAdjustment(
             receiver=sq_man, data={"amount": 9999}, criteria={"id": -1}
@@ -130,7 +118,7 @@ class Test_EventStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
 
-        commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
+        commands.AddEvent(receiver=sq_man, event=event).execute()
 
         cursor = sq_man.read(table_name="events")
         event_ids = return_ids(cursor)
@@ -140,7 +128,7 @@ class Test_EventStorage:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
+        commands.AddEvent(receiver=sq_man, event=event).execute()
 
         commands.DeleteEvent(receiver=sq_man, event_identifier=-1).execute()
 
@@ -152,7 +140,7 @@ class Test_EventStorage:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
+        commands.AddEvent(receiver=sq_man, event=event).execute()
 
         commands.DeleteEvent(receiver=sq_man, event_identifier="TEST").execute()
 
@@ -164,7 +152,7 @@ class Test_EventStorage:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
+        commands.AddEvent(receiver=sq_man, event=event).execute()
 
         data = commands.ListEvents(sq_man).execute()
 
@@ -174,7 +162,7 @@ class Test_EventStorage:
         event = event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=event, datetime_manager=dtm).execute()
+        commands.AddEvent(receiver=sq_man, event=event).execute()
 
         commands.UpdateEvent(
             receiver=sq_man,
@@ -204,9 +192,7 @@ class Test_MedicationStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
 
-        commands.SaveItem(
-            receiver=sq_man, item=medication, datetime_manager=dtm
-        ).execute()
+        commands.AddMedication(receiver=sq_man, medication=medication).execute()
 
         cursor = sq_man.read(table_name="medications")
         medication_ids = return_ids(cursor)
@@ -218,9 +204,7 @@ class Test_MedicationStorage:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=medication, datetime_manager=dtm
-        ).execute()
+        commands.AddMedication(receiver=sq_man, medication=medication).execute()
 
         commands.DeleteMedication(receiver=sq_man, medication_identifier=-1).execute()
 
@@ -234,9 +218,7 @@ class Test_MedicationStorage:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=medication, datetime_manager=dtm
-        ).execute()
+        commands.AddMedication(receiver=sq_man, medication=medication).execute()
 
         commands.DeleteMedication(
             receiver=sq_man, medication_identifier="apap"
@@ -250,9 +232,7 @@ class Test_MedicationStorage:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=medication, datetime_manager=dtm
-        ).execute()
+        commands.AddMedication(receiver=sq_man, medication=medication).execute()
 
         data = commands.ListMedications(sq_man).execute()
 
@@ -262,9 +242,7 @@ class Test_MedicationStorage:
         medication = medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=medication, datetime_manager=dtm
-        ).execute()
+        commands.AddMedication(receiver=sq_man, medication=medication).execute()
 
         commands.UpdateMedication(
             receiver=sq_man,
@@ -294,8 +272,8 @@ class Test_ReportingPeriodStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
 
-        commands.SaveItem(
-            receiver=sq_man, item=reporting_period, datetime_manager=dtm
+        commands.AddReportingPeriod(
+            receiver=sq_man, reporting_period=reporting_period
         ).execute()
 
         cursor = sq_man.read(table_name="reporting_periods")
@@ -308,8 +286,8 @@ class Test_ReportingPeriodStorage:
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=reporting_period, datetime_manager=dtm
+        commands.AddReportingPeriod(
+            receiver=sq_man, reporting_period=reporting_period
         ).execute()
 
         commands.DeleteReportingPeriod(
@@ -326,8 +304,8 @@ class Test_ReportingPeriodStorage:
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=reporting_period, datetime_manager=dtm
+        commands.AddReportingPeriod(
+            receiver=sq_man, reporting_period=reporting_period
         ).execute()
 
         data = commands.ListReportingPeriods(sq_man).execute()
@@ -340,8 +318,8 @@ class Test_ReportingPeriodStorage:
         reporting_period = reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.SaveItem(
-            receiver=sq_man, item=reporting_period, datetime_manager=dtm
+        commands.AddReportingPeriod(
+            receiver=sq_man, reporting_period=reporting_period
         ).execute()
 
         commands.UpdateReportingPeriod(
@@ -372,7 +350,7 @@ class Test_StatusStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
 
-        commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
+        commands.AddStatus(receiver=sq_man, status=status).execute()
 
         cursor = sq_man.read(table_name="statuses")
         status_ids = return_ids(cursor)
@@ -382,7 +360,7 @@ class Test_StatusStorage:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
+        commands.AddStatus(receiver=sq_man, status=status).execute()
 
         commands.DeleteStatus(receiver=sq_man, status_identifier=-1).execute()
 
@@ -394,7 +372,7 @@ class Test_StatusStorage:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
+        commands.AddStatus(receiver=sq_man, status=status).execute()
 
         commands.DeleteStatus(receiver=sq_man, status_identifier="BROKEN").execute()
 
@@ -406,7 +384,7 @@ class Test_StatusStorage:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
+        commands.AddStatus(receiver=sq_man, status=status).execute()
 
         data = commands.ListStatuses(sq_man).execute()
 
@@ -416,7 +394,7 @@ class Test_StatusStorage:
         status = status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=status, datetime_manager=dtm).execute()
+        commands.AddStatus(receiver=sq_man, status=status).execute()
 
         commands.UpdateStatus(
             receiver=sq_man,
@@ -446,7 +424,7 @@ class Test_UnitStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
 
-        commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
+        commands.AddUnit(receiver=sq_man, unit=unit).execute()
 
         cursor = sq_man.read(table_name="units")
         unit_ids = return_ids(cursor)
@@ -456,7 +434,7 @@ class Test_UnitStorage:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
+        commands.AddUnit(receiver=sq_man, unit=unit).execute()
 
         commands.DeleteUnit(receiver=sq_man, unit_identifier=-1).execute()
 
@@ -468,7 +446,7 @@ class Test_UnitStorage:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
+        commands.AddUnit(receiver=sq_man, unit=unit).execute()
 
         commands.DeleteUnit(receiver=sq_man, unit_identifier="dg").execute()
 
@@ -480,7 +458,7 @@ class Test_UnitStorage:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
+        commands.AddUnit(receiver=sq_man, unit=unit).execute()
 
         data = commands.ListUnits(sq_man).execute()
 
@@ -490,7 +468,7 @@ class Test_UnitStorage:
         unit = unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.SaveItem(receiver=sq_man, item=unit, datetime_manager=dtm).execute()
+        commands.AddUnit(receiver=sq_man, unit=unit).execute()
 
         commands.UpdateUnit(
             receiver=sq_man,
