@@ -32,57 +32,52 @@ class Test_UnitConverter:
 
 
 def test_convert_grams_to_standard() -> None:
-    answer = UnitConverter(1, "g").to_standard()
+    answer = UnitConverter().to_standard(1, "g")
 
     assert answer == 1000000
 
 
 def test_convert_milligrams_to_standard() -> None:
-    answer = UnitConverter(1, "mg").to_standard()
+    answer = UnitConverter().to_standard(1, "mg")
 
     assert answer == 1000
 
 
 def test_convert_micrograms_to_standard() -> None:
-    answer = UnitConverter(1, "mcg").to_standard()
+    answer = UnitConverter().to_standard(1, "mcg")
 
 
 def test_convert_standard_to_gram():
-    answer = UnitConverter(1000000, "g").to_preferred()
+    answer = UnitConverter().to_preferred(1000000, "g")
 
     assert answer == 1
 
 
 def test_convert_standard_to_milligrams():
-    answer = UnitConverter(1000, "mg").to_preferred()
+    answer = UnitConverter().to_preferred(1000, "mg")
 
     assert answer == 1
 
 
 def test_converts_standard_to_micrograms():
-    answer = UnitConverter(1, "mcg").to_preferred()
+    answer = UnitConverter().to_preferred(1, "mcg")
 
     assert answer == 1
 
 
 def test_conversion_g_to_milliliters():
-    answer = UnitConverter(15000000, "g", 5).to_milliliters()
+    answer = UnitConverter().to_milliliters(15000000, "g", 5)
 
     assert answer == 3
 
 
 def test_conversion_mg_to_milliliters():
-    answer = UnitConverter(10000, "mg", 5).to_milliliters()
+    answer = UnitConverter().to_milliliters(10000, "mg", 5)
 
     assert answer == 2
 
 
 def test_conversion_mcg_to_milliliters():
-    answer = UnitConverter(100, "mcg", 50).to_milliliters()
+    answer = UnitConverter().to_milliliters(100, "mcg", 50)
 
     assert answer == 2
-
-
-def test_new():
-    answer = UnitConverter(690, "mg", 2).to_standard()
-    print(answer)

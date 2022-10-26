@@ -35,9 +35,9 @@ class UnitConverter(ConversionService):
             float: The converted amount.
         """
         decimals = {"mcg": -6, "mg": -3, "g": 0}
-        exponent = decimals[self.preferred_unit] + 6
+        exponent = decimals[preferred_unit] + 6
 
-        return self.amount * (10**exponent)
+        return amount * (10**exponent)
 
     def to_preferred(self, amount: Union[int, float], preferred_unit: str) -> float:
         """Converts the amount from the standard to preferred unit.
@@ -53,8 +53,8 @@ class UnitConverter(ConversionService):
         """
         decimals = {"mcg": 6, "mg": 3, "g": 0}
 
-        exponent = decimals[self.preferred_unit] - 6
-        return self.amount * (10**exponent)
+        exponent = decimals[preferred_unit] - 6
+        return amount * (10**exponent)
 
     def to_milliliters(
         self, amount: Union[int, float], preferred_unit: str, concentration: float
@@ -73,6 +73,6 @@ class UnitConverter(ConversionService):
             float: The converted amount.
         """
 
-        adjusted_amount = self.to_preferred()
+        adjusted_amount = self.to_preferred(amount, preferred_unit)
 
-        return adjusted_amount / self.concentration
+        return adjusted_amount / concentration

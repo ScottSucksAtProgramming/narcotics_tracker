@@ -4,7 +4,9 @@
         Narcotics Tracker.
 """
 
+from narcotics_tracker.conversion_interface import ConversionService
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.datetime_interface import DateTimeService
 from narcotics_tracker.persistence_interface import PersistenceService
 from narcotics_tracker.utils.datetime_manager import DateTimeManager
 from narcotics_tracker.utils.unit_converter import UnitConverter
@@ -20,8 +22,8 @@ class ServiceProvider:
     def __init__(
         self,
         persistence_service: PersistenceService = SQLiteManager,
-        datetime_service: DateTimeManager = DateTimeManager,
-        conversion_service: UnitConverter = UnitConverter,
+        datetime_service: DateTimeService = DateTimeManager,
+        conversion_service: ConversionService = UnitConverter,
     ) -> None:
         """Initializes the ServiceProvider and sets the three services.
 
@@ -44,7 +46,7 @@ class ServiceProvider:
 
     def start_services(
         self,
-    ) -> tuple[PersistenceService, DateTimeManager, UnitConverter]:
+    ) -> tuple[PersistenceService, DateTimeService, ConversionService]:
         """Instantiates and returns all services.
 
         Returns:
@@ -53,5 +55,5 @@ class ServiceProvider:
         return (
             self.persistence_service("inventory.db"),
             self.datetime_service(),
-            self.conversion_service(None, None, None),
+            self.conversion_service(),
         )
