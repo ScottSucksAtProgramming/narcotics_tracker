@@ -1,4 +1,7 @@
-"""Handles date and time functions fro the Narcotics Tracker.
+"""Handles datetime functions for the Narcotics Tracker.
+
+Classes:
+    DateTimeManager: Provides date and time services.
 
 """
 
@@ -8,6 +11,8 @@ from narcotics_tracker.datetime_interface import DateTimeService
 
 
 class DateTimeManager(DateTimeService):
+    """Provides date and time services."""
+
     def __init__(
         self, datetime_package=pendulum, timezone: str = "America/New_York"
     ) -> None:
