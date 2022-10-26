@@ -27,7 +27,14 @@ def main():
 
     # * Populate Database with Standard Items.
     items = std_creator.create()
-    setup.populate_database(sq_man, items, dt_man)
+    events = std_creator.create_events()
+    setup.populate_events(sq_man, events)
+
+    statuses = std_creator.create_statuses()
+    setup.populate_statuses(sq_man, statuses)
+
+    units = std_creator.create_units()
+    setup.populate_units(sq_man, units)
 
     # * Populate Database with WLVAC Medications.
     meds = build_wlvac_meds()
