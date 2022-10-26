@@ -51,7 +51,7 @@ from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
 
 if TYPE_CHECKING:
-    from narcotics_tracker.items.data_items import DataItem
+    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
 class StandardItemCreator:

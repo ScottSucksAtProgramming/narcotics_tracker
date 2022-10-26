@@ -6,7 +6,7 @@ Classes:
 
 from dataclasses import dataclass
 
-from narcotics_tracker.items.data_items import DataItem
+from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
 @dataclass

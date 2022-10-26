@@ -8,10 +8,10 @@ Classes:
 """
 from typing import TYPE_CHECKING
 
-from narcotics_tracker.builders.builder_interface import BuilderInterface
+from narcotics_tracker.builders.interfaces.builder_interface import BuilderInterface
 
 if TYPE_CHECKING:
-    from narcotics_tracker.items.data_items import DataItem
+    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
 class DataItemBuilder(BuilderInterface):

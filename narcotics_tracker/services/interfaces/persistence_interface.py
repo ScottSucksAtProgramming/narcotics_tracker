@@ -1,4 +1,7 @@
-"""Defines the interface for persistent storage."""
+"""Defines the interface for persistent storage.
+
+Classes:
+    PersistenceService: Interface for objects managing persistent storage."""
 
 from typing import Protocol, runtime_checkable
 

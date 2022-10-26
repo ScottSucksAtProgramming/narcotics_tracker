@@ -15,13 +15,13 @@ Methods:
 
 
 from narcotics_tracker.commands import CreateEventsTable, CreateMedicationsTable
-from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.commands.database_table_commands import (
     CreateInventoryTable,
     CreateReportingPeriodsTable,
     CreateStatusesTable,
     CreateUnitsTable,
 )
+from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 

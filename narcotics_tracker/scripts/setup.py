@@ -21,12 +21,14 @@ from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
 from narcotics_tracker.services.datetime_manager import DateTimeManager
-from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.interfaces.persistence_interface import (
+    PersistenceService,
+)
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
-    from narcotics_tracker.commands.command_interface import SQLiteCommand
-    from narcotics_tracker.items.data_items import DataItem
+    from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
 def create_tables(

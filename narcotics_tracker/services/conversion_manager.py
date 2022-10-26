@@ -7,7 +7,7 @@ Classes:
 
 from typing import Union
 
-from narcotics_tracker.services.conversion_interface import ConversionService
+from narcotics_tracker.services.interfaces.conversion_interface import ConversionService
 
 
 class ConversionManager(ConversionService):
