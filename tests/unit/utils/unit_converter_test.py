@@ -81,3 +81,8 @@ def test_conversion_mcg_to_milliliters():
     answer = UnitConverter(100, "mcg", 50).to_milliliters()
 
     assert answer == 2
+
+
+def test_new():
+    answer = UnitConverter(690, "mg", 2).to_standard()
+    print(answer)

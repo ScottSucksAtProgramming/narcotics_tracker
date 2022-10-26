@@ -14,6 +14,7 @@ import sqlite3
 from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
+from narcotics_tracker.configuration.standard_items import StandardItemCreator
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.events import Event
 from narcotics_tracker.items.medications import Medication
@@ -21,7 +22,6 @@ from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
 from narcotics_tracker.persistence_interface import PersistenceManager
-from narcotics_tracker.setup.standard_items import StandardItemCreator
 from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:

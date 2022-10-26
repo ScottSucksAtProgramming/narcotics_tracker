@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 from narcotics_tracker import commands
 from narcotics_tracker.builders.medication_builder import MedicationBuilder
 from narcotics_tracker.builders.reporting_period_builder import ReportingPeriodBuilder
+from narcotics_tracker.configuration.standard_items import StandardItemCreator
 from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.scripts import setup
-from narcotics_tracker.setup.standard_items import StandardItemCreator
 from narcotics_tracker.utils.datetime_manager import DateTimeManager
 
 if TYPE_CHECKING:
