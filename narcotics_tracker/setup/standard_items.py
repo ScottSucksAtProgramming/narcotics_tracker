@@ -57,7 +57,9 @@ if TYPE_CHECKING:
 class StandardItemCreator:
     """Creates standard DataItems for the Narcotics Tracker."""
 
-    standard_items = []
+    standard_events = []
+    standard_statuses = []
+    standard_units = []
 
     def create_events(self) -> list["Event"]:
         """Creates standard events and returns them in a list."""
