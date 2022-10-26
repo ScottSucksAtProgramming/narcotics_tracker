@@ -6,6 +6,50 @@ from typing import Union
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.statuses import Status
+from narcotics_tracker.persistence_interface import PersistenceManager
+
+
+class AddStatus(SQLiteCommand):
+    """Adds a Status to the database.
+
+    Methods:
+        execute: Executes the command, returns success message.
+    """
+
+    def __init__(self, receiver: PersistenceManager, status: Status) -> None:
+        """Initializes the command. Sets the receiver and Status.
+
+        Args:
+            receiver (PersistenceManager): Persistence manager for the data
+                repository.
+
+            status: The Status to be added to the database.
+        """
+        self._receiver = receiver
+        self._status = status
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_status_info()
+        table_name = self._pop_table_name()
+
+        self._receiver.add(table_name, self.status_info)
+
+        return f"Status added to {table_name} table."
+
+    def _extract_status_info(self) -> None:
+        """Extracts status attributes and stores as a dictionary."""
+        self.status_info = vars(self._status)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from Status's attributes.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.status_info.pop("table")
 
 
 class DeleteStatus(SQLiteCommand):

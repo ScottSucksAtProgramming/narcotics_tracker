@@ -8,6 +8,50 @@ from typing import Union
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.events import Event
+from narcotics_tracker.persistence_interface import PersistenceManager
+
+
+class AddEvent(SQLiteCommand):
+    """Adds an Event to the database.
+
+    Methods:
+        execute: Executes the command, returns success message.
+    """
+
+    def __init__(self, receiver: PersistenceManager, event: Event) -> None:
+        """Initializes the command. Sets the receiver and Event.
+
+        Args:
+            receiver (PersistenceManager): Persistence manager for the data
+                repository.
+
+            Event: The event to be added to the database.
+        """
+        self._receiver = receiver
+        self._event = event
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_event_info()
+        table_name = self._pop_table_name()
+
+        self._receiver.add(table_name, self.event_info)
+
+        return f"Event added to {table_name} table."
+
+    def _extract_event_info(self) -> None:
+        """Extracts event attributes and stores as a dictionary."""
+        self.event_info = vars(self._event)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from Events's attributes.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.event_info.pop("table")
 
 
 class DeleteEvent(SQLiteCommand):

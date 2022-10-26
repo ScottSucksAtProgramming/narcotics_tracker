@@ -7,6 +7,50 @@ from typing import Union
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.units import Unit
+from narcotics_tracker.persistence_interface import PersistenceManager
+
+
+class AddUnit(SQLiteCommand):
+    """Adds an Unit to the database.
+
+    Methods:
+        execute: Executes the command, returns success message.
+    """
+
+    def __init__(self, receiver: PersistenceManager, unit: Unit) -> None:
+        """Initializes the command. Sets the receiver and Unit.
+
+        Args:
+            receiver (PersistenceManager): Persistence manager for the data
+                repository.
+
+            Unit: The Unit to be added to the database.
+        """
+        self._receiver = receiver
+        self._unit = Unit
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_unit_info()
+        table_name = self._pop_table_name()
+
+        self._receiver.add(table_name, self.unit_info)
+
+        return f"Unit added to {table_name} table."
+
+    def _extract_unit_info(self) -> None:
+        """Extracts Unit attributes and stores as a dictionary."""
+        self.unit_info = vars(self._unit)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from Unit's attributes.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.unit_info.pop("table")
 
 
 class DeleteUnit(SQLiteCommand):

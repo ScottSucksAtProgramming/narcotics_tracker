@@ -7,6 +7,50 @@ from typing import Union
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.medications import Medication
+from narcotics_tracker.persistence_interface import PersistenceManager
+
+
+class AddMedication(SQLiteCommand):
+    """Adds an Medication to the database.
+
+    Methods:
+        execute: Executes the command, returns success message.
+    """
+
+    def __init__(self, receiver: PersistenceManager, medication: Medication) -> None:
+        """Initializes the command. Sets the receiver and Medication.
+
+        Args:
+            receiver (PersistenceManager): Persistence manager for the data
+                repository.
+
+            Medication: The Medication to be added to the database.
+        """
+        self._receiver = receiver
+        self._medication = medication
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_medication_info()
+        table_name = self._pop_table_name()
+
+        self._receiver.add(table_name, self.medication_info)
+
+        return f"Medication added to {table_name} table."
+
+    def _extract_medication_info(self) -> None:
+        """Extracts medication attributes and stores as a dictionary."""
+        self.medication_info = vars(self._medication)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from Medication's attributes.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.medication_info.pop("table")
 
 
 class DeleteMedication(SQLiteCommand):

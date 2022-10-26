@@ -34,7 +34,7 @@ class AddAdjustment(SQLiteCommand):
 
         self._receiver.add(table_name, self.adjustment_info)
 
-        return f"adjustment added to {table_name} table."
+        return f"Adjustment added to {table_name} table."
 
     def _extract_adjustment_info(self) -> None:
         """Extracts adjustment attributes and stored as a dictionary."""

@@ -5,6 +5,51 @@ Please see the package documentation for more information.
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.items.reporting_periods import ReportingPeriod
+from narcotics_tracker.persistence_interface import PersistenceManager
+
+
+class AddReportingPeriod(SQLiteCommand):
+    """Adds an ReportingPeriod to the database.
+
+    Methods:
+        execute: Executes the command, returns success message."""
+
+    def __init__(
+        self, receiver: PersistenceManager, reporting_period: ReportingPeriod
+    ) -> None:
+        """Initializes the command. Sets the receiver and ReportingPeriod.
+
+        Args:
+            receiver (PersistenceManager): Persistence manager for the data
+                repository.
+
+            ReportingPeriod: The ReportingPeriod to be added to the database.
+        """
+        self._receiver = receiver
+        self._reporting_period = reporting_period
+
+    def execute(self) -> str:
+        """Executes the command, returns success message."""
+
+        self._extract_reporting_period_info()
+        table_name = self._pop_table_name()
+
+        self._receiver.add(table_name, self.reporting_period_info)
+
+        return f"Reporting Period added to {table_name} table."
+
+    def _extract_reporting_period_info(self) -> None:
+        """Extracts ReportingPeriod attributes and stored as a dictionary."""
+        self.reporting_period_info = vars(self._reporting_period)
+
+    def _pop_table_name(self) -> str:
+        """Removes and returns the table name from ReportingPeriod's attributes.
+
+        Returns:
+            string: Name of the table.
+        """
+        return self.reporting_period_info.pop("table")
 
 
 class DeleteReportingPeriod(SQLiteCommand):
