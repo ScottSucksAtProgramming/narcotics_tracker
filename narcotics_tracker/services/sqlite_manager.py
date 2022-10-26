@@ -11,7 +11,7 @@ Classes:
 import os
 import sqlite3
 
-from narcotics_tracker.persistence_interface import PersistenceService
+from narcotics_tracker.services.persistence_interface import PersistenceService
 
 
 class SQLiteManager(PersistenceService):

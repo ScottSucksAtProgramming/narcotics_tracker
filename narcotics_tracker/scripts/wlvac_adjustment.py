@@ -2,9 +2,9 @@
 
 from narcotics_tracker import commands
 from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
-from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.adjustments import Adjustment
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
+from narcotics_tracker.services.datetime_manager import DateTimeManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 adjustment_list = []
 

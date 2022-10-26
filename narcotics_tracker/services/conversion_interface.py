@@ -1,4 +1,4 @@
-"""Contains the interface for conversion providers.
+"""Contains the interface for unit conversion providers.
 
 classes: 
     ConversionService: Interface for conversion providers.

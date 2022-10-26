@@ -5,7 +5,7 @@ Please see the package documentation for more information.
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 from narcotics_tracker.items.adjustments import Adjustment
-from narcotics_tracker.persistence_interface import PersistenceService
+from narcotics_tracker.services.persistence_interface import PersistenceService
 
 
 class AddAdjustment(SQLiteCommand):

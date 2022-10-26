@@ -4,9 +4,9 @@ Please see the package documentation for more information.
 """
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
-from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
-from narcotics_tracker.persistence_interface import PersistenceService
+from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class AddReportingPeriod(SQLiteCommand):

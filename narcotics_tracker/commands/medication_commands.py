@@ -6,9 +6,9 @@ Please see the package documentation for more information.
 from typing import Union
 
 from narcotics_tracker.commands.command_interface import SQLiteCommand
-from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.medications import Medication
-from narcotics_tracker.persistence_interface import PersistenceService
+from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class AddMedication(SQLiteCommand):

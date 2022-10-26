@@ -1,10 +1,11 @@
-"""Contains unit tests for the Date And Time Module.
+"""Contains unit tests for the datetime Manager Module.
 
 Classes:
+    Test_DateTimeManager: Unit tests the DateTimeManager class.
 """
 
 
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
+from narcotics_tracker.services.datetime_manager import DateTimeManager
 
 
 class Test_DateTimeManager:

@@ -7,7 +7,7 @@ Classes:
 
 from typing import Protocol
 
-from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class SQLiteCommand(Protocol):

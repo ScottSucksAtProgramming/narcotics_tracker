@@ -1,4 +1,4 @@
-"""Contains classes to test the Database Module.
+"""Contains classes to test the SQLite Manager Module.
 
 Classes:
 
@@ -8,7 +8,7 @@ Classes:
 
 import os
 
-from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class Test_SQLiteManager:

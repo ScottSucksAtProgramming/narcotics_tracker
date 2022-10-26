@@ -22,7 +22,7 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import commands
-from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 def return_ids(cursor: sqlite3.Cursor) -> list[int]:

@@ -22,7 +22,7 @@ from narcotics_tracker.commands.database_table_commands import (
     CreateStatusesTable,
     CreateUnitsTable,
 )
-from narcotics_tracker.database import SQLiteManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 def return_expected_columns_from_command(

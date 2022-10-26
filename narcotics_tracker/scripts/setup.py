@@ -15,14 +15,14 @@ from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
 from narcotics_tracker.configuration.standard_items import StandardItemCreator
-from narcotics_tracker.database import SQLiteManager
 from narcotics_tracker.items.events import Event
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
-from narcotics_tracker.persistence_interface import PersistenceService
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
+from narcotics_tracker.services.datetime_manager import DateTimeManager
+from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.commands.command_interface import SQLiteCommand

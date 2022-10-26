@@ -4,11 +4,11 @@ Classes:
     Test_ServiceProvider: Unit tests the ServiceProvider Class.
 """
 
-from narcotics_tracker.configuration.service_provider import ServiceProvider
-from narcotics_tracker.conversion_interface import ConversionService
-from narcotics_tracker.datetime_interface import DateTimeService
-from narcotics_tracker.persistence_interface import PersistenceService
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
+from narcotics_tracker.services.conversion_interface import ConversionService
+from narcotics_tracker.services.datetime_interface import DateTimeService
+from narcotics_tracker.services.datetime_manager import DateTimeManager
+from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.service_provider import ServiceProvider
 
 
 class Test_ServiceProvider:

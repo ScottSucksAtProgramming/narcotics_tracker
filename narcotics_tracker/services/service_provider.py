@@ -4,12 +4,12 @@
         Narcotics Tracker.
 """
 
-from narcotics_tracker.conversion_interface import ConversionService
-from narcotics_tracker.database import SQLiteManager
-from narcotics_tracker.datetime_interface import DateTimeService
-from narcotics_tracker.persistence_interface import PersistenceService
-from narcotics_tracker.utils.datetime_manager import DateTimeManager
-from narcotics_tracker.utils.unit_converter import UnitConverter
+from narcotics_tracker.services.conversion_interface import ConversionService
+from narcotics_tracker.services.conversion_manager import ConversionManager
+from narcotics_tracker.services.datetime_interface import DateTimeService
+from narcotics_tracker.services.datetime_manager import DateTimeManager
+from narcotics_tracker.services.persistence_interface import PersistenceService
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class ServiceProvider:
@@ -23,7 +23,7 @@ class ServiceProvider:
         self,
         persistence_service: PersistenceService = SQLiteManager,
         datetime_service: DateTimeService = DateTimeManager,
-        conversion_service: ConversionService = UnitConverter,
+        conversion_service: ConversionService = ConversionManager,
     ) -> None:
         """Initializes the ServiceProvider and sets the three services.
 

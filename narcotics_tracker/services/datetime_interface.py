@@ -1,4 +1,4 @@
-"""Defines the interface for datetime objects.
+"""Defines the interface for datetime providers.
 
 Classes:
     DateTimeService: Interface for date and time providers."""

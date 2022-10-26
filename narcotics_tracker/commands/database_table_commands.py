@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from narcotics_tracker.commands.command_interface import SQLiteCommand
 
 if TYPE_CHECKING:
-    from narcotics_tracker.database import SQLiteManager
+    from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class CreateEventsTable(SQLiteCommand):
