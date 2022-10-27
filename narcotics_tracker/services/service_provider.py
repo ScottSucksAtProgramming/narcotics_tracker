@@ -3,15 +3,20 @@
     Classes: ServiceProvider: Instantiates the services required to run the 
         Narcotics Tracker.
 """
+from typing import TYPE_CHECKING
 
 from narcotics_tracker.services.conversion_manager import ConversionManager
 from narcotics_tracker.services.datetime_manager import DateTimeManager
-from narcotics_tracker.services.interfaces.conversion_interface import ConversionService
-from narcotics_tracker.services.interfaces.datetime_interface import DateTimeService
-from narcotics_tracker.services.interfaces.persistence_interface import (
-    PersistenceService,
-)
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
+
+if TYPE_CHECKING:
+    from narcotics_tracker.services.interfaces.conversion_interface import (
+        ConversionService,
+    )
+    from narcotics_tracker.services.interfaces.datetime_interface import DateTimeService
+    from narcotics_tracker.services.interfaces.persistence_interface import (
+        PersistenceService,
+    )
 
 
 class ServiceProvider:
@@ -23,9 +28,10 @@ class ServiceProvider:
 
     def __init__(
         self,
-        persistence_service: PersistenceService = SQLiteManager,
-        datetime_service: DateTimeService = DateTimeManager,
-        conversion_service: ConversionService = ConversionManager,
+        persistence_service: "PersistenceService" = SQLiteManager,
+        datetime_service: "DateTimeService" = DateTimeManager,
+        conversion_service: "ConversionService" = ConversionManager,
+        database_filename: str = "inventory.db",
     ) -> None:
         """Initializes the ServiceProvider and sets the three services.
 
@@ -45,17 +51,18 @@ class ServiceProvider:
         self.persistence_service = persistence_service
         self.datetime_service = datetime_service
         self.conversion_service = conversion_service
+        self.database_filename = database_filename
 
     def start_services(
         self,
-    ) -> tuple[PersistenceService, DateTimeService, ConversionService]:
+    ) -> tuple["PersistenceService", "DateTimeService", "ConversionService"]:
         """Instantiates and returns all services.
 
         Returns:
             tuple(PersistenceManager, DateTimeManager, UnitConverter)
         """
         return (
-            self.persistence_service("inventory.db"),
+            self.persistence_service(self.database_filename),
             self.datetime_service(),
             self.conversion_service(),
         )

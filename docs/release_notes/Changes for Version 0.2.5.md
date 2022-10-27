@@ -14,6 +14,8 @@
 
 ## Structural Changes
 
+### Interfaces
+
 ### Builders Package
 
 This package contains modules which can be used to build all of the DataItems
@@ -33,6 +35,16 @@ database. The DataItem class defines an interface for all Data Items.
 
 The number of tests for this package has been reduced and are available within
 the Items sub-package within the Unit Tests package.
+
+### Services Package
+
+The services package was created to contain all the services and utilities
+which are used to run the Narcotics Tracker. As of this release are three
+service providers in this package: The Conversion Manager, Datetime Manager,
+and SQLiteManager. Additionally the ServiceProvider class offers an object
+which instantiates these services in a single command.
+
+#### Intended Use
 
 ## Command Pattern
 
