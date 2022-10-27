@@ -21,15 +21,21 @@ class SQLiteManager(PersistenceService):
 
     Attributes:
         connection (sqlite3.Connection): The connection to the SQlite database.
+
         filename (str): The name of the database file.
 
     Methods:
-        create_table: Adds a table to the database using the given name and
-            column info.
-        add: Adds a row to the given table using the given data.
-        delete: Deletes a row from the given table using the given criteria.
-        select: Returns a cursor containing data for the given table and
-            criteria.
+        add: Adds a new row to the database.
+
+        read: Returns a cursor containing data from the database.
+
+        update: Updates a row in the database.
+
+        remove: Removes a row from the database.
+
+        create_table: Adds a table to the database.
+
+        delete_database: Deletes the database file.
     """
 
     def __init__(self, filename: str) -> None:
@@ -47,36 +53,106 @@ class SQLiteManager(PersistenceService):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def _execute(self, sql_statement: str, values: tuple[str] = None) -> sqlite3.Cursor:
-        """Executes the sql statement, returns a cursor with any results.
+    def add(self, table_name: str, data: dict[str]):
+        """Adds a new row to the database.
 
         Args:
-            sql_statement (str): The SQL statement to be executed.
-            values (tuple[str], optional): Any value required to execute the
-                sql statement.
+            table_name (str): Name of the table receiving the new row.
+
+            data (dict[str]): A dictionary mapping column names to the values.
         """
-        with self.connection:
-            cursor = self.connection.cursor()
-            cursor.execute(sql_statement, values or [])
+        placeholders = ", ".join("?" for key in data.keys())
+        column_names = ", ".join(data.keys())
+        sql_statement = (
+            f"""INSERT INTO {table_name} ({column_names}) VALUES ({placeholders});"""
+        )
 
-            return cursor
+        column_values = tuple(data.values())
 
-    def _connect(self) -> None:
-        """Connects to the database file."""
-        self.connection = sqlite3.connect("data/" + self.filename)
+        self._execute(sql_statement, column_values)
 
-    def delete_database(self):
-        """Deletes the database file. Closes connection."""
-        os.remove(f"data/{self.filename}")
-        self.connection.close()
+    def read(
+        self, table_name: str, criteria: dict[str] = {}, order_by: str = None
+    ) -> sqlite3.Cursor:
+        """Returns a cursor containing data from the database.
+
+        Args:
+            table_name (str): The name of the table.
+
+            criteria (dict[str], optional): A dictionary mapping column names
+                to values used to select rows from which to pull the data.
+
+            order_by (str, optional): The name of the column by which to order
+                the data.
+
+        Returns:
+            sqlite3.Cursor: A cursor contains the returned data.
+        """
+        sql_query = f"""SELECT * FROM {table_name}"""
+
+        if criteria:
+            placeholders = [f"{column} = ?" for column in criteria.keys()]
+            criteria_columns = " AND ".join(placeholders)
+            sql_query += f" WHERE {criteria_columns}"
+
+        if order_by:
+            sql_query += f" ORDER BY {order_by}"
+
+        return self._execute(sql_query, tuple(criteria.values()))
+
+    def update(self, table_name: str, data: dict[str], criteria: dict[str]) -> None:
+        """Updates a row in the database.
+
+        Args:
+            table_name (str): The name of the table.
+
+            data (dict[str]): New data as a dictionary mapping column names to
+                updated values.
+
+            criteria (dict[str]): A dictionary mapping column names to values
+                used to select which row to update.
+        """
+        sql_statement = f"""UPDATE {table_name} SET """
+
+        data_placeholders = ", ".join([f"{column} = ?" for column in data.keys()])
+        criteria_placeholders = [f"{column} = ?" for column in criteria.keys()]
+        criteria_columns = " AND ".join(criteria_placeholders)
+
+        sql_statement += f"{data_placeholders} WHERE {criteria_columns};"
+
+        values = [item for item in data.values()]
+        for item in criteria.values():
+            values.append(item)
+
+        values = tuple(values)
+
+        self._execute(sql_statement, values)
+
+    def remove(self, table_name: str, criteria: dict[str]):
+        """Removes a row from the database.
+
+        Args:
+            table_name (str): Name of the table where the row is to be removed.
+
+            criteria (dict[str]): A dictionary mapping column names to values
+                used to select rows for deletion.
+        """
+        placeholders = [f"{column} = ?" for column in criteria.keys()]
+        criteria_columns = " AND ".join(placeholders)
+
+        sql_statement = f"""DELETE FROM {table_name} WHERE {criteria_columns};"""
+
+        criteria_values = tuple(criteria.values())
+
+        self._execute(sql_statement, criteria_values)
 
     def create_table(
         self,
         table_name: str,
         column_info: dict[str],
         foreign_key_info: list[str] = None,
-    ):
-        """Adds a table to the database using the given name and column info.
+    ) -> None:
+        """Adds a table to the database.
 
         Does nothing if the table already exists.
 
@@ -103,91 +179,25 @@ class SQLiteManager(PersistenceService):
 
         self._execute(sql_statement)
 
-    def add(self, table_name: str, data: dict[str]):
-        """Adds a row to the given table using the given data.
+    def _execute(self, sql_statement: str, values: tuple[str] = None) -> sqlite3.Cursor:
+        """Executes the sql statement, returns a cursor with any results.
 
         Args:
-            table_name (str): The name of the table.
-            data (dict[str]): A dictionary mapping column names to the values.
+            sql_statement (str): The SQL statement to be executed.
+            values (tuple[str], optional): Any value required to execute the
+                sql statement.
         """
-        placeholders = ", ".join("?" for key in data.keys())
-        column_names = ", ".join(data.keys())
-        sql_statement = (
-            f"""INSERT INTO {table_name} ({column_names}) VALUES ({placeholders});"""
-        )
+        with self.connection:
+            cursor = self.connection.cursor()
+            cursor.execute(sql_statement, values or [])
 
-        column_values = tuple(data.values())
+            return cursor
 
-        self._execute(sql_statement, column_values)
+    def delete_database(self) -> None:
+        """Deletes the database file."""
+        os.remove(f"data/{self.filename}")
+        self.connection.close()
 
-    def remove(self, table_name: str, criteria: dict[str]):
-        """Deletes a row from the given table using the given criteria.
-
-        Args:
-            table_name (str): The name of the table.
-            criteria (dict[str]): A dictionary mapping column names to values
-                used to select rows for deletion.
-        """
-        placeholders = [f"{column} = ?" for column in criteria.keys()]
-        criteria_columns = " AND ".join(placeholders)
-
-        sql_statement = f"""DELETE FROM {table_name} WHERE {criteria_columns};"""
-
-        criteria_values = tuple(criteria.values())
-
-        self._execute(sql_statement, criteria_values)
-
-    def read(
-        self, table_name: str, criteria: dict[str] = {}, order_by: str = None
-    ) -> sqlite3.Cursor:
-        """Returns a cursor containing data for the given table and criteria.
-
-        Args:
-            table_name (str): The name of the table.
-            criteria (dict[str], optional): A dictionary mapping column names
-                to values used to select rows from which to pull the data.
-            order_by (str, optional): The name of the column by which to order
-                the data.
-
-        Returns:
-            sqlite3.Cursor: A cursor contains the returned data.
-        """
-        sql_query = f"""SELECT * FROM {table_name}"""
-
-        if criteria:
-            placeholders = [f"{column} = ?" for column in criteria.keys()]
-            criteria_columns = " AND ".join(placeholders)
-            sql_query += f" WHERE {criteria_columns}"
-
-        if order_by:
-            sql_query += f" ORDER BY {order_by}"
-
-        return self._execute(sql_query, tuple(criteria.values()))
-
-    def update(self, table_name: str, data: dict[str], criteria: dict[str]) -> None:
-        """Updates a row in the given table with given data and criteria.
-
-        Args:
-            table_name (str): The name of the table.
-
-            data (dict[str]): New data as a dictionary mapping column names to
-                updated values.
-
-            criteria (dict[str]): A dictionary mapping column names to values
-                used to select which row to update.
-        """
-        sql_statement = f"""UPDATE {table_name} SET """
-
-        data_placeholders = ", ".join([f"{column} = ?" for column in data.keys()])
-        criteria_placeholders = [f"{column} = ?" for column in criteria.keys()]
-        criteria_columns = " AND ".join(criteria_placeholders)
-
-        sql_statement += f"{data_placeholders} WHERE {criteria_columns};"
-
-        values = [item for item in data.values()]
-        for item in criteria.values():
-            values.append(item)
-
-        values = tuple(values)
-
-        self._execute(sql_statement, values)
+    def _connect(self) -> None:
+        """Connects to the database file."""
+        self.connection = sqlite3.connect("data/" + self.filename)
