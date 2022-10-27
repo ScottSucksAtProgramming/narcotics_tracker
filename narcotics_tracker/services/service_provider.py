@@ -29,9 +29,9 @@ class ServiceProvider:
     def __init__(
         self,
         persistence_service: "PersistenceService" = SQLiteManager,
+        repository: any = "inventory.db",
         datetime_service: "DateTimeService" = DateTimeManager,
         conversion_service: "ConversionService" = ConversionManager,
-        database_filename: str = "inventory.db",
     ) -> None:
         """Initializes the ServiceProvider and sets the three services.
 
@@ -39,6 +39,9 @@ class ServiceProvider:
             persistence_service (PersistenceManager, optional): The object
                 which communicates with the data repository. Defaults to
                 SQLiteManager.
+
+            repository (any, optional): Path to the data repository. Defaults
+                to "inventory.db"
 
             datetime_service (DateTimeManager, optional): The object which
                 provides datetimes and datetime conversions. Defaults to
@@ -51,7 +54,7 @@ class ServiceProvider:
         self.persistence_service = persistence_service
         self.datetime_service = datetime_service
         self.conversion_service = conversion_service
-        self.database_filename = database_filename
+        self.database_filename = repository
 
     def start_services(
         self,

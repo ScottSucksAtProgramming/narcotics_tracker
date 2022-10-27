@@ -77,7 +77,7 @@ morphine_june_2022 = Adjustment(
 
 def main() -> None:
 
-    service_provider = ServiceProvider(database_filename="inventory_wlvac.db")
+    service_provider = ServiceProvider(repository="inventory_wlvac.db")
     sq, dt, converter = service_provider.start_services()
 
     adjustment_data = []
