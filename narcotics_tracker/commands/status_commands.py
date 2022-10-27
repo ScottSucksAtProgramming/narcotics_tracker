@@ -2,14 +2,16 @@
 
 Please see the package documentation for more information.
 """
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
-from narcotics_tracker.items.statuses import Status
-from narcotics_tracker.services.interfaces.persistence_interface import (
-    PersistenceService,
-)
-from narcotics_tracker.services.sqlite_manager import SQLiteManager
+from narcotics_tracker.services.service_provider import ServiceProvider
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.statuses import Status
+    from narcotics_tracker.services.interfaces.persistence_interface import (
+        PersistenceService,
+    )
 
 
 class AddStatus(SQLiteCommand):
@@ -19,114 +21,96 @@ class AddStatus(SQLiteCommand):
         execute: Executes the command, returns success message.
     """
 
-    def __init__(self, receiver: PersistenceService, status: Status) -> None:
-        """Initializes the command. Sets the receiver and Status.
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
 
         Args:
-            receiver (PersistenceManager): Persistence manager for the data
-                repository.
-
-            status: The Status to be added to the database.
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
         """
-        self._receiver = receiver
-        self._status = status
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
 
-    def execute(self) -> str:
+    def execute(self, status: "Status") -> str:
         """Executes the command, returns success message."""
 
-        self._extract_status_info()
-        table_name = self._pop_table_name()
+        status_info = vars(status)
+        table_name = status_info.pop("table")
 
-        self._receiver.add(table_name, self.status_info)
+        self._receiver.add(table_name, status_info)
 
         return f"Status added to {table_name} table."
-
-    def _extract_status_info(self) -> None:
-        """Extracts status attributes and stores as a dictionary."""
-        self.status_info = vars(self._status)
-
-    def _pop_table_name(self) -> str:
-        """Removes and returns the table name from Status's attributes.
-
-        Returns:
-            string: Name of the table.
-        """
-        return self.status_info.pop("table")
 
 
 class DeleteStatus(SQLiteCommand):
     """Deletes a Status from the database by its ID or code."""
 
-    def __init__(
-        self, receiver: SQLiteManager, status_identifier: Union[int, str]
-    ) -> None:
-        """Sets the SQLiteManager and Status identifier.
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
 
         Args:
-            receiver (SQLiteManager): SQLiteManager connected to the database.
-
-            status_identifier (int OR str): Unique ID or status_code
-                of the Status.
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
         """
-        self._target = receiver
-        self._dataitem_id = status_identifier
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
 
-    def execute(self) -> str:
+    def execute(self, status_identifier: Union[str, int]) -> str:
         """Execute the delete operation and returns a success message."""
-        if type(self._dataitem_id) is int:
-            criteria = {"id": self._dataitem_id}
+        if type(status_identifier) is int:
+            criteria = {"id": status_identifier}
 
-        if type(self._dataitem_id) is str:
-            criteria = {"status_code": self._dataitem_id}
+        if type(status_identifier) is str:
+            criteria = {"status_code": status_identifier}
 
-        self._target.remove("statuses", criteria)
+        self._receiver.remove("statuses", criteria)
 
-        return f"Status {self._dataitem_id} deleted."
+        return f"Status {status_identifier} deleted."
 
 
 class ListStatuses(SQLiteCommand):
     """Returns a list of Statuses."""
 
-    def __init__(
-        self,
-        receiver: SQLiteManager,
-        criteria: dict[str] = {},
-        order_by: str = None,
-    ):
-        """Sets the SQLiteManager, criteria and order_by column.
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
 
         Args:
-            receiver (SQLiteManager): SQLiteManager connected to the database.
-
-            criteria (dict[str, any], optional): Criteria of Statuses to be
-                returned as a dictionary mapping column names to values.
-
-            order_by (str, optional): Column name by which to sort the results.
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
         """
-        self._target = receiver
-        self._criteria = criteria
-        self._order_by = order_by
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
 
-    def execute(self) -> list[tuple]:
+    def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
         """Executes the command and returns a list of Statuses."""
 
-        cursor = self._target.read("statuses", self._criteria, self._order_by)
+        cursor = self._receiver.read("statuses", criteria, order_by)
         return cursor.fetchall()
 
 
 class UpdateStatus(SQLiteCommand):
     """Update a Status with the given data and criteria."""
 
-    def __init__(
-        self, receiver: SQLiteManager, data: dict[str, any], criteria: dict[str, any]
-    ) -> None:
-        """Sets the SQLiteManager, updates data, and selection criteria."""
-        self._target = receiver
-        self._data = data
-        self._criteria = criteria
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
 
-    def execute(self) -> str:
+        Args:
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
+        """
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
+
+    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
         """Executes the update operation and returns a success message."""
-        self._target.update("statuses", self._data, self._criteria)
+        self._receiver.update("statuses", data, criteria)
 
         return f"Status data updated."
