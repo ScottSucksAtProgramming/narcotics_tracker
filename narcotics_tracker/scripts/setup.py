@@ -24,6 +24,7 @@ from narcotics_tracker.services.datetime_manager import DateTimeManager
 from narcotics_tracker.services.interfaces.persistence_interface import (
     PersistenceService,
 )
+from narcotics_tracker.services.service_provider import ServiceProvider
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
@@ -144,9 +145,11 @@ def main() -> None:
     """Sets up the Narcotics Tracker database and populates the tables."""
     clear_screen()
 
+    service_provider = ServiceProvider()
+    sq, dt, converter = service_provider.start_services()
+
     print("Welcome to the Narcotics Tracker!\n")
 
-    sq = SQLiteManager("inventory.db")
     print("Preparing to setup Inventory Database.\n")
 
     print("Preparing to create tables:")
