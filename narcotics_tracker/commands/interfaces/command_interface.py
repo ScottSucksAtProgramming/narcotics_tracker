@@ -5,17 +5,14 @@ Classes:
 
 """
 
-from typing import TYPE_CHECKING, Protocol
-
-if TYPE_CHECKING:
-    from narcotics_tracker.services.sqlite_manager import SQLiteManager
+from typing import Protocol
 
 
 class Command(Protocol):
     """The interface for SQLite3 database commands.
 
     Required method signatures:
-        def __init__(self, receiver: SQLiteManager) -> None:
+        def __init__(self, receiver) -> None:
 
         def execute(self) -> None:
     """
@@ -25,5 +22,5 @@ class Command(Protocol):
         ...
 
     def execute(self) -> None:
-        """Executes the command."""
+        """Executes the command. Accepts parameters required by the receiver."""
         ...
