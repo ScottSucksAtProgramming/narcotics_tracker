@@ -4,7 +4,7 @@ Please see the package documentation for more information.
 """
 from typing import TYPE_CHECKING, Union
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services import sqlite_manager
 from narcotics_tracker.services.service_provider import ServiceProvider
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     )
 
 
-class ReturnPreferredUnit(SQLiteCommand):
+class ReturnPreferredUnit(Command):
     """Returns the preferred unit for the specified medication.
 
     Methods:
@@ -42,7 +42,7 @@ class ReturnPreferredUnit(SQLiteCommand):
         return cursor.fetchall()[0][4]
 
 
-class AddMedication(SQLiteCommand):
+class AddMedication(Command):
     """Adds an Medication to the database.
 
     Methods:
@@ -73,7 +73,7 @@ class AddMedication(SQLiteCommand):
         return f"Medication added to {table_name} table."
 
 
-class DeleteMedication(SQLiteCommand):
+class DeleteMedication(Command):
     """Deletes a Medication from the database by its ID or code."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -102,7 +102,7 @@ class DeleteMedication(SQLiteCommand):
         return f"Medication {medication_identifier} deleted."
 
 
-class ListMedications(SQLiteCommand):
+class ListMedications(Command):
     """Returns a list of Medications."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -125,7 +125,7 @@ class ListMedications(SQLiteCommand):
         return cursor.fetchall()
 
 
-class UpdateMedication(SQLiteCommand):
+class UpdateMedication(Command):
     """Update a Medication with the given data and criteria."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:

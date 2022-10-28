@@ -28,13 +28,11 @@ from narcotics_tracker.services.service_provider import ServiceProvider
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
-    from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+    from narcotics_tracker.commands.interfaces.command_interface import Command
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
-def create_tables(
-    persistence_manager: SQLiteManager, commands: list["SQLiteCommand"]
-) -> str:
+def create_tables(persistence_manager: SQLiteManager, commands: list["Command"]) -> str:
     """Initializes the database and sets up the tables.
 
     Args:

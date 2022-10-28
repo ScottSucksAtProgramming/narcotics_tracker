@@ -21,12 +21,12 @@ from narcotics_tracker.commands.database_table_commands import (
     CreateStatusesTable,
     CreateUnitsTable,
 )
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 def return_expected_columns_from_command(
-    command: SQLiteCommand,
+    command: Command,
 ) -> list[str]:
     """Returns a list of column names created from the given command."""
     columns = []

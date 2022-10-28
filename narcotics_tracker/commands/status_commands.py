@@ -4,7 +4,7 @@ Please see the package documentation for more information.
 """
 from typing import TYPE_CHECKING, Union
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     )
 
 
-class AddStatus(SQLiteCommand):
+class AddStatus(Command):
     """Adds a Status to the database.
 
     Methods:
@@ -44,7 +44,7 @@ class AddStatus(SQLiteCommand):
         return f"Status added to {table_name} table."
 
 
-class DeleteStatus(SQLiteCommand):
+class DeleteStatus(Command):
     """Deletes a Status from the database by its ID or code."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -72,7 +72,7 @@ class DeleteStatus(SQLiteCommand):
         return f"Status {status_identifier} deleted."
 
 
-class ListStatuses(SQLiteCommand):
+class ListStatuses(Command):
     """Returns a list of Statuses."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -94,7 +94,7 @@ class ListStatuses(SQLiteCommand):
         return cursor.fetchall()
 
 
-class UpdateStatus(SQLiteCommand):
+class UpdateStatus(Command):
     """Update a Status with the given data and criteria."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:

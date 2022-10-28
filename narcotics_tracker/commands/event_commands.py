@@ -4,7 +4,7 @@ Please see the package documentation for more information.
 """
 from typing import TYPE_CHECKING, Union
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     )
 
 
-class ReturnEventModifier(SQLiteCommand):
+class ReturnEventModifier(Command):
     """Return's an event's modifier.
 
     Methods:
@@ -40,7 +40,7 @@ class ReturnEventModifier(SQLiteCommand):
         return cursor.fetchall()[0][4]
 
 
-class AddEvent(SQLiteCommand):
+class AddEvent(Command):
     """Adds an Event to the database.
 
     Methods:
@@ -69,7 +69,7 @@ class AddEvent(SQLiteCommand):
         return f"Event added to {table_name} table."
 
 
-class DeleteEvent(SQLiteCommand):
+class DeleteEvent(Command):
     """Deletes an Event from the database by its ID or code."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -97,7 +97,7 @@ class DeleteEvent(SQLiteCommand):
         return f"Event {event_identifier} deleted."
 
 
-class ListEvents(SQLiteCommand):
+class ListEvents(Command):
     """Returns a list of Events."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -118,7 +118,7 @@ class ListEvents(SQLiteCommand):
         return cursor.fetchall()
 
 
-class UpdateEvent(SQLiteCommand):
+class UpdateEvent(Command):
     """Update an Event with the given data and criteria."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:

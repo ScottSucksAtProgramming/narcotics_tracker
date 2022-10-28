@@ -4,13 +4,13 @@ Please review the package documentation for information on using commands.
 """
 from typing import TYPE_CHECKING
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
-class CreateEventsTable(SQLiteCommand):
+class CreateEventsTable(Command):
 
     table_name = "events"
     column_info = {
@@ -32,7 +32,7 @@ class CreateEventsTable(SQLiteCommand):
         self.receiver.create_table(self.table_name, self.column_info)
 
 
-class CreateInventoryTable(SQLiteCommand):
+class CreateInventoryTable(Command):
     table_name = "inventory"
     column_info = {
         "id": "INTEGER PRIMARY KEY",
@@ -65,7 +65,7 @@ class CreateInventoryTable(SQLiteCommand):
         )
 
 
-class CreateMedicationsTable(SQLiteCommand):
+class CreateMedicationsTable(Command):
     table_name = "medications"
     column_info = {
         "id": "INTEGER PRIMARY KEY",
@@ -96,7 +96,7 @@ class CreateMedicationsTable(SQLiteCommand):
         )
 
 
-class CreateReportingPeriodsTable(SQLiteCommand):
+class CreateReportingPeriodsTable(Command):
     table_name = "reporting_periods"
     column_info = {
         "id": "INTEGER PRIMARY KEY",
@@ -116,7 +116,7 @@ class CreateReportingPeriodsTable(SQLiteCommand):
         self.receiver.create_table(self.table_name, self.column_info)
 
 
-class CreateStatusesTable(SQLiteCommand):
+class CreateStatusesTable(Command):
     table_name = "statuses"
     column_info = {
         "id": "INTEGER PRIMARY KEY",
@@ -136,7 +136,7 @@ class CreateStatusesTable(SQLiteCommand):
         self.receiver.create_table(self.table_name, self.column_info)
 
 
-class CreateUnitsTable(SQLiteCommand):
+class CreateUnitsTable(Command):
     table_name = "units"
     column_info = {
         "id": "INTEGER PRIMARY KEY",

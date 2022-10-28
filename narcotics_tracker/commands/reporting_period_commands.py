@@ -4,7 +4,7 @@ Please see the package documentation for more information.
 """
 from typing import TYPE_CHECKING
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     )
 
 
-class AddReportingPeriod(SQLiteCommand):
+class AddReportingPeriod(Command):
     """Adds an ReportingPeriod to the database.
 
     Methods:
@@ -44,7 +44,7 @@ class AddReportingPeriod(SQLiteCommand):
         return f"Reporting Period added to {table_name} table."
 
 
-class DeleteReportingPeriod(SQLiteCommand):
+class DeleteReportingPeriod(Command):
     """Deletes a ReportingPeriod from the database by its ID."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -67,7 +67,7 @@ class DeleteReportingPeriod(SQLiteCommand):
         return f"Reporting Period #{reporting_period_id} deleted."
 
 
-class ListReportingPeriods(SQLiteCommand):
+class ListReportingPeriods(Command):
     """Returns a list of Reporting Periods."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -90,7 +90,7 @@ class ListReportingPeriods(SQLiteCommand):
         return cursor.fetchall()
 
 
-class UpdateReportingPeriod(SQLiteCommand):
+class UpdateReportingPeriod(Command):
     """Update a ReportingPeriod with the given data and criteria."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:

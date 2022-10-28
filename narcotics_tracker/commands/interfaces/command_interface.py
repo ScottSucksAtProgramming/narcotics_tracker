@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
-class SQLiteCommand(Protocol):
+class Command(Protocol):
     """The interface for SQLite3 database commands.
 
     Required method signatures:
@@ -20,7 +20,7 @@ class SQLiteCommand(Protocol):
         def execute(self) -> None:
     """
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
+    def __init__(self, receiver) -> None:
         ...
 
     def execute(self) -> None:

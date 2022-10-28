@@ -4,7 +4,7 @@ Please see the package documentation for more information.
 """
 from typing import TYPE_CHECKING
 
-from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     )
 
 
-class AddAdjustment(SQLiteCommand):
+class AddAdjustment(Command):
     """Adds an Adjustment to the database.
 
     Methods:
@@ -43,7 +43,7 @@ class AddAdjustment(SQLiteCommand):
         return f"Adjustment added to {table_name} table."
 
 
-class DeleteAdjustment(SQLiteCommand):
+class DeleteAdjustment(Command):
     """Deletes an Adjustment from the database by its ID.
 
     Methods:
@@ -70,7 +70,7 @@ class DeleteAdjustment(SQLiteCommand):
         return f"Adjustment #{adjustment_id} deleted."
 
 
-class ListAdjustments(SQLiteCommand):
+class ListAdjustments(Command):
     """Returns a list of Adjustments."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
@@ -93,7 +93,7 @@ class ListAdjustments(SQLiteCommand):
         return cursor.fetchall()
 
 
-class UpdateAdjustment(SQLiteCommand):
+class UpdateAdjustment(Command):
     """Update an Adjustment with the given data and criteria."""
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
