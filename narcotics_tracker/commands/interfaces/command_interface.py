@@ -21,7 +21,9 @@ class Command(Protocol):
     """
 
     def __init__(self, receiver) -> None:
+        """Sets the receiver of the command."""
         ...
 
     def execute(self) -> None:
+        """Executes the command."""
         ...
