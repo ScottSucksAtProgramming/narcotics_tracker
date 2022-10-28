@@ -26,22 +26,22 @@
     #* Example Usage:
 
         ```python
-
-        med_builder = MedicationBuilder()
-        med_builder.set_table("medications")
-        med_builder.set_id()
-        med_builder.set_created_date()
-        med_builder.set_modified_date()
-        med_builder.set_modified_by("Narcotics Administrator")
-        med_builder.set_medication_code("fentanyl")
-        med_builder.set_medication_name("Fentanyl")
-        med_builder.set_fill_amount(2)
-        med_builder.set_medication_amount(100)
-        med_builder.set_preferred_unit("mcg")
-        med_builder.set_concentration()
-        med_builder.set_status("ACTIVE")
-
-        fentanyl = med_builder.build()
+        fentanyl = (
+            MedicationBuilder()
+            .set_table("medications")
+            .set_id(None)
+            .set_created_date(1666932094)
+            .set_modified_date(1666932094)
+            .set_modified_by("SRK")
+            .set_medication_code("fentanyl")
+            .set_medication_name("Fentanyl")
+            .set_fill_amount(2)
+            .set_medication_amount(100)
+            .set_preferred_unit("mcg")
+            .set_concentration(0.05)
+            .set_status("ACTIVE")
+            .build()
+        )
         ```
 
     Review the documentation of specific builders for more information on 
