@@ -39,7 +39,7 @@ class CreateInventoryTable(SQLiteCommand):
         "adjustment_date": "INTEGER NOT NULL",
         "event_code": "TEXT NOT NULL",
         "medication_code": "TEXT NOT NULL",
-        "amount": "INTEGER NOT NULL",
+        "amount": "REAL NOT NULL",
         "reporting_period_id": "INTEGER NOT NULL",
         "reference_id": "TEXT NOT NULL",
         "created_date": "INTEGER NOT NULL",
