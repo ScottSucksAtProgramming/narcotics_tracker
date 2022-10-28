@@ -11,6 +11,7 @@ Classes:
 import os
 import sqlite3
 
+from narcotics_tracker.services import service_provider
 from narcotics_tracker.services.interfaces.persistence_interface import (
     PersistenceService,
 )
@@ -63,6 +64,7 @@ class SQLiteManager(PersistenceService):
         """
         placeholders = ", ".join("?" for key in data.keys())
         column_names = ", ".join(data.keys())
+
         sql_statement = (
             f"""INSERT INTO {table_name} ({column_names}) VALUES ({placeholders});"""
         )
@@ -70,6 +72,18 @@ class SQLiteManager(PersistenceService):
         column_values = tuple(data.values())
 
         self._execute(sql_statement, column_values)
+
+    def _check_created_date(self, data: dict[str, any]) -> dict[str, any]:
+        dt = (
+            service_provider.ServiceProvider()
+            .start_services()[1]
+            .return_current_datetime()
+        )
+        if data["created_date"] is None:
+            timestamp = dt.return_current_datetime()
+            data["created_date"] = timestamp
+            data["modified_date"] = timestamp
+        return data
 
     def read(
         self, table_name: str, criteria: dict[str] = {}, order_by: str = None
@@ -127,6 +141,18 @@ class SQLiteManager(PersistenceService):
         values = tuple(values)
 
         self._execute(sql_statement, values)
+
+    def _update_modified_date(self, data: dict[str, any]) -> dict[str, any]:
+        dt = (
+            service_provider.ServiceProvider()
+            .start_services()[1]
+            .return_current_datetime()
+        )
+
+        timestamp = dt.return_current_datetime()
+        data["modified_date"] = timestamp
+
+        return data
 
     def remove(self, table_name: str, criteria: dict[str]):
         """Removes a row from the database.

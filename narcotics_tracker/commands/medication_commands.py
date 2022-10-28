@@ -5,6 +5,7 @@ Please see the package documentation for more information.
 from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.commands.interfaces.command_interface import SQLiteCommand
+from narcotics_tracker.services import sqlite_manager
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
@@ -12,6 +13,33 @@ if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence_interface import (
         PersistenceService,
     )
+
+
+class ReturnPreferredUnit(SQLiteCommand):
+    """Returns the preferred unit for the specified medication.
+
+    Methods:
+        execute: Executes the command, returns results."""
+
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
+
+        Args:
+            receiver (PersistenceService, optional): Object which
+                communicates with the data repository. Defaults to
+                SQLiteManager.
+        """
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
+
+    def execute(self, medication_code: str) -> str:
+        """Executes the command, returns results."""
+        criteria = {"medication_code": medication_code}
+
+        cursor = self._receiver.read("medications", criteria)
+        return cursor.fetchall()[0][4]
 
 
 class AddMedication(SQLiteCommand):

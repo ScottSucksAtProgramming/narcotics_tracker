@@ -40,6 +40,7 @@ class Test_MedicationStorage:
         - Medications can be removed from the inventory table.
         - Medications can be read from the inventory table.
         - Medications can be updated.
+        - Medication's preferred unit can be returned.
     """
 
     def test_medications_can_be_added_to_db(self, medication) -> None:
@@ -104,3 +105,15 @@ class Test_MedicationStorage:
         returned_medication = commands.ListMedications(sq_man).execute({"id": -1})[0]
 
         assert "NEW CODE" in returned_medication
+
+    def test_preferred_unit_can_be_returned(self, reset_database, medication) -> None:
+        medication = medication
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        commands.CreateMedicationsTable(sq_man).execute()
+        commands.AddMedication(sq_man).execute(medication)
+
+        results = commands.medication_commands.ReturnPreferredUnit(sq_man).execute(
+            "apap"
+        )
+
+        assert results == "dg"

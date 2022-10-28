@@ -5,9 +5,10 @@ Classes:
 
 """
 
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
-from narcotics_tracker.services.sqlite_manager import SQLiteManager
+if TYPE_CHECKING:
+    from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class SQLiteCommand(Protocol):
@@ -19,7 +20,7 @@ class SQLiteCommand(Protocol):
         def execute(self) -> None:
     """
 
-    def __init__(self, receiver: SQLiteManager) -> None:
+    def __init__(self, receiver: "SQLiteManager") -> None:
         ...
 
     def execute(self) -> None:

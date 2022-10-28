@@ -92,12 +92,14 @@ from narcotics_tracker.commands.event_commands import (
     AddEvent,
     DeleteEvent,
     ListEvents,
+    ReturnEventModifier,
     UpdateEvent,
 )
 from narcotics_tracker.commands.medication_commands import (
     AddMedication,
     DeleteMedication,
     ListMedications,
+    ReturnPreferredUnit,
     UpdateMedication,
 )
 from narcotics_tracker.commands.reporting_period_commands import (

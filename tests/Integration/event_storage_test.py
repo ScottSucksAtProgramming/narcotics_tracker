@@ -58,6 +58,7 @@ class Test_EventStorage:
         - Events can be removed from the inventory table.
         - Events can be read from the inventory table.
         - Events can be updated.
+        - Event's Modifier can be returned.
     """
 
     def test_events_can_be_added_to_db(self, event) -> None:
@@ -118,3 +119,12 @@ class Test_EventStorage:
         returned_event = commands.ListEvents(sq_man).execute({"id": -77})[0]
 
         assert "NEW CODE" in returned_event
+
+    def test_event_modifier_can_be_returned(self, reset_database, event) -> None:
+        event = event
+        sq_man = SQLiteManager("data_item_storage_tests.db")
+        commands.CreateEventsTable(sq_man).execute()
+        commands.AddEvent(sq_man).execute(event)
+
+        results = commands.event_commands.ReturnEventModifier(sq_man).execute("TEST")
+        assert results == 999

@@ -14,6 +14,32 @@ if TYPE_CHECKING:
     )
 
 
+class ReturnEventModifier(SQLiteCommand):
+    """Return's an event's modifier.
+
+    Methods:
+        execute: Executes the command and returns the modifier.
+    """
+
+    def __init__(self, receiver: "PersistenceService" = None) -> None:
+        """Initializes the command.
+
+        Args:
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
+        """
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceProvider().start_services()[0]
+
+    def execute(self, event_code: str) -> int:
+        """Executes the command and returns the modifier."""
+        criteria = {"event_code": event_code}
+        cursor = self._receiver.read("events", criteria)
+        return cursor.fetchall()[0][4]
+
+
 class AddEvent(SQLiteCommand):
     """Adds an Event to the database.
 
@@ -88,7 +114,6 @@ class ListEvents(SQLiteCommand):
 
     def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
         """Executes the command and returns a list of Events."""
-
         cursor = self._receiver.read("events", criteria, order_by)
         return cursor.fetchall()
 
