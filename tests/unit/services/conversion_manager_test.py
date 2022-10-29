@@ -3,7 +3,7 @@
 Classes: 
 """
 
-from narcotics_tracker.services.conversion_manager import ConversionManager
+from narcotics_tracker.services.unit_conversion import ConversionManager
 
 
 class Test_ConversionManager:
