@@ -6,13 +6,10 @@ Classes:
         other builders.
 
 """
-from typing import TYPE_CHECKING, Union
+from typing import Union
 
 from narcotics_tracker.builders.interfaces.builder_interface import BuilderInterface
 from narcotics_tracker.services.service_provider import ServiceProvider
-
-if TYPE_CHECKING:
-    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
 class DataItemBuilder(BuilderInterface):
