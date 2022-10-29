@@ -26,7 +26,7 @@ class Test_AdjustmentBuilder:
         .set_created_date("01-02-1986 14:10:00")
         .set_modified_date(1666117887)
         .set_modified_by("System")
-        .set_adjustment_date(None)
+        .set_adjustment_date(3)
         .set_event_code(None)
         .set_medication_code(None)
         .set_adjustment_amount(None)
@@ -48,7 +48,7 @@ class Test_AdjustmentBuilder:
             "created_date": 505077000,
             "modified_date": 1666117887,
             "modified_by": "System",
-            "adjustment_date": None,
+            "adjustment_date": 3,
             "event_code": None,
             "medication_code": None,
             "amount": None,

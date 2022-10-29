@@ -5,6 +5,8 @@ Classes:
     AdjustmentBuilder: Assigns attributes and returns Adjustment Objects.
 """
 
+from typing import Union
+
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
 
@@ -59,14 +61,14 @@ class AdjustmentBuilder(DataItemBuilder):
         self._reset()
         return adjustment
 
-    def set_adjustment_date(self, adjustment_date: int) -> "AdjustmentBuilder":
-        """Sets the adjustment date to the passed integer.
+    def set_adjustment_date(self, date: Union[int, str]) -> "AdjustmentBuilder":
+        """Sets the adjustment date to the passed value.
 
         Args:
             adjustment_date (int): Unix timestamp of when the adjustment
                 occurred.
         """
-        self._dataitem.adjustment_date = adjustment_date
+        self._dataitem.adjustment_date = self.datetime_service.assign_datetime(date)
         return self
 
     def set_event_code(self, event_code: str) -> "AdjustmentBuilder":
