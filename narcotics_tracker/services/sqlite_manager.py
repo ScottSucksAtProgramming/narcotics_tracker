@@ -11,8 +11,6 @@ Classes:
 import os
 import sqlite3
 
-from narcotics_tracker.services.datetime_manager import DateTimeManager
-
 
 class SQLiteManager:
     """Sends and receives information from the SQlite database.
@@ -35,8 +33,6 @@ class SQLiteManager:
 
         delete_database: Deletes the database file.
     """
-
-    datetime = DateTimeManager()
 
     def __init__(self, filename: str) -> None:
         """Initialize the SQLiteManager and stores the database filename.
@@ -71,13 +67,6 @@ class SQLiteManager:
         column_values = tuple(data.values())
 
         self._execute(sql_statement, column_values)
-
-    def _check_created_date(self, data: dict[str, any]) -> dict[str, any]:
-        if data["created_date"] is None:
-            timestamp = self.datetime.return_current_datetime()
-            data["created_date"] = timestamp
-            data["modified_date"] = timestamp
-        return data
 
     def read(
         self, table_name: str, criteria: dict[str] = {}, order_by: str = None
@@ -135,12 +124,6 @@ class SQLiteManager:
         values = tuple(values)
 
         self._execute(sql_statement, values)
-
-    def _update_modified_date(self, data: dict[str, any]) -> dict[str, any]:
-        timestamp = self.datetime.return_current_datetime()
-        data["modified_date"] = timestamp
-
-        return data
 
     def remove(self, table_name: str, criteria: dict[str]):
         """Removes a row from the database.
