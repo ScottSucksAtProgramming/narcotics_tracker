@@ -74,8 +74,3 @@ class DateTimeManager:
 
         if type(date) is int:
             return date
-
-
-if __name__ == "__main__":
-
-    print(DateTimeManager.convert_to_timestamp("10-20-2022 11:11:11"))
