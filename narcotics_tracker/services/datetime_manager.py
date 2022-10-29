@@ -66,10 +66,11 @@ class DateTimeManager:
         """Returns False if the date is a timestamp, otherwise returns True."""
         if date is None:
             return True
+
         if date is str:
             return True
-        if date is int:
-            return False
+
+        return False
 
     def _current_datetime(self):
         return self.datetime_package.now(tz=self.timezone)
