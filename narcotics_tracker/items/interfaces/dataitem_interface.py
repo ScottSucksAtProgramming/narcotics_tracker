@@ -8,8 +8,6 @@ Classes:
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from narcotics_tracker.services.service_provider import ServiceProvider
-
 
 @dataclass
 class DataItem(ABC):
