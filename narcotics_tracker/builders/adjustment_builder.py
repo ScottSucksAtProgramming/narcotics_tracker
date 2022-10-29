@@ -68,6 +68,9 @@ class AdjustmentBuilder(DataItemBuilder):
             adjustment_date (int): Unix timestamp of when the adjustment
                 occurred.
         """
+        if date is None:
+            raise ValueError
+
         self._dataitem.adjustment_date = self.datetime_service.assign_datetime(date)
         return self
 
