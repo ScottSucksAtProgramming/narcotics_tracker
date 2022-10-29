@@ -7,6 +7,7 @@ Classes:
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
+from narcotics_tracker.services.service_provider import ServiceProvider
 
 
 class MedicationBuilder(DataItemBuilder):
@@ -91,7 +92,7 @@ class MedicationBuilder(DataItemBuilder):
 
         Args:
             fill_amount (int): The amount of liquid in the medication
-                container.
+                container, in milliliters.
 
         Returns:
             self: The MedicationBuilder instance.
