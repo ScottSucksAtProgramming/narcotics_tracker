@@ -57,6 +57,7 @@ class AdjustmentBuilder(DataItemBuilder):
 
     def build(self) -> Adjustment:
         """Returns the constructed Adjustment."""
+
         adjustment = self._dataitem
         self._reset()
         return adjustment

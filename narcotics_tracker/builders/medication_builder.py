@@ -5,12 +5,8 @@ Classes:
     MedicationBuilder: Assigns attributes and returns Medication Objects.
 """
 
-from typing import Union
-
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
-from narcotics_tracker.services.dataItem_validator import ValidationManager
-from narcotics_tracker.services.service_provider import ServiceProvider
 
 
 class MedicationBuilder(DataItemBuilder):
