@@ -5,6 +5,8 @@ Classes:
 
 """
 
+from typing import Union
+
 import pendulum
 
 
@@ -55,6 +57,23 @@ class DateTimeManager:
 
     def _current_datetime(self):
         return self.datetime_package.now(tz=self.timezone)
+
+    def assign_datetime(self, date: Union[int, str] = None) -> int:
+        """Returns the current datetime, unless overridden.
+
+        This method is used to assign a datetime to a DataItem's attributes.
+        It will return the current datetime if None is passed. It will convert
+        a formatted string to a unix timestamp.  If an integer is passed, that
+        will be returned.
+        """
+        if date is None:
+            return self.return_current_datetime()
+
+        if type(date) is str:
+            return self.convert_to_timestamp(date)
+
+        if type(date) is int:
+            return date
 
 
 if __name__ == "__main__":

@@ -6,9 +6,10 @@ Classes:
         other builders.
 
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.builders.interfaces.builder_interface import BuilderInterface
+from narcotics_tracker.services.service_provider import ServiceProvider
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -24,10 +25,14 @@ class DataItemBuilder(BuilderInterface):
         __init__: Calls the _reset method.
         set_table: Sets the table attribute.
         set_id: Sets the id attribute to None, unless overridden.
-        set_created_date: Sets the created date to None, unless overridden.
-        set_modified_date: Sets the modified date to None, unless overridden.
+        set_created_date: Sets the attribute to the current datetime, unless
+            overridden.
+        set_modified_date: Sets the attribute to the current datetime, unless
+            overridden.
         set_modified_by: Sets the modified by attribute to the passed string.
     """
+
+    datetime_service = ServiceProvider().datetime
 
     def __init__(self) -> None:
         """Calls the _reset method."""
@@ -44,14 +49,26 @@ class DataItemBuilder(BuilderInterface):
         self._dataitem.id = id_number
         return self
 
-    def set_created_date(self, created_date: int = None) -> BuilderInterface:
-        """Sets the created date attribute to None, unless overridden."""
-        self._dataitem.created_date = created_date
+    def set_created_date(self, date: Union[int, str] = None) -> BuilderInterface:
+        """Sets the attribute to the current datetime, unless overridden.
+
+        Args:
+            date (int, str, optional): Unix timestamp, or formatted date time
+                string (MM-DD-YYYY HH:MM:SS). If None, will use the current
+                datetime.
+        """
+        self._dataitem.created_date = self.datetime_service.assign_datetime(date)
         return self
 
-    def set_modified_date(self, modified_date: int = None) -> BuilderInterface:
-        """Sets the modified date to None, unless overridden."""
-        self._dataitem.modified_date = modified_date
+    def set_modified_date(self, date: Union[int, str] = None) -> BuilderInterface:
+        """Sets the attribute to the current datetime, unless overridden.
+
+        Args:
+            date (int, str, optional): Unix timestamp, or formatted date time
+                string (MM-DD-YYYY HH:MM:SS). If None, will use the current
+                datetime.
+        """
+        self._dataitem.modified_date = self.datetime_service.assign_datetime(date)
         return self
 
     def set_modified_by(self, modified_by: str) -> BuilderInterface:
@@ -60,9 +77,8 @@ class DataItemBuilder(BuilderInterface):
         return self
 
     def build(self) -> None:
-        """Raises the NotImplementedError."""
+        """Returns the DataItem object."""
         raise NotImplementedError
 
     def _reset(self) -> None:
-        """Raises the NotImplementedError."""
-        raise NotImplementedError
+        """Sets all attributes to default."""
