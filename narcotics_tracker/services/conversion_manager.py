@@ -7,10 +7,8 @@ Classes:
 
 from typing import Union
 
-from narcotics_tracker.services.interfaces.conversion_interface import ConversionService
 
-
-class ConversionManager(ConversionService):
+class ConversionManager:
     """Converts between different units of measurement.
 
     Methods:

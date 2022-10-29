@@ -7,10 +7,8 @@ Classes:
 
 import pendulum
 
-from narcotics_tracker.services.interfaces.datetime_interface import DateTimeService
 
-
-class DateTimeManager(DateTimeService):
+class DateTimeManager:
     """Provides date and time services."""
 
     def __init__(
