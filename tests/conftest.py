@@ -82,7 +82,7 @@ def medication() -> "Medication":
         .set_medication_name("Acetaminophen")
         .set_fill_amount(10)
         .set_medication_amount(1)
-        .set_preferred_unit("dg")
+        .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("unknown")
     )

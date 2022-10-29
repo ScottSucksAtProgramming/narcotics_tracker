@@ -29,7 +29,7 @@ class DataItemBuilder(BuilderInterface):
         set_modified_by: Sets the modified by attribute to the passed string.
     """
 
-    datetime_service = ServiceProvider().datetime
+    _service_provider = ServiceProvider()
 
     def __init__(self) -> None:
         """Calls the _reset method."""
@@ -54,7 +54,7 @@ class DataItemBuilder(BuilderInterface):
                 string (MM-DD-YYYY HH:MM:SS). If None, will use the current
                 datetime.
         """
-        self._dataitem.created_date = self.datetime_service.assign_datetime(date)
+        self._dataitem.created_date = date
         return self
 
     def set_modified_date(self, date: Union[int, str] = None) -> BuilderInterface:
@@ -65,7 +65,7 @@ class DataItemBuilder(BuilderInterface):
                 string (MM-DD-YYYY HH:MM:SS). If None, will use the current
                 datetime.
         """
-        self._dataitem.modified_date = self.datetime_service.assign_datetime(date)
+        self._dataitem.modified_date = date
         return self
 
     def set_modified_by(self, modified_by: str) -> BuilderInterface:
@@ -79,3 +79,4 @@ class DataItemBuilder(BuilderInterface):
 
     def _reset(self) -> None:
         """Sets all attributes to default."""
+        raise NotImplementedError

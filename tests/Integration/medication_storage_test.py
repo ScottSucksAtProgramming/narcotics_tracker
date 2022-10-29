@@ -116,4 +116,4 @@ class Test_MedicationStorage:
             "apap"
         )
 
-        assert results == "dg"
+        assert results == "mcg"

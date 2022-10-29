@@ -55,6 +55,22 @@ class DateTimeManager:
 
         return dt_object.format("MM-DD-YYYY HH:mm:ss")
 
+    def validate_date(self, date: Union[int, str]) -> int:
+        """Evaluates and formats dates."""
+        if self._date_is_invalid(date):
+            return self.service_provider.datetime.assign_datetime(date)
+
+        return date
+
+    def _date_is_invalid(self, date: Union[int, str]) -> bool:
+        """Returns False if the date is a timestamp, otherwise returns True."""
+        if date is None:
+            return True
+        if date is str:
+            return True
+        if date is int:
+            return False
+
     def _current_datetime(self):
         return self.datetime_package.now(tz=self.timezone)
 

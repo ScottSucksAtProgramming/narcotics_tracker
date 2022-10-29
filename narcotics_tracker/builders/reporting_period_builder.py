@@ -55,7 +55,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         self._reset()
         return reporting_period
 
-    def set_start_date(self, date: Union[int, str]) -> "ReportingPeriodBuilder":
+    def set_start_date(self, date: Union[int, str] = None) -> "ReportingPeriodBuilder":
         """Sets the start date attribute to the passed value.
 
         Args:
@@ -65,13 +65,10 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
-        if date is None:
-            raise ValueError
-
-        self._dataitem.start_date = self.datetime_service.assign_datetime(date)
+        self._dataitem.start_date = date
         return self
 
-    def set_end_date(self, date: int) -> "ReportingPeriodBuilder":
+    def set_end_date(self, date: int = None) -> "ReportingPeriodBuilder":
         """Sets the end date attribute to the passed integer.
 
         Args:
@@ -81,10 +78,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
-        if date is None:
-            raise ValueError
-
-        self._dataitem.end_date = self.datetime_service.assign_datetime(date)
+        self._dataitem.end_date = date
         return self
 
     def set_status(self, status: str) -> "ReportingPeriodBuilder":

@@ -5,8 +5,11 @@ Classes:
     MedicationBuilder: Assigns attributes and returns Medication Objects.
 """
 
+from typing import Union
+
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
+from narcotics_tracker.services.dataItem_validator import ValidationManager
 from narcotics_tracker.services.service_provider import ServiceProvider
 
 
@@ -59,10 +62,44 @@ class MedicationBuilder(DataItemBuilder):
         )
 
     def build(self) -> Medication:
-        """Returns the constructed Medication."""
+        """Performs all necessary conversions and returns the medication."""
+
+        self._dataitem.created_date = self._service_provider.datetime.validate_date(
+            self._dataitem.created_date
+        )
+        self._dataitem.modified_date = self._service_provider.datetime.validate_date(
+            self._dataitem.modified_date
+        )
+
+        if self._concentration_is_none:
+            self._dataitem.concentration = self._calculate_concentration()
+
+        self._dataitem.medication_amount = self._convert_medication_amount()
+
         medication = self._dataitem
         self._reset()
+
         return medication
+
+    def _concentration_is_none(self) -> bool:
+        """Returns true if the concentration is None, otherwise returns false."""
+        if self._dataitem.concentration is not None:
+            return False
+        else:
+            return True
+
+    def _calculate_concentration(self) -> float:
+        """Calculates and returns the medication's concentration."""
+        return self._dataitem.medication_amount / self._dataitem.fill_amount
+
+    def _convert_medication_amount(self) -> int:
+        """Converts and returns the medication amount in the standard unit."""
+        unit_converter = self._service_provider.conversion
+        converted_amount = unit_converter.to_standard(
+            self._dataitem.medication_amount, self._dataitem.preferred_unit
+        )
+
+        return converted_amount
 
     def set_medication_code(self, medication_code: str) -> "MedicationBuilder":
         """Sets the medication code to the passed string.
@@ -127,26 +164,11 @@ class MedicationBuilder(DataItemBuilder):
         return self
 
     def set_concentration(self, concentration: float = None) -> "MedicationBuilder":
-        """Calculates the concentration, unless overridden.
-
-        Will calculate the concentration based on the fill_amount and
-        medication_amount. If a concentration is passed, that will be used
-        instead.
-
-        Args:
-            concentration (float, optional): Concentration of medication to
-                the liquid. Defaults to None.
-
-        Returns:
-            self: The instance of the builder.
-        """
+        """Sets the concentration to the passed value, or None."""
         if concentration:
             self._dataitem.concentration = concentration
         else:
-            concentration = (
-                self._dataitem.medication_amount / self._dataitem.fill_amount
-            )
-            self._dataitem.concentration = concentration
+            concentration = None
 
         return self
 

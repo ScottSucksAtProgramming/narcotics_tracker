@@ -29,7 +29,7 @@ class Test_MedicationBuilder:
         .set_medication_name("Acetaminophen")
         .set_fill_amount(10)
         .set_medication_amount(1)
-        .set_preferred_unit("dg")
+        .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("unknown")
         .build()
@@ -52,7 +52,7 @@ class Test_MedicationBuilder:
             "medication_name": "Acetaminophen",
             "fill_amount": 10,
             "medication_amount": 1,
-            "preferred_unit": "dg",
+            "preferred_unit": "mcg",
             "concentration": 0.1,
             "status": "unknown",
         }
