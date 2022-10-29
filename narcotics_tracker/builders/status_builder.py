@@ -48,6 +48,11 @@ class StatusBuilder(DataItemBuilder):
 
     def build(self) -> Status:
         """Returns the constructed Status."""
+        dates = [self._dataitem.created_date, self._dataitem.modified_date]
+
+        for date in dates:
+            date = self._service_provider.datetime.validate_date(date)
+
         status = self._dataitem
         self._reset()
         return status

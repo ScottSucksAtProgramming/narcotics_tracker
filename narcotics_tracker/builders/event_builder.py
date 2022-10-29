@@ -51,6 +51,11 @@ class EventBuilder(DataItemBuilder):
 
     def build(self) -> Event:
         """Returns the constructed Event."""
+        dates = [self._dataitem.created_date, self._dataitem.modified_date]
+
+        for date in dates:
+            date = self._service_provider.datetime.validate_date(date)
+
         event = self._dataitem
         self._reset()
         return event

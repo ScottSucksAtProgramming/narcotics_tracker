@@ -59,13 +59,10 @@ class MedicationBuilder(DataItemBuilder):
 
     def build(self) -> Medication:
         """Performs all necessary conversions and returns the medication."""
+        dates = [self._dataitem.created_date, self._dataitem.modified_date]
 
-        self._dataitem.created_date = self._service_provider.datetime.validate_date(
-            self._dataitem.created_date
-        )
-        self._dataitem.modified_date = self._service_provider.datetime.validate_date(
-            self._dataitem.modified_date
-        )
+        for date in dates:
+            date = self._service_provider.datetime.validate_date(date)
 
         if self._concentration_is_none:
             self._dataitem.concentration = self._calculate_concentration()

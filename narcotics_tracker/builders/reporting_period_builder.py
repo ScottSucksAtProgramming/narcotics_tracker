@@ -51,6 +51,16 @@ class ReportingPeriodBuilder(DataItemBuilder):
 
     def build(self) -> ReportingPeriod:
         """Returns the constructed ReportingPeriod."""
+        dates = [
+            self._dataitem.created_date,
+            self._dataitem.modified_date,
+            self._dataitem.start_date,
+            self._dataitem.end_date,
+        ]
+
+        for date in dates:
+            date = self._service_provider.datetime.validate_date(date)
+
         reporting_period = self._dataitem
         self._reset()
         return reporting_period
