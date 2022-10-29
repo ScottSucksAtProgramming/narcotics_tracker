@@ -5,9 +5,6 @@ Classes:
     AdjustmentBuilder: Assigns attributes and returns Adjustment Objects.
 """
 
-
-from typing import TYPE_CHECKING
-
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
 
