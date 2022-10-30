@@ -6,7 +6,18 @@ items.
 
 Functions:
 
-    main: Sets up the Narcotics Tracker database and populates the tables.
+    main: Creates a database file, populates with the standard tables and 
+        items.
+
+    clear_screen: Clears the screen.
+
+    create_tables: Initializes the database and sets up the tables.
+
+    populate_events: Adds the Standard Events to the database.
+
+    populate_statuses: Adds the Standard Statuses to the database.
+
+    populate_units: Adds the Standard Units to the database.
 """
 
 import os
@@ -43,6 +54,7 @@ def main() -> None:
 
 
 def clear_screen():
+    """Clears the screen."""
     clear = "cls" if os.name == "nt" else "clear"
     os.system(clear)
 
