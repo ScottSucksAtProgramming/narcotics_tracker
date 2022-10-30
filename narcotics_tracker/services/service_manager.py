@@ -42,6 +42,7 @@ class ServiceManager(ServiceProvider):
 
     @property
     def database(self) -> str:
+        """Assigns and returns the filename of the database file if used."""
         return self._database
 
     @database.setter
