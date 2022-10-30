@@ -31,7 +31,7 @@ class AddAdjustment(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, adjustment: "Adjustment") -> str:
         """Executes the command, returns success message."""
@@ -61,7 +61,7 @@ class DeleteAdjustment(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, adjustment_id: int) -> str:
         """Execute the delete operation and returns a success message."""
@@ -84,7 +84,7 @@ class ListAdjustments(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
         """Executes the command and returns a list of Adjustments."""
@@ -107,7 +107,7 @@ class UpdateAdjustment(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
         """Executes the update operation and returns a success message."""
