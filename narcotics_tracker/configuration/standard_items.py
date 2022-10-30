@@ -165,12 +165,12 @@ class StandardItemCreator:
     def _create_standard_units(self) -> None:
 
         microgram = Unit(
-            "units", None, 1666746384, 1666746384, "Setup", "mcg", "microgram", 6
+            "units", None, 1666746384, 1666746384, "Setup", "mcg", "microgram", -6
         )
         self.standard_units.append(microgram)
 
         milligram = Unit(
-            "units", None, 1666746384, 1666746384, "Setup", "mg", "milligram", 3
+            "units", None, 1666746384, 1666746384, "Setup", "mg", "milligram", -3
         )
         self.standard_units.append(milligram)
 
@@ -178,9 +178,14 @@ class StandardItemCreator:
         self.standard_units.append(gram)
 
         milliliter = Unit(
-            "units", 1666746384, 1666746384, None, "Setup", "ml", "milliliter", 3
+            "units", 1666746384, 1666746384, None, "Setup", "ml", "milliliter", -3
         )
         self.standard_units.append(milliliter)
+
+        standard = Unit(
+            "units", 1666746384, 1666746384, None, "Setup", "std", "standard", -8
+        )
+        self.standard_units.append(standard)
 
     def _create_standard_statuses(self):
 

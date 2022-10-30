@@ -20,20 +20,22 @@ class ConversionManager:
         to_milliliters: Converts and returns the amount in milliliters.
     """
 
-    def to_standard(self, amount: Union[int, float], preferred_unit: str) -> float:
+    decimals = {"std": -8, "mcg": -6, "mg": -3, "g": 0}
+
+    def to_standard(self, amount: Union[int, float], starting_unit: str) -> float:
         """Converts the amount from the preferred to standard unit.
 
             Args:
                 amount (int / float): Amount to be converted.
 
-                preferred_unit (str): The preferred unit of measurement's
+                starting_unit (str): The preferred unit of measurement's
                     abbreviation. Must be 'g' mg' 'mcg' or, 'ml'.
 
         Returns:
             float: The converted amount.
         """
-        decimals = {"mcg": -6, "mg": -3, "g": 0}
-        exponent = decimals[preferred_unit] + 6
+
+        exponent = self.decimals[starting_unit] - self.decimals["std"]
 
         return amount * (10**exponent)
 
@@ -49,9 +51,8 @@ class ConversionManager:
         Returns:
             float: The converted amount.
         """
-        decimals = {"mcg": 6, "mg": 3, "g": 0}
 
-        exponent = decimals[preferred_unit] - 6
+        exponent = self.decimals["std"] - self.decimals[preferred_unit]
         return amount * (10**exponent)
 
     def to_milliliters(

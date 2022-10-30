@@ -51,7 +51,7 @@ class Test_MedicationBuilder:
             "medication_code": "apap",
             "medication_name": "Acetaminophen",
             "fill_amount": 10,
-            "medication_amount": 1,
+            "medication_amount": 100,
             "preferred_unit": "mcg",
             "concentration": 0.1,
             "status": "unknown",
