@@ -1,6 +1,6 @@
 """Contains the items which are stored in the database.
 
-#* Background
+Background
 
     The classes defined within the modules of this package represent the items 
     which enable tracking of controlled substance medications. The DataItems 
@@ -24,7 +24,7 @@
     items may require a way to track their status. Statuses are defined using 
     the Status class.
 
-#* Intended Use
+Intended Use
 
     Data Items are only responsible for tracking the values assigned to their 
     attributes. The '__str__' returns a message which the user can use to 
@@ -41,13 +41,21 @@
     names and can be used to construct SQL statements for saving them into the 
     database.
 
-#* Modules:
+Interfaces:
 
-    Database_Items: Defines the interface for items stored in the database.
+    DataItem: Defines the interface for items stored in the database.
+
+Modules:
+    
     Adjustments: Defines the changes which occur to the inventory.
-    Events: Defines the type of events which can affect the inventory.
+    
+    Events: Defines the types of events which can affect the inventory.
+    
     Medications: Defines the medications which are tracked.
+    
     Reporting_Periods: Defines the reporting period for medication tracking.
+    
     Statuses: Defines the statuses for other data items.
+    
     Units: Defines the units of measurements for medications.
 """

@@ -3,7 +3,6 @@
 Classes:
     ReportingPeriod: A period of time for medication tracking.
 """
-
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -15,7 +14,9 @@ class ReportingPeriod(DataItem):
 
     Attributes:
         start_date (int): Unix timestamp of when the reporting period opened.
+
         end_date (int): Unix timestamp of when the reporting period closed.
+
         status (str): Status of the reporting period.
 
     """

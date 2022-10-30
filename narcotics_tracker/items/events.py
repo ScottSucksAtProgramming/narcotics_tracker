@@ -1,9 +1,8 @@
-"""Defines the type of events which can affect the inventory.
+"""Defines the types of events which can affect the inventory.
 
 Classes: 
     Event: A type of event which can affect the inventory.
 """
-
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -15,8 +14,11 @@ class Event(DataItem):
 
     Attributes:
         event_code (str): Unique code identifying the event.
+
         event_name (str): Name of the event.
+
         description (str): Description of the event.
+
         modifier (int): (+1 or -1) Specifies if the event adds or removes from the inventory.
     """
 

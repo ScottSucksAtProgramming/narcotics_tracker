@@ -3,7 +3,6 @@
 Classes:
     Status: A status for other data items.
 """
-
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -15,7 +14,9 @@ class Status(DataItem):
 
     Attributes:
         status_code (str): Unique identifier for the status.
+
         status_name (str): Name of the status.
+
         description (str): Description of the status.
 
     """

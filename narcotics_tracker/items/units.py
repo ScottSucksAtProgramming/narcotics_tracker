@@ -3,7 +3,6 @@
 Classes:
     Unit: A unit of measurement for medications.
 """
-
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -15,9 +14,10 @@ class Unit(DataItem):
 
     Attributes:
         unit_code (str): Unique identifier for the unit.
-        unit_name (str): Name of the unit.
-        decimals (int): Number of decimal places for the unit.
 
+        unit_name (str): Name of the unit.
+
+        decimals (int): Number of decimal places for the unit.
     """
 
     unit_code: str
