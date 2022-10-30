@@ -4,7 +4,7 @@ from narcotics_tracker import commands
 from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
 from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.services.datetime_manager import DateTimeManager
-from narcotics_tracker.services.service_provider import ServiceProvider
+from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 dt_man = DateTimeManager()
@@ -77,7 +77,7 @@ morphine_june_2022 = Adjustment(
 
 def main() -> None:
 
-    service_provider = ServiceProvider(repository="inventory_wlvac.db")
+    service_provider = ServiceManager(repository="inventory_wlvac.db")
     sq, dt, converter = service_provider.start_services()
 
     adjustment_data = []

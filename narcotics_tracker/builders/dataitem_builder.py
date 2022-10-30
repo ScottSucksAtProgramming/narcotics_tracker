@@ -9,7 +9,7 @@ Classes:
 from typing import Union
 
 from narcotics_tracker.builders.interfaces.builder_interface import BuilderInterface
-from narcotics_tracker.services.service_provider import ServiceProvider
+from narcotics_tracker.services.service_manager import ServiceManager
 
 
 class DataItemBuilder(BuilderInterface):
@@ -29,7 +29,7 @@ class DataItemBuilder(BuilderInterface):
         set_modified_by: Sets the modified by attribute to the passed string.
     """
 
-    _service_provider = ServiceProvider()
+    _service_provider = ServiceManager()
 
     def __init__(self) -> None:
         """Calls the _reset method."""

@@ -9,8 +9,10 @@ from typing import Union
 
 import pendulum
 
+from narcotics_tracker.services.interfaces.datetime_service import DateTimeService
 
-class DateTimeManager:
+
+class DateTimeManager(DateTimeService):
     """Provides date and time services."""
 
     def __init__(

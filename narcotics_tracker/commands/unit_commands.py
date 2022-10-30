@@ -5,7 +5,7 @@ Please see the package documentation for more information.
 from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.commands.interfaces.command_interface import Command
-from narcotics_tracker.services.service_provider import ServiceProvider
+from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.units import Unit
@@ -31,7 +31,7 @@ class AddUnit(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, unit: "Unit") -> str:
         """Executes the command, returns success message."""
@@ -56,7 +56,7 @@ class DeleteUnit(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, unit_identifier: Union[str, int]) -> str:
         """Execute the delete operation and returns a success message."""
@@ -84,7 +84,7 @@ class ListUnits(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
         """Executes the command and returns a list of Units."""
@@ -106,7 +106,7 @@ class UpdateUnit(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
         """Executes the update operation and returns a success message."""

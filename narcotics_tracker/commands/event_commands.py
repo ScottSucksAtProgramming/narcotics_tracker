@@ -5,7 +5,7 @@ Please see the package documentation for more information.
 from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.commands.interfaces.command_interface import Command
-from narcotics_tracker.services.service_provider import ServiceProvider
+from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.events import Event
@@ -31,7 +31,7 @@ class ReturnEventModifier(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, event_code: str) -> int:
         """Executes the command and returns the modifier."""
@@ -57,7 +57,7 @@ class AddEvent(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, event: "Event") -> str:
         """Executes the command, returns success message."""
@@ -82,7 +82,7 @@ class DeleteEvent(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, event_identifier: Union[int, str]) -> str:
         """Execute the delete operation and returns a success message."""
@@ -110,7 +110,7 @@ class ListEvents(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
         """Executes the command and returns a list of Events."""
@@ -131,7 +131,7 @@ class UpdateEvent(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceProvider().start_services()[0]
+            self._receiver = ServiceManager().start_services()[0]
 
     def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
         """Executes the update operation and returns a success message."""
