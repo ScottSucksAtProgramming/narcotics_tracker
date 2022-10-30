@@ -19,7 +19,7 @@ class DateTimeManager:
         self.timezone = timezone
         self.datetime_package = datetime_package
 
-    def return_current_datetime(self) -> int:
+    def return_current(self) -> int:
         """Returns the current date and time as a unix timestamp.
 
         Returns:
@@ -55,10 +55,10 @@ class DateTimeManager:
 
         return dt_object.format("MM-DD-YYYY HH:mm:ss")
 
-    def validate_date(self, date: Union[int, str]) -> int:
+    def validate(self, date: Union[int, str]) -> int:
         """Evaluates and formats dates."""
         if self._date_is_invalid(date):
-            return self.assign_datetime(date)
+            return self._assign(date)
 
         return date
 
@@ -75,7 +75,7 @@ class DateTimeManager:
     def _current_datetime(self):
         return self.datetime_package.now(tz=self.timezone)
 
-    def assign_datetime(self, date: Union[int, str] = None) -> int:
+    def _assign(self, date: Union[int, str] = None) -> int:
         """Returns the current datetime, unless overridden.
 
         This method is used to assign a datetime to a DataItem's attributes.
@@ -84,7 +84,7 @@ class DateTimeManager:
         will be returned.
         """
         if date is None:
-            return self.return_current_datetime()
+            return self.return_current()
 
         if type(date) is str:
             return self.convert_to_timestamp(date)

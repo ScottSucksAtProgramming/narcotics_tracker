@@ -48,10 +48,10 @@ class UnitBuilder(DataItemBuilder):
 
     def build(self) -> Unit:
         """Returns the constructed Status."""
-        self._dataitem.created_date = self._service_provider.datetime.validate_date(
+        self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )
-        self._dataitem.modified_date = self._service_provider.datetime.validate_date(
+        self._dataitem.modified_date = self._service_provider.datetime.validate(
             self._dataitem.modified_date
         )
 

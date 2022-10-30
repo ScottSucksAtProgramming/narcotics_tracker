@@ -57,13 +57,13 @@ class AdjustmentBuilder(DataItemBuilder):
 
     def build(self) -> Adjustment:
         """Returns the constructed Adjustment."""
-        self._dataitem.created_date = self._service_provider.datetime.validate_date(
+        self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )
-        self._dataitem.modified_date = self._service_provider.datetime.validate_date(
+        self._dataitem.modified_date = self._service_provider.datetime.validate(
             self._dataitem.modified_date
         )
-        self._dataitem.adjustment_date = self._service_provider.datetime.validate_date(
+        self._dataitem.adjustment_date = self._service_provider.datetime.validate(
             self._dataitem.adjustment_date
         )
 
