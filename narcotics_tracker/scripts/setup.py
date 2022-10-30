@@ -27,9 +27,7 @@ from narcotics_tracker.services.sqlite_manager import SQLiteManager
 if TYPE_CHECKING:
     from narcotics_tracker.commands.interfaces.command_interface import Command
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
-    from narcotics_tracker.services.interfaces.persistence_service import (
-        PersistenceService,
-    )
+    from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
 def create_tables(persistence_manager: SQLiteManager, commands: list["Command"]) -> str:

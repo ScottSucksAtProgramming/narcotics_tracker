@@ -9,13 +9,9 @@ Classes:
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
-    from narcotics_tracker.services.interfaces.conversion_service import (
-        ConversionService,
-    )
-    from narcotics_tracker.services.interfaces.datetime_service import DateTimeService
-    from narcotics_tracker.services.interfaces.persistence_service import (
-        PersistenceService,
-    )
+    from narcotics_tracker.services.interfaces.conversion import ConversionService
+    from narcotics_tracker.services.interfaces.datetime import DateTimeService
+    from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
 class ServiceProvider(Protocol):
