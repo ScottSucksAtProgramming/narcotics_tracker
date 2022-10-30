@@ -58,7 +58,7 @@ class DateTimeManager:
     def validate_date(self, date: Union[int, str]) -> int:
         """Evaluates and formats dates."""
         if self._date_is_invalid(date):
-            return self.service_provider.datetime.assign_datetime(date)
+            return self.assign_datetime(date)
 
         return date
 
@@ -67,7 +67,7 @@ class DateTimeManager:
         if date is None:
             return True
 
-        if date is str:
+        if type(date) is str:
             return True
 
         return False
