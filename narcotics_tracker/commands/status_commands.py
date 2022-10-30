@@ -31,7 +31,7 @@ class AddStatus(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, status: "Status") -> str:
         """Executes the command, returns success message."""

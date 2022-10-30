@@ -15,111 +15,31 @@ from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
 from narcotics_tracker.configuration.standard_items import StandardItemCreator
-from narcotics_tracker.items.events import Event
-from narcotics_tracker.items.medications import Medication
-from narcotics_tracker.items.reporting_periods import ReportingPeriod
-from narcotics_tracker.items.statuses import Status
-from narcotics_tracker.items.units import Unit
-from narcotics_tracker.services.datetime_manager import DateTimeManager
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.commands.interfaces.command_interface import Command
-    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
-    from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
-def create_tables(persistence_manager: SQLiteManager, commands: list["Command"]) -> str:
-    """Initializes the database and sets up the tables.
+def main() -> None:
+    """Creates a database file, populates with the standard tables and items."""
+    clear_screen()
 
-    Args:
-        persistence_manager (SQLiteManager): The object handling persistent storage of DataItems.
+    print("Welcome to the Narcotics Tracker!\n")
+    print("Starting database setup.\n")
 
-        commands (list[SQLiteCommand]): A list of table creation commands.
-    """
-    for command in commands:
-        command(persistence_manager).execute()
-        print(f"- {command.table_name} table created.")
+    print("Preparing to create tables:")
+    create_tables()
+    print("\nTable creation complete!!\n")
 
+    print("Preparing to add standard items:\n")
+    populate_events()
+    populate_statuses()
+    populate_units()
 
-def populate_events(
-    storage_manager: "PersistenceService", events: list["Event"]
-) -> None:
-    counter = 0
-
-    for event in events:
-        try:
-            commands.AddEvent(storage_manager, event).execute()
-        except sqlite3.IntegrityError as e:  # Events likely in the database already.
-            print(e)
-            pass
-        else:
-            counter += 1
-
-    print(f"- {counter} events added to the database.")
-
-
-def populate_medications(
-    storage_manager: "PersistenceService", medications: list["Medication"]
-) -> None:
-    counter = 0
-
-    for medication in medications:
-        try:
-            commands.AddMedication(storage_manager, medication).execute()
-        except sqlite3.IntegrityError as e:  # medications likely in the database already.
-            pass
-        else:
-            counter += 1
-
-    print(f"- {counter} medications added to the database.")
-
-
-def populate_reporting_periods(
-    storage_manager: "PersistenceService", reporting_periods: list["ReportingPeriod"]
-) -> None:
-    counter = 0
-
-    for reporting_period in reporting_periods:
-        try:
-            commands.AddReportingPeriod(storage_manager, reporting_period).execute()
-        except sqlite3.IntegrityError as e:  # reporting_periods likely in the database already.
-            pass
-        else:
-            counter += 1
-
-    print(f"- {counter} reporting_periods added to the database.")
-
-
-def populate_statuses(
-    storage_manager: "PersistenceService", statuses: list["Status"]
-) -> None:
-    counter = 0
-
-    for status in statuses:
-        try:
-            commands.AddStatus(storage_manager, status).execute()
-        except sqlite3.IntegrityError as e:  # Statuses likely in the database already.
-            pass
-        else:
-            counter += 1
-
-    print(f"- {counter} statuses added to the database.")
-
-
-def populate_units(storage_manager: "PersistenceService", units: list["Unit"]) -> None:
-    counter = 0
-
-    for unit in units:
-        try:
-            commands.AddUnit(storage_manager, unit).execute()
-        except sqlite3.IntegrityError as e:  # Units likely in the database already.
-            pass
-        else:
-            counter += 1
-
-    print(f"- {counter} units added to the database.")
+    print("\nStandard items added successfully.")
+    print("\nNarcotics Tracker database setup complete.")
+    input("Press ENTER to continue.")
 
 
 def clear_screen():
@@ -127,7 +47,18 @@ def clear_screen():
     os.system(clear)
 
 
-def return_tables_list() -> list["DataItem"]:
+def create_tables() -> str:
+    """Initializes the database and sets up the tables."""
+    persistence_manager = ServiceManager().persistence
+    commands = _return_table_list()
+
+    for command in commands:
+        command().execute()
+        print(f"- {command.table_name} table created.")
+
+
+def _return_table_list() -> list["Command"]:
+    """Returns a list of table creation commands."""
     tables_list = [
         commands.CreateEventsTable,
         commands.CreateInventoryTable,
@@ -139,35 +70,53 @@ def return_tables_list() -> list["DataItem"]:
     return tables_list
 
 
-def main() -> None:
-    """Sets up the Narcotics Tracker database and populates the tables."""
-    clear_screen()
+def populate_events() -> None:
+    """Adds the Standard Events to the database."""
+    events = StandardItemCreator().create_events()
+    counter = 0
 
-    service_provider = ServiceManager()
-    sq, dt, converter = service_provider.start_services()
+    for event in events:
+        try:
+            commands.AddEvent().execute(event)
+        except sqlite3.IntegrityError as e:  # Events likely in the database already.
+            pass
+        else:
+            counter += 1
 
-    print("Welcome to the Narcotics Tracker!\n")
+    print(f"- {counter} events added to the database.")
 
-    print("Preparing to setup Inventory Database.\n")
 
-    print("Preparing to create tables:")
-    create_tables(sq, return_tables_list())
-    print("\nTable creation complete!!\n")
+def populate_statuses() -> None:
+    """Adds the Standard Statuses to the database."""
+    statuses = StandardItemCreator().create_statuses()
+    counter = 0
 
-    print("Preparing to add standard items:\n")
-    item_creator = StandardItemCreator()
+    for status in statuses:
+        try:
+            commands.AddStatus().execute(status)
+        except sqlite3.IntegrityError as e:  # Statuses likely in the database already.
+            pass
+        else:
+            counter += 1
 
-    events = item_creator.create_events()
-    populate_events(sq, events)
+    print(f"- {counter} statuses added to the database.")
 
-    statuses = item_creator.create_statuses()
-    populate_statuses(sq, statuses)
 
-    units = item_creator.create_units()
-    populate_units(sq, units)
-    print("\nStandard items added successfully.")
-    print("\nNarcotics Tracker database setup complete.")
-    input("Press ENTER to continue.")
+def populate_units() -> None:
+    """Adds the Standard Units to the database."""
+    units = StandardItemCreator().create_units()
+    counter = 0
+
+    for unit in units:
+        try:
+            commands.AddUnit().execute(unit)
+        except sqlite3.IntegrityError as e:  # Units likely in the database already.
+            print(e)
+            pass
+        else:
+            counter += 1
+
+    print(f"- {counter} units added to the database.")
 
 
 if __name__ == "__main__":

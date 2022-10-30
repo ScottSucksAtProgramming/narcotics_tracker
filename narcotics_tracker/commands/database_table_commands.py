@@ -5,6 +5,7 @@ Please review the package documentation for information on using commands.
 from typing import TYPE_CHECKING
 
 from narcotics_tracker.commands.interfaces.command_interface import Command
+from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.sqlite_manager import SQLiteManager
@@ -24,8 +25,8 @@ class CreateEventsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the events table in the SQLite3 database."""
@@ -53,8 +54,8 @@ class CreateInventoryTable(Command):
         "FOREIGN KEY (reporting_period_id) REFERENCES reporting_periods (id) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the inventory table in the SQLite3 database."""
@@ -86,8 +87,8 @@ class CreateMedicationsTable(Command):
         "FOREIGN KEY (status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the medications table in the SQLite3 database."""
@@ -108,8 +109,8 @@ class CreateReportingPeriodsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the reporting periods table in the SQLite3 database."""
@@ -128,8 +129,8 @@ class CreateStatusesTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the statuses table in the SQLite3 database."""
@@ -148,8 +149,8 @@ class CreateUnitsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "SQLiteManager") -> None:
-        self.receiver = receiver
+    def __init__(self) -> None:
+        self.receiver = ServiceManager().persistence
 
     def execute(self):
         """Creates the units table in the SQLite3 database."""

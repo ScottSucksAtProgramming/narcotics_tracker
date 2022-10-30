@@ -32,7 +32,7 @@ class ReturnPreferredUnit(Command):
         if receiver:
             self._receiver = receiver
         else:
-            self._receiver = ServiceManager().start_services()[0]
+            self._receiver = ServiceManager().persistence
 
     def execute(self, medication_code: str) -> str:
         """Executes the command, returns results."""
