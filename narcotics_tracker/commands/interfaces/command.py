@@ -4,7 +4,6 @@ Classes:
     SQLiteCommand: The interface for SQLite3 database commands.
 
 """
-
 from typing import Protocol
 
 

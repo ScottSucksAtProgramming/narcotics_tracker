@@ -1,77 +1,48 @@
-"""Organizes and exports all commands for the Narcotics Tracker.
+"""Organizes and exports commands for the Narcotics Tracker.
 
-#* Modules:
-    Database Table Commands: Creates and modifies tables in the SQLite3 
+The Command Pattern was implemented to provider greater flexibility when using 
+the Narcotics Tracker. The modules within this package contain the various 
+commands available. They have been imported into this module for easier 
+importing throughout the project.
+
+Interfaces:
+
+    Command: Defines the protocol for commands which interact with the SQLite3 
         database.
 
+Modules:
 
-    #* Table Creation Commands:
-        CreateEventsTable: Creates the events table in the SQLite3 database.
+    Adjustment Commands: Contains the commands for Adjustments.
 
-        CreateInventoryTable: Creates the inventory table in the SQLite3 
-            database.
+    Event Commands: Contains the commands for Events.
 
-        CreateMedicationsTable: Creates the medications table in the SQLite3 
-            database.
+    Medication Commands: Contains the commands for Medications.
 
-        CreateReportingPeriodsTable: Creates the reporting periods table in the 
-            SQLite3 database.
+    Reporting Period Commands: Contains the commands for Reporting Periods.
 
-        CreateStatusesTable: Creates the statuses table in the SQLite3 
-            database.
+    Status Commands: Contains the commands for Statuses.
 
-        CreateUnitsTable: Creates the units table in the SQLite3 database.
+    Table Commands: Contains commands which created and modify tables in the 
+        SQLite3 database.
 
-    #* SaveItem Commands:
-        SaveItem: Saves a data item to the appropriate table in the database.
+    Unit Commands: Contains the commands for Units.
 
-    #* Adjustment Commands:
-        DeleteAdjustment: Deletes an Adjustment from the database by its ID.
+How To Use:
 
-        ListAdjustments: Returns a list of Adjustments.
+    Commands allow for their receivers to be set in their initializer. If no 
+    receiver is passes the default service is used. Each command relies on its 
+    `execute` method trigger the command. The execute method accepts any 
+    needed parameters by the receiver.
 
-        UpdateAdjustment: Updates an Adjustment with the given data and 
-            criteria.
+    ```python
+    new_adjustment = Adjustment(...)
 
-    #* Event Commands:
-        DeleteEvent: Deletes an Event from the database by its ID or code.
+    commands.AddAdjustment().execute(new_adjustment)
+    ```
 
-        ListEvents: Returns a list of Events.
-
-        UpdateEvent: Updates a Event with the given data and 
-            criteria.
-
-    #* Medication Commands:
-        DeleteMedication: Deletes a Medication from the database by its ID or 
-            code.
-
-        ListMedications: Returns a list of Medications.
-
-        UpdateMedication: Updates a Medication with the given data and 
-            criteria.
-
-    #* Reporting Period Commands:
-        DeleteReportingPeriod: Deletes a ReportingPeriod from the database by 
-            its ID.
-
-        ListReportingPeriods: Returns a list of Reporting Periods.
-
-        UpdateReportingPeriod: Updates a ReportingPeriod with the given data 
-            and criteria.
-
-    #* Status Commands:
-        DeleteStatus: Deletes a Status from the database by its ID or code.
-
-        ListStatuses: Returns a list of Statuses.
-
-        UpdateStatus: Updates a Status with the given data and criteria.
-
-    #* Units Commands:
-        DeleteUnit: Deletes a Unit from the database by its ID or code.
-
-        ListUnits: Returns a list of Units.
-
-        UpdateCommand: Updates a Unit with the given data and criteria.
+    ```python
+    modifier = command.ReturnEventModifier("LOSS")
+    ```
 """
 
 from narcotics_tracker.commands.adjustment_commands import (
@@ -79,14 +50,6 @@ from narcotics_tracker.commands.adjustment_commands import (
     DeleteAdjustment,
     ListAdjustments,
     UpdateAdjustment,
-)
-from narcotics_tracker.commands.database_table_commands import (
-    CreateEventsTable,
-    CreateInventoryTable,
-    CreateMedicationsTable,
-    CreateReportingPeriodsTable,
-    CreateStatusesTable,
-    CreateUnitsTable,
 )
 from narcotics_tracker.commands.event_commands import (
     AddEvent,
@@ -113,6 +76,14 @@ from narcotics_tracker.commands.status_commands import (
     DeleteStatus,
     ListStatuses,
     UpdateStatus,
+)
+from narcotics_tracker.commands.table_commands import (
+    CreateEventsTable,
+    CreateInventoryTable,
+    CreateMedicationsTable,
+    CreateReportingPeriodsTable,
+    CreateStatusesTable,
+    CreateUnitsTable,
 )
 from narcotics_tracker.commands.unit_commands import (
     AddUnit,

@@ -15,13 +15,13 @@ Methods:
 
 
 from narcotics_tracker.commands import CreateEventsTable, CreateMedicationsTable
-from narcotics_tracker.commands.database_table_commands import (
+from narcotics_tracker.commands.interfaces.command import Command
+from narcotics_tracker.commands.table_commands import (
     CreateInventoryTable,
     CreateReportingPeriodsTable,
     CreateStatusesTable,
     CreateUnitsTable,
 )
-from narcotics_tracker.commands.interfaces.command_interface import Command
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
@@ -30,7 +30,7 @@ def return_expected_columns_from_command(
 ) -> list[str]:
     """Returns a list of column names created from the given command."""
     columns = []
-    for item in command.column_info.keys():
+    for item in command._column_info.keys():
         columns.append(item)
     return columns
 

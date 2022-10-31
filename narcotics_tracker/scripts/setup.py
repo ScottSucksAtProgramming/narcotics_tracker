@@ -29,7 +29,7 @@ from narcotics_tracker.configuration.standard_items import StandardItemCreator
 from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
-    from narcotics_tracker.commands.interfaces.command_interface import Command
+    from narcotics_tracker.commands.interfaces.command import Command
 
 
 def main() -> None:
