@@ -158,13 +158,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     -   [x] Date Management enabled through SQLite3.
     -   [x] Database Context Manager added.
     -   [x] Continued expansion of the Test Suite.
--   [ ] Version 0.2.5 - Alpha - In progress!
-    -   [ ] Design architecture rework.
-    -   [ ] Design pattern implementation to reduce coupling and increase
+-   [x] Version 0.2.5 - Alpha - Released on October 31st, 2022
+    -   [x] Design architecture rework.
+    -   [x] Design pattern implementation to reduce coupling and increase
             flexibility and ease of extension.
-    -   [ ] Documentation update.
-    -   [ ] Continued Test Suite expansion.
--   [ ] Version 0.3.0 - Alpha
+    -   [x] Documentation update.
+    -   [x] Continued Test Suite expansion.
+-   [ ] Version 0.3.0 - Alpha - In Progress!!
     -   [ ] Basic Report Generation
 -   [ ] Version 0.0.0 - Beta
     -   [ ] Command Line User Interface
