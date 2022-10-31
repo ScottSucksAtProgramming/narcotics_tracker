@@ -66,7 +66,7 @@ def create_tables() -> str:
 
     for command in commands:
         command().execute()
-        print(f"- {command.table_name} table created.")
+        print(f"- {command._table_name} table created.")
 
 
 def _return_table_list() -> list["Command"]:
