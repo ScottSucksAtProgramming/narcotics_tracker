@@ -8,7 +8,7 @@ Classes:
 """
 from typing import Union
 
-from narcotics_tracker.builders.interfaces.builder_interface import BuilderInterface
+from narcotics_tracker.builders.interfaces.builder import BuilderInterface
 from narcotics_tracker.services.service_manager import ServiceManager
 
 

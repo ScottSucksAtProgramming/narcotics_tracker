@@ -4,7 +4,6 @@ Classes:
 
     MedicationBuilder: Assigns attributes and returns Medication Objects.
 """
-
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
 
@@ -12,17 +11,27 @@ from narcotics_tracker.items.medications import Medication
 class MedicationBuilder(DataItemBuilder):
     """Assigns attributes and returns Medication Objects.
 
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
+
     Methods:
 
-        _reset: Prepares the builder to create a new Medication.
-        build: Returns the constructed Medication.
-        set_medication_code: Sets the medication code to the passed string.
-        set_medication_name: Sets the medication name to the passed string.
-        set_fill_amount: Sets the fill amount to the passed integer.
-        set_medication_amount: Sets the amount to the passed integer.
-        set_preferred_unit: Sets the preferred unit to the passed string.
-        set_concentration: Calculates the concentration, unless overridden.
+        build: Validates attributes and returns the Medication Object.
 
+        set_medication_code: Sets the medication code to the passed string.
+
+        set_medication_name: Sets the medication name attribute to the passed
+            string.
+
+        set_fill_amount: Sets the fill amount to the passed integer.
+
+        set_medication_amount: Sets the amount to the passed integer.
+
+        set_preferred_unit: Sets the preferred unit to the passed string.
+
+        set_concentration: Sets the concentration to the passed value, or None.
+
+        set_status: Sets the status attribute to the passed string.
     """
 
     _dataitem = Medication(
@@ -58,7 +67,7 @@ class MedicationBuilder(DataItemBuilder):
         )
 
     def build(self) -> Medication:
-        """Performs all necessary conversions and returns the medication."""
+        """Validates attributes and returns the Medication Object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

@@ -1,12 +1,10 @@
-"""Handles the defining and building of ReportingPeriod Objects.
+"""Handles the defining and building of Reporting Period Objects.
 
 Classes:
 
-    ReportingPeriodBuilder: Assigns attributes and returns ReportingPeriod 
+    ReportingPeriodBuilder: Assigns attributes and returns Reporting Period 
         Objects.
 """
-
-
 from typing import Union
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
@@ -14,15 +12,20 @@ from narcotics_tracker.items.reporting_periods import ReportingPeriod
 
 
 class ReportingPeriodBuilder(DataItemBuilder):
-    """Assigns attributes and returns ReportingPeriod Objects.
+    """Assigns attributes and returns Reporting Period Objects.
+
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
 
     Methods:
 
-        _reset: Prepares the builder to create a new ReportingPeriod.
-        build: Returns the constructed ReportingPeriod.
+        build: Validates attributes and returns the ReportingPeriod Object.
+
         set_start_date: Sets the start date attribute to the passed integer.
+
         set_end_date: Sets the end date attribute to the passed integer.
 
+        set_status: Sets the status attribute to the passed string.
     """
 
     _dataitem = ReportingPeriod(
@@ -50,7 +53,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         )
 
     def build(self) -> ReportingPeriod:
-        """Returns the constructed ReportingPeriod."""
+        """Validates attributes and returns the ReportingPeriod Object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

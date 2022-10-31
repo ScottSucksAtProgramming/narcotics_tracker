@@ -4,8 +4,6 @@ Classes:
 
     StatusBuilder: Assigns attributes and returns Status Objects.
 """
-
-
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.statuses import Status
 
@@ -13,12 +11,17 @@ from narcotics_tracker.items.statuses import Status
 class StatusBuilder(DataItemBuilder):
     """Assigns attributes and returns Status Objects.
 
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
+
     Methods:
 
-        _reset: Prepares the builder to create a new Status.
-        build: Returns the constructed Status.
+        build: Validates attributes and returns the Status object.
+
         set_status_code: Sets the status_code attribute to the passed string.
+
         set_status_name: Sets the status_name attribute to the passed string.
+
         set_description: Sets the description attribute to the passed string.
     """
 
@@ -47,7 +50,7 @@ class StatusBuilder(DataItemBuilder):
         )
 
     def build(self) -> Status:
-        """Returns the constructed Status."""
+        """Validates attributes and returns the Status object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

@@ -4,7 +4,6 @@ Classes:
 
     AdjustmentBuilder: Assigns attributes and returns Adjustment Objects.
 """
-
 from typing import Union
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
@@ -14,15 +13,25 @@ from narcotics_tracker.items.adjustments import Adjustment
 class AdjustmentBuilder(DataItemBuilder):
     """Assigns attributes and returns Adjustment Objects.
 
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
+
     Methods:
 
-        _reset: Prepares the builder to create a new Adjustment.
-        build: Returns the constructed Adjustment.
+        build: Validates attributes and returns the Adjustment object.
+
         set_adjustment_date: Sets the adjustment date to the passed integer.
+
         set_event_code: Sets the event code attribute to the passed string.
+
         set_medication_code: Sets the medication code to the passed string.
+
         set_adjustment_amount: Sets the adjustment amount to the passed float.
+
         set_reference_id: Sets the reference id attribute to the passed string.
+
+        set_reporting_period_id: Sets the reporting period id attribute to the
+            passed integer.
     """
 
     _dataitem = Adjustment(
@@ -56,7 +65,7 @@ class AdjustmentBuilder(DataItemBuilder):
         )
 
     def build(self) -> Adjustment:
-        """Returns the constructed Adjustment."""
+        """Validates attributes and returns the Adjustment object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

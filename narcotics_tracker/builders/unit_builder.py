@@ -4,8 +4,6 @@ Classes:
 
     UnitBuilder: Assigns attributes and returns Unit Objects.
 """
-
-
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.units import Unit
 
@@ -13,12 +11,17 @@ from narcotics_tracker.items.units import Unit
 class UnitBuilder(DataItemBuilder):
     """Assigns attributes and returns Unit Objects.
 
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
+
     Methods:
 
-        _reset: Prepares the builder to create a new Unit.
-        build: Returns the constructed Unit.
+        build: Validates attributes and returns the Unit object.
+
         set_unit_code: Sets the unit_code attribute to the passed string.
+
         set_unit_name: Sets the unit_name attribute to the passed string.
+
         set_decimals: Sets the decimals attribute to the passed integer.
     """
 
@@ -47,7 +50,7 @@ class UnitBuilder(DataItemBuilder):
         )
 
     def build(self) -> Unit:
-        """Returns the constructed Status."""
+        """Validates attributes and returns the Unit object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

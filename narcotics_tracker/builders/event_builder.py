@@ -13,13 +13,19 @@ from narcotics_tracker.items.events import Event
 class EventBuilder(DataItemBuilder):
     """Assigns attributes and returns Event Objects.
 
+    This class inherits methods and attributes from the DataItemBuilder.
+    Review the documentation for more information.
+
     Methods:
 
-        _reset: Prepares the builder to create a new Event.
-        build: Returns the constructed Event.
+        build: Validates attributes and returns the Event Object.
+
         set_event_code: Sets the event code attribute to the passed string.
+
         set_event_name: Sets the event name attribute to the passed string.
+
         set_description: Sets the event description to the passed string.
+
         set_modifier: Sets the modifier attribute to the passed integer.
     """
 
@@ -50,7 +56,7 @@ class EventBuilder(DataItemBuilder):
         )
 
     def build(self) -> Event:
-        """Returns the constructed Event."""
+        """Validates attributes and returns the Event Object."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )

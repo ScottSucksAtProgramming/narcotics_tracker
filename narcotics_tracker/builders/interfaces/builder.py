@@ -1,18 +1,17 @@
 """Contains the interface for concrete DataItem builders.
 
 Classes:
-    BuilderInterface: Defines the interface for concrete DataItem builders.
+    BuilderInterface: Defines the protocol for concrete DataItem builders.
 """
 
-from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
-class BuilderInterface(ABC):
-    """Defines the interface for concrete DataItem builders.
+class BuilderInterface(Protocol):
+    """Defines the protocol for concrete DataItem builders.
 
     Abstract Methods:
         build: Should return the constructed DataItem Object.
@@ -20,10 +19,8 @@ class BuilderInterface(ABC):
         _reset: Should remove all attributes values.
     """
 
-    @abstractmethod
     def build(self) -> "DataItem":
-        """Should return the constructed DataItem Object."""
+        """Returns the constructed DataItem Object."""
 
-    @abstractmethod
     def _reset(self) -> None:
-        """Should remove all attributes values."""
+        """Removes all attributes values from the builder."""
