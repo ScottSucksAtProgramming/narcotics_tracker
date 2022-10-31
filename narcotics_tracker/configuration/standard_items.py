@@ -4,12 +4,16 @@ Classes:
 
     StandardItemCreator: Creates standard DataItems for the Narcotics Tracker.
 """
+from typing import TYPE_CHECKING
+
 from narcotics_tracker.builders.event_builder import EventBuilder
 from narcotics_tracker.builders.status_builder import StatusBuilder
 from narcotics_tracker.builders.unit_builder import UnitBuilder
-from narcotics_tracker.items.events import Event
-from narcotics_tracker.items.statuses import Status
-from narcotics_tracker.items.units import Unit
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.events import Event
+    from narcotics_tracker.items.statuses import Status
+    from narcotics_tracker.items.units import Unit
 
 
 class StandardItemCreator:
