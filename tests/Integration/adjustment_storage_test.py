@@ -42,22 +42,22 @@ class Test_AdjustmentStorage:
         - Adjustments can be updated.
     """
 
-    def test_adjustments_can_be_added(self, reset_database, adjustment) -> None:
-        adjustment = adjustment
+    def test_adjustments_can_be_added(self, reset_database, test_adjustment) -> None:
+        test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
 
-        commands.AddAdjustment(sq_man).execute(adjustment)
+        commands.AddAdjustment(sq_man).execute(test_adjustment)
 
         cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
         assert -1 in adjustment_ids
 
-    def test_adjustments_can_be_removed(self, reset_database, adjustment) -> None:
-        adjustment = adjustment
+    def test_adjustments_can_be_removed(self, reset_database, test_adjustment) -> None:
+        test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(adjustment)
+        commands.AddAdjustment(sq_man).execute(test_adjustment)
 
         commands.DeleteAdjustment(sq_man).execute(-1)
 
@@ -65,21 +65,21 @@ class Test_AdjustmentStorage:
         adjustment_ids = return_ids(cursor)
         assert -1 not in adjustment_ids
 
-    def test_adjustments_can_be_read(self, reset_database, adjustment) -> None:
-        adjustment = adjustment
+    def test_adjustments_can_be_read(self, reset_database, test_adjustment) -> None:
+        test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(adjustment)
+        commands.AddAdjustment(sq_man).execute(test_adjustment)
 
         data = commands.ListAdjustments(sq_man).execute()
 
         assert data != None
 
-    def test_adjustments_can_be_updated(self, reset_database, adjustment) -> None:
-        adjustment = adjustment
+    def test_adjustments_can_be_updated(self, reset_database, test_adjustment) -> None:
+        test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(adjustment)
+        commands.AddAdjustment(sq_man).execute(test_adjustment)
 
         commands.UpdateAdjustment(sq_man).execute({"amount": 9999}, {"id": -1})
 

@@ -29,12 +29,12 @@ if TYPE_CHECKING:
 
 
 @fixture
-def adjustment() -> "Adjustment":
+def test_adjustment() -> "Adjustment":
     """Returns an Adjustment DataItem Object for testing."""
-    adj_builder = (
+    test_adjustment = (
         AdjustmentBuilder()
         .set_table("inventory")
-        .set_id(-1)
+        .set_id(-77)
         .set_created_date(1666117887)
         .set_modified_date(1666117887)
         .set_modified_by("System")
@@ -44,15 +44,16 @@ def adjustment() -> "Adjustment":
         .set_adjustment_amount(10)
         .set_reference_id("TestReferenceID")
         .set_reporting_period_id(0)
+        .build()
     )
 
-    return adj_builder.build()
+    return test_adjustment
 
 
 @fixture
-def event() -> "Event":
+def test_event() -> "Event":
     """Returns an Event DataItem Object for testing."""
-    event_builder = (
+    test_event = (
         EventBuilder()
         .set_table("events")
         .set_id(-77)
@@ -63,15 +64,16 @@ def event() -> "Event":
         .set_event_name("Test Event")
         .set_description("An event used for testing.")
         .set_modifier(999)
+        .build()
     )
 
-    return event_builder.build()
+    return test_event
 
 
 @fixture
-def medication() -> "Medication":
+def test_medication() -> "Medication":
     """Returns a Medication DataItem Object for testing."""
-    med_builder = (
+    test_medication = (
         MedicationBuilder()
         .set_table("medications")
         .set_id(-1)
@@ -85,15 +87,16 @@ def medication() -> "Medication":
         .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("unknown")
+        .build()
     )
 
-    return med_builder.build()
+    return test_medication
 
 
 @fixture
-def reporting_period() -> "ReportingPeriod":
+def test_reporting_period() -> "ReportingPeriod":
     """Returns a ReportingPeriod DataItem Object for testing."""
-    reporting_period_builder = (
+    test_reporting_period = (
         ReportingPeriodBuilder()
         .set_table("reporting_periods")
         .set_id(-1)
@@ -103,15 +106,16 @@ def reporting_period() -> "ReportingPeriod":
         .set_start_date(1666061200)
         .set_end_date(1666061200)
         .set_status("unfinished")
+        .build()
     )
 
-    return reporting_period_builder.build()
+    return test_reporting_period
 
 
 @fixture
-def status() -> "Status":
+def test_status() -> "Status":
     """Returns a Status DataItem Object for testing."""
-    status_builder = (
+    test_status = (
         StatusBuilder()
         .set_table("statuses")
         .set_id(-1)
@@ -121,15 +125,16 @@ def status() -> "Status":
         .set_status_code("BROKEN")
         .set_status_name("Broken")
         .set_description("Used for testing purposes.")
+        .build()
     )
 
-    return status_builder.build()
+    return test_status
 
 
 @fixture
-def unit() -> "Unit":
+def test_unit() -> "Unit":
     """Returns a Unit DataItem Object for testing."""
-    unit_builder = (
+    test_unit = (
         UnitBuilder()
         .set_table("units")
         .set_id(-1)
@@ -139,9 +144,10 @@ def unit() -> "Unit":
         .set_unit_code("dg")
         .set_unit_name("Decagrams")
         .set_decimals(7)
+        .build()
     )
 
-    return unit_builder.build()
+    return test_unit
 
 
 @fixture

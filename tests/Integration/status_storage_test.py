@@ -42,22 +42,24 @@ class Test_StatusStorage:
         - Statuses can be updated.
     """
 
-    def test_Statuses_can_be_added_to_db(self, status) -> None:
-        status = status
+    def test_Statuses_can_be_added_to_db(self, test_status) -> None:
+        test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
 
-        commands.AddStatus(sq_man).execute(status)
+        commands.AddStatus(sq_man).execute(test_status)
 
         cursor = sq_man.read(table_name="statuses")
         status_ids = return_ids(cursor)
         assert -1 in status_ids
 
-    def test_Statuses_can_be_removed_from_db_using_ID(self, reset_database, status):
-        status = status
+    def test_Statuses_can_be_removed_from_db_using_ID(
+        self, reset_database, test_status
+    ):
+        test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(status)
+        commands.AddStatus(sq_man).execute(test_status)
 
         commands.DeleteStatus(sq_man).execute(-1)
 
@@ -65,11 +67,13 @@ class Test_StatusStorage:
         status_id = return_ids(cursor)
         assert -1 not in status_id
 
-    def test_Statuses_can_be_removed_from_db_using_code(self, reset_database, status):
-        status = status
+    def test_Statuses_can_be_removed_from_db_using_code(
+        self, reset_database, test_status
+    ):
+        test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(status)
+        commands.AddStatus(sq_man).execute(test_status)
 
         commands.DeleteStatus(sq_man).execute("BROKEN")
 
@@ -77,21 +81,21 @@ class Test_StatusStorage:
         status_id = return_ids(cursor)
         assert -1 not in status_id
 
-    def test_statuses_can_be_read_from_db(self, reset_database, status):
-        status = status
+    def test_statuses_can_be_read_from_db(self, reset_database, test_status):
+        test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(status)
+        commands.AddStatus(sq_man).execute(test_status)
 
         data = commands.ListStatuses(sq_man).execute()
 
         assert data != None
 
-    def test_statuses_can_be_updated_in_db(self, reset_database, status) -> None:
-        status = status
+    def test_statuses_can_be_updated_in_db(self, reset_database, test_status) -> None:
+        test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(status)
+        commands.AddStatus(sq_man).execute(test_status)
 
         commands.UpdateStatus(sq_man).execute(
             {"status_code": "NEW CODE"}, {"status_code": "BROKEN"}

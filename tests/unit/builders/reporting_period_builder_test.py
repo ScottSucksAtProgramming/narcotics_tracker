@@ -18,27 +18,18 @@ class Test_ReportingPeriodBuilder:
         - Returned object has expected attribute values.
     """
 
-    test_reporting_period = (
-        ReportingPeriodBuilder()
-        .set_table("reporting_periods")
-        .set_id(-1)
-        .set_created_date(1666061200)
-        .set_modified_date(1666061200)
-        .set_modified_by("SRK")
-        .set_start_date(1666061200)
-        .set_end_date(1666061200)
-        .set_status("unfinished")
-        .build()
-    )
-
     def test_ReportingPeriodBuilder_can_be_accessed(self) -> None:
         assert ReportingPeriodBuilder.__doc__ != None
 
-    def test_returned_object_is_an_reporting_period(self) -> None:
-        assert isinstance(self.test_reporting_period, ReportingPeriod)
+    def test_returned_object_is_an_reporting_period(
+        self, test_reporting_period
+    ) -> None:
+        assert isinstance(test_reporting_period, ReportingPeriod)
 
-    def test_returned_object_had_expected_attributes(self) -> None:
-        assert vars(self.test_reporting_period) == {
+    def test_returned_object_had_expected_attributes(
+        self, test_reporting_period
+    ) -> None:
+        assert vars(test_reporting_period) == {
             "table": "reporting_periods",
             "id": -1,
             "created_date": 1666061200,

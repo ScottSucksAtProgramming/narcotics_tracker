@@ -42,22 +42,22 @@ class Test_UnitStorage:
         - Units can be updated.
     """
 
-    def test_Units_can_be_added_to_db(self, unit) -> None:
-        unit = unit
+    def test_Units_can_be_added_to_db(self, test_unit) -> None:
+        test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
 
-        commands.AddUnit(sq_man).execute(unit)
+        commands.AddUnit(sq_man).execute(test_unit)
 
         cursor = sq_man.read(table_name="units")
         unit_ids = return_ids(cursor)
         assert -1 in unit_ids
 
-    def test_Units_can_be_removed_from_db_using_ID(self, reset_database, unit):
-        unit = unit
+    def test_Units_can_be_removed_from_db_using_ID(self, reset_database, test_unit):
+        test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.AddUnit(sq_man).execute(unit)
+        commands.AddUnit(sq_man).execute(test_unit)
 
         commands.DeleteUnit(sq_man).execute(unit_identifier=-1)
 
@@ -65,11 +65,11 @@ class Test_UnitStorage:
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
 
-    def test_units_can_be_removed_from_db_using_code(self, reset_database, unit):
-        unit = unit
+    def test_units_can_be_removed_from_db_using_code(self, reset_database, test_unit):
+        test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.AddUnit(sq_man).execute(unit)
+        commands.AddUnit(sq_man).execute(test_unit)
 
         commands.DeleteUnit(sq_man).execute(unit_identifier="dg")
 
@@ -77,21 +77,21 @@ class Test_UnitStorage:
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
 
-    def test_units_can_be_read_from_db(self, reset_database, unit):
-        unit = unit
+    def test_units_can_be_read_from_db(self, reset_database, test_unit):
+        test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.AddUnit(sq_man).execute(unit)
+        commands.AddUnit(sq_man).execute(test_unit)
 
         data = commands.ListUnits(sq_man).execute()
 
         assert data != None
 
-    def test_units_can_be_updated_in_db(self, reset_database, unit) -> None:
-        unit = unit
+    def test_units_can_be_updated_in_db(self, reset_database, test_unit) -> None:
+        test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()
-        commands.AddUnit(sq_man).execute(unit)
+        commands.AddUnit(sq_man).execute(test_unit)
 
         commands.UpdateUnit(sq_man).execute(
             data={"unit_code": "NEW CODE"}, criteria={"unit_code": "dg"}
