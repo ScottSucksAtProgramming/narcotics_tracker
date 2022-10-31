@@ -5,8 +5,8 @@ Classes:
     Test_SetupPackage: Contains all unit tests for the Setup Package.
     
 """
-from narcotics_tracker import setup
-from narcotics_tracker.setup import standard_items
+from narcotics_tracker import configuration
+from narcotics_tracker.configuration import standard_items
 
 
 class Test_SetupPackage:
@@ -22,7 +22,7 @@ class Test_SetupPackage:
 
         Asserts that setup.__doc__ does not return 'None.
         """
-        assert setup.__doc__ != None
+        assert configuration.__doc__ != None
 
 
 class Test_StandardItemsModule:

@@ -29,12 +29,12 @@
     <img src="assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Narcotics Tracker</h3>
+<h1 align="center">Narcotics Tracker</h1>
 
   <p align="center">
-    The Narcotics Tracker project is a python program designed to assist controlled substance agents of EMS agencies with tracking of their narcotic inventory. 
+    A utility for managing controlled substance medication inventory for EMS Agencies.
     <br />
-    <a href="https://github.com/ScottSucksAtProgramming/narcotics_tracker"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ScottSucksAtProgramming/narcotics_tracker"><strong>Explore The Docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/ScottSucksAtProgramming/narcotics_tracker">View Demo</a>
@@ -76,6 +76,13 @@
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+Management of controlled substance medications for EMS agencies requires
+frequent updates and detailed reporting of medication inventory changes to
+state and federal agencies. This goal of the **Narcotics Tracker** is to reduce
+the manual workload required by controlled substance agents by providing an
+intuitive system to record inventory changes and generate data required for
+periodic reporting.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -136,11 +143,47 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
--   [ ] Design
-    -   [ ] Sketch out design document covering basic overview and features to
-            start.
+-   [x] Design
+    -   [x] Outline program requirements.
+    -   [x] Mock up database design.
+    -   [x] Mock up class diagrams.
+-   [x] Version 0.1.0 - Alpha - Released On August 24th, 2022
+    -   [x] Medication creation
+    -   [x] Container, Status and Unit creation.
+    -   [x] Persistent data storage with an SQLite3 database.
+    -   [x] Test suite development.
+-   [x] Version 0.2.0 - Alpha - Released On September 14th, 2022
+    -   [x] Event and Reporting Period creation.
+    -   [x] Adjustment creation and the inventory management enabled.
+    -   [x] Date Management enabled through SQLite3.
+    -   [x] Database Context Manager added.
+    -   [x] Continued expansion of the Test Suite.
+-   [ ] Version 0.2.5 - Alpha - In progress!
+    -   [ ] Design architecture rework.
+    -   [ ] Design pattern implementation to reduce coupling and increase
+            flexibility and ease of extension.
+    -   [ ] Documentation update.
+    -   [ ] Continued Test Suite expansion.
+-   [ ] Version 0.3.0 - Alpha
+    -   [ ] Basic Report Generation
+-   [ ] Version 0.0.0 - Beta
+    -   [ ] Command Line User Interface
+-   [ ] Version 0.1.0 - Beta
+    -   [ ] Order Tracking
+-   [ ] Version 0.2.0 - Beta
+    -   [ ] Order Tracking
+-   [ ] Version 0.3.0 - Beta
+    -   [ ] Destruction Tracking
+-   [ ] Version 0.4.0 - Beta
+    -   [ ] Controlled Substance Agent Management
+-   [ ] Version 0.5.0 - Beta
+    -   [ ] Command Line Tools Interface Update
+-   [ ] Version 0.6.0 - Beta
+    -   [ ] Console User Interface
+-   [ ] Version 0.7.0 - Beta
+    -   [ ] Graphical User Interface
 
-See the
+See
 [open issues](https://github.com/ScottSucksAtProgramming/narcotics_tracker/issues)
 for a full list of proposed features (and known issues).
 
