@@ -2,7 +2,7 @@
 
 | Version | Release Date | Audience   |
 | :------ | :----------- | :--------- |
-| 0.2.5   | ??/??/2022   | Developers |
+| 0.2.5   | 10/31/2022   | Developers |
 
 **Message from ScottSucksAtProgramming:**
 
@@ -12,64 +12,49 @@
 > more pleasant to work with and easier to understand. Read on to see the
 > larger changes.
 
-## Structural Changes
+## Structural Improvements
 
 ### Interfaces
 
-### Builders Package
+Most packages within the Narcotics Tracker now include an interface specifying
+how new modules should be created. Interfaces are located in a separate
+sub-package.
 
-This package contains modules which can be used to build all of the DataItems
-which are stored within the SQLite3 database. Full documentation is available
-within that package and its modules. The previous templates were removed and
-replaced with a single BuilderInterface class and modules for each of the six
-DataItems.
+### Design Patterns
 
-The number of tests for this package has been greatly reduced due to the change
-in responsibility of the DataItems class. Many tests for those behaviors have
-been moved to the other parts of the test suite.
+The Builder Pattern had already been implemented to make construction of
+DataItems easier. With this update the Command Pattern was also implemented
+allowing for the decoupling many modules. All commands share the same interface
+allowing for easy creation of new commands. Look at the documentation in the
+Commands Package for more information.
 
-### Items Package
+### Inheritance and DataClasses
 
-This package contain the modules for all items which are stored within the
-database. The DataItem class defines an interface for all Data Items.
+The Items Package saw an overhaul in is structure. Each of the six DataItems
+inherit from a DataItem superclass. DataItems are no longer responsible for
+saving and loading themselves from the database, their only concern is to store
+their data. Each DataItem is now written as a dataclass. These two change make
+the code much simpler to read.
 
-The number of tests for this package has been reduced and are available within
-the Items sub-package within the Unit Tests package.
+## New Functionality
 
-### Services Package
+### The Service Provider
 
-The services package was created to contain all the services and utilities
-which are used to run the Narcotics Tracker. As of this release are three
-service providers in this package: The Conversion Manager, Datetime Manager,
-and SQLiteManager. Additionally the ServiceProvider class offers an object
-which instantiates these services in a single command.
+The Utilities Package was removed and replaced with the services package. As of
+this release three services are included in this package. The SQLiteManager
+provides the persistence service which stores and retrieves information from
+the SQLite3 database. To manage dates and times the DateTimeManager provides
+the datetime service; This object is responsible for providing datetime
+information and converting between human readable dates and unix timestamps.
+The conversion service, provided by the ConversionManager, converts between
+different units of mass and volume.
 
-#### Intended Use
+The Service Provider module instantiates each service as needed. It is a single
+point of access for all current and future services. The Service Provider also
+allows for each service manager to be replaced with new or different services
+as needed.
 
-## Command Pattern
+## Next Up!
 
-The **Command Design Pattern** was implemented to interact with the SQLite3
-database.
-
-### Receivers
-
-All modules related to communications with SQLite3 have been moved into the
-**Persistence Package**. The Database module contains the **SQLiteManager**
-which sends and receives information from the database. It's designed to be
-used as a context manager, and handles closing of the database connection
-automatically. The Date Manager module contains the **DateTimeFormatter** which
-returns the current datetime from the database and converts between a unix
-timestamp and a human-readable date formatted as (MM-DD-YYYY HH:MM:SS).
-
-## Invokers
-
-Not yet implemented.
-
-## Interface
-
-The interface for SQLite3 Commands is located in the
-`sqlite_command_interface.py` module.
-
-## Commands
-
-Commands are located within the `commands.py` module.
+The next release will see the creation of the reporting functionality and a set
+of general reports which are frequently used for narcotics management.
