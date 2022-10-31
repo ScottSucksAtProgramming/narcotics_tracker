@@ -35,13 +35,13 @@ Modules:
     
     Unit Builder: Handles the defining and building of Unit Objects.
 
-Intended Use
+How To Use:
 
-When creating a DataItem, the builder for that item can be created and its 
-methods can be called to build the object piece by piece. When all pieces have 
-been constructed the `build` method will create return the object. After 
-calling the build method, the builder is reset with a fresh instance of the 
-DataItem object so it can be re-used if necessary.
+    When creating a DataItem, the builder for that item can be created and its 
+    methods can be called to build the object piece by piece. When all pieces have 
+    been constructed the `build` method will create return the object. After 
+    calling the build method, the builder is reset with a fresh instance of the 
+    DataItem object so it can be re-used if necessary.
 
     Example:
 
