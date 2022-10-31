@@ -2,50 +2,8 @@
 
 Classes:
 
-    StandardItemCreator: Creates and returns all
-
-Items:
-
-    Events:
-
-        Destroyed (DESTROY) Used when subtracting medication which was 
-            destroyed through a reverse distributor.
-        
-        Imported (IMPORT) Used when adding pre-existing stock to the inventory.
-        
-        Lost (LOSS) Used when subtracting medication which were lost or stolen.
-        
-        Ordered (ORDER) Used when adding new stock from a purchase order.
-        
-        Used (USE) Used when subtracting medication that was administered to a 
-            patient.
-        
-        Wasted (WASTE) Used when subtracting medication which was wasted.
-
-    Units:
-
-        microgram (mcg).
-        
-        milligram (mg).
-        
-        gram (g).
-        
-        milliliter (ml).
-
-    Statuses:
-        
-        Active (ACTIVE) Used for items which are still being used.
-        
-        Inactive (INACTIVE) Used for items which are no longer being used.
-        
-        Open (OPEN) Used for items which have not been completed.
-        
-        Closed (CLOSED) Used for items which have been completed.
-        
-        Cancelled (CANCELLED) Used for items which have been cancelled.
+    StandardItemCreator: Creates standard DataItems for the Narcotics Tracker.
 """
-from typing import TYPE_CHECKING
-
 from narcotics_tracker.builders.event_builder import EventBuilder
 from narcotics_tracker.builders.status_builder import StatusBuilder
 from narcotics_tracker.builders.unit_builder import UnitBuilder
@@ -53,40 +11,43 @@ from narcotics_tracker.items.events import Event
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
 
-if TYPE_CHECKING:
-    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
-
 
 class StandardItemCreator:
-    """Creates standard DataItems for the Narcotics Tracker."""
+    """Creates standard DataItems for the Narcotics Tracker.
 
-    standard_events = []
-    standard_statuses = []
-    standard_units = []
+    Methods:
+
+        create_events: Creates standard events and returns them in a list.
+
+        create_statuses: Creates standard statuses and returns them in a list.
+
+        create_units: Creates standard units and returns them in a list.
+    """
+
+    _standard_events = []
+    _standard_statuses = []
+    _standard_units = []
 
     def create_events(self) -> list["Event"]:
         """Creates standard events and returns them in a list."""
-
         self._create_standard_events()
 
-        return self.standard_events
+        return self._standard_events
 
     def create_statuses(self) -> list["Status"]:
         """Creates standard statuses and returns them in a list."""
-
         self._create_standard_statuses()
 
-        return self.standard_statuses
+        return self._standard_statuses
 
     def create_units(self) -> list["Unit"]:
         """Creates standard units and returns them in a list."""
-
         self._create_standard_units()
 
-        return self.standard_units
+        return self._standard_units
 
-    def _create_standard_events(self) -> None:
-
+    def _create_standard_events(self) -> list["Event"]:
+        """Builds the standard events and returns in a list."""
         destroy_event = (
             EventBuilder()
             .set_table("events")
@@ -102,7 +63,7 @@ class StandardItemCreator:
             .set_modifier(-1)
             .build()
         )
-        self.standard_events.append(destroy_event)
+        self._standard_events.append(destroy_event)
 
         import_event = (
             EventBuilder()
@@ -117,7 +78,7 @@ class StandardItemCreator:
             .set_modifier(+1)
             .build()
         )
-        self.standard_events.append(import_event)
+        self._standard_events.append(import_event)
 
         loss_event = (
             EventBuilder()
@@ -134,7 +95,7 @@ class StandardItemCreator:
             .set_modifier(-1)
             .build()
         )
-        self.standard_events.append(loss_event)
+        self._standard_events.append(loss_event)
 
         order_event = loss_event = (
             EventBuilder()
@@ -149,7 +110,7 @@ class StandardItemCreator:
             .set_modifier(+1)
             .build()
         )
-        self.standard_events.append(order_event)
+        self._standard_events.append(order_event)
 
         use_event = (
             EventBuilder()
@@ -166,7 +127,7 @@ class StandardItemCreator:
             .set_modifier(-1)
             .build()
         )
-        self.standard_events.append(use_event)
+        self._standard_events.append(use_event)
 
         waste_event = (
             EventBuilder()
@@ -181,10 +142,10 @@ class StandardItemCreator:
             .set_modifier(-1)
             .build()
         )
-        self.standard_events.append(waste_event)
+        self._standard_events.append(waste_event)
 
-    def _create_standard_units(self) -> None:
-
+    def _create_standard_units(self) -> list["Unit"]:
+        """Builds the standard units and returns in a list."""
         microgram = (
             UnitBuilder()
             .set_id()
@@ -197,7 +158,7 @@ class StandardItemCreator:
             .set_decimals(-6)
             .build()
         )
-        self.standard_units.append(microgram)
+        self._standard_units.append(microgram)
 
         milligram = (
             UnitBuilder()
@@ -211,7 +172,7 @@ class StandardItemCreator:
             .set_decimals(-3)
             .build()
         )
-        self.standard_units.append(milligram)
+        self._standard_units.append(milligram)
 
         gram = (
             UnitBuilder()
@@ -225,7 +186,7 @@ class StandardItemCreator:
             .set_decimals(0)
             .build()
         )
-        self.standard_units.append(gram)
+        self._standard_units.append(gram)
 
         milliliter = (
             UnitBuilder()
@@ -239,7 +200,7 @@ class StandardItemCreator:
             .set_decimals(-3)
             .build()
         )
-        self.standard_units.append(milliliter)
+        self._standard_units.append(milliliter)
 
         standard_unit = (
             UnitBuilder()
@@ -253,10 +214,10 @@ class StandardItemCreator:
             .set_decimals(-8)
             .build()
         )
-        self.standard_units.append(standard_unit)
+        self._standard_units.append(standard_unit)
 
-    def _create_standard_statuses(self):
-
+    def _create_standard_statuses(self) -> list["Status"]:
+        """Builds the standard statuses and returns in a list."""
         active_status = (
             StatusBuilder()
             .set_table("statuses")
@@ -269,7 +230,7 @@ class StandardItemCreator:
             .set_description("Used for items which are still being used.")
             .build()
         )
-        self.standard_statuses.append(active_status)
+        self._standard_statuses.append(active_status)
 
         inactive_status = (
             StatusBuilder()
@@ -283,7 +244,7 @@ class StandardItemCreator:
             .set_description("Used for items which are no longer being used.")
             .build()
         )
-        self.standard_statuses.append(inactive_status)
+        self._standard_statuses.append(inactive_status)
 
         open_status = (
             StatusBuilder()
@@ -297,7 +258,7 @@ class StandardItemCreator:
             .set_description("Used for items which have not been completed.")
             .build()
         )
-        self.standard_statuses.append(open_status)
+        self._standard_statuses.append(open_status)
 
         closed_status = (
             StatusBuilder()
@@ -311,7 +272,7 @@ class StandardItemCreator:
             .set_description("Used for items which have been completed.")
             .build()
         )
-        self.standard_statuses.append(closed_status)
+        self._standard_statuses.append(closed_status)
 
         cancelled_status = (
             StatusBuilder()
@@ -325,4 +286,4 @@ class StandardItemCreator:
             .set_description("Used for items which have been cancelled.")
             .build()
         )
-        self.standard_statuses.append(cancelled_status)
+        self._standard_statuses.append(cancelled_status)
