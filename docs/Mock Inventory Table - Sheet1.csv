@@ -1,0 +1,15 @@
+id,adjustment_date,event_code,medication_code,amount,reporting_period_id,reference_id
+0,1658523600,IMPORT,fentanyl,7450,2200000,Narcotics Bi-Annual Report - June 2022 - Wantagh-Levittown VAC
+1,1658523600,IMPORT,morphine,690000,2200000,Narcotics Bi-Annual Report - June 2022 - Wantagh-Levittown VAC
+2,1658523600,IMPORT,midazolam,663400,2200000,Narcotics Bi-Annual Report - June 2022 - Wantagh-Levittown VAC
+
+
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+,,in mcg,in mg,,,
+,Fentanyl,-359560,-359.56,,,
+,Midazolam,211800,211.8,,,
+,Morphine,689950,689.95,,,

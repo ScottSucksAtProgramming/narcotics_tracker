@@ -34,8 +34,8 @@ class Test_ReportingPeriodBuilder:
             "id": -1,
             "created_date": 1666061200,
             "modified_date": 1666061200,
-            "modified_by": "SRK",
+            "modified_by": "System",
             "start_date": 1666061200,
             "end_date": 1666061200,
-            "status": "unfinished",
+            "status": "BROKEN",
         }

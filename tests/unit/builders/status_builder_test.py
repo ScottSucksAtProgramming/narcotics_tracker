@@ -30,7 +30,7 @@ class Test_StatusBuilder:
             "id": -1,
             "created_date": 1666061200,
             "modified_date": 1666061200,
-            "modified_by": "Systems",
+            "modified_by": "System",
             "status_code": "BROKEN",
             "status_name": "Broken",
             "description": "Used for testing purposes.",

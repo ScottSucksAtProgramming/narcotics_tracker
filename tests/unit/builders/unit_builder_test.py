@@ -32,6 +32,6 @@ class Test_UnitBuilder:
             "modified_date": 1666061200,
             "modified_by": "System",
             "unit_code": "dg",
-            "unit_name": "Decagrams",
+            "unit_name": "decagrams",
             "decimals": 7,
         }

@@ -27,15 +27,15 @@ class Test_AdjustmentBuilder:
 
     def test_returned_object_had_expected_attributes(self, test_adjustment) -> None:
         assert vars(test_adjustment) == {
-            "table": "no table",
-            "id": -5,
-            "created_date": 505077000,
+            "table": "inventory",
+            "id": -77,
+            "created_date": 1666117887,
             "modified_date": 1666117887,
             "modified_by": "System",
-            "adjustment_date": 3,
-            "event_code": None,
-            "medication_code": None,
-            "amount": None,
-            "reference_id": None,
-            "reporting_period_id": None,
+            "adjustment_date": 1666117887,
+            "event_code": "TEST",
+            "medication_code": "apap",
+            "amount": 10,
+            "reference_id": "TestReferenceID",
+            "reporting_period_id": 0,
         }

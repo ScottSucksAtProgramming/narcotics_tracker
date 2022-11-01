@@ -33,7 +33,7 @@ class Test_AdjustmentBuilder:
             "modified_by": "System",
             "adjustment_date": 1666117887,
             "event_code": "TEST",
-            "medication_code": "FakeMed",
+            "medication_code": "apap",
             "amount": 10,
             "reference_id": "TestReferenceID",
             "reporting_period_id": 0,
