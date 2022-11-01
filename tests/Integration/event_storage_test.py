@@ -61,7 +61,7 @@ class Test_EventStorage:
         - Event's Modifier can be returned.
     """
 
-    def test_events_can_be_added_to_db(self, test_event) -> None:
+    def test_events_can_be_added_to_db(self, reset_database, test_event) -> None:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()

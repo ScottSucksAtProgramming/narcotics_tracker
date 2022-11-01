@@ -8,6 +8,7 @@ Fixtures:
 """
 
 import os
+from typing import TYPE_CHECKING
 
 from pytest import fixture
 
@@ -17,6 +18,29 @@ from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+
+
+@fixture
+def all_test_dataItems(
+    test_adjustment,
+    test_event,
+    test_medication,
+    test_reporting_period,
+    test_status,
+    test_unit,
+) -> dict[str, "DataItem"]:
+    """Return all Tests DataItems in a dict mapped by DataItem type."""
+    return {
+        "adjustment": test_adjustment,
+        "event": test_event,
+        "medication": test_medication,
+        "reporting_period": test_reporting_period,
+        "status": test_status,
+        "unit": test_unit,
+    }
 
 
 @fixture
@@ -50,7 +74,7 @@ def test_adjustment() -> "Adjustment":
         medication_code="apap",
         amount=10,
         reference_id="TestReferenceID",
-        reporting_period_id=0,
+        reporting_period_id=-1,
     )
 
     return test_adjustment

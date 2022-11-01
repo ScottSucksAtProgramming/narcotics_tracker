@@ -37,5 +37,5 @@ class Test_AdjustmentBuilder:
             "medication_code": "apap",
             "amount": 10,
             "reference_id": "TestReferenceID",
-            "reporting_period_id": 0,
+            "reporting_period_id": -1,
         }
