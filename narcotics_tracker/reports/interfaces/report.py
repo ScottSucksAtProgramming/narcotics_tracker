@@ -4,11 +4,16 @@ Classes:
 
     Report: The protocol for Reports in the Narcotics Tracker.
 """
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
+
+if TYPE_CHECKING:
+    from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
 class Report(Protocol):
     """The protocol for Reports in the Narcotics Tracker."""
+
+    _receiver: "PersistenceService"
 
     def __init__(self):
         """Initalizes the Report, sets any needed services."""
