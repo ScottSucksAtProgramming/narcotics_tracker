@@ -36,7 +36,7 @@ def construct_adjustments(data: list[any]) -> list["Adjustment"]:
             .set_medication_code(data_set[3])
             .set_adjustment_amount(data_set[4])
             .set_reporting_period_id(data_set[5])
-            .set_reference_id(data_set[5])
+            .set_reference_id(data_set[6])
             .build()
         )
         adjustment_list.append(adjustment)
@@ -51,7 +51,7 @@ def return_adjustments_data() -> list[list]:
             "07-22-2022 17:00:00",
             "IMPORT",
             "fentanyl",
-            745,
+            7450,
             2200001,
             "Narcotics Bi-Annual Report - June 2022 - Wantagh-Levittown VAC",
         ],
@@ -73,15 +73,39 @@ def return_adjustments_data() -> list[list]:
             2200001,
             "Narcotics Bi-Annual Report - June 2022 - Wantagh-Levittown VAC",
         ],
-        [None, 1659212760, "USE", "fentanyl", 50, 2200001, "PCR# 220830"],
-        [None, 1661027838, "DESTRUCTION", "morphine", 440, 2200001, "RxRD# 37265"],
-        [None, 1661027838, "DESTRUCTION", "midazolam", 363.4, 2200001, "RxRD# 37265"],
-        [None, 1661027838, "DESTRUCTION", "fentanyl", 345, 2200001, "RxRD# 37265"],
-        [None, 1661166388, "USE", "midazolam", 5, 2200001, "PCR# 220920"],
-        [None, 1661701387, "USE", "fentanyl", 60, 2200001, "PCR# 220945"],
-        [None, 1662580020, "USE", "fentanyl", 100, 2200001, "PCR# 220976"],
-        [None, 1665258240, "USE", "midazolam", 5, 2200001, "PCR# 221095"],
-        [None, 1666487700, "USE", "midazolam", 1.6, 2200001, "PCR# 221144"],
+        [None, "07-30-2022 16:26:00", "USE", "fentanyl", 50, 2200001, "PCR# 220830"],
+        [
+            None,
+            "08-10-2022 16:38:00",
+            "DESTROY",
+            "morphine",
+            440,
+            2200001,
+            "RxRD# 37265",
+        ],
+        [
+            None,
+            "08-10-2022 16:38:00",
+            "DESTROY",
+            "midazolam",
+            363.4,
+            2200001,
+            "RxRD# 37265",
+        ],
+        [
+            None,
+            "08-10-2022 16:38:00",
+            "DESTROY",
+            "fentanyl",
+            3450,
+            2200001,
+            "RxRD# 37265",
+        ],
+        [None, "08-22-2022 07:06:28", "USE", "midazolam", 5, 2200001, "PCR# 220920"],
+        [None, "08-28-2022 11:43:07", "USE", "fentanyl", 60, 2200001, "PCR# 220945"],
+        [None, "09-07-2022 15:47:00", "USE", "fentanyl", 100, 2200001, "PCR# 220976"],
+        [None, "10-08-2022 15:44:00", "USE", "midazolam", 5, 2200001, "PCR# 221095"],
+        [None, "10-22-2022 21:15:00", "USE", "midazolam", 1.6, 2200001, "PCR# 221144"],
     ]
 
 

@@ -44,8 +44,8 @@ def test_convert_milligrams_to_standard() -> None:
 
 
 def test_convert_micrograms_to_standard() -> None:
-    answer = ConversionManager().to_standard(1, "mcg")
-    assert answer == 100
+    answer = ConversionManager().to_standard(745, "mcg")
+    assert answer == 74500
 
 
 def test_convert_standard_to_gram():
@@ -55,15 +55,15 @@ def test_convert_standard_to_gram():
 
 
 def test_convert_standard_to_milligrams():
-    answer = ConversionManager().to_preferred(100000, "mg")
+    answer = ConversionManager().to_preferred(1000000, "mg")
 
-    assert answer == 1
+    assert answer == 10
 
 
 def test_converts_standard_to_micrograms():
-    answer = ConversionManager().to_preferred(100, "mcg")
+    answer = ConversionManager().to_preferred(74500, "mcg")
 
-    assert answer == 1
+    assert answer == 745
 
 
 def test_conversion_g_to_milliliters():
