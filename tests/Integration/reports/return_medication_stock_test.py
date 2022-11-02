@@ -4,7 +4,6 @@ Classes:
     Test_ReturnMedicationStock: Integration tests the ReturnMedicationStock 
         Report.
 """
-
 from narcotics_tracker.reports.return_medication_stock import ReturnMedicationStock
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
