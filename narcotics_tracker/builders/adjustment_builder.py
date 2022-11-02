@@ -102,7 +102,7 @@ class AdjustmentBuilder(DataItemBuilder):
         event_code = self._dataitem.event_code
 
         event_modifier = commands.ReturnEventModifier().execute(event_code)
-        print(event_modifier)
+
         self._dataitem.amount = self._dataitem.amount * event_modifier
 
     def set_adjustment_date(self, date: Union[int, str]) -> "AdjustmentBuilder":
