@@ -1,7 +1,8 @@
 """Returns the current stock for a single medication.
 
 Classes:
-    ReturnMedicationStock: Returns the current amount on hand for a specific medication.
+    ReturnMedicationStock: Returns the current amount on hand for a specific 
+        medication.
 """
 from typing import TYPE_CHECKING
 

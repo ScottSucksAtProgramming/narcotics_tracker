@@ -2,10 +2,7 @@
 
 Classes:
 """
-
-
-from narcotics_tracker.reports.return_medication_stock import ReturnMedicationStock
-from narcotics_tracker.services.sqlite_manager import SQLiteManager
+from narcotics_tracker.reports import ReturnMedicationStock
 
 
 class Test_ReturnMedicationStock:
@@ -14,7 +11,7 @@ class Test_ReturnMedicationStock:
     Behaviors Tested:
 
         - Class can be accessed.
-        - Receiver can be set in intalizer."""
+        - Receiver can be set in initializer."""
 
     def test_can_access_class(self):
         assert ReturnMedicationStock().__doc__ != None
