@@ -19,7 +19,7 @@ class ReturnCurrentInventory(Report):
     """Returns the current stock for all active medications in the inventory."""
 
     _receiver = ServiceManager().persistence
-    _conversion = ServiceManager().conversion
+    _converter = ServiceManager().conversion
 
     def __init__(self, receiver: "PersistenceService" = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -70,7 +70,7 @@ class ReturnCurrentInventory(Report):
         Note: Amounts are rounded to two decimal places.
         """
         for med in medication_info:
-            converted_amount = self._conversion.to_preferred(med["amount"], med["unit"])
+            converted_amount = self._converter.to_preferred(med["amount"], med["unit"])
             med["amount"] = round(converted_amount, 2)
 
         return medication_info
