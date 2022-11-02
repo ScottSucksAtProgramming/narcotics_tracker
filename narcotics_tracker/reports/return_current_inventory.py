@@ -39,12 +39,12 @@ class ReturnCurrentInventory(Report):
                 name, code, preferred unit and current total stock (in the
                 preferred unit).
         """
-        medication_list = self._get_medication_info()
-        list_with_amounts = self._return_amounts(medication_list)
+        medication_list = self._retrieve_medications()
+        list_with_amounts = self._add_amounts(medication_list)
 
         return self._convert_amounts_to_preferred(list_with_amounts)
 
-    def _get_medication_info(self) -> list[dict]:
+    def _retrieve_medications(self) -> list[dict]:
         """Returns the code, name, and unit for all active medications."""
         medication_list = []
         criteria = {"status": "ACTIVE"}
@@ -56,7 +56,7 @@ class ReturnCurrentInventory(Report):
 
         return medication_list
 
-    def _return_amounts(self, medication_info: list[dict]) -> list[dict]:
+    def _add_amounts(self, medication_info: list[dict]) -> list[dict]:
         """Adds current amounts for each medication in the list and returns it."""
         for med in medication_info:
             amount = reports.ReturnMedicationStock(self._receiver).execute(med["code"])

@@ -26,7 +26,7 @@ class Test_ReturnCurrentInventory:
     def test_can_retrieve_active_medication_info(self, setup_integration_db):
         sq_man = SQLiteManager("integration_test.db")
 
-        result = ReturnCurrentInventory(sq_man)._get_medication_info()
+        result = ReturnCurrentInventory(sq_man)._retrieve_medications()
 
         expected = [
             {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg"},
@@ -45,7 +45,7 @@ class Test_ReturnCurrentInventory:
             {"code": "morphine", "name": "Morphine", "unit": "mg"},
         ]
 
-        result = ReturnCurrentInventory(sq_man)._return_amounts(medication_info)
+        result = ReturnCurrentInventory(sq_man)._add_amounts(medication_info)
         amounts = []
 
         for item in result:
