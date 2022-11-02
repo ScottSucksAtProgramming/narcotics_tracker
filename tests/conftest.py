@@ -8,6 +8,7 @@ Fixtures:
 """
 
 import os
+import sqlite3
 from typing import TYPE_CHECKING
 
 from pytest import fixture
@@ -181,6 +182,9 @@ def delete_database(filename: str) -> None:
 @fixture
 def setup_integration_db():
     """Creates a new integration database and populates it with data."""
+    meds = []
+    periods = []
+    adjustment_list = []
     delete_database("integration_test.db")
 
     receiver = SQLiteManager("integration_test.db")
@@ -216,17 +220,22 @@ def create_tables(receiver):
 
 
 def populate_standard_items(receiver):
-    events = StandardItemCreator().create_events()
-    for event in events:
-        commands.AddEvent(receiver).execute(event)
+    try:
+        events = None
+        events = StandardItemCreator().create_events()
+        for event in events:
+            event.table = "events"
+            commands.AddEvent(receiver).execute(event)
 
-    statuses = StandardItemCreator().create_statuses()
-    for status in statuses:
-        commands.AddStatus(receiver).execute(status)
+        statuses = StandardItemCreator().create_statuses()
+        for status in statuses:
+            commands.AddStatus(receiver).execute(status)
 
-    units = StandardItemCreator().create_units()
-    for unit in units:
-        commands.AddUnit(receiver).execute(unit)
+        units = StandardItemCreator().create_units()
+        for unit in units:
+            commands.AddUnit(receiver).execute(unit)
+    except sqlite3.IntegrityError as e:
+        pass
 
 
 def build_test_meds() -> list["Medication"]:
@@ -276,8 +285,8 @@ def build_test_meds() -> list["Medication"]:
     )
 
     test_medications.append(fentanyl)
-    test_medications.append(morphine)
     test_medications.append(midazolam)
+    test_medications.append(morphine)
 
     return test_medications
 
