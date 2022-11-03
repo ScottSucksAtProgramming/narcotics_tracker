@@ -300,53 +300,45 @@ def build_reporting_periods(
     period_builder = ReportingPeriodBuilder()
 
     jan_to_june_2021 = (
-        period_builder.set_start_date(
-            dt_manager.convert_to_timestamp("01-01-2021 00:00:00")
-        )
-        .set_end_date(dt_manager.convert_to_timestamp("06-30-2021 23:59:59"))
+        period_builder.set_start_date("01-01-2021 00:00:00")
+        .set_end_date("06-30-2021 23:59:59")
         .set_status("CLOSED")
         .set_id(2100000)
-        .set_created_date(dt_manager.return_current())
-        .set_modified_date(dt_manager.return_current())
+        .set_created_date("01-01-2022 00:00:00")
+        .set_modified_date("01-01-2022 00:00:00")
         .set_modified_by("SRK")
         .build()
     )
 
     july_to_december_2021 = (
-        period_builder.set_start_date(
-            dt_manager.convert_to_timestamp("07-01-2021 00:00:00")
-        )
-        .set_end_date(dt_manager.convert_to_timestamp("12-31-2021 23:59:59"))
+        period_builder.set_start_date("07-01-2021 00:00:00")
+        .set_end_date("12-31-2021 23:59:59")
         .set_status("CLOSED")
         .set_id()
-        .set_created_date(dt_manager.return_current())
-        .set_modified_date(dt_manager.return_current())
+        .set_created_date("01-01-2022 00:00:00")
+        .set_modified_date("01-01-2022 00:00:00")
         .set_modified_by("SRK")
         .build()
     )
 
     jan_to_june_2022 = (
-        period_builder.set_start_date(
-            dt_manager.convert_to_timestamp("01-20-2022 00:00:00")
-        )
-        .set_end_date(dt_manager.convert_to_timestamp("07-22-2022 23:59:59"))
+        period_builder.set_start_date("01-20-2022 00:00:00")
+        .set_end_date("07-22-2022 23:59:59")
         .set_status("CLOSED")
         .set_id(2200000)
-        .set_created_date(dt_manager.return_current())
-        .set_modified_date(dt_manager.return_current())
+        .set_created_date("01-01-2022 00:00:00")
+        .set_modified_date("01-01-2022 00:00:00")
         .set_modified_by("SRK")
         .build()
     )
 
     july_to_december_2022 = (
-        period_builder.set_start_date(
-            dt_manager.convert_to_timestamp("07-23-2022 00:00:00")
-        )
+        period_builder.set_start_date("07-23-2022 00:00:00")
         .set_end_date(None)
         .set_status("OPEN")
         .set_id()
-        .set_created_date(dt_manager.return_current())
-        .set_modified_date(dt_manager.return_current())
+        .set_created_date("01-01-2022 00:00:00")
+        .set_modified_date("01-01-2022 00:00:00")
         .set_modified_by("SRK")
         .build()
     )

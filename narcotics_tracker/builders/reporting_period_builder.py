@@ -9,6 +9,7 @@ from typing import Union
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
+from narcotics_tracker.services.service_manager import ServiceManager
 
 
 class ReportingPeriodBuilder(DataItemBuilder):
@@ -63,9 +64,6 @@ class ReportingPeriodBuilder(DataItemBuilder):
         self._dataitem.start_date = self._service_provider.datetime.validate(
             self._dataitem.start_date
         )
-        self._dataitem.end_date = self._service_provider.datetime.validate(
-            self._dataitem.end_date
-        )
 
         reporting_period = self._dataitem
         self._reset()
@@ -81,6 +79,12 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
+        if type(date) == str:
+            date = ServiceManager().datetime.convert_to_timestamp(date)
+
+        if date == None:
+            raise ValueError("Must provide a start date.")
+
         self._dataitem.start_date = date
         return self
 
@@ -94,6 +98,9 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
+        if type(date) == str:
+            date = ServiceManager().datetime.convert_to_timestamp(date)
+
         self._dataitem.end_date = date
         return self
 
