@@ -69,6 +69,7 @@ from narcotics_tracker.commands.reporting_period_commands import (
     AddReportingPeriod,
     DeleteReportingPeriod,
     ListReportingPeriods,
+    LoadReportingPeriod,
     UpdateReportingPeriod,
 )
 from narcotics_tracker.commands.status_commands import (

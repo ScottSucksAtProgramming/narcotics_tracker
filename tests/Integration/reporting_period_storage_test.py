@@ -40,6 +40,7 @@ class Test_ReportingPeriodStorage:
         - ReportingPeriods can be removed from the inventory table.
         - ReportingPeriods can be read from the inventory table.
         - ReportingPeriods can be updated.
+        - ReportingPeriods can be loaded from data.
     """
 
     def test_ReportingPeriods_can_be_added_to_db(self, test_reporting_period) -> None:
@@ -96,3 +97,14 @@ class Test_ReportingPeriodStorage:
         )[0]
 
         assert "NEW STATUS" in returned_reporting_period
+
+    def test_reporting_periods_can_be_loaded_from_data(
+        self, setup_integration_db
+    ) -> None:
+        sq_man = SQLiteManager("integration_test.db")
+        criteria = {"id": 2200001}
+        period_data = commands.ListReportingPeriods(sq_man).execute(criteria)[-1]
+
+        period = commands.LoadReportingPeriod().execute(period_data)
+        expected = "Reporting Period #2200001: Start Date: 07-23-2022 00:00:00, End Date: None, Current Status: OPEN."
+        assert str(period) == expected
