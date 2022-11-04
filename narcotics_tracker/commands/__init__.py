@@ -62,6 +62,7 @@ from narcotics_tracker.commands.medication_commands import (
     AddMedication,
     DeleteMedication,
     ListMedications,
+    LoadMedication,
     ReturnPreferredUnit,
     UpdateMedication,
 )

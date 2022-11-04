@@ -10,9 +10,9 @@ class Test_BiAnnualNarcoticsInventory:
         -
     """
 
-    def test_can_extract_reporting_period_id(self, setup_integration_db) -> None:
+    def test_can_return_current_reporting_period(self, setup_integration_db) -> None:
         sq_man = SQLiteManager("integration_test.db")
 
         bi_annual_inventory = BiAnnualNarcoticsInventory(sq_man)
-        bi_annual_inventory._extract_reporting_period_id()
-        assert bi_annual_inventory._period_id == 2200001
+        bi_annual_inventory._get_current_reporting_period()
+        assert bi_annual_inventory._period.id == 2200001

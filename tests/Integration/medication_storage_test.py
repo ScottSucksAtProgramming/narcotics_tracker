@@ -41,6 +41,7 @@ class Test_MedicationStorage:
         - Medications can be read from the inventory table.
         - Medications can be updated.
         - Medication's preferred unit can be returned.
+        - Medication can be loaded from data.
     """
 
     def test_medications_can_be_added_to_db(self, test_medication) -> None:
@@ -121,3 +122,13 @@ class Test_MedicationStorage:
         )
 
         assert results == "mcg"
+
+    def test_can_load_medication(self, setup_integration_db):
+        sq_man = SQLiteManager("integration_test.db")
+        criteria = {"medication_code": "fentanyl"}
+        med_data = commands.ListMedications(sq_man).execute(criteria)[0]
+
+        medication = commands.LoadMedication().execute(med_data)
+        expected = "Medication #1: Fentanyl (fentanyl) 1000000.0 mcg in 2.0 ml."
+
+        assert str(medication) == expected

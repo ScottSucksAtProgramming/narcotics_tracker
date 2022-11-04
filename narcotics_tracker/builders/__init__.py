@@ -67,3 +67,4 @@ How To Use:
     Review the documentation of specific builders for more information on 
     their usage and available methods.
 """
+from narcotics_tracker.builders.medication_builder import MedicationBuilder

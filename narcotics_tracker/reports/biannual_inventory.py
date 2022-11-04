@@ -27,19 +27,20 @@ class BiAnnualNarcoticsInventory(Report):
         if receiver:
             self._receiver = receiver
 
-    def _extract_reporting_period_id(self) -> None:
+    def _get_current_reporting_period(self) -> None:
         criteria = {"status": "OPEN"}
         data = commands.ListReportingPeriods(self._receiver).execute(criteria)[-1]
-        period = commands.LoadReportingPeriod().execute(data)
+        self._period = commands.LoadReportingPeriod().execute(data)
 
-        self._period_id = vars(period)["id"]
-
-    def _get_medications_info(self) -> None:
+    def _get_active_medications(self) -> None:
         medication_list = []
         criteria = {"status": "ACTIVE"}
-        active_meds = commands.ListMedications(self._receiver).execute(criteria, "id")
+        active_meds = commands.ListMedications(self._receiver).execute(
+            criteria, "medication_code"
+        )
 
         for med_data in active_meds:
+            medication_list.append()
             med_info = {
                 med_data[1]: {
                     "name": med_data[2],
