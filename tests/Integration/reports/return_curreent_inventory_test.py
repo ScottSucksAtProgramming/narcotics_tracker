@@ -22,7 +22,7 @@ class Test_ReturnCurrentInventory:
         results = ReturnCurrentInventory(sq_man).execute()
 
         expected = [
-            {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg", "amount": 190},
+            {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg", "amount": 3790.0},
             {"code": "midazolam", "name": "Midazolam", "unit": "mg", "amount": 288.4},
             {"code": "morphine", "name": "Morphine", "unit": "mg", "amount": 250},
         ]

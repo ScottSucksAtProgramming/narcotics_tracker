@@ -51,23 +51,23 @@ class Test_ReturnCurrentInventory:
         for item in result:
             amounts.append(item["amount"])
 
-        assert amounts == [19000.0, 28840000.0, 25000000.0]
+        assert amounts == [379000.0, 28840000.0, 25000000.0]
 
     def test_can_convert_amount_to_preferred(self) -> None:
         medication_info = [
-            {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg", "amount": 19000.0},
+            {
+                "code": "fentanyl",
+                "name": "Fentanyl",
+                "unit": "mcg",
+                "amount": 19000,
+            },
             {
                 "code": "midazolam",
                 "name": "Midazolam",
                 "unit": "mg",
-                "amount": 28840000.0,
+                "amount": 28840000,
             },
-            {
-                "code": "morphine",
-                "name": "Morphine",
-                "unit": "mg",
-                "amount": 25000000.0,
-            },
+            {"code": "morphine", "name": "Morphine", "unit": "mg", "amount": 25000000},
         ]
 
         result = ReturnCurrentInventory()._convert_amounts_to_preferred(medication_info)

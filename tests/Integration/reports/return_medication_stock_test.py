@@ -20,4 +20,4 @@ class Test_ReturnMedicationStock:
 
         current_fentanyl = ReturnMedicationStock(sq_man).execute("fentanyl")
 
-        assert current_fentanyl == 19000
+        assert current_fentanyl == 379000.0

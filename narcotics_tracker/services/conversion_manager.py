@@ -52,8 +52,9 @@ class ConversionManager(ConversionService):
             float: The converted amount.
         """
         exponent = self._decimals[preferred_unit] - self._decimals["std"]
+        result = amount * (10**exponent)
 
-        return amount * (10**exponent)
+        return round(result, 2)
 
     def to_preferred(self, amount: Union[int, float], preferred_unit: str) -> float:
         """Returns an amount of medication in its preferred unit.
@@ -68,8 +69,10 @@ class ConversionManager(ConversionService):
             float: The amount of the medication in it's preferred unit.
         """
         exponent = self._decimals["std"] - self._decimals[preferred_unit]
+        raw_conversion = amount * (10**exponent)
+        result = round(raw_conversion, 2)
 
-        return amount * (10**exponent)
+        return round(result, 2)
 
     def to_milliliters(
         self, amount: Union[int, float], preferred_unit: str, concentration: float
@@ -86,6 +89,7 @@ class ConversionManager(ConversionService):
         Returns:
             float: The volume of the medication in milliliters.
         """
-        adjusted_amount = self.to_preferred(amount, preferred_unit)
+        converted_amount = self.to_preferred(amount, preferred_unit)
+        result = converted_amount / concentration
 
-        return adjusted_amount / concentration
+        return round(result, 2)

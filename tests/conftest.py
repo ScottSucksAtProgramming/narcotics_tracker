@@ -261,7 +261,7 @@ def build_test_meds() -> list["Medication"]:
         med_builder.set_medication_code("midazolam")
         .set_medication_name("Midazolam")
         .set_fill_amount(2)
-        .set_medication_amount(1000)
+        .set_medication_amount(10)
         .set_preferred_unit("mg")
         .set_concentration(5)
         .set_status("ACTIVE")
@@ -274,7 +274,7 @@ def build_test_meds() -> list["Medication"]:
         med_builder.set_medication_code("morphine")
         .set_medication_name("Morphine")
         .set_fill_amount(1)
-        .set_medication_amount(1000)
+        .set_medication_amount(10)
         .set_preferred_unit("mg")
         .set_concentration(10)
         .set_status("ACTIVE")
@@ -383,7 +383,7 @@ def return_adjustments_data() -> list[list]:
             "07-22-2022 17:00:00",
             "IMPORT",
             "fentanyl",
-            745,
+            7450,
             1,
             "ref_id",
         ]
@@ -416,7 +416,7 @@ def return_adjustments_data() -> list[list]:
     adjustment_data.append(
         [None, 1661027838, "DESTROY", "midazolam", 363.4, 1, "ref_id"]
     )
-    adjustment_data.append([None, 1661027838, "DESTROY", "fentanyl", 345, 1, "ref_id"])
+    adjustment_data.append([None, 1661027838, "DESTROY", "fentanyl", 3450, 1, "ref_id"])
     adjustment_data.append([None, 1661166388, "USE", "midazolam", 5, 1, "ref_id"])
     adjustment_data.append([None, 1661701387, "USE", "fentanyl", 60, 1, "ref_id"])
     adjustment_data.append([None, 1662580020, "USE", "fentanyl", 100, 1, "ref_id"])

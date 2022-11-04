@@ -31,8 +31,8 @@ class Test_Medications:
         medication_code="apap",
         medication_name="Acetaminophen",
         fill_amount=10,
-        medication_amount=1,
-        preferred_unit="dg",
+        medication_amount=100000,
+        preferred_unit="mg",
         concentration=0.1,
         status="unknown",
         created_date=1666061200,
@@ -56,10 +56,10 @@ class Test_Medications:
         assert self.test_medication.fill_amount == 10
 
     def test_medications_return_expected_medication_amount(self):
-        assert self.test_medication.medication_amount == 1
+        assert self.test_medication.medication_amount == 100000
 
     def test_medications_return_expected_preferred_unit(self):
-        assert self.test_medication.preferred_unit == "dg"
+        assert self.test_medication.preferred_unit == "mg"
 
     def test_medications_return_expected_concentration(self):
         assert self.test_medication.concentration == 0.1
@@ -70,7 +70,7 @@ class Test_Medications:
     def test_medications_return_expected_string(self) -> None:
         assert (
             str(self.test_medication)
-            == "Medication #-1: Acetaminophen (apap) 1 dg in 10 ml."
+            == "Medication #-1: Acetaminophen (apap) 1.0 mg in 10 ml."
         )
 
     def test_medications_return_expected_dictionary(self) -> None:
@@ -83,8 +83,8 @@ class Test_Medications:
             "medication_code": "apap",
             "medication_name": "Acetaminophen",
             "fill_amount": 10,
-            "medication_amount": 1,
-            "preferred_unit": "dg",
+            "medication_amount": 100000,
+            "preferred_unit": "mg",
             "concentration": 0.1,
             "status": "unknown",
         }

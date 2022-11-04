@@ -6,6 +6,7 @@ Classes:
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+from narcotics_tracker.services.service_manager import ServiceManager
 
 
 @dataclass
@@ -37,4 +38,8 @@ class Medication(DataItem):
     status: str
 
     def __str__(self) -> str:
-        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code}) {self.medication_amount} {self.preferred_unit} in {self.fill_amount} ml."
+        converter = ServiceManager().conversion
+        medication_amount = converter.to_preferred(
+            self.medication_amount, self.preferred_unit
+        )
+        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code}) {medication_amount} {self.preferred_unit} in {self.fill_amount} ml."

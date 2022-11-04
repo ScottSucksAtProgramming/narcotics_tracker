@@ -129,6 +129,6 @@ class Test_MedicationStorage:
         med_data = commands.ListMedications(sq_man).execute(criteria)[0]
 
         medication = commands.LoadMedication().execute(med_data)
-        expected = "Medication #1: Fentanyl (fentanyl) 1000000.0 mcg in 2.0 ml."
+        expected = "Medication #1: Fentanyl (fentanyl) 100.0 mcg in 2.0 ml."
 
         assert str(medication) == expected

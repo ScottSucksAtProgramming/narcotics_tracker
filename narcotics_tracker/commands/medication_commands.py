@@ -19,13 +19,12 @@ Classes:
 """
 from typing import TYPE_CHECKING, Union
 
-from narcotics_tracker import builders
 from narcotics_tracker.commands.interfaces.command import Command
+from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
-    from narcotics_tracker.builders.interfaces.builder import Builder
-    from narcotics_tracker.items.medications import Medication
+
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
@@ -204,9 +203,9 @@ class LoadMedication(Command):
         execute: Executes the command. Returns a Medication object.
     """
 
-    _receiver = builders.MedicationBuilder()
+    _receiver = Medication
 
-    def __init__(self, receiver: "Builder" = None) -> None:
+    def __init__(self, receiver: "Medication" = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -223,17 +222,17 @@ class LoadMedication(Command):
             data (tuple[any]): A tuple of medication attributes retrieved from
                 the database.
         """
-        return (
-            self._receiver.set_id(data[0])
-            .set_medication_code(data[1])
-            .set_medication_name(data[2])
-            .set_medication_amount(data[3])
-            .set_preferred_unit(data[4])
-            .set_fill_amount(data[5])
-            .set_concentration(data[6])
-            .set_status(data[7])
-            .set_created_date(data[8])
-            .set_modified_date(data[9])
-            .set_modified_by(data[10])
-            .build()
+        return self._receiver(
+            table="medications",
+            id=data[0],
+            medication_code=data[1],
+            medication_name=data[2],
+            medication_amount=data[3],
+            preferred_unit=data[4],
+            fill_amount=data[5],
+            concentration=data[6],
+            status=data[7],
+            created_date=data[8],
+            modified_date=data[9],
+            modified_by=data[10],
         )
