@@ -384,7 +384,7 @@ def return_adjustments_data() -> list[list]:
             "IMPORT",
             "fentanyl",
             7450,
-            1,
+            2200001,
             "ref_id",
         ]
     )
@@ -395,7 +395,7 @@ def return_adjustments_data() -> list[list]:
             "IMPORT",
             "midazolam",
             663.4,
-            1,
+            2200001,
             "ref_id",
         ]
     )
@@ -407,20 +407,28 @@ def return_adjustments_data() -> list[list]:
             "IMPORT",
             "morphine",
             690,
-            1,
+            2200001,
             "ref_id",
         ]
     )
-    adjustment_data.append([None, 1659212760, "USE", "fentanyl", 50, 1, "ref_id"])
-    adjustment_data.append([None, 1661027838, "DESTROY", "morphine", 440, 1, "ref_id"])
+    adjustment_data.append([None, 1659212760, "USE", "fentanyl", 50, 2200001, "ref_id"])
     adjustment_data.append(
-        [None, 1661027838, "DESTROY", "midazolam", 363.4, 1, "ref_id"]
+        [None, 1661027838, "DESTROY", "morphine", 440, 2200001, "ref_id"]
     )
-    adjustment_data.append([None, 1661027838, "DESTROY", "fentanyl", 3450, 1, "ref_id"])
-    adjustment_data.append([None, 1661166388, "USE", "midazolam", 5, 1, "ref_id"])
-    adjustment_data.append([None, 1661701387, "USE", "fentanyl", 60, 1, "ref_id"])
-    adjustment_data.append([None, 1662580020, "USE", "fentanyl", 100, 1, "ref_id"])
-    adjustment_data.append([None, 1665258240, "USE", "midazolam", 5, 1, "ref_id"])
-    adjustment_data.append([None, 1666487700, "USE", "midazolam", 1.6, 1, "ref_id"])
+    adjustment_data.append(
+        [None, 1661027838, "DESTROY", "midazolam", 363.4, 2200001, "ref_id"]
+    )
+    adjustment_data.append(
+        [None, 1661027838, "DESTROY", "fentanyl", 3450, 2200001, "ref_id"]
+    )
+    adjustment_data.append([None, 1661166388, "USE", "midazolam", 5, 2200001, "ref_id"])
+    adjustment_data.append([None, 1661701387, "USE", "fentanyl", 60, 2200001, "ref_id"])
+    adjustment_data.append(
+        [None, 1662580020, "USE", "fentanyl", 100, 2200001, "ref_id"]
+    )
+    adjustment_data.append([None, 1665258240, "USE", "midazolam", 5, 2200001, "ref_id"])
+    adjustment_data.append(
+        [None, 1666487700, "USE", "midazolam", 1.6, 2200001, "ref_id"]
+    )
 
     return adjustment_data

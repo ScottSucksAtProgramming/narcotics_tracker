@@ -88,7 +88,6 @@ def test_ml_to_mg():
     amount = 149
     concentration = 5
     amount_in_mg = amount * concentration
-    print(amount_in_mg)
 
     assert amount_in_mg == 745
 
