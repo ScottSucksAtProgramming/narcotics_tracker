@@ -1,6 +1,6 @@
 """Contains the classes which unit tests the report."""
 from narcotics_tracker import commands
-from narcotics_tracker.reports.biannual_inventory import BiAnnualNarcoticsInventory
+from narcotics_tracker.reports import BiAnnualNarcoticsInventory
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 

@@ -8,5 +8,6 @@ Reports:
         medication.
 """
 
+from narcotics_tracker.reports.biannual_inventory import BiAnnualNarcoticsInventory
 from narcotics_tracker.reports.return_current_inventory import ReturnCurrentInventory
 from narcotics_tracker.reports.return_medication_stock import ReturnMedicationStock
