@@ -1,4 +1,4 @@
-"""Contains the inteface for Narcotics Tracker Reports.
+"""Contains the interface for Narcotics Tracker Reports.
 
 Classes:
 
