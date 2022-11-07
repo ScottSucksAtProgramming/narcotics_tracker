@@ -1,4 +1,4 @@
-"""Runs my reports as needed."""
+"""Scripts to run Current Inventory Report. For demo purposes."""
 
 import os
 
