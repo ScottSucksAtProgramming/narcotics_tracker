@@ -164,9 +164,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
             flexibility and ease of extension.
     -   [x] Documentation update.
     -   [x] Continued Test Suite expansion.
--   [ ] Version 0.3.0 - Alpha - In Progress!!
-    -   [ ] Basic Report Generation
--   [ ] Version 0.0.0 - Beta
+-   [x] Version 0.3.0 - Alpha - Released on November 7th, 2022
+    -   [x] Basic Report Generation
+-   [ ] Version 0.0.0 - Beta - Next Up!!
     -   [ ] Command Line User Interface
 -   [ ] Version 0.1.0 - Beta
     -   [ ] Order Tracking
