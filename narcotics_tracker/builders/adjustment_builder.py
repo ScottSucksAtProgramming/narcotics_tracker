@@ -6,6 +6,7 @@ Classes:
 """
 from typing import Union
 
+from narcotics_tracker import commands
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
 
@@ -66,6 +67,16 @@ class AdjustmentBuilder(DataItemBuilder):
 
     def build(self) -> Adjustment:
         """Validates attributes and returns the Adjustment object."""
+        self._evaluate_and_fix_dates()
+        self._convert_adjustment_amount_to_standard()
+        self._apply_event_modifier()
+
+        adjustment = self._dataitem
+        self._reset()
+        return adjustment
+
+    def _evaluate_and_fix_dates(self) -> None:
+        """Runs dates through validator. Sets the instance variables correctly."""
         self._dataitem.created_date = self._service_provider.datetime.validate(
             self._dataitem.created_date
         )
@@ -76,9 +87,23 @@ class AdjustmentBuilder(DataItemBuilder):
             self._dataitem.adjustment_date
         )
 
-        adjustment = self._dataitem
-        self._reset()
-        return adjustment
+    def _convert_adjustment_amount_to_standard(self) -> None:
+        """Converts the adjustment amount in the standard unit."""
+        med_code = self._dataitem.medication_code
+        amount = self._dataitem.amount
+        preferred_unit = commands.ReturnPreferredUnit().execute(med_code)
+        converted_amount = self._service_provider.conversion.to_standard(
+            amount, preferred_unit
+        )
+        self._dataitem.amount = converted_amount
+
+    def _apply_event_modifier(self) -> None:
+        """Retrieves the event modifier and applies it to the the amount."""
+        event_code = self._dataitem.event_code
+
+        event_modifier = commands.ReturnEventModifier().execute(event_code)
+
+        self._dataitem.amount = self._dataitem.amount * event_modifier
 
     def set_adjustment_date(self, date: Union[int, str]) -> "AdjustmentBuilder":
         """Sets the adjustment date to the passed value.

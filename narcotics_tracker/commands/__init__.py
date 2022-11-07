@@ -62,6 +62,7 @@ from narcotics_tracker.commands.medication_commands import (
     AddMedication,
     DeleteMedication,
     ListMedications,
+    LoadMedication,
     ReturnPreferredUnit,
     UpdateMedication,
 )
@@ -69,6 +70,7 @@ from narcotics_tracker.commands.reporting_period_commands import (
     AddReportingPeriod,
     DeleteReportingPeriod,
     ListReportingPeriods,
+    LoadReportingPeriod,
     UpdateReportingPeriod,
 )
 from narcotics_tracker.commands.status_commands import (

@@ -40,26 +40,27 @@ class Test_ReportingPeriodStorage:
         - ReportingPeriods can be removed from the inventory table.
         - ReportingPeriods can be read from the inventory table.
         - ReportingPeriods can be updated.
+        - ReportingPeriods can be loaded from data.
     """
 
-    def test_ReportingPeriods_can_be_added_to_db(self, reporting_period) -> None:
-        reporting_period = reporting_period
+    def test_ReportingPeriods_can_be_added_to_db(self, test_reporting_period) -> None:
+        test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
 
-        commands.AddReportingPeriod(sq_man).execute(reporting_period)
+        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
 
         cursor = sq_man.read(table_name="reporting_periods")
         reporting_period_ids = return_ids(cursor)
         assert -1 in reporting_period_ids
 
     def test_ReportingPeriods_can_be_removed_from_db(
-        self, reset_database, reporting_period
+        self, reset_database, test_reporting_period
     ):
-        reporting_period = reporting_period
+        test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(reporting_period)
+        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
 
         commands.DeleteReportingPeriod(sq_man).execute(-1)
 
@@ -68,24 +69,24 @@ class Test_ReportingPeriodStorage:
         assert -1 not in reporting_period_id
 
     def test_ReportingPeriods_can_be_read_from_db(
-        self, reset_database, reporting_period
+        self, reset_database, test_reporting_period
     ):
-        reporting_period = reporting_period
+        test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(reporting_period)
+        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
 
         data = commands.ListReportingPeriods(sq_man).execute()
 
         assert data != None
 
     def test_reporting_periods_can_be_updated_in_db(
-        self, reset_database, reporting_period
+        self, reset_database, test_reporting_period
     ) -> None:
-        reporting_period = reporting_period
+        test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(reporting_period)
+        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
 
         commands.UpdateReportingPeriod(sq_man).execute(
             data={"status": "NEW STATUS"}, criteria={"id": -1}
@@ -96,3 +97,14 @@ class Test_ReportingPeriodStorage:
         )[0]
 
         assert "NEW STATUS" in returned_reporting_period
+
+    def test_reporting_periods_can_be_loaded_from_data(
+        self, setup_integration_db
+    ) -> None:
+        sq_man = SQLiteManager("integration_test.db")
+        criteria = {"id": 2200001}
+        period_data = commands.ListReportingPeriods(sq_man).execute(criteria)[-1]
+
+        period = commands.LoadReportingPeriod().execute(period_data)
+        expected = "Reporting Period #2200001: Start Date: 07-23-2022 00:00:00, End Date: None, Current Status: OPEN."
+        assert str(period) == expected

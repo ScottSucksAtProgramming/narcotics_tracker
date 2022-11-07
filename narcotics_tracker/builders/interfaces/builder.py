@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
 
-class BuilderInterface(Protocol):
+class Builder(Protocol):
     """Defines the protocol for concrete DataItem builders.
 
     Abstract Methods:

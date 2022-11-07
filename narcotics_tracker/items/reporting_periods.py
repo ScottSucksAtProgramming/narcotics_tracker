@@ -6,6 +6,7 @@ Classes:
 from dataclasses import dataclass
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+from narcotics_tracker.services.service_manager import ServiceManager
 
 
 @dataclass
@@ -26,4 +27,9 @@ class ReportingPeriod(DataItem):
     status: str
 
     def __str__(self) -> str:
-        return f"Reporting Period #{self.id}: Start Date: {self.start_date}, End Date: {self.end_date}, Current Status: {self.status}."
+        start_date = ServiceManager().datetime.convert_to_string(self.start_date)
+        if self.end_date is not None:
+            end_date = ServiceManager().datetime.convert_to_string(self.end_date)
+        else:
+            end_date = "None"
+        return f"Reporting Period #{self.id}: Start Date: {start_date}, End Date: {end_date}, Current Status: {self.status}."

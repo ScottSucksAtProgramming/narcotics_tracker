@@ -50,7 +50,7 @@ class Test_ReportingPeriod:
     def test_periods_return_expected_string(self) -> None:
         assert (
             str(self.test_period)
-            == "Reporting Period #-1: Start Date: 1666061200, End Date: 1666061200, Current Status: unfinished."
+            == "Reporting Period #-1: Start Date: 10-17-2022 22:46:40, End Date: 10-17-2022 22:46:40, Current Status: unfinished."
         )
 
     def test_periods_return_expected_dictionary(self) -> None:

@@ -8,6 +8,8 @@ from narcotics_tracker.builders.reporting_period_builder import ReportingPeriodB
 from narcotics_tracker.configuration.standard_items import StandardItemCreator
 from narcotics_tracker.scripts import setup
 from narcotics_tracker.services.datetime_manager import DateTimeManager
+from narcotics_tracker.services.interfaces.service_provider import ServiceProvider
+from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 if TYPE_CHECKING:
@@ -20,34 +22,17 @@ dt_man = DateTimeManager()
 
 def main():
     """Sets up the narcotics database for WLVAC."""
-    # * Initialize objects and Create Database File.
-    sq_man = SQLiteManager("inventory_wlvac.db")
-    std_creator = StandardItemCreator()
-
-    # * Add Tables.
-    # setup.create_tables(sq_man, setup.return_tables_list())
-
-    # * Populate Database with Standard Items.
-    events = std_creator.create_events()
-    setup.populate_events(sq_man, events)
-
-    statuses = std_creator.create_statuses()
-    setup.populate_statuses(sq_man, statuses)
-
-    units = std_creator.create_units()
-    setup.populate_units(sq_man, units)
-
     # * Populate Database with WLVAC Medications.
-    # meds = build_wlvac_meds()
+    meds = build_wlvac_meds()
 
-    # for medication in meds:
-    #     commands.AddMedication(sq_man, medication).execute()
+    for medication in meds:
+        commands.AddMedication().execute(medication)
 
     # * Populate Database with Reporting Periods for 2022.
-    # periods = build_reporting_periods(dt_man)
+    periods = build_reporting_periods()
 
-    # for period in periods:
-    #     commands.AddReportingPeriod(sq_man, period).execute()
+    for period in periods:
+        commands.AddReportingPeriod().execute(period)
 
 
 def build_wlvac_meds() -> list["Medication"]:
@@ -72,9 +57,9 @@ def build_wlvac_meds() -> list["Medication"]:
         med_builder.set_medication_code("midazolam")
         .set_medication_name("Midazolam")
         .set_fill_amount(2)
-        .set_medication_amount(1000)
+        .set_medication_amount(10)
         .set_preferred_unit("mg")
-        .set_concentration(5)
+        .set_concentration()
         .set_status("ACTIVE")
         .set_created_date(dt_man.return_current())
         .set_modified_date(dt_man.return_current())
@@ -85,9 +70,9 @@ def build_wlvac_meds() -> list["Medication"]:
         med_builder.set_medication_code("morphine")
         .set_medication_name("Morphine")
         .set_fill_amount(1)
-        .set_medication_amount(1000)
+        .set_medication_amount(10)
         .set_preferred_unit("mg")
-        .set_concentration(10)
+        .set_concentration()
         .set_status("ACTIVE")
         .set_created_date(dt_man.return_current())
         .set_modified_date(dt_man.return_current())
@@ -103,7 +88,7 @@ def build_wlvac_meds() -> list["Medication"]:
 
 
 def build_reporting_periods(
-    dt_manager: DateTimeManager,
+    dt_manager: DateTimeManager = ServiceManager().datetime,
 ) -> list["ReportingPeriod"]:
     """Builds Reporting Period Objects for 2022 and returns them as a list."""
     periods = []

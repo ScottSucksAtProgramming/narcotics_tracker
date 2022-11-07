@@ -41,26 +41,27 @@ class Test_MedicationStorage:
         - Medications can be read from the inventory table.
         - Medications can be updated.
         - Medication's preferred unit can be returned.
+        - Medication can be loaded from data.
     """
 
-    def test_medications_can_be_added_to_db(self, medication) -> None:
-        medication = medication
+    def test_medications_can_be_added_to_db(self, test_medication) -> None:
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
 
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         cursor = sq_man.read("medications")
         medication_ids = return_ids(cursor)
         assert -1 in medication_ids
 
     def test_medications_can_be_removed_from_db_using_ID(
-        self, reset_database, medication
+        self, reset_database, test_medication
     ):
-        medication = medication
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         commands.DeleteMedication(sq_man).execute(-1)
 
@@ -69,12 +70,12 @@ class Test_MedicationStorage:
         assert -1 not in medication_id
 
     def test_medications_can_be_removed_from_db_using_code(
-        self, reset_database, medication
+        self, reset_database, test_medication
     ):
-        medication = medication
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         commands.DeleteMedication(sq_man).execute("apap")
 
@@ -82,21 +83,23 @@ class Test_MedicationStorage:
         medication_id = return_ids(cursor)
         assert -1 not in medication_id
 
-    def test_medications_can_be_read_from_db(self, reset_database, medication):
-        medication = medication
+    def test_medications_can_be_read_from_db(self, reset_database, test_medication):
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         data = commands.ListMedications(sq_man).execute()
 
         assert data != None
 
-    def test_medications_can_be_updated_in_db(self, reset_database, medication) -> None:
-        medication = medication
+    def test_medications_can_be_updated_in_db(
+        self, reset_database, test_medication
+    ) -> None:
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         commands.UpdateMedication(sq_man).execute(
             data={"medication_code": "NEW CODE"}, criteria={"medication_code": "apap"}
@@ -106,14 +109,26 @@ class Test_MedicationStorage:
 
         assert "NEW CODE" in returned_medication
 
-    def test_preferred_unit_can_be_returned(self, reset_database, medication) -> None:
-        medication = medication
+    def test_preferred_unit_can_be_returned(
+        self, reset_database, test_medication
+    ) -> None:
+        test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(medication)
+        commands.AddMedication(sq_man).execute(test_medication)
 
         results = commands.medication_commands.ReturnPreferredUnit(sq_man).execute(
             "apap"
         )
 
         assert results == "mcg"
+
+    def test_can_load_medication(self, setup_integration_db):
+        sq_man = SQLiteManager("integration_test.db")
+        criteria = {"medication_code": "fentanyl"}
+        med_data = commands.ListMedications(sq_man).execute(criteria)[0]
+
+        medication = commands.LoadMedication().execute(med_data)
+        expected = "Medication #1: Fentanyl (fentanyl) 100.0 mcg in 2.0 ml."
+
+        assert str(medication) == expected

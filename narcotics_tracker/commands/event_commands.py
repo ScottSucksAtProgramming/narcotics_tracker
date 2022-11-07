@@ -184,8 +184,8 @@ class ReturnEventModifier(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, event_code: str) -> int:
+    def execute(self, code: str) -> int:
         """Executes the command and returns the modifier."""
-        criteria = {"event_code": event_code}
+        criteria = {"event_code": code}
         cursor = self._receiver.read("events", criteria)
         return cursor.fetchall()[0][4]

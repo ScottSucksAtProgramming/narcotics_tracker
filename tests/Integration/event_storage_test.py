@@ -61,22 +61,22 @@ class Test_EventStorage:
         - Event's Modifier can be returned.
     """
 
-    def test_events_can_be_added_to_db(self, event) -> None:
-        event = event
+    def test_events_can_be_added_to_db(self, reset_database, test_event) -> None:
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
 
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         cursor = sq_man.read(table_name="events")
         event_ids = return_ids(cursor)
         assert -77 in event_ids
 
-    def test_events_can_be_removed_from_db_using_ID(self, reset_database, event):
-        event = event
+    def test_events_can_be_removed_from_db_using_ID(self, reset_database, test_event):
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         commands.DeleteEvent(sq_man).execute(-1)
 
@@ -84,11 +84,11 @@ class Test_EventStorage:
         event_id = return_ids(cursor)
         assert -1 not in event_id
 
-    def test_events_can_be_removed_from_db_using_code(self, reset_database, event):
-        event = event
+    def test_events_can_be_removed_from_db_using_code(self, reset_database, test_event):
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         commands.DeleteEvent(sq_man).execute("TEST")
 
@@ -96,21 +96,21 @@ class Test_EventStorage:
         event_id = return_ids(cursor)
         assert -1 not in event_id
 
-    def test_events_can_be_read_from_db(self, reset_database, event):
-        event = event
+    def test_events_can_be_read_from_db(self, reset_database, test_event):
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         data = commands.ListEvents(sq_man).execute()
 
         assert data != None
 
-    def test_events_can_be_updated_in_db(self, reset_database, event) -> None:
-        event = event
+    def test_events_can_be_updated_in_db(self, reset_database, test_event) -> None:
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         commands.UpdateEvent(sq_man).execute(
             data={"event_code": "NEW CODE"}, criteria={"event_code": "TEST"}
@@ -120,11 +120,20 @@ class Test_EventStorage:
 
         assert "NEW CODE" in returned_event
 
-    def test_event_modifier_can_be_returned(self, reset_database, event) -> None:
-        event = event
+    def test_event_modifier_can_be_returned(self, reset_database, test_event) -> None:
+        test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(event)
+        commands.AddEvent(sq_man).execute(test_event)
 
         results = commands.event_commands.ReturnEventModifier(sq_man).execute("TEST")
         assert results == 999
+
+    def test_event_modifier_can_be_returned(self, reset_database, test_event) -> None:
+        # test_event = test_event
+        # sq_man = SQLiteManager("data_item_storage_tests.db")
+        # commands.CreateEventsTable(sq_man).execute()
+        # commands.AddEvent(sq_man).execute(test_event)
+
+        results = commands.event_commands.ReturnEventModifier().execute("USE")
+        assert results == -1
