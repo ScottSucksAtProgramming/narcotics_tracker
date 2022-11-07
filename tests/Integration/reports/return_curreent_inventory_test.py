@@ -19,7 +19,7 @@ class Test_ReturnCurrentInventory:
     def test_report_returns_correct_results(self, setup_integration_db) -> None:
         sq_man = SQLiteManager("integration_test.db")
 
-        results = ReturnCurrentInventory(sq_man).execute()
+        results = ReturnCurrentInventory(sq_man).run()
 
         expected = [
             {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg", "amount": 3790.0},

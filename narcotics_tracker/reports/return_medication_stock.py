@@ -29,7 +29,7 @@ class ReturnMedicationStock(Report):
         if receiver:
             self._receiver = receiver
 
-    def execute(self, med_code: str) -> float:
+    def run(self, med_code: str) -> float:
         """Runs the report and returns the amount of the medication on hand.
 
         Args:

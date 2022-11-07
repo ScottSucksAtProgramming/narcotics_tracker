@@ -41,7 +41,7 @@ class BiAnnualNarcoticsInventory(Report):
         if converter:
             self._converter = converter
 
-    def execute(self) -> dict[str, int]:
+    def run(self) -> dict[str, int]:
         self._period = self._get_current_reporting_period()
         self._medications = self._get_active_medications()
         self._report = self._build_report_dictionary(self._medications)

@@ -355,7 +355,7 @@ class Test_BiAnnualNarcoticsInventory:
 
     def test_can_calculate_ending_amount(self):
         sq_man = SQLiteManager("integration_test.db")
-        report = BiAnnualNarcoticsInventory(sq_man).execute()
+        report = BiAnnualNarcoticsInventory(sq_man).run()
         result = report[2200001]["fentanyl"]["ending_amount"]
 
         assert result == 75.8

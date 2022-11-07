@@ -18,6 +18,6 @@ class Test_ReturnMedicationStock:
     def test_report_returns_correct_results(self, setup_integration_db):
         sq_man = SQLiteManager("integration_test.db")
 
-        current_fentanyl = ReturnMedicationStock(sq_man).execute("fentanyl")
+        current_fentanyl = ReturnMedicationStock(sq_man).run("fentanyl")
 
         assert current_fentanyl == 379000.0

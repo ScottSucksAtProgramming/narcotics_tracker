@@ -16,9 +16,9 @@ class Report(Protocol):
     _receiver: "PersistenceService"
 
     def __init__(self):
-        """Initalizes the Report, sets any needed services."""
+        """Initializes the Report, sets any needed services."""
         ...
 
-    def execute(self):
+    def run(self):
         """Runs the report. Accepts parameters required by the receiver."""
         ...

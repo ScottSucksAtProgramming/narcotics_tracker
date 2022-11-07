@@ -7,7 +7,7 @@ from narcotics_tracker import reports
 
 def main():
     os.system("clear")
-    totals = reports.ReturnCurrentInventory().execute()
+    totals = reports.ReturnCurrentInventory().run()
 
     strings = _make_strings(totals)
 

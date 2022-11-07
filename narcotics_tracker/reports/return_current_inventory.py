@@ -31,7 +31,7 @@ class ReturnCurrentInventory(Report):
         if receiver:
             self._receiver = receiver
 
-    def execute(self) -> list[dict]:
+    def run(self) -> list[dict]:
         """Runs Report. Returns results as a list of dictionaries.
 
         Returns:
@@ -59,7 +59,7 @@ class ReturnCurrentInventory(Report):
     def _add_amounts(self, medication_info: list[dict]) -> list[dict]:
         """Adds current amounts for each medication in the list and returns it."""
         for med in medication_info:
-            amount = reports.ReturnMedicationStock(self._receiver).execute(med["code"])
+            amount = reports.ReturnMedicationStock(self._receiver).run(med["code"])
             med["amount"] = amount
 
         return medication_info
