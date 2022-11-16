@@ -142,5 +142,6 @@
     "explorer.excludeGitIgnore": false,
     "explorer.sortOrder": "filesFirst",
     "vsicons.presets.hideExplorerArrows": true,
-    "explorer.fileNesting.enabled": false
+    "explorer.fileNesting.enabled": false,
+    "terminal.explorerKind": "external"
 }

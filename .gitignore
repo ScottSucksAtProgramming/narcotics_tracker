@@ -62,6 +62,7 @@ __pycache__
 Alternate Contracts/
 Demo Metadata/
 deployment_resources/
+*.bkup
 
 
 GitCommitMessage.*
