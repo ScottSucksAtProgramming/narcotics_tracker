@@ -4,7 +4,7 @@
         ConversionService: Protocol for unit converters.
 """
 
-from typing import Protocol
+from typing import Protocol, Union
 
 
 class ConversionService(Protocol):
@@ -34,11 +34,19 @@ class ConversionService(Protocol):
         to_milliliters: Returns an amount of medication in milliliters.
     """
 
-    def to_standard() -> float:
-        ...
+    def to_standard(self, amount: Union[int, float], preferred_unit: str) -> float:
+        """Converts from preferred to standard unit."""
 
-    def to_preferred() -> float:
-        ...
+        return 0
 
-    def to_milliliters() -> float:
-        ...
+    def to_preferred(self, amount: Union[int, float], preferred_unit: str) -> float:
+        """Converts from standard to preferred unit."""
+
+        return 0
+
+    def to_milliliters(
+        self, amount: Union[int, float], preferred_unit: str, concentration: float
+    ) -> float:
+        """Converts from the preferred unit to milliliters."""
+
+        return 0
