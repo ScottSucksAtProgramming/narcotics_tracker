@@ -30,6 +30,7 @@ class DataItemBuilder(Builder):
     """
 
     _service_provider = ServiceManager()
+    _dataitem = None
 
     def __init__(self) -> None:
         """Calls the _reset method."""
@@ -73,10 +74,10 @@ class DataItemBuilder(Builder):
         self._dataitem.modified_by = modified_by
         return self
 
-    def build(self) -> None:
+    def build(self):
         """Returns the DataItem object."""
         raise NotImplementedError
 
-    def _reset(self) -> None:
+    def _reset(self):
         """Sets all attributes to default."""
         raise NotImplementedError
