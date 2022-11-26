@@ -22,5 +22,7 @@ class Builder(Protocol):
     def build(self) -> "DataItem":
         """Returns the constructed DataItem Object."""
 
+        return DataItem
+
     def _reset(self) -> None:
         """Removes all attributes values from the builder."""

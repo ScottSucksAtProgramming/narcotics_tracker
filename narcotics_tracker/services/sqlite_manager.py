@@ -1,7 +1,7 @@
 """Manages Communication with the SQLite3 Database.
 
-All information about controlled substance medications and their activities 
-are stored within an SQLite3 database. This module contains the objects 
+All information about controlled substance medications and their activities
+are stored within an SQLite3 database. This module contains the objects
 responsible for communicating with the database.
 
 Classes:
@@ -10,6 +10,7 @@ Classes:
 
 import os
 import sqlite3
+from typing import Optional, Union
 
 from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
@@ -51,7 +52,7 @@ class SQLiteManager(PersistenceService):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def add(self, table_name: str, data: dict[str]):
+    def add(self, table_name: str, data: dict[str, PersistenceService.db_types]):
         """Adds a new row to the database.
 
         Args:
@@ -59,7 +60,7 @@ class SQLiteManager(PersistenceService):
 
             data (dict[str]): A dictionary mapping column names to the values.
         """
-        placeholders = ", ".join("?" for key in data.keys())
+        placeholders = ", ".join("?" for _ in data.keys())
         column_names = ", ".join(data.keys())
 
         sql_statement = (
@@ -71,7 +72,10 @@ class SQLiteManager(PersistenceService):
         self._execute(sql_statement, column_values)
 
     def read(
-        self, table_name: str, criteria: dict[str] = {}, order_by: str = None
+        self,
+        table_name: str,
+        criteria: Optional[dict[str, Union[str, int, float]]] = None,
+        order_by: Optional[str] = None,
     ) -> sqlite3.Cursor:
         """Returns a cursor containing data from the database.
 
@@ -97,9 +101,14 @@ class SQLiteManager(PersistenceService):
         if order_by:
             sql_query += f" ORDER BY {order_by}"
 
-        return self._execute(sql_query, tuple(criteria.values()))
+        return self._execute(sql_query, tuple(criteria.values()) if criteria else None)
 
-    def update(self, table_name: str, data: dict[str], criteria: dict[str]) -> None:
+    def update(
+        self,
+        table_name: str,
+        data: dict[str, Union[str, int, float]],
+        criteria: dict[str, Union[str, int, float]],
+    ) -> None:
         """Updates a row in the database.
 
         Args:
@@ -127,7 +136,7 @@ class SQLiteManager(PersistenceService):
 
         self._execute(sql_statement, values)
 
-    def remove(self, table_name: str, criteria: dict[str]):
+    def remove(self, table_name: str, criteria: dict[str, Union[str, int, float]]):
         """Removes a row from the database.
 
         Args:
@@ -148,8 +157,8 @@ class SQLiteManager(PersistenceService):
     def create_table(
         self,
         table_name: str,
-        column_info: dict[str],
-        foreign_key_info: list[str] = None,
+        column_info: dict[str, Union[str, int, float]],
+        foreign_key_info: Optional[list[str]] = None,
     ) -> None:
         """Adds a table to the database.
 
@@ -178,7 +187,9 @@ class SQLiteManager(PersistenceService):
 
         self._execute(sql_statement)
 
-    def _execute(self, sql_statement: str, values: tuple[str] = None) -> sqlite3.Cursor:
+    def _execute(
+        self, sql_statement: str, values: Optional[tuple[Union[str, int, float]]] = None
+    ) -> sqlite3.Cursor:
         """Executes the sql statement, returns a cursor with any results.
 
         Args:

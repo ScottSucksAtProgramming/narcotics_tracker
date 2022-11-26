@@ -2,16 +2,13 @@
 
 Classes:
     ServiceProvider: Protocol for providing services.
-    
 """
 
+from typing import Protocol
 
-from typing import TYPE_CHECKING, Protocol
-
-if TYPE_CHECKING:
-    from narcotics_tracker.services.interfaces.conversion import ConversionService
-    from narcotics_tracker.services.interfaces.datetime import DateTimeService
-    from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from narcotics_tracker.services.interfaces.conversion import ConversionService
+from narcotics_tracker.services.interfaces.datetime import DateTimeService
+from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
 class ServiceProvider(Protocol):
@@ -35,11 +32,17 @@ class ServiceProvider(Protocol):
             conversion.
     """
 
-    def persistence() -> "PersistenceService":
-        ...
+    def persistence(self) -> "PersistenceService":
+        """Returns an instance of the persistence service."""
 
-    def datetime() -> "DateTimeService":
-        ...
+        return PersistenceService
 
-    def conversion() -> "ConversionService":
-        ...
+    def datetime(self) -> "DateTimeService":
+        """Returns an instance of the datetime service."""
+
+        return DateTimeService
+
+    def conversion(self) -> "ConversionService":
+        """Returns an instance of the unit conversion service."""
+
+        return "ConversionService"

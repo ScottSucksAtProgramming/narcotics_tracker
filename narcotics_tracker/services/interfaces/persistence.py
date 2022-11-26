@@ -4,7 +4,8 @@ Classes:
     PersistenceService: Protocol for communicating with a data repository.
     """
 
-from typing import Protocol
+
+from typing import Any, Optional, Protocol, Union
 
 
 class PersistenceService(Protocol):
@@ -23,14 +24,26 @@ class PersistenceService(Protocol):
         update: Updates data in the repository.
     """
 
-    def add():
-        ...
+    db_types = Union[str, int, float]
 
-    def remove():
-        ...
+    def add(self, table_name: str, data: dict[str, db_types]):
+        """Adds new data to the repository."""
 
-    def read():
-        ...
+    def remove(self, table_name: str, criteria: dict[str, db_types]):
+        """Deletes data from the repository."""
 
-    def update():
-        ...
+    def read(
+        self,
+        table_name: str,
+        criteria: dict[str, db_types],
+        order_by: Optional[str] = None,
+    ) -> Any:
+        """Returns data from the repository."""
+
+    def update(
+        self,
+        table_name: str,
+        data: dict[str, db_types],
+        criteria: dict[str, db_types],
+    ):
+        """Updates data in the repository."""

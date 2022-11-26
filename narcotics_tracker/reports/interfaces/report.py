@@ -17,8 +17,6 @@ class Report(Protocol):
 
     def __init__(self):
         """Initializes the Report, sets any needed services."""
-        ...
 
     def run(self):
         """Runs the report. Accepts parameters required by the receiver."""
-        ...

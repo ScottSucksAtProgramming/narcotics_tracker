@@ -12,7 +12,7 @@ Classes:
 
     UpdateAdjustment: Updates a Event with the given data and criteria.
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -101,7 +101,9 @@ class ListAdjustments(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
+    def execute(
+        self, criteria: dict[str] = {}, order_by: str = None
+    ) -> list[tuple["Adjustment"]]:
         """Executes the command and returns a list of Adjustments.
 
         Args:
@@ -134,7 +136,9 @@ class UpdateAdjustment(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
+    def execute(
+        self, data: dict[str, str], criteria: dict[str, Union[str, float]]
+    ) -> str:
         """Executes the update operation and returns a success message.
 
         Args:
@@ -147,4 +151,4 @@ class UpdateAdjustment(Command):
         """
         self._receiver.update("inventory", data, criteria)
 
-        return f"Adjustment data updated."
+        return "Adjustment data updated."

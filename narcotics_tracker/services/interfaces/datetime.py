@@ -28,14 +28,18 @@ class DateTimeService(Protocol):
         validate: Checks a date and converts it as necessary.
     """
 
-    def return_current() -> int:
-        ...
+    def return_current(self) -> int:
+        """Returns the current datetime as a unix timestamp."""
+        return 0
 
-    def convert_to_timestamp() -> int:
-        ...
+    def convert_to_timestamp(self) -> int:
+        """Converts a formatted string to a timestamp."""
+        return 0
 
-    def convert_to_string() -> str:
-        ...
+    def convert_to_string(self) -> str:
+        """Converts a timestamp to the formatted string."""
+        return ""
 
-    def validate() -> int:
-        ...
+    def validate(self) -> int:
+        """Checks a date and converts it as necessary."""
+        return 0

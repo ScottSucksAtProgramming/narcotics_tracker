@@ -257,7 +257,7 @@ class BiAnnualNarcoticsInventory(Report):
             destroyed = self._report[self._period.id][code]["amount_destroyed"]
             lost = self._report[self._period.id][code]["amount_lost"]
 
-            ending_amount = starting
+            ending_amount: int = starting
             ending_amount += received
             ending_amount -= used
             ending_amount -= wasted

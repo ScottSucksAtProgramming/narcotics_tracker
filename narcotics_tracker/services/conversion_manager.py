@@ -1,8 +1,8 @@
 """Handles conversion between different units.
 
-Controlled substance medications are measured in different units. 
+Controlled substance medications are measured in different units.
 
-The Preferred Unit is the unit that the medication is commonly measured in. 
+The Preferred Unit is the unit that the medication is commonly measured in.
 
 The Standard Unit is a measurement of mass stored as an integer in the data 
 repository. The Standard Unit allows for precision to be preserved to a 
@@ -16,9 +16,6 @@ always reported in milliliters.
 Classes:
     UnitConverter: Converts between different units of measurement.
 """
-
-
-from typing import Union
 
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 
@@ -38,7 +35,7 @@ class ConversionManager(ConversionService):
 
     _decimals = {"std": -8, "mcg": -6, "mg": -3, "g": 0}
 
-    def to_standard(self, amount: Union[int, float], preferred_unit: str) -> float:
+    def to_standard(self, amount: float, preferred_unit: str) -> float:
         """Returns an amount of medication in the standard unit.
 
             Args:
@@ -56,7 +53,7 @@ class ConversionManager(ConversionService):
 
         return round(result, 2)
 
-    def to_preferred(self, amount: Union[int, float], preferred_unit: str) -> float:
+    def to_preferred(self, amount: float, preferred_unit: str) -> float:
         """Returns an amount of medication in its preferred unit.
 
         Args:
@@ -75,7 +72,7 @@ class ConversionManager(ConversionService):
         return round(result, 2)
 
     def to_milliliters(
-        self, amount: Union[int, float], preferred_unit: str, concentration: float
+        self, amount: float, preferred_unit: str, concentration: float
     ) -> float:
         """Returns the volume of a medication (in ml) using its concentration.
 

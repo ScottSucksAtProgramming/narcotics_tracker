@@ -7,6 +7,7 @@ Classes:
 from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
+from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
 
@@ -45,11 +46,13 @@ class ReturnMedicationStock(Report):
     def _return_adjustment_amounts(self, med_code: str) -> list[float]:
         """Returns a list of all adjustment amounts for the specified med_code."""
         criteria = {"medication_code": med_code}
-        adj_data = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_data: list[tuple[Adjustment]] = commands.ListAdjustments(
+            self._receiver
+        ).execute(criteria)
 
         return self._extract_adjustment_amounts(adj_data)
 
-    def _extract_adjustment_amounts(self, adjustments_list: list[tuple]):
+    def _extract_adjustment_amounts(self, adjustments_list: list[tuple[int]]):
         """Extracts amounts from a list of adjustment data. Returns as a list."""
         amounts_list = []
 
