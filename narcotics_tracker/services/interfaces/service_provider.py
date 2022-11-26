@@ -4,11 +4,7 @@ Classes:
     ServiceProvider: Protocol for providing services.
 """
 
-from typing import Protocol
-
-from narcotics_tracker.services.interfaces.conversion import ConversionService
-from narcotics_tracker.services.interfaces.datetime import DateTimeService
-from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from typing import Any, Protocol
 
 
 class ServiceProvider(Protocol):
@@ -32,17 +28,11 @@ class ServiceProvider(Protocol):
             conversion.
     """
 
-    def persistence(self) -> "PersistenceService":
+    def persistence(self) -> Any:
         """Returns an instance of the persistence service."""
 
-        return PersistenceService
-
-    def datetime(self) -> "DateTimeService":
+    def datetime(self) -> Any:
         """Returns an instance of the datetime service."""
 
-        return DateTimeService
-
-    def conversion(self) -> "ConversionService":
+    def conversion(self) -> Any:
         """Returns an instance of the unit conversion service."""
-
-        return "ConversionService"
