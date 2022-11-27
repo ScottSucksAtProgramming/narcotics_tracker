@@ -4,7 +4,7 @@ Classes:
     DatetimeService: Protocol for working with datetimes.
 """
 
-from typing import Protocol
+from typing import Protocol, Union
 
 
 class DateTimeService(Protocol):
@@ -28,18 +28,20 @@ class DateTimeService(Protocol):
         validate: Checks a date and converts it as necessary.
     """
 
+    _date_types = Union[int, str]
+
     def return_current(self) -> int:
         """Returns the current datetime as a unix timestamp."""
         return 0
 
-    def convert_to_timestamp(self) -> int:
+    def convert_to_timestamp(self, string_datetime: str) -> int:
         """Converts a formatted string to a timestamp."""
         return 0
 
-    def convert_to_string(self) -> str:
+    def convert_to_string(self, timestamp: int) -> str:
         """Converts a timestamp to the formatted string."""
         return ""
 
-    def validate(self) -> int:
+    def validate(self, date: _date_types) -> int:
         """Checks a date and converts it as necessary."""
         return 0
