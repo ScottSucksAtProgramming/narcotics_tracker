@@ -13,6 +13,7 @@ import sqlite3
 from typing import Optional, Union
 
 from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from narcotics_tracker.typings import NTTypes
 
 
 class SQLiteManager(PersistenceService):
@@ -52,7 +53,7 @@ class SQLiteManager(PersistenceService):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def add(self, table_name: str, data: dict[str, PersistenceService.db_types]):
+    def add(self, table_name: str, data: dict[str, NTTypes.sqlite_types]):
         """Adds a new row to the database.
 
         Args:

@@ -5,7 +5,9 @@ Classes:
     """
 
 
-from typing import Any, Optional, Protocol, Union
+from typing import Any, Optional, Protocol
+
+from narcotics_tracker.typings import NTTypes
 
 
 class PersistenceService(Protocol):
@@ -24,18 +26,16 @@ class PersistenceService(Protocol):
         update: Updates data in the repository.
     """
 
-    db_types = Union[str, int, float]
-
-    def add(self, table_name: str, data: dict[str, db_types]):
+    def add(self, table_name: str, data: dict[str, NTTypes.sqlite_types]):
         """Adds new data to the repository."""
 
-    def remove(self, table_name: str, criteria: dict[str, db_types]):
+    def remove(self, table_name: str, criteria: dict[str, NTTypes.sqlite_types]):
         """Deletes data from the repository."""
 
     def read(
         self,
         table_name: str,
-        criteria: dict[str, db_types],
+        criteria: dict[str, NTTypes.sqlite_types],
         order_by: Optional[str] = None,
     ) -> Any:
         """Returns data from the repository."""
@@ -43,7 +43,7 @@ class PersistenceService(Protocol):
     def update(
         self,
         table_name: str,
-        data: dict[str, db_types],
-        criteria: dict[str, db_types],
+        data: dict[str, NTTypes.sqlite_types],
+        criteria: dict[str, NTTypes.sqlite_types],
     ):
         """Updates data in the repository."""
