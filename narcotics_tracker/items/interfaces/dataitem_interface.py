@@ -1,6 +1,6 @@
 """Defines the interface for items stored in the database.
 
-Classes: 
+Classes:
     DatabaseItems: The interface for items which are stored in the database.
 """
 from abc import ABC, abstractmethod

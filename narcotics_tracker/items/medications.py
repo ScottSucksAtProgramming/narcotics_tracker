@@ -42,4 +42,8 @@ class Medication(DataItem):
         medication_amount = converter.to_preferred(
             self.medication_amount, self.preferred_unit
         )
-        return f"Medication #{self.id}: {self.medication_name} ({self.medication_code}) {medication_amount} {self.preferred_unit} in {self.fill_amount} ml."
+        return (
+            f"Medication #{self.id}: {self.medication_name} "
+            f"({self.medication_code}) {medication_amount} "
+            f"{self.preferred_unit} in {self.fill_amount} ml."
+        )

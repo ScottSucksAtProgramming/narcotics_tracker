@@ -1,6 +1,6 @@
 """Defines the changes which occur to the inventory.
 
-Classes: 
+Classes:
     Adjustment: A change which occurred to the inventory.
 """
 
@@ -35,4 +35,7 @@ class Adjustment(DataItem):
     reporting_period_id: int
 
     def __str__(self) -> str:
-        return f"Adjustment #{self.id}: {self.medication_code} adjusted by {self.amount} due to {self.event_code} on {self.adjustment_date}."
+        return (
+            f"Adjustment #{self.id}: {self.medication_code} adjusted by "
+            f"{self.amount} due to {self.event_code} on {self.adjustment_date}."
+        )

@@ -1,6 +1,6 @@
 """Defines the types of events which can affect the inventory.
 
-Classes: 
+Classes:
     Event: A type of event which can affect the inventory.
 """
 from dataclasses import dataclass

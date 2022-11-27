@@ -32,4 +32,8 @@ class ReportingPeriod(DataItem):
             end_date = ServiceManager().datetime.convert_to_string(self.end_date)
         else:
             end_date = "None"
-        return f"Reporting Period #{self.id}: Start Date: {start_date}, End Date: {end_date}, Current Status: {self.status}."
+
+        return (
+            f"Reporting Period #{self.id}: Start Date: {start_date}, "
+            f"End Date: {end_date}, Current Status: {self.status}."
+        )
