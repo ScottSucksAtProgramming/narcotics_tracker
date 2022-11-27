@@ -28,11 +28,14 @@ class ServiceProvider(Protocol):
             conversion.
     """
 
+    @property
     def persistence(self) -> Any:
         """Returns an instance of the persistence service."""
 
+    @property
     def datetime(self) -> Any:
-        """Returns an instance of the datetime service."""
+        """Returns an instance of the object which handles datetimes."""
 
+    @property
     def conversion(self) -> Any:
         """Returns an instance of the unit conversion service."""
