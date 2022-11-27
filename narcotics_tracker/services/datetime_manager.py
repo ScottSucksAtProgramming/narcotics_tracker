@@ -29,7 +29,7 @@ class DateTimeManager(DateTimeService):
     _datetime_package: object = pendulum
 
     def __init__(
-        self, dt_pkg: Optional[object], time_zone: str = "America/New_York"
+        self, dt_pkg: Optional[object] = None, time_zone: str = "America/New_York"
     ) -> None:
         """Assigns the datetime package, and timezone.
 
