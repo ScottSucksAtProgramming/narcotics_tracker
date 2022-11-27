@@ -1,3 +1,9 @@
+"""Contains the ServiceManager which sets and provides services.
+
+Classes:
+    ServiceManager: Provides access to the services used by the Narcotics 
+        Tracker.
+"""
 from typing import TYPE_CHECKING
 
 from narcotics_tracker.services.conversion_manager import ConversionManager
@@ -26,15 +32,15 @@ class ServiceManager(ServiceProvider):
         conversion: Returns an instance of the conversion service.
     """
 
-    _persistence: "PersistenceService" = SQLiteManager
     _database: str = "inventory.db"
-    _datetime: "DateTimeService" = DateTimeManager
-    _conversion: "ConversionService" = ConversionManager
+    _persistence = SQLiteManager(_database)
+    _datetime = DateTimeManager()
+    _conversion = ConversionManager()
 
     @property
     def persistence(self) -> "PersistenceService":
         """Returns an instance of the persistence service."""
-        return self._persistence(self._database)
+        return self._persistence
 
     @persistence.setter
     def persistence(self, value: "PersistenceService"):
@@ -47,12 +53,12 @@ class ServiceManager(ServiceProvider):
 
     @database.setter
     def database(self, value: str):
-        self._database = value
+        self._database: str = value
 
     @property
     def datetime(self) -> "DateTimeService":
         """Returns an instance of the datetime service."""
-        return self._datetime()
+        return self._datetime
 
     @datetime.setter
     def datetime(self, value: "DateTimeService"):
@@ -61,7 +67,7 @@ class ServiceManager(ServiceProvider):
     @property
     def conversion(self) -> "ConversionService":
         """Returns an instance of the conversion service."""
-        return self._conversion()
+        return self._conversion
 
     @conversion.setter
     def conversion(self, value: "ConversionService"):
