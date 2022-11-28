@@ -67,7 +67,7 @@ class Test_UnitStorage:
         commands.CreateUnitsTable(sq_man).execute()
         commands.AddUnit(sq_man).set_unit(test_unit).execute()
 
-        commands.DeleteUnit(sq_man).execute(unit_identifier=-1)
+        commands.DeleteUnit(sq_man).set_identifier(unit_identifier=-1).execute()
 
         cursor = sq_man.read(table_name="units")
         unit_id = return_ids(cursor)
@@ -81,7 +81,7 @@ class Test_UnitStorage:
         commands.CreateUnitsTable(sq_man).execute()
         commands.AddUnit(sq_man).set_unit(test_unit).execute()
 
-        commands.DeleteUnit(sq_man).execute(unit_identifier="dg")
+        commands.DeleteUnit(sq_man).set_identifier(unit_identifier="dg").execute()
 
         cursor = sq_man.read(table_name="units")
         unit_id = return_ids(cursor)
@@ -107,10 +107,12 @@ class Test_UnitStorage:
         commands.CreateUnitsTable(sq_man).execute()
         commands.AddUnit(sq_man).set_unit(test_unit).execute()
 
-        commands.UpdateUnit(sq_man).execute(
+        commands.UpdateUnit(sq_man).set_data(
             data={"unit_code": "NEW CODE"}, criteria={"unit_code": "dg"}
-        )
+        ).execute()
 
-        returned_unit = commands.ListUnits(sq_man).execute(criteria={"id": -1})[0]
+        returned_unit = (
+            commands.ListUnits(sq_man).set_parameters(criteria={"id": -1}).execute()[0]
+        )
 
         assert "NEW CODE" in returned_unit

@@ -70,7 +70,10 @@ class DeleteUnit(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types
+    _unit_identifier: Union[str, int]
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """ "Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -82,22 +85,30 @@ class DeleteUnit(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, unit_identifier: Union[str, int]) -> str:
+    def set_identifier(self, unit_identifier: Union[str, int]) -> "Command":
+        """Sets the identifier of the unit being deleted."""
+
+        self._unit_identifier = unit_identifier
+
+        if isinstance(unit_identifier, int):
+            self._criteria = {"id": unit_identifier}
+
+        if isinstance(unit_identifier, str):
+            self._criteria = {"unit_code": unit_identifier}
+
+        return self
+
+    def execute(self) -> str:
         """Executes the delete operation and returns a success message.
 
         Args:
             unit_identifier (str, int): The unit code or id number of the unit
                 to be deleted.
         """
-        if type(unit_identifier) is int:
-            criteria = {"id": unit_identifier}
 
-        if type(unit_identifier) is str:
-            criteria = {"unit_code": unit_identifier}
+        self._receiver.remove("units", self._criteria)
 
-        self._receiver.remove("units", criteria)
-
-        return f"Unit {unit_identifier} deleted."
+        return f"Unit {self._unit_identifier} deleted."
 
 
 class ListUnits(Command):
@@ -105,6 +116,9 @@ class ListUnits(Command):
 
     execute: Executes the query and returns a list of Units.
     """
+
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -118,10 +132,12 @@ class ListUnits(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(
-        self, criteria: NTTypes.sqlite_types = {}, order_by: Optional[str] = None
-    ) -> list[tuple[str, NTTypes.sqlite_types]]:
-        """Executes the query and returns a list of Units.
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
 
         Args:
             criteria (dict[str, any]): The criteria of Units to be returned as
@@ -130,7 +146,17 @@ class ListUnits(Command):
             order_by (str): The column name by which the results will be
                 sorted.
         """
-        cursor = self._receiver.read("units", criteria, order_by)
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
+
+    def execute(self) -> list[tuple[str, NTTypes.sqlite_types]]:
+        """Executes the query and returns a list of Units."""
+        cursor = self._receiver.read("units", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -141,7 +167,10 @@ class UpdateUnit(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -153,10 +182,10 @@ class UpdateUnit(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(
+    def set_data(
         self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
-    ) -> str:
-        """Executes the update operation and returns a success message.
+    ) -> "Command":
+        """Sets the data and criteria for the update.
 
         Args:
             data (dict[str, any]): The new data to update the Unit with as a
@@ -166,6 +195,13 @@ class UpdateUnit(Command):
                 to be updated as a dictionary mapping the column name to its
                 value.
         """
-        self._receiver.update("units", data, criteria)
+        self._data = data
+        self._criteria = criteria
+
+        return self
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self._receiver.update("units", self._data, self._criteria)
 
         return "Unit data updated."

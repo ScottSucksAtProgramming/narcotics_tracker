@@ -4,7 +4,7 @@ Classes:
     SQLiteCommand: The interface for SQLite3 database commands.
 
 """
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Any, Optional, Protocol
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -22,6 +22,5 @@ class Command(Protocol):
     def __init__(self, receiver: "PersistenceService") -> None:
         """Sets the receiver of the command."""
 
-    def execute(self) -> str:
+    def execute(self) -> Optional[Any]:
         """Executes the command. Accepts parameters required by the receiver."""
-        return ""
