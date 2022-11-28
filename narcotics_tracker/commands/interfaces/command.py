@@ -22,5 +22,6 @@ class Command(Protocol):
     def __init__(self, receiver: "PersistenceService") -> None:
         """Sets the receiver of the command."""
 
-    def execute(self) -> None:
+    def execute(self) -> str:
         """Executes the command. Accepts parameters required by the receiver."""
+        return ""

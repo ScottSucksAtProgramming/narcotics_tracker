@@ -233,7 +233,7 @@ def populate_standard_items(receiver):
 
         units = StandardItemCreator().create_units()
         for unit in units:
-            commands.AddUnit(receiver).execute(unit)
+            commands.AddUnit(receiver).set_unit(unit).execute()
     except sqlite3.IntegrityError as e:
         pass
 

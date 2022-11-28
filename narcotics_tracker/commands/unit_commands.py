@@ -12,10 +12,11 @@ Classes:
 
     UpdateUnit: Updates a Unit with the given data and criteria.
 """
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.units import Unit
@@ -29,7 +30,9 @@ class AddUnit(Command):
         execute: Executes add row operation, returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _unit: "Unit"
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -41,13 +44,18 @@ class AddUnit(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, unit: "Unit") -> str:
+    def set_unit(self, unit: "Unit") -> "Command":
+        """Sets the unit which will be added to the database."""
+        self._unit: "Unit" = unit
+        return self
+
+    def execute(self) -> str:
         """Executes add row operation, returns a success message.
 
         Args:
             unit (Unit): The Unit object to be added to the database.
         """
-        unit_info = vars(unit)
+        unit_info = vars(self._unit)
         table_name = unit_info.pop("table")
 
         self._receiver.add(table_name, unit_info)
@@ -98,7 +106,7 @@ class ListUnits(Command):
     execute: Executes the query and returns a list of Units.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -111,8 +119,8 @@ class ListUnits(Command):
             self._receiver = ServiceManager().persistence
 
     def execute(
-        self, criteria: dict[str, any] = {}, order_by: str = None
-    ) -> list[tuple]:
+        self, criteria: NTTypes.sqlite_types = {}, order_by: Optional[str] = None
+    ) -> list[tuple[str, NTTypes.sqlite_types]]:
         """Executes the query and returns a list of Units.
 
         Args:
@@ -145,7 +153,9 @@ class UpdateUnit(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
+    def execute(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> str:
         """Executes the update operation and returns a success message.
 
         Args:
@@ -158,4 +168,4 @@ class UpdateUnit(Command):
         """
         self._receiver.update("units", data, criteria)
 
-        return f"Unit data updated."
+        return "Unit data updated."

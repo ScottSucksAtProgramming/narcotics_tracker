@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.events import Event
     from narcotics_tracker.items.statuses import Status
     from narcotics_tracker.items.units import Unit
+# pylint: ignore
 
 
 class StandardItemCreator:

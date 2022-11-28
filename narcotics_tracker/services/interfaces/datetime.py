@@ -4,7 +4,9 @@ Classes:
     DatetimeService: Protocol for working with datetimes.
 """
 
-from typing import Protocol, Union
+from typing import Protocol
+
+from narcotics_tracker.typings import NTTypes
 
 
 class DateTimeService(Protocol):
@@ -28,8 +30,6 @@ class DateTimeService(Protocol):
         validate: Checks a date and converts it as necessary.
     """
 
-    _date_types = Union[int, str]
-
     def return_current(self) -> int:
         """Returns the current datetime as a unix timestamp."""
         return 0
@@ -42,6 +42,6 @@ class DateTimeService(Protocol):
         """Converts a timestamp to the formatted string."""
         return ""
 
-    def validate(self, date: _date_types) -> int:
+    def validate(self, date: NTTypes.date_types) -> int:
         """Checks a date and converts it as necessary."""
         return 0
