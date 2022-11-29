@@ -87,9 +87,7 @@ class Test_UnitStorage:
         unit_id = return_ids(cursor)
         assert -1 not in unit_id
 
-    def test_units_can_be_read_from_db(
-        self, reset_database: Callable, test_unit: "Unit"
-    ):
+    def test_units_can_be_read_from_db(self, reset_database, test_unit: "Unit"):
         test_unit = test_unit
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateUnitsTable(sq_man).execute()

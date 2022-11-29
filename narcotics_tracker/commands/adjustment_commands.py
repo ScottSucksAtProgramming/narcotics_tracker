@@ -12,10 +12,11 @@ Classes:
 
     UpdateAdjustment: Updates a Event with the given data and criteria.
 """
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
@@ -89,7 +90,7 @@ class ListAdjustments(Command):
         execute: Executes the command and returns a list of Adjustment.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -102,7 +103,9 @@ class ListAdjustments(Command):
             self._receiver = ServiceManager().persistence
 
     def execute(
-        self, criteria: dict[str] = {}, order_by: str = None
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
     ) -> list[tuple["Adjustment"]]:
         """Executes the command and returns a list of Adjustments.
 
@@ -113,6 +116,9 @@ class ListAdjustments(Command):
             order_by (str): The column name by which the results will be
                 sorted.
         """
+        if criteria is None:
+            criteria = {}
+
         cursor = self._receiver.read("inventory", criteria, order_by)
         return cursor.fetchall()
 

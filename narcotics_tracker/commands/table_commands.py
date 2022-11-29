@@ -6,20 +6,20 @@ Classes:
 
     CreateEventsTable: Creates the 'events' table in the SQLite3 database.
 
-    CreateInventoryTable: Creates the 'inventory' table in the SQLite3 
+    CreateInventoryTable: Creates the 'inventory' table in the SQLite3
         database.
 
-    CreateMedicationsTable: Creates the 'medications' table in the SQLite3 
+    CreateMedicationsTable: Creates the 'medications' table in the SQLite3
         database.
 
-    CreateReportingPeriodsTable: Creates the 'reporting_periods' table in the 
+    CreateReportingPeriodsTable: Creates the 'reporting_periods' table in the
         SQLite3 database.
 
     CreateStatusesTable: Creates the 'statuses' table in the SQLite3 database.
 
     CreateUnitsTable: Creates the 'units' table in the SQLite3 database.
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -35,8 +35,8 @@ class CreateEventsTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "events"
-    _column_info = {
+    _table_name: str = "events"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "event_code": "TEXT NOT NULL UNIQUE",
         "event_name": "TEXT NOT NULL",
@@ -47,7 +47,7 @@ class CreateEventsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -71,8 +71,8 @@ class CreateInventoryTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "inventory"
-    _column_info = {
+    _table_name: str = "inventory"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "adjustment_date": "INTEGER NOT NULL",
         "event_code": "TEXT NOT NULL",
@@ -91,7 +91,7 @@ class CreateInventoryTable(Command):
         "FOREIGN KEY (reporting_period_id) REFERENCES reporting_periods (id) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -119,8 +119,8 @@ class CreateMedicationsTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "medications"
-    _column_info = {
+    _table_name: str = "medications"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "medication_code": "TEXT NOT NULL UNIQUE",
         "medication_name": "TEXT NOT NULL",
@@ -139,7 +139,7 @@ class CreateMedicationsTable(Command):
         "FOREIGN KEY (status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -165,8 +165,8 @@ class CreateReportingPeriodsTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "reporting_periods"
-    _column_info = {
+    _table_name: str = "reporting_periods"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "start_date": "INTEGER NOT NULL",
         "end_date": "INTEGER",
@@ -176,7 +176,7 @@ class CreateReportingPeriodsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -200,8 +200,8 @@ class CreateStatusesTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "statuses"
-    _column_info = {
+    _table_name: str = "statuses"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "status_code": "TEXT NOT NULL UNIQUE",
         "status_name": "TEXT NOT NULL",
@@ -211,7 +211,7 @@ class CreateStatusesTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -235,8 +235,8 @@ class CreateUnitsTable(Command):
         execute: Executes the command.
     """
 
-    _table_name = "units"
-    _column_info = {
+    _table_name: str = "units"
+    _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
         "unit_code": "TEXT NOT NULL UNIQUE",
         "unit_name": "TEXT NOT NULL",
@@ -246,7 +246,7 @@ class CreateUnitsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
