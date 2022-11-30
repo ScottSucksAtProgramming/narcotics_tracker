@@ -14,10 +14,11 @@ Classes:
 
     ReturnEventModifier: Returns an Event's modifier.
 """
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.events import Event
@@ -31,7 +32,9 @@ class AddEvent(Command):
         execute: Executes add row operation, returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _event: "Event"
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -43,14 +46,19 @@ class AddEvent(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, event: "Event") -> str:
-        """Executes add row operation, returns a success message.
+    def set_event(self, event: "Event") -> "Command":
+        """Sets the event which will be added to the database.
 
         Args:
             event (Event): The Event object to be added to the
                 database.
         """
-        event_info = vars(event)
+        self._event: "Event" = event
+        return self
+
+    def execute(self) -> str:
+        """Executes add row operation, returns a success message."""
+        event_info = vars(self._event)
         table_name = event_info.pop("table")
 
         self._receiver.add(table_name, event_info)
@@ -65,7 +73,10 @@ class DeleteEvent(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types
+    _event_identifier: Union[int, str]
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -77,22 +88,27 @@ class DeleteEvent(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, event_identifier: Union[int, str]) -> str:
-        """Executes the delete operation and returns a success message.
+    def set_id(self, event_identifier: Union[int, str]) -> "Command":
+        """Sets the ID of the Event to be deleted.
 
         Args:
-            event_identifier (str, int): The event code or id number
-                of the Event to be deleted.
+            event_id (str, int): The event code or id number of the Event to
+                be deleted.
         """
-        if type(event_identifier) is int:
-            criteria = {"id": event_identifier}
+        self._event_identifier = event_identifier
+        return self
 
-        if type(event_identifier) is str:
-            criteria = {"event_code": event_identifier}
+    def execute(self) -> str:
+        """Executes the delete operation and returns a success message."""
+        if isinstance(self._event_identifier, int):
+            self._criteria = {"id": self._event_identifier}
 
-        self._receiver.remove("events", criteria)
+        if isinstance(self._event_identifier, str):
+            self._criteria = {"event_code": self._event_identifier}
 
-        return f"Event {event_identifier} deleted."
+        self._receiver.remove("events", self._criteria)
+
+        return f"Event {self._event_identifier} deleted."
 
 
 class ListEvents(Command):
@@ -102,7 +118,10 @@ class ListEvents(Command):
         execute: Executes the command and returns a list of Events.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -114,19 +133,31 @@ class ListEvents(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(
-        self, criteria: dict[str, any] = {}, order_by: str = None
-    ) -> list[tuple]:
-        """Executes the command and returns a list of Events.
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
 
         Args:
-            criteria (dict[str, any]): The criteria of Events to be
-                returned as a dictionary mapping column names to their values.
+            criteria (dict[str, any]): The criteria of Event to be returned as
+                a dictionary mapping column names to their values.
 
             order_by (str): The column name by which the results will be
                 sorted.
         """
-        cursor = self._receiver.read("events", criteria, order_by)
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
+
+    def execute(self) -> list[tuple["Event"]]:
+        """Executes the command and returns a list of Events."""
+        cursor = self._receiver.read("events", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -137,7 +168,10 @@ class UpdateEvent(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -149,20 +183,29 @@ class UpdateEvent(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
-        """Executes the update operation and returns a success message.
+    def set_data(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> "Command":
+        """Sets the data and criteria for the update.
 
         Args:
-            data (dict[str, any]): The new data to update the Event
-            with as a dictionary mapping column names to their values.
+            data (dict[str, any]): The new data to update the Event with as a
+                dictionary mapping column names to their values.
 
-            criteria (dict[str, any]): The criteria to select which
-                Events are to be updated as a dictionary mapping the
-                column name to its value.
+            criteria (dict[str, any]): The criteria to select which events are
+                to be updated as a dictionary mapping the column name to its
+                value.
         """
-        self._receiver.update("events", data, criteria)
+        self._data = data
+        self._criteria = criteria
 
-        return f"Event data updated."
+        return self
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self._receiver.update("events", self._data, self._criteria)
+
+        return "Event data updated."
 
 
 class ReturnEventModifier(Command):
@@ -172,7 +215,10 @@ class ReturnEventModifier(Command):
         execute: Executes the command and returns the modifier.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types
+    _event_identifier: Union[int, str]
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -184,8 +230,23 @@ class ReturnEventModifier(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, code: str) -> int:
+    def set_id(self, event_identifier: Union[int, str]) -> "Command":
+        """Sets the ID of the Event to be deleted.
+
+        Args:
+            event_id (str, int): The event code or id number of the Event to
+                be deleted.
+        """
+        self._event_identifier = event_identifier
+        return self
+
+    def execute(self) -> int:
         """Executes the command and returns the modifier."""
-        criteria = {"event_code": code}
-        cursor = self._receiver.read("events", criteria)
+        if isinstance(self._event_identifier, int):
+            self._criteria = {"id": self._event_identifier}
+
+        if isinstance(self._event_identifier, str):
+            self._criteria = {"event_code": self._event_identifier}
+
+        cursor = self._receiver.read("events", self._criteria)
         return cursor.fetchall()[0][4]

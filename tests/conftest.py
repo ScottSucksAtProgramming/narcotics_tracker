@@ -225,7 +225,7 @@ def populate_standard_items(receiver):
         events = StandardItemCreator().create_events()
         for event in events:
             event.table = "events"
-            commands.AddEvent(receiver).execute(event)
+            commands.AddEvent(receiver).set_event(event).execute()
 
         statuses = StandardItemCreator().create_statuses()
         for status in statuses:

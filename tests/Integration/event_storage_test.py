@@ -66,7 +66,7 @@ class Test_EventStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
 
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
         cursor = sq_man.read(table_name="events")
         event_ids = return_ids(cursor)
@@ -76,9 +76,9 @@ class Test_EventStorage:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
-        commands.DeleteEvent(sq_man).execute(-1)
+        commands.DeleteEvent(sq_man).set_id(-1).execute()
 
         cursor = sq_man.read(table_name="events")
         event_id = return_ids(cursor)
@@ -88,9 +88,9 @@ class Test_EventStorage:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
-        commands.DeleteEvent(sq_man).execute("TEST")
+        commands.DeleteEvent(sq_man).set_id("TEST").execute()
 
         cursor = sq_man.read(table_name="events")
         event_id = return_ids(cursor)
@@ -100,7 +100,7 @@ class Test_EventStorage:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
         data = commands.ListEvents(sq_man).execute()
 
@@ -110,13 +110,15 @@ class Test_EventStorage:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
-        commands.UpdateEvent(sq_man).execute(
+        commands.UpdateEvent(sq_man).set_data(
             data={"event_code": "NEW CODE"}, criteria={"event_code": "TEST"}
-        )
+        ).execute()
 
-        returned_event = commands.ListEvents(sq_man).execute({"id": -77})[0]
+        returned_event = (
+            commands.ListEvents(sq_man).set_parameters({"id": -77}).execute()[0]
+        )
 
         assert "NEW CODE" in returned_event
 
@@ -124,7 +126,7 @@ class Test_EventStorage:
         test_event = test_event
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
 
         results = commands.event_commands.ReturnEventModifier(sq_man).execute("TEST")
         assert results == 999
@@ -133,7 +135,7 @@ class Test_EventStorage:
         # test_event = test_event
         # sq_man = SQLiteManager("data_item_storage_tests.db")
         # commands.CreateEventsTable(sq_man).execute()
-        # commands.AddEvent(sq_man).execute(test_event)
+        # commands.AddEvent(sq_man).set_event(test_event).execute()
 
-        results = commands.event_commands.ReturnEventModifier().execute("USE")
+        results = commands.event_commands.ReturnEventModifier().set_id("USE").execute()
         assert results == -1

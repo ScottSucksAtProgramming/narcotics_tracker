@@ -86,7 +86,7 @@ class Test_AdjustmentStorage:
         commands.CreateMedicationsTable(sq_man).execute()
         test_event: "Event" = all_test_dataItems["event"]
         test_medication: "Medication" = all_test_dataItems["medication"]
-        commands.AddEvent(sq_man).execute(test_event)
+        commands.AddEvent(sq_man).set_event(test_event).execute()
         commands.AddMedication(sq_man).execute(test_medication)
 
         test_adjustment: "Adjustment" = all_test_dataItems["adjustment"]

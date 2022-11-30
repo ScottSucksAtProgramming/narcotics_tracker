@@ -101,7 +101,7 @@ class AdjustmentBuilder(DataItemBuilder):
         """Retrieves the event modifier and applies it to the the amount."""
         event_code = self._dataitem.event_code
 
-        event_modifier = commands.ReturnEventModifier().execute(event_code)
+        event_modifier = commands.ReturnEventModifier().set_id(event_code).execute()
 
         self._dataitem.amount = self._dataitem.amount * event_modifier
 
