@@ -203,7 +203,7 @@ def setup_integration_db():
     adjustment_data = return_adjustments_data()
     adjustment_list = construct_adjustments(adjustment_data)
     for adjustment in adjustment_list:
-        commands.AddAdjustment(receiver).execute(adjustment)
+        commands.AddAdjustment(receiver).set_adjustment(adjustment).execute()
 
 
 def create_tables(receiver):

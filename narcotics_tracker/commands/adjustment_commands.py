@@ -12,7 +12,7 @@ Classes:
 
     UpdateAdjustment: Updates a Event with the given data and criteria.
 """
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -30,7 +30,9 @@ class AddAdjustment(Command):
         execute: Executes add row operation, returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _adjustment: "Adjustment"
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -42,14 +44,14 @@ class AddAdjustment(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, adjustment: "Adjustment") -> str:
-        """Executes add row operation, returns a success message.
+    def set_adjustment(self, adjustment: "Adjustment") -> "Command":
+        """Sets the adjustment which will be added to the database."""
+        self._adjustment: "Adjustment" = adjustment
+        return self
 
-        Args:
-            adjustment (Adjustment): The Adjustment object to be added to the
-                database.
-        """
-        adjustment_info = vars(adjustment)
+    def execute(self) -> str:
+        """Executes add row operation, returns a success message."""
+        adjustment_info = vars(self._adjustment)
         table_name = adjustment_info.pop("table")
 
         self._receiver.add(table_name, adjustment_info)
@@ -64,31 +66,7 @@ class DeleteAdjustment(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
-        """Initializes the command. Sets the receiver if passed.
-
-        Args:
-            receiver (PersistenceService, optional): Object which communicates
-                with the data repository. Defaults to SQLiteManager.
-        """
-        if receiver:
-            self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
-
-    def execute(self, adjustment_id: int) -> str:
-        """Execute the delete operation and returns a success message."""
-        self._receiver.remove("inventory", {"id": adjustment_id})
-
-        return f"Adjustment #{adjustment_id} deleted."
-
-
-class ListAdjustments(Command):
-    """Returns a list of Adjustments.
-
-    Methods:
-        execute: Executes the command and returns a list of Adjustment.
-    """
+    _adjustment_id: int
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -101,6 +79,66 @@ class ListAdjustments(Command):
             self._receiver = receiver
         else:
             self._receiver = ServiceManager().persistence
+
+    def set_id(self, adjustment_id: int) -> "Command":
+        """Sets the ID of the Adjustment to be deleted.
+
+        Args:
+            adjustment_id (int): Adjustment's ID number.
+        """
+        self._adjustment_id = adjustment_id
+        return self
+
+    def execute(self) -> str:
+        """Execute the delete operation and returns a success message."""
+        self._receiver.remove("inventory", {"id": self._adjustment_id})
+
+        return f"Adjustment #{self._adjustment_id} deleted."
+
+
+class ListAdjustments(Command):
+    """Returns a list of Adjustments.
+
+    Methods:
+        execute: Executes the command and returns a list of Adjustment.
+    """
+
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+        """Initializes the command. Sets the receiver if passed.
+
+        Args:
+            receiver (PersistenceService, optional): Object which communicates
+                with the data repository. Defaults to SQLiteManager.
+        """
+        if receiver:
+            self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
+
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
+
+        Args:
+            criteria (dict[str, any]): The criteria of Adjustments to be
+                returned as a dictionary mapping column names to their values.
+
+            order_by (str): The column name by which the results will be
+                sorted.
+        """
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
 
     def execute(
         self,
@@ -130,7 +168,10 @@ class UpdateAdjustment(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -142,19 +183,26 @@ class UpdateAdjustment(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(
-        self, data: dict[str, str], criteria: dict[str, Union[str, float]]
-    ) -> str:
-        """Executes the update operation and returns a success message.
+    def set_data(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> "Command":
+        """Sets the data and criteria for the update.
 
         Args:
-            data (dict[str, any]): The new data to update the Adjustment
-            with as a dictionary mapping column names to their values.
+            data (dict[str, any]): The new data to update the Adjustment with
+                as a dictionary mapping column names to their values.
 
             criteria (dict[str, any]): The criteria to select which
-                Adjustments are to be updated as a dictionary mapping the
+                adjustments are to be updated as a dictionary mapping the
                 column name to its value.
         """
-        self._receiver.update("inventory", data, criteria)
+        self._data = data
+        self._criteria = criteria
+
+        return self
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self._receiver.update("inventory", self._data, self._criteria)
 
         return "Adjustment data updated."

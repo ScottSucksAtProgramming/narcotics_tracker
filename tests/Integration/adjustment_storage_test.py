@@ -11,6 +11,9 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import commands
+from narcotics_tracker.items.adjustments import Adjustment
+from narcotics_tracker.items.events import Event
+from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
@@ -47,7 +50,7 @@ class Test_AdjustmentStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
 
-        commands.AddAdjustment(sq_man).execute(test_adjustment)
+        commands.AddAdjustment(sq_man).set_adjustment(test_adjustment).execute()
 
         cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
@@ -57,9 +60,9 @@ class Test_AdjustmentStorage:
         test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(test_adjustment)
+        commands.AddAdjustment(sq_man).set_adjustment(test_adjustment).execute()
 
-        commands.DeleteAdjustment(sq_man).execute(-1)
+        commands.DeleteAdjustment(sq_man).set_id(-1).execute()
 
         cursor = sq_man.read(table_name="inventory")
         adjustment_ids = return_ids(cursor)
@@ -69,7 +72,7 @@ class Test_AdjustmentStorage:
         test_adjustment = test_adjustment
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(test_adjustment)
+        commands.AddAdjustment(sq_man).set_adjustment(test_adjustment).execute()
 
         data = commands.ListAdjustments(sq_man).execute()
 
@@ -81,16 +84,18 @@ class Test_AdjustmentStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateEventsTable(sq_man).execute()
         commands.CreateMedicationsTable(sq_man).execute()
-        test_event = all_test_dataItems["event"]
-        test_medication = all_test_dataItems["medication"]
+        test_event: "Event" = all_test_dataItems["event"]
+        test_medication: "Medication" = all_test_dataItems["medication"]
         commands.AddEvent(sq_man).execute(test_event)
         commands.AddMedication(sq_man).execute(test_medication)
 
-        test_adjustment = all_test_dataItems["adjustment"]
+        test_adjustment: "Adjustment" = all_test_dataItems["adjustment"]
         commands.CreateInventoryTable(sq_man).execute()
-        commands.AddAdjustment(sq_man).execute(test_adjustment)
+        commands.AddAdjustment(sq_man).set_adjustment(test_adjustment).execute()
 
-        commands.UpdateAdjustment(sq_man).execute({"amount": 9999}, {"id": -77})
+        commands.UpdateAdjustment(sq_man).set_data(
+            {"amount": 9999}, {"id": -77}
+        ).execute()
 
         returned_adjustment = commands.ListAdjustments(sq_man).execute({"id": -77})[0]
 
