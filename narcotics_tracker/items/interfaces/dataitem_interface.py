@@ -5,6 +5,11 @@ Classes:
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Optional
+
+from narcotics_tracker.typings import NTTypes
+
+# pylint: disable=[invalid-name]
 
 
 @dataclass
@@ -24,9 +29,9 @@ class DataItem(ABC):
     """
 
     table: str
-    id: int
-    created_date: int
-    modified_date: int
+    id: Optional[int]
+    created_date: NTTypes.date_types
+    modified_date: NTTypes.date_types
     modified_by: str
 
     @abstractmethod

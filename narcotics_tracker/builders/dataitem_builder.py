@@ -1,15 +1,20 @@
-"""Defines the builder for generic DataItems. Only meant to be inherited from.
+"""Defines the "builder" for generic DataItems. Only meant to be inherited from.
 
 Classes:
 
-    DataItemBuilder: Builds a generic DataItem. Intended to be inherited by 
+    DataItemBuilder: Builds a generic DataItem. Intended to be inherited by
         other builders.
 
 """
-from typing import Union
+from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.builders.interfaces.builder import Builder
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
+
+if TYPE_CHECKING:
+    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+    from narcotics_tracker.services.interfaces.service_provider import ServiceProvider
 
 
 class DataItemBuilder(Builder):
@@ -29,25 +34,25 @@ class DataItemBuilder(Builder):
         set_modified_by: Sets the modified by attribute to the passed string.
     """
 
-    _service_provider = ServiceManager()
-    _dataitem = None
+    _service_provider: "ServiceProvider" = ServiceManager()
+    _dataitem: "DataItem"
 
     def __init__(self) -> None:
         """Calls the _reset method."""
         self._reset()
 
-    def set_table(self, table_name: str) -> Builder:
+    def set_table(self, table_name: str) -> "Builder":
         """Sets the table attribute."""
         self._dataitem.table = table_name
 
         return self
 
-    def set_id(self, id_number: int = None) -> Builder:
+    def set_id(self, id_number: Optional[int] = None) -> "Builder":
         """Sets the id attribute to None, unless overridden."""
         self._dataitem.id = id_number
         return self
 
-    def set_created_date(self, date: Union[int, str] = None) -> Builder:
+    def set_created_date(self, date: Optional[NTTypes.date_types] = None) -> "Builder":
         """Sets the attribute to the current datetime, unless overridden.
 
         Args:
@@ -55,10 +60,12 @@ class DataItemBuilder(Builder):
                 string (MM-DD-YYYY HH:MM:SS). If None, will use the current
                 datetime.
         """
+        if date is None:
+            date = ServiceManager().datetime.return_current()
         self._dataitem.created_date = date
         return self
 
-    def set_modified_date(self, date: Union[int, str] = None) -> Builder:
+    def set_modified_date(self, date: Optional[NTTypes.date_types] = None) -> "Builder":
         """Sets the attribute to the current datetime, unless overridden.
 
         Args:
@@ -66,18 +73,20 @@ class DataItemBuilder(Builder):
                 string (MM-DD-YYYY HH:MM:SS). If None, will use the current
                 datetime.
         """
+        if date is None:
+            date = ServiceManager().datetime.return_current()
         self._dataitem.modified_date = date
         return self
 
-    def set_modified_by(self, modified_by: str) -> Builder:
+    def set_modified_by(self, modified_by: str) -> "Builder":
         """Sets the modified by attribute to the passed string."""
         self._dataitem.modified_by = modified_by
         return self
 
-    def build(self):
+    def build(self) -> "DataItem":
         """Returns the DataItem object."""
         raise NotImplementedError
 
-    def _reset(self):
+    def _reset(self) -> None:
         """Sets all attributes to default."""
         raise NotImplementedError
