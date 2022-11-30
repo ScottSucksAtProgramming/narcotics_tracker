@@ -18,13 +18,9 @@ app = typer.Typer()
 @app.command()
 def log(
     adjustment_date: str = typer.Argument(
-        ...,
-        help="Date of the adjustment. Format: MM-DD-YYYY",
-        show_default=False,
+        ..., help="Format: MM-DD-YYYY", show_default=False
     ),
-    adjustment_time: str = typer.Argument(
-        ..., help="Time of the adjustment. Format: HH:MM:SS"
-    ),
+    adjustment_time: str = typer.Argument(..., help="Format: HH:MM:SS"),
     event_code: str = typer.Argument(..., show_default=False),
     medication_code: str = typer.Argument(..., show_default=False),
     adjustment_amount: float = typer.Argument(..., show_default=False),
