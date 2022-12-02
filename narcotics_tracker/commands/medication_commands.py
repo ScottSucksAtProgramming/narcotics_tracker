@@ -17,14 +17,14 @@ Classes:
 
     LoadMedication: Loads a Medication Object from data.
 """
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
-
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
@@ -35,9 +35,9 @@ class AddMedication(Command):
         execute: Executes add row operation, returns a success message.
     """
 
-    _receiver = ServiceManager().persistence
+    _medication: "Medication"
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -46,15 +46,22 @@ class AddMedication(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, medication: "Medication") -> str:
-        """Executes add row operation, returns a success message.
+    def set_medication(self, medication: "Medication") -> "Command":
+        """Sets the medication which will be added to the database.
 
         Args:
-            medication (Medication): The Medication object to be added to the
+            Medication (Medication): The medication object to be added to the
                 database.
         """
-        medication_info = vars(medication)
+        self._medication: "Medication" = medication
+        return self
+
+    def execute(self) -> str:
+        """Executes add row operation, returns a success message."""
+        medication_info = vars(self._medication)
         table_name = medication_info.pop("table")
 
         self._receiver.add(table_name, medication_info)
@@ -69,9 +76,10 @@ class DeleteMedication(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    _receiver = ServiceManager().persistence
+    _criteria: NTTypes.sqlite_types
+    _medication_identifier: Union[int, str]
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -80,23 +88,30 @@ class DeleteMedication(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, medication_identifier: Union[str, int]) -> str:
-        """Executes the delete operation and returns a success message.
+    def set_id(self, medication_identifier: Union[int, str]) -> "Command":
+        """Sets the ID of the Medication to be deleted.
 
         Args:
-            medication_identifier (str, int): The medication code or id number
-                of the Medication to be deleted.
+            medication_id (str, int): The medication code or id number of the
+                Medication to be deleted.
         """
-        if type(medication_identifier) is int:
-            criteria = {"id": medication_identifier}
+        self._medication_identifier = medication_identifier
+        return self
 
-        if type(medication_identifier) is str:
-            criteria = {"medication_code": medication_identifier}
+    def execute(self) -> str:
+        """Executes the delete operation and returns a success message."""
+        if isinstance(self._medication_identifier, int):
+            self._criteria = {"id": self._medication_identifier}
 
-        self._receiver.remove("medications", criteria)
+        if isinstance(self._medication_identifier, str):
+            self._criteria = {"medication_code": self._medication_identifier}
 
-        return f"Medication {medication_identifier} deleted."
+        self._receiver.remove("medications", self._criteria)
+
+        return f"Medication {self._medication_identifier} deleted."
 
 
 class ListMedications(Command):
@@ -106,9 +121,10 @@ class ListMedications(Command):
         execute: Executes the command and returns a list of Medications.
     """
 
-    _receiver = ServiceManager().persistence
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -117,20 +133,34 @@ class ListMedications(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(
-        self, criteria: dict[str, any] = {}, order_by: str = None
-    ) -> list[tuple]:
-        """Executes the command and returns a list of Medications.
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
 
         Args:
-            criteria (dict[str, any]): The criteria of Medications to be
+            criteria (dict[str, any]): The criteria of Medication to be
                 returned as a dictionary mapping column names to their values.
 
             order_by (str): The column name by which the results will be
                 sorted.
         """
-        cursor = self._receiver.read("medications", criteria, order_by)
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
+
+    def execute(self) -> list[tuple["Medication"]]:
+        """Executes the command and returns a list of Medications."""
+        cursor = self._receiver.read("medications", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -141,9 +171,10 @@ class UpdateMedication(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    _receiver = ServiceManager().persistence
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -152,21 +183,32 @@ class UpdateMedication(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
-        """Executes the update operation and returns a success message.
+    def set_data(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> "Command":
+        """Sets the data and criteria for the update.
 
         Args:
-            data (dict[str, any]): The new data to update the Medication
-            with as a dictionary mapping column names to their values.
+            data (dict[str, any]): The new data to update the Medication with
+                as a dictionary mapping column names to their values.
 
             criteria (dict[str, any]): The criteria to select which
-                Medications are to be updated as a dictionary mapping the
+                medications are to be updated as a dictionary mapping the
                 column name to its value.
         """
-        self._receiver.update("medications", data, criteria)
+        self._data = data
+        self._criteria = criteria
 
-        return f"Medication data updated."
+        return self
+
+    def execute(self) -> str:
+        """Executes the update operation and returns a success message."""
+        self._receiver.update("medications", self._data, self._criteria)
+
+        return "Medication data updated."
 
 
 class ReturnPreferredUnit(Command):
@@ -176,9 +218,10 @@ class ReturnPreferredUnit(Command):
         execute: Executes the command, returns results.
     """
 
-    _receiver = ServiceManager().persistence
+    _criteria: NTTypes.sqlite_types
+    _medication_identifier: Union[int, str]
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -187,12 +230,24 @@ class ReturnPreferredUnit(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, medication_code: str) -> str:
+    def set_id(self, medication_identifier: Union[int, str]) -> "Command":
+        """Sets the ID of the Medication to be deleted.
+
+        Args:
+            medication_identifier (str, int): The Medication code or id
+                number of the Medication to be deleted.
+        """
+        self._medication_identifier = medication_identifier
+        return self
+
+    def execute(self) -> str:
         """Executes the command, returns results."""
-        criteria = {"medication_code": medication_code}
+        self._criteria = {"medication_code": self._medication_identifier}
 
-        cursor = self._receiver.read("medications", criteria)
+        cursor = self._receiver.read("medications", self._criteria)
         return cursor.fetchall()[0][4]
 
 
@@ -203,9 +258,9 @@ class LoadMedication(Command):
         execute: Executes the command. Returns a Medication object.
     """
 
-    _receiver = Medication
+    _data: NTTypes.medication_data_type
 
-    def __init__(self, receiver: "Medication" = None) -> None:
+    def __init__(self, receiver: Optional["Medication"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -215,24 +270,31 @@ class LoadMedication(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self, data: tuple[any]) -> "Medication":
-        """Executes the command. Returns a Medication object.
+    def set_data(self, data: NTTypes.medication_data_type) -> "Command":
+        """Sets the data which will create the Medication
 
         Args:
-            data (tuple[any]): A tuple of medication attributes retrieved from
-                the database.
+            data (tuple[Union[str, int, float]]): A tuple of medication
+                attributes retrieved from the database.
         """
-        return self._receiver(
+
+        self._data = data
+
+        return self
+
+    def execute(self) -> "Medication":
+        """Executes the command. Returns a Medication object."""
+        return Medication(
             table="medications",
-            id=data[0],
-            medication_code=data[1],
-            medication_name=data[2],
-            medication_amount=data[3],
-            preferred_unit=data[4],
-            fill_amount=data[5],
-            concentration=data[6],
-            status=data[7],
-            created_date=data[8],
-            modified_date=data[9],
-            modified_by=data[10],
+            id=self._data[0],
+            medication_code=self._data[1],
+            medication_name=self._data[2],
+            medication_amount=self._data[3],
+            preferred_unit=self._data[4],
+            fill_amount=self._data[5],
+            concentration=self._data[6],
+            status=self._data[7],
+            created_date=self._data[8],
+            modified_date=self._data[9],
+            modified_by=self._data[10],
         )

@@ -49,7 +49,7 @@ class Test_MedicationStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
 
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
         cursor = sq_man.read("medications")
         medication_ids = return_ids(cursor)
@@ -61,9 +61,9 @@ class Test_MedicationStorage:
         test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
-        commands.DeleteMedication(sq_man).execute(-1)
+        commands.DeleteMedication(sq_man).set_id(-1).execute()
 
         cursor = sq_man.read("medications")
         medication_id = return_ids(cursor)
@@ -75,9 +75,9 @@ class Test_MedicationStorage:
         test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
-        commands.DeleteMedication(sq_man).execute("apap")
+        commands.DeleteMedication(sq_man).set_id("apap").execute()
 
         cursor = sq_man.read("medications")
         medication_id = return_ids(cursor)
@@ -87,7 +87,7 @@ class Test_MedicationStorage:
         test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
         data = commands.ListMedications(sq_man).execute()
 
@@ -99,13 +99,15 @@ class Test_MedicationStorage:
         test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
-        commands.UpdateMedication(sq_man).execute(
+        commands.UpdateMedication(sq_man).set_data(
             data={"medication_code": "NEW CODE"}, criteria={"medication_code": "apap"}
-        )
+        ).execute()
 
-        returned_medication = commands.ListMedications(sq_man).execute({"id": -1})[0]
+        returned_medication = (
+            commands.ListMedications(sq_man).set_parameters({"id": -1}).execute()[0]
+        )
 
         assert "NEW CODE" in returned_medication
 
@@ -115,10 +117,12 @@ class Test_MedicationStorage:
         test_medication = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
-        results = commands.medication_commands.ReturnPreferredUnit(sq_man).execute(
-            "apap"
+        results = (
+            commands.medication_commands.ReturnPreferredUnit(sq_man)
+            .set_id("apap")
+            .execute()
         )
 
         assert results == "mcg"
@@ -126,9 +130,11 @@ class Test_MedicationStorage:
     def test_can_load_medication(self, setup_integration_db):
         sq_man = SQLiteManager("integration_test.db")
         criteria = {"medication_code": "fentanyl"}
-        med_data = commands.ListMedications(sq_man).execute(criteria)[0]
+        med_data = (
+            commands.ListMedications(sq_man).set_parameters(criteria).execute()[0]
+        )
 
-        medication = commands.LoadMedication().execute(med_data)
+        medication = commands.LoadMedication().set_data(med_data).execute()
         expected = "Medication #1: Fentanyl (fentanyl) 100.0 mcg in 2.0 ml."
 
         assert str(medication) == expected

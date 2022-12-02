@@ -80,7 +80,7 @@ class MedicationBuilder(DataItemBuilder):
 
         self._dataitem.medication_amount = self._convert_medication_amount()
 
-        medication = self._dataitem
+        medication: Medication = self._dataitem
         self._reset()
 
         return medication

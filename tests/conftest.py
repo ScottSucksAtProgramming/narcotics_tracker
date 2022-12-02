@@ -194,7 +194,7 @@ def setup_integration_db():
 
     meds = build_test_meds()
     for medication in meds:
-        commands.AddMedication(receiver).execute(medication)
+        commands.AddMedication(receiver).set_medication(medication).execute()
 
     periods = build_reporting_periods(dt_man)
     for period in periods:

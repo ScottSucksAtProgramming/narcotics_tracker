@@ -9,3 +9,7 @@ class NTTypes:
     sqlite_types = dict[str, Union[str, int, float]]
 
     date_types = Union[int, str]
+
+    medication_data_type = tuple[
+        int, str, str, float, str, float, float, str, int, int, str
+    ]

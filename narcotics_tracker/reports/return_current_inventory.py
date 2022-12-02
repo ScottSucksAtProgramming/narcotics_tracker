@@ -48,7 +48,11 @@ class ReturnCurrentInventory(Report):
         """Returns the code, name, and unit for all active medications."""
         medication_list = []
         criteria = {"status": "ACTIVE"}
-        active_meds = commands.ListMedications(self._receiver).execute(criteria, "id")
+        active_meds = (
+            commands.ListMedications(self._receiver)
+            .set_parameters(criteria, "id")
+            .execute()
+        )
 
         for med_data in active_meds:
             med_info = {"code": med_data[1], "name": med_data[2], "unit": med_data[4]}

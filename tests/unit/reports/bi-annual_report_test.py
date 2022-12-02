@@ -63,8 +63,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         amount = report._get_starting_amount(fentanyl)
 
@@ -89,7 +91,7 @@ class Test_BiAnnualNarcoticsInventory:
                     "concentration": 50.0,
                     "name": "Fentanyl",
                     "unit": "mcg",
-                    "starting_amount": 149,
+                    "starting_amount": 149.0,
                 },
                 "midazolam": {
                     "concentration": 5.0,
@@ -112,8 +114,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         result = report._get_amount_received(fentanyl)
 
@@ -161,8 +165,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         result = report._get_amount_used(fentanyl)
 
@@ -210,8 +216,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         result = report._get_amount_wasted(fentanyl)
 
@@ -259,8 +267,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         result = report._get_amount_destroyed(fentanyl)
 
@@ -308,8 +318,10 @@ class Test_BiAnnualNarcoticsInventory:
         sq_man = SQLiteManager("integration_test.db")
         report = BiAnnualNarcoticsInventory(sq_man)
         report._period = report._get_current_reporting_period()
-        fent_data = commands.ListMedications(sq_man).execute({"id": 1})[0]
-        fentanyl = commands.LoadMedication().execute(fent_data)
+        fent_data = (
+            commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
+        )
+        fentanyl = commands.LoadMedication().set_data(fent_data).execute()
 
         result = report._get_amount_lost(fentanyl)
 

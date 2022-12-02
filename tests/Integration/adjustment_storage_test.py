@@ -87,7 +87,7 @@ class Test_AdjustmentStorage:
         test_event: "Event" = all_test_dataItems["event"]
         test_medication: "Medication" = all_test_dataItems["medication"]
         commands.AddEvent(sq_man).set_event(test_event).execute()
-        commands.AddMedication(sq_man).execute(test_medication)
+        commands.AddMedication(sq_man).set_medication(test_medication).execute()
 
         test_adjustment: "Adjustment" = all_test_dataItems["adjustment"]
         commands.CreateInventoryTable(sq_man).execute()

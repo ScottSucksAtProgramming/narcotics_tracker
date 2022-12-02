@@ -91,7 +91,7 @@ class AdjustmentBuilder(DataItemBuilder):
         """Converts the adjustment amount in the standard unit."""
         med_code = self._dataitem.medication_code
         amount = self._dataitem.amount
-        preferred_unit = commands.ReturnPreferredUnit().execute(med_code)
+        preferred_unit = commands.ReturnPreferredUnit().set_id(med_code).execute()
         converted_amount = self._service_provider.conversion.to_standard(
             amount, preferred_unit
         )

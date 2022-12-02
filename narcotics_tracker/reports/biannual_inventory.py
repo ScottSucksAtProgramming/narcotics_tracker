@@ -87,7 +87,7 @@ class BiAnnualNarcoticsInventory(Report):
             self._report[self._period.id][medication.medication_code][
                 "ending_amount"
             ] = ending_amount
-
+        print(self._report)
         return self._report
 
     def _get_current_reporting_period(self) -> "ReportingPeriod":
@@ -101,10 +101,14 @@ class BiAnnualNarcoticsInventory(Report):
         criteria = {"status": "ACTIVE"}
         order = "medication_code"
 
-        active_meds = commands.ListMedications(self._receiver).execute(criteria, order)
+        active_meds = (
+            commands.ListMedications(self._receiver)
+            .set_parameters(criteria, order)
+            .execute()
+        )
 
         for med_data in active_meds:
-            medication = commands.LoadMedication().execute(med_data)
+            medication = commands.LoadMedication().set_data(med_data).execute()
             medication_list.append(medication)
 
         return medication_list
@@ -129,7 +133,11 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        raw_amt = commands.ListAdjustments(self._receiver).execute(criteria)[0][4]
+        raw_amt = (
+            commands.ListAdjustments(self._receiver)
+            .set_parameters(criteria)
+            .execute()[0][4]
+        )
 
         return self._converter.to_milliliters(
             raw_amt,
@@ -144,7 +152,9 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        adj_list = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_list = (
+            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+        )
         if adj_list == []:
             return 0
 
@@ -163,7 +173,9 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        adj_list = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_list = (
+            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+        )
 
         if adj_list == []:
             return 0
@@ -184,7 +196,9 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        adj_list = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_list = (
+            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+        )
 
         if adj_list == []:
             return 0
@@ -205,7 +219,9 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        adj_list = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_list = (
+            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+        )
 
         if adj_list == []:
             return 0
@@ -226,7 +242,9 @@ class BiAnnualNarcoticsInventory(Report):
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        adj_list = commands.ListAdjustments(self._receiver).execute(criteria)
+        adj_list = (
+            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+        )
 
         if adj_list == []:
             return 0
