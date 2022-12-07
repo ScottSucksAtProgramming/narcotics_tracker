@@ -229,7 +229,7 @@ def populate_standard_items(receiver):
 
         statuses = StandardItemCreator().create_statuses()
         for status in statuses:
-            commands.AddStatus(receiver).execute(status)
+            commands.AddStatus(receiver).set_status(status).execute()
 
         units = StandardItemCreator().create_units()
         for unit in units:

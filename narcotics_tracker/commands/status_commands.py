@@ -11,10 +11,11 @@ Classes:
 
     UpdateStatus: Updates a Status with the given data and criteria.    
 """
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.statuses import Status
@@ -28,7 +29,9 @@ class AddStatus(Command):
         execute: Executes add row operation, returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _status: "Status"
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command.
 
         Args:
@@ -40,13 +43,23 @@ class AddStatus(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, status: "Status") -> str:
+    def set_status(self, status: "Status") -> "Command":
+        """Sets the status which will be added to the database.
+
+        Args:
+            status (Status): The status object to be added to the
+                database.
+        """
+        self._status = status
+        return self
+
+    def execute(self) -> str:
         """Executes add row operation, returns a success message.
 
         Args:
             status (Status): The Status object to be added to the database.
         """
-        status_info = vars(status)
+        status_info = vars(self._status)
         table_name = status_info.pop("table")
 
         self._receiver.add(table_name, status_info)
@@ -61,7 +74,10 @@ class DeleteStatus(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types
+    _status_identifier: Union[int, str]
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command.
 
         Args:
@@ -73,22 +89,32 @@ class DeleteStatus(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, status_identifier: Union[str, int]) -> str:
+    def set_id(self, status_identifier: Union[int, str]) -> "Command":
+        """Sets the ID of the Status to be deleted.
+
+        Args:
+            status_identifier (str, int): The Status code or id number of the
+                Status to be deleted.
+        """
+        self._status_identifier = status_identifier
+        return self
+
+    def execute(self) -> str:
         """Executes the delete operation and returns a success message.
 
         Args:
             status_identifier (str, int): The status code or id number of the
                 Status to be deleted.
         """
-        if type(status_identifier) is int:
-            criteria = {"id": status_identifier}
+        if isinstance(self._status_identifier, int):
+            self._criteria = {"id": self._status_identifier}
 
-        if type(status_identifier) is str:
-            criteria = {"status_code": status_identifier}
+        if isinstance(self._status_identifier, str):
+            self._criteria = {"status_code": self._status_identifier}
 
-        self._receiver.remove("statuses", criteria)
+        self._receiver.remove("statuses", self._criteria)
 
-        return f"Status {status_identifier} deleted."
+        return f"Status {self._status_identifier} deleted."
 
 
 class ListStatuses(Command):
@@ -98,7 +124,10 @@ class ListStatuses(Command):
         execute: Executes the command and returns a list of Statuses.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command.
 
         Args:
@@ -110,7 +139,29 @@ class ListStatuses(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
+
+        Args:
+            criteria (dict[str, any]): The criteria of Medication to be
+                returned as a dictionary mapping column names to their values.
+
+            order_by (str): The column name by which the results will be
+                sorted.
+        """
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
+
+    def execute(self) -> list[tuple["Status"]]:
         """Executes the command and returns a list of Statuses.
 
         Args:
@@ -120,7 +171,7 @@ class ListStatuses(Command):
             order_by (str): The column name by which the results will be
                 sorted.
         """
-        cursor = self._receiver.read("statuses", criteria, order_by)
+        cursor = self._receiver.read("statuses", self._criteria, self._order_by)
         return cursor.fetchall()
 
 
@@ -131,7 +182,10 @@ class UpdateStatus(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
+
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command.
 
         Args:
@@ -143,7 +197,25 @@ class UpdateStatus(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
+    def set_data(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> "Command":
+        """Sets the data and criteria for the update.
+
+        Args:
+            data (dict[str, any]): The new data to update the Medication with
+                as a dictionary mapping column names to their values.
+
+            criteria (dict[str, any]): The criteria to select which
+                medications are to be updated as a dictionary mapping the
+                column name to its value.
+        """
+        self._data = data
+        self._criteria = criteria
+
+        return self
+
+    def execute(self) -> str:
         """Executes the update operation and returns a success message.
 
         Args:
@@ -154,6 +226,6 @@ class UpdateStatus(Command):
                 are to be updated as a dictionary mapping the column name to
                 its value.
         """
-        self._receiver.update("statuses", data, criteria)
+        self._receiver.update("statuses", self._data, self._criteria)
 
-        return f"Status data updated."
+        return "Status data updated."

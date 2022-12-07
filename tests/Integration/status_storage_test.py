@@ -47,7 +47,7 @@ class Test_StatusStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
 
-        commands.AddStatus(sq_man).execute(test_status)
+        commands.AddStatus(sq_man).set_status(test_status).execute()
 
         cursor = sq_man.read(table_name="statuses")
         status_ids = return_ids(cursor)
@@ -59,9 +59,9 @@ class Test_StatusStorage:
         test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(test_status)
+        commands.AddStatus(sq_man).set_status(test_status).execute()
 
-        commands.DeleteStatus(sq_man).execute(-1)
+        commands.DeleteStatus(sq_man).set_id(-1).execute()
 
         cursor = sq_man.read(table_name="statuses")
         status_id = return_ids(cursor)
@@ -73,9 +73,9 @@ class Test_StatusStorage:
         test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(test_status)
+        commands.AddStatus(sq_man).set_status(test_status).execute()
 
-        commands.DeleteStatus(sq_man).execute("BROKEN")
+        commands.DeleteStatus(sq_man).set_id("BROKEN").execute()
 
         cursor = sq_man.read(table_name="statuses")
         status_id = return_ids(cursor)
@@ -85,7 +85,7 @@ class Test_StatusStorage:
         test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(test_status)
+        commands.AddStatus(sq_man).set_status(test_status).execute()
 
         data = commands.ListStatuses(sq_man).execute()
 
@@ -95,12 +95,14 @@ class Test_StatusStorage:
         test_status = test_status
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateStatusesTable(sq_man).execute()
-        commands.AddStatus(sq_man).execute(test_status)
+        commands.AddStatus(sq_man).set_status(test_status).execute()
 
-        commands.UpdateStatus(sq_man).execute(
+        commands.UpdateStatus(sq_man).set_data(
             {"status_code": "NEW CODE"}, {"status_code": "BROKEN"}
-        )
+        ).execute()
 
-        returned_status = commands.ListStatuses(sq_man).execute({"id": -1})[0]
+        returned_status = (
+            commands.ListStatuses(sq_man).set_parameters({"id": -1}).execute()[0]
+        )
 
         assert "NEW CODE" in returned_status
