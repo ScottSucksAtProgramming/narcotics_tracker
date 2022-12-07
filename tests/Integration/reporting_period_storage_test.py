@@ -66,7 +66,7 @@ class Test_ReportingPeriodStorage:
             test_reporting_period
         ).execute()
 
-        commands.DeleteReportingPeriod(sq_man).execute(-1)
+        commands.DeleteReportingPeriod(sq_man).set_id(-1).execute()
 
         cursor = sq_man.read(table_name="reporting_periods")
         reporting_period_id = return_ids(cursor)
@@ -96,13 +96,15 @@ class Test_ReportingPeriodStorage:
             test_reporting_period
         ).execute()
 
-        commands.UpdateReportingPeriod(sq_man).execute(
+        commands.UpdateReportingPeriod(sq_man).set_data(
             data={"status": "NEW STATUS"}, criteria={"id": -1}
-        )
+        ).execute()
 
-        returned_reporting_period = commands.ListReportingPeriods(sq_man).execute(
-            criteria={"id": -1}
-        )[0]
+        returned_reporting_period = (
+            commands.ListReportingPeriods(sq_man)
+            .set_parameters(criteria={"id": -1})
+            .execute()[0]
+        )
 
         assert "NEW STATUS" in returned_reporting_period
 
@@ -111,8 +113,10 @@ class Test_ReportingPeriodStorage:
     ) -> None:
         sq_man = SQLiteManager("integration_test.db")
         criteria = {"id": 2200001}
-        period_data = commands.ListReportingPeriods(sq_man).execute(criteria)[-1]
+        period_data = (
+            commands.ListReportingPeriods(sq_man).set_parameters(criteria).execute()[-1]
+        )
 
-        period = commands.LoadReportingPeriod().execute(period_data)
+        period = commands.LoadReportingPeriod().set_data(period_data).execute()
         expected = "Reporting Period #2200001: Start Date: 07-23-2022 00:00:00, End Date: None, Current Status: OPEN."
         assert str(period) == expected

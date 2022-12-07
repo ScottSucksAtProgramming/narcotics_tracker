@@ -15,13 +15,12 @@ Classes:
 """
 from typing import TYPE_CHECKING, Optional
 
-from narcotics_tracker.builders.interfaces.builder import Builder
-from narcotics_tracker.builders.reporting_period_builder import ReportingPeriodBuilder
 from narcotics_tracker.commands.interfaces.command import Command
+from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
-    from narcotics_tracker.items.reporting_periods import ReportingPeriod
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
@@ -72,7 +71,8 @@ class DeleteReportingPeriod(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    _receiver = ServiceManager().persistence
+    _criteria: NTTypes.sqlite_types
+    _reporting_period_identifier: int
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -83,17 +83,31 @@ class DeleteReportingPeriod(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, reporting_period_id: int) -> str:
+    def set_id(self, reporting_period_identifier: int) -> "Command":
+        """Sets the ID of the Medication to be deleted.
+
+        Args:
+            medication_id (str, int): The medication code or id number of the
+                Medication to be deleted.
+        """
+        self._reporting_period_identifier = reporting_period_identifier
+        return self
+
+    def execute(self) -> str:
         """Executes the delete operation and returns a success message.
 
         Args:
             reporting_period_identifier (int): The id number of the Reporting
                 Period to be deleted.
         """
-        self._receiver.remove("reporting_periods", {"id": reporting_period_id})
+        self._receiver.remove(
+            "reporting_periods", {"id": self._reporting_period_identifier}
+        )
 
-        return f"Reporting Period #{reporting_period_id} deleted."
+        return f"Reporting Period #{self._reporting_period_identifier} deleted."
 
 
 class ListReportingPeriods(Command):
@@ -103,7 +117,8 @@ class ListReportingPeriods(Command):
         execute: Executes the command and returns a list of Reporting Periods.
     """
 
-    _receiver = ServiceManager().persistence
+    _criteria: NTTypes.sqlite_types = {}
+    _order_by: Optional[str] = None
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -114,8 +129,32 @@ class ListReportingPeriods(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, criteria: dict[str] = {}, order_by: str = None) -> list[tuple]:
+    def set_parameters(
+        self,
+        criteria: Optional[NTTypes.sqlite_types] = None,
+        order_by: Optional[str] = None,
+    ) -> "Command":
+        """Sets the criteria and order_by column.
+
+        Args:
+            criteria (dict[str, any]): The criteria of Medication to be
+                returned as a dictionary mapping column names to their values.
+
+            order_by (str): The column name by which the results will be
+                sorted.
+        """
+        if criteria:
+            self._criteria = criteria
+
+        if order_by:
+            self._order_by = order_by
+
+        return self
+
+    def execute(self) -> list[tuple["ReportingPeriod"]]:
         """Executes the command and returns a list of Reporting Periods.
 
         Args:
@@ -125,7 +164,9 @@ class ListReportingPeriods(Command):
             order_by (str): The column name by which the results will be
                 sorted.
         """
-        cursor = self._receiver.read("reporting_periods", criteria, order_by)
+        cursor = self._receiver.read(
+            "reporting_periods", self._criteria, self._order_by
+        )
         return cursor.fetchall()
 
 
@@ -136,7 +177,8 @@ class UpdateReportingPeriod(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    _receiver = ServiceManager().persistence
+    _data: NTTypes.sqlite_types
+    _criteria: NTTypes.sqlite_types
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -147,8 +189,28 @@ class UpdateReportingPeriod(Command):
         """
         if receiver:
             self._receiver = receiver
+        else:
+            self._receiver = ServiceManager().persistence
 
-    def execute(self, data: dict[str, any], criteria: dict[str, any]) -> str:
+    def set_data(
+        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
+    ) -> "Command":
+        """Sets the data and criteria for the update.
+
+        Args:
+            data (dict[str, any]): The new data to update the Medication with
+                as a dictionary mapping column names to their values.
+
+            criteria (dict[str, any]): The criteria to select which
+                medications are to be updated as a dictionary mapping the
+                column name to its value.
+        """
+        self._data = data
+        self._criteria = criteria
+
+        return self
+
+    def execute(self) -> str:
         """Executes the update operation and returns a success message.
 
         Args:
@@ -159,9 +221,9 @@ class UpdateReportingPeriod(Command):
                 ReportingPeriods are to be updated as a dictionary mapping the
                 column name to its value.
         """
-        self._receiver.update("reporting_periods", data, criteria)
+        self._receiver.update("reporting_periods", self._data, self._criteria)
 
-        return f"Reporting Period data updated."
+        return "Reporting Period data updated."
 
 
 class LoadReportingPeriod(Command):
@@ -171,9 +233,9 @@ class LoadReportingPeriod(Command):
         execute: Executes the command and returns the ReportingPeriod object.
     """
 
-    _receiver = ReportingPeriodBuilder
+    _data: NTTypes.reporting_period_data_type
 
-    def __init__(self, receiver: "Builder" = None) -> None:
+    def __init__(self, receiver: Optional["ReportingPeriod"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -183,17 +245,28 @@ class LoadReportingPeriod(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self, period_data: tuple[any]) -> "ReportingPeriod":
+    def set_data(self, data: NTTypes.reporting_period_data_type) -> "Command":
+        """Sets the data which will create the Medication
+
+        Args:
+            data (tuple[Union[str, int, float]]): A tuple of medication
+                attributes retrieved from the database.
+        """
+
+        self._data = data
+
+        return self
+
+    def execute(self) -> "ReportingPeriod":
         """Executes the command and returns the ReportingPeriod object."""
 
-        return (
-            self._receiver()
-            .set_id(period_data[0])
-            .set_start_date(period_data[1])
-            .set_end_date(period_data[2])
-            .set_status(period_data[3])
-            .set_created_date(period_data[4])
-            .set_modified_date(period_data[5])
-            .set_modified_by(period_data[6])
-            .build()
+        return ReportingPeriod(
+            table="reporting_periods",
+            id=self._data[0],
+            start_date=self._data[1],
+            end_date=self._data[2],
+            status=self._data[3],
+            created_date=self._data[4],
+            modified_date=self._data[5],
+            modified_by=self._data[6],
         )

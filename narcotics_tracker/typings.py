@@ -13,3 +13,5 @@ class NTTypes:
     medication_data_type = tuple[
         int, str, str, float, str, float, float, str, int, int, str
     ]
+
+    reporting_period_data_type = tuple[int, int, int, str, int, int, str]
