@@ -13,7 +13,7 @@ Classes:
     UpdateReportingPeriod: Updates a Reporting Period with the given data and 
         criteria. 
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.builders.interfaces.builder import Builder
 from narcotics_tracker.builders.reporting_period_builder import ReportingPeriodBuilder
@@ -33,8 +33,9 @@ class AddReportingPeriod(Command):
     """
 
     _receiver = ServiceManager().persistence
+    _reporting_period: "ReportingPeriod"
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -44,14 +45,19 @@ class AddReportingPeriod(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self, reporting_period: "ReportingPeriod") -> str:
-        """Executes add row operation, returns a success message.
+    def set_reporting_period(self, reporting_period: "ReportingPeriod") -> "Command":
+        """Sets the reporting_period which will be added to the database.
 
         Args:
-            reporting_period (ReportingPeriod): The Reporting Period object to
-                be added to the database.
+            reporting_period (ReportingPeriods): The reporting_period object
+                to be added to the database.
         """
-        reporting_period_info = vars(reporting_period)
+        self._reporting_period = reporting_period
+        return self
+
+    def execute(self) -> str:
+        """Executes add row operation, returns a success message."""
+        reporting_period_info = vars(self._reporting_period)
         table_name = reporting_period_info.pop("table")
 
         self._receiver.add(table_name, reporting_period_info)
@@ -68,7 +74,7 @@ class DeleteReportingPeriod(Command):
 
     _receiver = ServiceManager().persistence
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -99,7 +105,7 @@ class ListReportingPeriods(Command):
 
     _receiver = ServiceManager().persistence
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -132,7 +138,7 @@ class UpdateReportingPeriod(Command):
 
     _receiver = ServiceManager().persistence
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:

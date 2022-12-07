@@ -1,10 +1,14 @@
 """Contains the classes which unit tests the report."""
+
 from narcotics_tracker import commands
 from narcotics_tracker.reports import BiAnnualNarcoticsInventory
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
+# pylint: disable=protected-access, missing-function-docstring, unused-argument
+# pyright: reportPrivateUsage=false
 
-class Test_BiAnnualNarcoticsInventory:
+
+class TestBiAnnualNarcoticsInventory:
     """Unit tests the report.
 
     Behaviors Tested:
@@ -88,22 +92,22 @@ class Test_BiAnnualNarcoticsInventory:
         expected_dict = {
             2200001: {
                 "fentanyl": {
-                    "concentration": 50.0,
                     "name": "Fentanyl",
                     "unit": "mcg",
+                    "concentration": 50.0,
                     "starting_amount": 149.0,
                 },
                 "midazolam": {
-                    "concentration": 5.0,
                     "name": "Midazolam",
                     "unit": "mg",
-                    "starting_amount": 132.68,
+                    "concentration": 5.0,
+                    "starting_amount": 1.49,
                 },
                 "morphine": {
-                    "concentration": 10.0,
                     "name": "Morphine",
                     "unit": "mg",
-                    "starting_amount": 69,
+                    "concentration": 10.0,
+                    "starting_amount": 0.74,
                 },
             }
         }
@@ -118,7 +122,7 @@ class Test_BiAnnualNarcoticsInventory:
             commands.ListMedications(sq_man).set_parameters({"id": 1}).execute()[0]
         )
         fentanyl = commands.LoadMedication().set_data(fent_data).execute()
-
+        print(fentanyl)
         result = report._get_amount_received(fentanyl)
 
         assert result == 0

@@ -48,7 +48,9 @@ class Test_ReportingPeriodStorage:
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
 
-        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
+        commands.AddReportingPeriod(sq_man).set_reporting_period(
+            test_reporting_period
+        ).execute()
 
         cursor = sq_man.read(table_name="reporting_periods")
         reporting_period_ids = return_ids(cursor)
@@ -60,7 +62,9 @@ class Test_ReportingPeriodStorage:
         test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
+        commands.AddReportingPeriod(sq_man).set_reporting_period(
+            test_reporting_period
+        ).execute()
 
         commands.DeleteReportingPeriod(sq_man).execute(-1)
 
@@ -74,7 +78,9 @@ class Test_ReportingPeriodStorage:
         test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
+        commands.AddReportingPeriod(sq_man).set_reporting_period(
+            test_reporting_period
+        ).execute()
 
         data = commands.ListReportingPeriods(sq_man).execute()
 
@@ -86,7 +92,9 @@ class Test_ReportingPeriodStorage:
         test_reporting_period = test_reporting_period
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateReportingPeriodsTable(sq_man).execute()
-        commands.AddReportingPeriod(sq_man).execute(test_reporting_period)
+        commands.AddReportingPeriod(sq_man).set_reporting_period(
+            test_reporting_period
+        ).execute()
 
         commands.UpdateReportingPeriod(sq_man).execute(
             data={"status": "NEW STATUS"}, criteria={"id": -1}

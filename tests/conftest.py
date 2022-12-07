@@ -198,7 +198,7 @@ def setup_integration_db():
 
     periods = build_reporting_periods(dt_man)
     for period in periods:
-        commands.AddReportingPeriod(receiver).execute(period)
+        commands.AddReportingPeriod(receiver).set_reporting_period(period).execute()
 
     adjustment_data = return_adjustments_data()
     adjustment_list = construct_adjustments(adjustment_data)

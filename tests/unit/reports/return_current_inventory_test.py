@@ -39,7 +39,6 @@ class TestReturnCurrentInventory:
             {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg"},
             {"code": "midazolam", "name": "Midazolam", "unit": "mg"},
             {"code": "morphine", "name": "Morphine", "unit": "mg"},
-            u,
         ]
 
         assert result == expected

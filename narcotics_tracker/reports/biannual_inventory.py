@@ -2,9 +2,9 @@
 
 Classes:
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
-from narcotics_tracker import commands, reports
+from narcotics_tracker import commands
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -21,11 +21,13 @@ class BiAnnualNarcoticsInventory(Report):
 
     _receiver = ServiceManager().persistence
     _converter = ServiceManager().conversion
+    _period: "ReportingPeriod"
+    _medications: list["Medication"]
 
     def __init__(
         self,
-        receiver: "PersistenceService" = None,
-        converter: "ConversionService" = None,
+        receiver: Optional["PersistenceService"] = None,
+        converter: Optional["ConversionService"] = None,
     ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
@@ -145,7 +147,7 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _get_amount_received(self, medication: "Medication") -> int:
+    def _get_amount_received(self, medication: "Medication") -> float:
         """Returns the total amount of medication ordered in ml."""
         criteria = {
             "event_code": "ORDER",
