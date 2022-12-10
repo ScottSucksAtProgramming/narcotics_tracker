@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.events import Event
     from narcotics_tracker.items.statuses import Status
     from narcotics_tracker.items.units import Unit
-# pylint: ignore
 
 
 class StandardItemCreator:
@@ -29,9 +28,9 @@ class StandardItemCreator:
         create_units: Creates standard units and returns them in a list.
     """
 
-    _standard_events = []
-    _standard_statuses = []
-    _standard_units = []
+    _standard_events: list["Event"] = []
+    _standard_statuses: list["Status"] = []
+    _standard_units: list["Unit"] = []
 
     def create_events(self) -> list["Event"]:
         """Creates standard events and returns them in a list."""
@@ -51,244 +50,234 @@ class StandardItemCreator:
 
         return self._standard_units
 
-    def _create_standard_events(self) -> list["Event"]:
+    def _create_standard_events(self):
         """Builds the standard events and returns in a list."""
-        destroy_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("DESTROY")
-            .set_event_name("Destroyed")
-            .set_description(
-                "Used when subtracting medication which was destroyed through a reverse distributor."
-            )
-            .set_modifier(-1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("DESTROY")
+        event_builder.set_event_name("Destroyed")
+        event_builder.set_description(
+            "Used when subtracting medication which was destroyed through a reverse distributor."
         )
+        event_builder.set_modifier(-1)
+        destroy_event: "Event" = event_builder.build()
+
         self._standard_events.append(destroy_event)
 
-        import_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("IMPORT")
-            .set_event_name("Imported")
-            .set_description("Used when adding pre-existing stock to the inventory.")
-            .set_modifier(+1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("IMPORT")
+        event_builder.set_event_name("Imported")
+        event_builder.set_description(
+            "Used when adding pre-existing stock to the inventory."
         )
+        event_builder.set_modifier(+1)
+
+        import_event = event_builder.build()
         self._standard_events.append(import_event)
 
-        loss_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("LOSS")
-            .set_event_name("Lost")
-            .set_description(
-                "Used when subtracting medication which were lost or stolen."
-            )
-            .set_modifier(-1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("LOSS")
+        event_builder.set_event_name("Lost")
+        event_builder.set_description(
+            "Used when subtracting medication which were lost or stolen."
         )
+        event_builder.set_modifier(-1)
+
+        loss_event = event_builder.build()
         self._standard_events.append(loss_event)
 
-        order_event = loss_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("ORDER")
-            .set_event_name("Ordered")
-            .set_description("Used when adding new stock from a purchase order.")
-            .set_modifier(+1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("ORDER")
+        event_builder.set_event_name("Ordered")
+        event_builder.set_description(
+            "Used when adding new stock from a purchase order."
         )
+        event_builder.set_modifier(+1)
+
+        order_event = event_builder.build()
         self._standard_events.append(order_event)
 
-        use_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("USE")
-            .set_event_name("Used")
-            .set_description(
-                "Used when subtracting medication that was administered to a patient."
-            )
-            .set_modifier(-1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("USE")
+        event_builder.set_event_name("Used")
+        event_builder.set_description(
+            "Used when subtracting medication that was administered to a patient."
         )
+        event_builder.set_modifier(-1)
+
+        use_event = event_builder.build()
         self._standard_events.append(use_event)
 
-        waste_event = (
-            EventBuilder()
-            .set_table("events")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_event_code("WASTE")
-            .set_event_name("Wasted")
-            .set_description("Used when subtracting medication which was wasted.")
-            .set_modifier(-1)
-            .build()
+        event_builder = EventBuilder()
+        event_builder.set_table("events")
+        event_builder.set_id(None)
+        event_builder.set_created_date()
+        event_builder.set_modified_date()
+        event_builder.set_modified_by("System")
+        event_builder.set_event_code("WASTE")
+        event_builder.set_event_name("Wasted")
+        event_builder.set_description(
+            "Used when subtracting medication which was wasted."
         )
+        event_builder.set_modifier(-1)
+
+        waste_event = event_builder.build()
         self._standard_events.append(waste_event)
 
-    def _create_standard_units(self) -> list["Unit"]:
+    def _create_standard_units(self):
         """Builds the standard units and returns in a list."""
-        microgram = (
-            UnitBuilder()
-            .set_id()
-            .set_table("units")
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("Setup")
-            .set_unit_code("mcg")
-            .set_unit_name("microgram")
-            .set_decimals(-6)
-            .build()
-        )
+        unit_builder = UnitBuilder()
+        unit_builder.set_table("units")
+        unit_builder.set_id()
+        unit_builder.set_created_date()
+        unit_builder.set_modified_date()
+        unit_builder.set_modified_by("Setup")
+        unit_builder.set_unit_code("mcg")
+        unit_builder.set_unit_name("microgram")
+        unit_builder.set_decimals(-6)
+
+        microgram = unit_builder.build()
         self._standard_units.append(microgram)
 
-        milligram = (
-            UnitBuilder()
-            .set_id()
-            .set_table("units")
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("Setup")
-            .set_unit_code("mg")
-            .set_unit_name("milligram")
-            .set_decimals(-3)
-            .build()
-        )
+        unit_builder = UnitBuilder()
+        unit_builder.set_table("units")
+        unit_builder.set_id()
+        unit_builder.set_created_date()
+        unit_builder.set_modified_date()
+        unit_builder.set_modified_by("Setup")
+        unit_builder.set_unit_code("mg")
+        unit_builder.set_unit_name("milligram")
+        unit_builder.set_decimals(-3)
+
+        milligram = unit_builder.build()
         self._standard_units.append(milligram)
 
-        gram = (
-            UnitBuilder()
-            .set_id()
-            .set_table("units")
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("Setup")
-            .set_unit_code("g")
-            .set_unit_name("gram")
-            .set_decimals(0)
-            .build()
-        )
+        unit_builder = UnitBuilder()
+        unit_builder.set_table("units")
+        unit_builder.set_id()
+        unit_builder.set_created_date()
+        unit_builder.set_modified_date()
+        unit_builder.set_modified_by("Setup")
+        unit_builder.set_unit_code("g")
+        unit_builder.set_unit_name("gram")
+        unit_builder.set_decimals(0)
+
+        gram = unit_builder.build()
         self._standard_units.append(gram)
 
-        milliliter = (
-            UnitBuilder()
-            .set_id()
-            .set_table("units")
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("Setup")
-            .set_unit_code("ml")
-            .set_unit_name("milliliter")
-            .set_decimals(-3)
-            .build()
-        )
+        unit_builder = UnitBuilder()
+        unit_builder.set_table("units")
+        unit_builder.set_id()
+        unit_builder.set_created_date()
+        unit_builder.set_modified_date()
+        unit_builder.set_modified_by("Setup")
+        unit_builder.set_unit_code("ml")
+        unit_builder.set_unit_name("milliliter")
+        unit_builder.set_decimals(-3)
+
+        milliliter = unit_builder.build()
         self._standard_units.append(milliliter)
 
-        standard_unit = (
-            UnitBuilder()
-            .set_id()
-            .set_table("units")
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("Setup")
-            .set_unit_code("std")
-            .set_unit_name("standard")
-            .set_decimals(-8)
-            .build()
-        )
+        unit_builder = UnitBuilder()
+        unit_builder.set_table("units")
+        unit_builder.set_id()
+        unit_builder.set_created_date()
+        unit_builder.set_modified_date()
+        unit_builder.set_modified_by("Setup")
+        unit_builder.set_unit_code("std")
+        unit_builder.set_unit_name("standard")
+        unit_builder.set_decimals(-8)
+
+        standard_unit = unit_builder.build()
         self._standard_units.append(standard_unit)
 
-    def _create_standard_statuses(self) -> list["Status"]:
+    def _create_standard_statuses(self):
         """Builds the standard statuses and returns in a list."""
-        active_status = (
-            StatusBuilder()
-            .set_table("statuses")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_status_code("ACTIVE")
-            .set_status_name("Active")
-            .set_description("Used for items which are still being used.")
-            .build()
-        )
+        status_builder = StatusBuilder()
+        status_builder.set_table("statuses")
+        status_builder.set_id(None)
+        status_builder.set_created_date()
+        status_builder.set_modified_date()
+        status_builder.set_modified_by("System")
+        status_builder.set_status_code("ACTIVE")
+        status_builder.set_status_name("Active")
+        status_builder.set_description("Used for items which are still being used.")
+
+        active_status = status_builder.build()
         self._standard_statuses.append(active_status)
 
-        inactive_status = (
-            StatusBuilder()
-            .set_table("statuses")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_status_code("INACTIVE")
-            .set_status_name("Inactive")
-            .set_description("Used for items which are no longer being used.")
-            .build()
-        )
+        status_builder = StatusBuilder()
+        status_builder.set_table("statuses")
+        status_builder.set_id(None)
+        status_builder.set_created_date()
+        status_builder.set_modified_date()
+        status_builder.set_modified_by("System")
+        status_builder.set_status_code("INACTIVE")
+        status_builder.set_status_name("Inactive")
+        status_builder.set_description("Used for items which are no longer being used.")
+
+        inactive_status = status_builder.build()
         self._standard_statuses.append(inactive_status)
 
-        open_status = (
-            StatusBuilder()
-            .set_table("statuses")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_status_code("OPEN")
-            .set_status_name("Open")
-            .set_description("Used for items which have not been completed.")
-            .build()
-        )
+        status_builder = StatusBuilder()
+        status_builder.set_table("statuses")
+        status_builder.set_id(None)
+        status_builder.set_created_date()
+        status_builder.set_modified_date()
+        status_builder.set_modified_by("System")
+        status_builder.set_status_code("OPEN")
+        status_builder.set_status_name("Open")
+        status_builder.set_description("Used for items which have not been completed.")
+
+        open_status = status_builder.build()
         self._standard_statuses.append(open_status)
 
-        closed_status = (
-            StatusBuilder()
-            .set_table("statuses")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_status_code("CLOSED")
-            .set_status_name("Closed")
-            .set_description("Used for items which have been completed.")
-            .build()
-        )
+        status_builder = StatusBuilder()
+        status_builder.set_table("statuses")
+        status_builder.set_id(None)
+        status_builder.set_created_date()
+        status_builder.set_modified_date()
+        status_builder.set_modified_by("System")
+        status_builder.set_status_code("CLOSED")
+        status_builder.set_status_name("Closed")
+        status_builder.set_description("Used for items which have been completed.")
+
+        closed_status = status_builder.build()
         self._standard_statuses.append(closed_status)
 
-        cancelled_status = (
-            StatusBuilder()
-            .set_table("statuses")
-            .set_id(None)
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("System")
-            .set_status_code("CANCELLED")
-            .set_status_name("Cancelled")
-            .set_description("Used for items which have been cancelled.")
-            .build()
-        )
+        status_builder = StatusBuilder()
+        status_builder.set_table("statuses")
+        status_builder.set_id(None)
+        status_builder.set_created_date()
+        status_builder.set_modified_date()
+        status_builder.set_modified_by("System")
+        status_builder.set_status_code("CANCELLED")
+        status_builder.set_status_name("Cancelled")
+        status_builder.set_description("Used for items which have been cancelled.")
+
+        cancelled_status = status_builder.build()
         self._standard_statuses.append(cancelled_status)

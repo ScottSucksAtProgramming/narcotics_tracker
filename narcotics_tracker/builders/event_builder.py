@@ -29,7 +29,7 @@ class EventBuilder(DataItemBuilder):
         set_modifier: Sets the modifier attribute to the passed integer.
     """
 
-    _dataitem: Event = Event(
+    _dataitem: "Event" = Event(
         table="events",
         id=None,
         created_date=None,

@@ -1,9 +1,9 @@
 """Contains the modules needed to set up the Narcotics Tracker software.
 
-The events, statuses, and units table serve as vocabulary control tables which 
-provide the available events, statuses and units which can be used in other 
-tables. This package and its modules create the standard items which are used 
-at all EMS agencies. They can be returned in lists and easily added to the 
+The events, statuses, and units table serve as vocabulary control tables which
+provide the available events, statuses and units which can be used in other
+tables. This package and its modules create the standard items which are used
+at all EMS agencies. They can be returned in lists and easily added to the
 data repository.
 
 Modules:
@@ -12,7 +12,7 @@ Modules:
 
 How To Use:
 
-    The StandardItemCreator contains methods which build and return the 
+    The StandardItemCreator contains methods which build and return the
     standard items as needed.
 
     ```python
