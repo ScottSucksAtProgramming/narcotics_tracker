@@ -4,6 +4,8 @@ Classes:
 
     MedicationBuilder: Assigns attributes and returns Medication Objects.
 """
+from typing import Optional
+
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.medications import Medication
 
@@ -165,7 +167,9 @@ class MedicationBuilder(DataItemBuilder):
         self._dataitem.preferred_unit = preferred_unit
         return self
 
-    def set_concentration(self, concentration: float) -> "MedicationBuilder":
+    def set_concentration(
+        self, concentration: Optional[float] = None
+    ) -> "MedicationBuilder":
         """Sets the concentration to the passed value, or None."""
         self._dataitem.concentration = concentration
 
