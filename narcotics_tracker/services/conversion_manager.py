@@ -4,18 +4,20 @@ Controlled substance medications are measured in different units.
 
 The Preferred Unit is the unit that the medication is commonly measured in.
 
-The Standard Unit is a measurement of mass stored as an integer in the data 
-repository. The Standard Unit allows for precision to be preserved to a 
-minimum of two decimal places regardless of the preferred unit. 
+The Standard Unit is a measurement of mass stored as an integer in the data
+repository. The Standard Unit allows for precision to be preserved to a
+minimum of two decimal places regardless of the preferred unit.
 
-Reports sent to the NYS Department of Health and Bureau of Narcotic 
-Enforcement require medication amounts to be converted to volume. The 
-medication's concentration enables conversion this conversion. Volumes are 
+Reports sent to the NYS Department of Health and Bureau of Narcotic
+Enforcement require medication amounts to be converted to volume. The
+medication's concentration enables conversion this conversion. Volumes are
 always reported in milliliters.
 
 Classes:
     UnitConverter: Converts between different units of measurement.
 """
+
+from typing import Optional
 
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 
@@ -53,7 +55,9 @@ class ConversionManager(ConversionService):
 
         return round(result, 2)
 
-    def to_preferred(self, amount: float, preferred_unit: str) -> float:
+    def to_preferred(
+        self, amount: Optional[float], preferred_unit: Optional[str]
+    ) -> float:
         """Returns an amount of medication in its preferred unit.
 
         Args:
@@ -65,6 +69,8 @@ class ConversionManager(ConversionService):
         Returns:
             float: The amount of the medication in it's preferred unit.
         """
+        if amount is None or preferred_unit is None:
+            raise ValueError
         exponent = self._decimals["std"] - self._decimals[preferred_unit]
         raw_conversion = amount * (10**exponent)
         result = round(raw_conversion, 2)

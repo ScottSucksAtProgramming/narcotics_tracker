@@ -1,7 +1,7 @@
 """Contains the ServiceManager which sets and provides services.
 
 Classes:
-    ServiceManager: Provides access to the services used by the Narcotics 
+    ServiceManager: Provides access to the services used by the Narcotics
         Tracker.
 """
 from typing import TYPE_CHECKING
