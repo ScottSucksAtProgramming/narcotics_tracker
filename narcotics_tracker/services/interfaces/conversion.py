@@ -4,7 +4,7 @@
         ConversionService: Protocol for unit converters.
 """
 
-from typing import Protocol
+from typing import Optional, Protocol
 
 
 class ConversionService(Protocol):
@@ -39,7 +39,9 @@ class ConversionService(Protocol):
 
         return 0
 
-    def to_preferred(self, amount: float, preferred_unit: str) -> float:
+    def to_preferred(
+        self, amount: Optional[float], preferred_unit: Optional[str]
+    ) -> float:
         """Converts from standard to preferred unit."""
 
         return 0

@@ -62,7 +62,9 @@ class DataItemBuilder(Builder):
         """
         if date is None:
             date = ServiceManager().datetime.return_current()
-        self._dataitem.created_date = date
+
+        valid_date = self._validate_date(date)
+        self._dataitem.created_date = valid_date
         return self
 
     def set_modified_date(self, date: Optional[NTTypes.date_types] = None) -> "Builder":
@@ -75,8 +77,16 @@ class DataItemBuilder(Builder):
         """
         if date is None:
             date = ServiceManager().datetime.return_current()
-        self._dataitem.modified_date = date
+
+        valid_date = self._validate_date(date)
+        self._dataitem.modified_date = valid_date
         return self
+
+    def _validate_date(self, raw_date: NTTypes.date_types) -> int:
+        """Runs dates through validator. Sets the instance variables correctly."""
+
+        date = self._service_provider.datetime.validate(raw_date)
+        return date
 
     def set_modified_by(self, modified_by: str) -> "Builder":
         """Sets the modified by attribute to the passed string."""

@@ -5,6 +5,7 @@ Classes:
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
@@ -27,12 +28,12 @@ class Adjustment(DataItem):
         reporting_period_id (int): ID of the period adjustment occurred during.
     """
 
-    adjustment_date: int
-    event_code: str
-    medication_code: str
-    amount: float
-    reference_id: str
-    reporting_period_id: int
+    adjustment_date: Optional[int]
+    event_code: Optional[str]
+    medication_code: Optional[str]
+    amount: Optional[float]
+    reference_id: Optional[str]
+    reporting_period_id: Optional[int]
 
     def __str__(self) -> str:
         return (

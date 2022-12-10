@@ -4,6 +4,7 @@ Classes:
     Medication: A controlled substance medication which is tracked.
 """
 from dataclasses import dataclass
+from typing import Optional
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -29,13 +30,13 @@ class Medication(DataItem):
         status (str): Status of the medication.
     """
 
-    medication_code: str
-    medication_name: str
-    fill_amount: float
-    medication_amount: float
-    preferred_unit: str
-    concentration: float
-    status: str
+    medication_code: Optional[str]
+    medication_name: Optional[str]
+    fill_amount: Optional[float]
+    medication_amount: Optional[float]
+    preferred_unit: Optional[str]
+    concentration: Optional[float]
+    status: Optional[str]
 
     def __str__(self) -> str:
         converter = ServiceManager().conversion

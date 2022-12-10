@@ -4,11 +4,10 @@ Classes:
 
     AdjustmentBuilder: Assigns attributes and returns Adjustment Objects.
 """
-from typing import Union
-
 from narcotics_tracker import commands
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
+from narcotics_tracker.typings import NTTypes
 
 
 class AdjustmentBuilder(DataItemBuilder):
@@ -35,7 +34,7 @@ class AdjustmentBuilder(DataItemBuilder):
             passed integer.
     """
 
-    _dataitem = Adjustment(
+    _dataitem: Adjustment = Adjustment(
         table="inventory",
         id=None,
         created_date=None,
@@ -65,31 +64,19 @@ class AdjustmentBuilder(DataItemBuilder):
             reporting_period_id=None,
         )
 
-    def build(self) -> Adjustment:
+    def build(self) -> NTTypes.data_item_types:
         """Validates attributes and returns the Adjustment object."""
-        self._evaluate_and_fix_dates()
         self._convert_adjustment_amount_to_standard()
         self._apply_event_modifier()
 
-        adjustment = self._dataitem
         self._reset()
-        return adjustment
-
-    def _evaluate_and_fix_dates(self) -> None:
-        """Runs dates through validator. Sets the instance variables correctly."""
-        self._dataitem.created_date = self._service_provider.datetime.validate(
-            self._dataitem.created_date
-        )
-        self._dataitem.modified_date = self._service_provider.datetime.validate(
-            self._dataitem.modified_date
-        )
-        self._dataitem.adjustment_date = self._service_provider.datetime.validate(
-            self._dataitem.adjustment_date
-        )
+        return self._dataitem
 
     def _convert_adjustment_amount_to_standard(self) -> None:
         """Converts the adjustment amount in the standard unit."""
         med_code = self._dataitem.medication_code
+        if med_code is None:
+            return
         amount = self._dataitem.amount
         preferred_unit = commands.ReturnPreferredUnit().set_id(med_code).execute()
         converted_amount = self._service_provider.conversion.to_standard(
@@ -100,19 +87,22 @@ class AdjustmentBuilder(DataItemBuilder):
     def _apply_event_modifier(self) -> None:
         """Retrieves the event modifier and applies it to the the amount."""
         event_code = self._dataitem.event_code
+        if event_code is None:
+            return
 
         event_modifier = commands.ReturnEventModifier().set_id(event_code).execute()
 
         self._dataitem.amount = self._dataitem.amount * event_modifier
 
-    def set_adjustment_date(self, date: Union[int, str]) -> "AdjustmentBuilder":
+    def set_adjustment_date(self, date: NTTypes.date_types) -> "AdjustmentBuilder":
         """Sets the adjustment date to the passed value.
 
         Args:
             adjustment_date (int): Unix timestamp of when the adjustment
                 occurred.
         """
-        self._dataitem.adjustment_date = date
+        valid_date = self._validate_date(date)
+        self._dataitem.adjustment_date = valid_date
         return self
 
     def set_event_code(self, event_code: str) -> "AdjustmentBuilder":

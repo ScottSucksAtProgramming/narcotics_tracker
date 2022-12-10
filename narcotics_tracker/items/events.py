@@ -4,6 +4,7 @@ Classes:
     Event: A type of event which can affect the inventory.
 """
 from dataclasses import dataclass
+from typing import Optional
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 
@@ -22,10 +23,10 @@ class Event(DataItem):
         modifier (int): (+1 or -1) Specifies if the event adds or removes from the inventory.
     """
 
-    event_code: str
-    event_name: str
-    description: str
-    modifier: int
+    event_code: Optional[str]
+    event_name: Optional[str]
+    description: Optional[str]
+    modifier: Optional[int]
 
     def __str__(self) -> str:
         return f"Event #{self.id}: {self.event_name} ({self.event_code}) {self.description}"

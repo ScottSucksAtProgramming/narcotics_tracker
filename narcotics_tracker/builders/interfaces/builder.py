@@ -4,10 +4,10 @@ Classes:
     BuilderInterface: Defines the protocol for concrete DataItem builders.
 """
 
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
-if TYPE_CHECKING:
-    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+from narcotics_tracker.typings import NTTypes
 
 
 class Builder(Protocol):
@@ -19,10 +19,12 @@ class Builder(Protocol):
         _reset: Should remove all attributes values.
     """
 
-    def build(self) -> "DataItem":
+    _dataitem: DataItem
+
+    def build(self) -> NTTypes.data_item_types:
         """Returns the constructed DataItem Object."""
 
-        return DataItem
+        return self._dataitem
 
     def _reset(self) -> None:
         """Removes all attributes values from the builder."""

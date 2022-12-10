@@ -12,7 +12,7 @@ Classes:
 
     UpdateMedication: Updates a Medication with the given data and criteria.
 
-    ReturnPreferredUnit: Returns the preferred unit for the specified 
+    ReturnPreferredUnit: Returns the preferred unit for the specified
         Medication.
 
     LoadMedication: Loads a Medication Object from data.

@@ -28,11 +28,11 @@ class DataItem(ABC):
         modified_by (str): The name of the user who last modified the item.
     """
 
-    table: str
+    table: Optional[str]
     id: Optional[int]
-    created_date: NTTypes.date_types
-    modified_date: NTTypes.date_types
-    modified_by: str
+    created_date: Optional[NTTypes.date_types]
+    modified_date: Optional[NTTypes.date_types]
+    modified_by: Optional[str]
 
     @abstractmethod
     def __str__(self) -> str:
