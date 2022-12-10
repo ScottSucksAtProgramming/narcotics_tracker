@@ -10,12 +10,14 @@ Classes:
 
 import os
 import sqlite3
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker.services.interfaces.persistence_db import (
     PersistenceServiceForDatabase,
 )
-from narcotics_tracker.typings import NTTypes
+
+if TYPE_CHECKING:
+    from narcotics_tracker.typings import NTTypes
 
 
 class SQLiteManager(PersistenceServiceForDatabase):
@@ -55,7 +57,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def add(self, table_name: str, data: NTTypes.sqlite_types):
+    def add(self, table_name: str, data: "NTTypes.sqlite_types"):
         """Adds a new row to the database.
 
         Args:

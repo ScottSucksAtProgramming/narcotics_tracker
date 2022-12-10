@@ -2,7 +2,9 @@
 
 
 from narcotics_tracker import reports
+from narcotics_tracker.reports.interfaces.report import Report
 
 if __name__ == "__main__":
-    report = reports.biannual_inventory.BiAnnualNarcoticsInventory().execute()
-    print(report)
+    biannual_report: "Report" = reports.BiAnnualNarcoticsInventory()
+    result: dict[str, int] = biannual_report.run()
+    print(result)

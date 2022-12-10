@@ -1,11 +1,13 @@
 """Scripts to run Current Inventory Report. For demo purposes."""
 
 import os
+from typing import Any
 
 from narcotics_tracker import reports
 
 
 def main():
+    """Main Function."""
     os.system("clear")
     totals = reports.ReturnCurrentInventory().run()
 
@@ -17,8 +19,8 @@ def main():
         print(string)
 
 
-def _make_strings(db_totals: list[dict]) -> list[str]:
-    strings = []
+def _make_strings(db_totals: list[dict[str, Any]]) -> list[str]:
+    strings: list[str] = []
 
     for item in db_totals:
         string = f"{item['name']}: {item['amount']} {item['unit']}"

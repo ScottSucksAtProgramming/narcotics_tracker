@@ -1,12 +1,12 @@
 """Sets up the Narcotics Tracker.
 
-This script is intended to be called called the first time the Narcotics 
-Tracker is being used. It will created the database, tabes, and standard 
+This script is intended to be called called the first time the Narcotics
+Tracker is being used. It will created the database, tabes, and standard
 items.
 
 Functions:
 
-    main: Creates a database file, populates with the standard tables and 
+    main: Creates a database file, populates with the standard tables and
         items.
 
     clear_screen: Clears the screen.
@@ -19,17 +19,14 @@ Functions:
 
     populate_units: Adds the Standard Units to the database.
 """
-
+# pylint: disable=protected-access
+# pyright: reportPrivateUsage=false
 import os
 import sqlite3
-from typing import TYPE_CHECKING
 
 from narcotics_tracker import commands
 from narcotics_tracker.configuration.standard_items import StandardItemCreator
-from narcotics_tracker.services.service_manager import ServiceManager
-
-if TYPE_CHECKING:
-    from narcotics_tracker.commands.interfaces.command import Command
+from narcotics_tracker.typings import NTTypes
 
 
 def main() -> None:
@@ -59,25 +56,24 @@ def clear_screen():
     os.system(clear)
 
 
-def create_tables() -> str:
+def create_tables():
     """Initializes the database and sets up the tables."""
-    persistence_manager = ServiceManager().persistence
-    commands = _return_table_list()
+    commands_list = _return_table_list()
 
-    for command in commands:
-        command().execute()
-        print(f"- {command._table_name} table created.")
+    for table_command in commands_list:
+        table_command.execute()
+        print(f"- {table_command._table_name} table created.")
 
 
-def _return_table_list() -> list["Command"]:
+def _return_table_list() -> list[NTTypes.table_command_types]:
     """Returns a list of table creation commands."""
     tables_list = [
-        commands.CreateEventsTable,
-        commands.CreateInventoryTable,
-        commands.CreateMedicationsTable,
-        commands.CreateReportingPeriodsTable,
-        commands.CreateStatusesTable,
-        commands.CreateUnitsTable,
+        commands.CreateEventsTable(),
+        commands.CreateInventoryTable(),
+        commands.CreateMedicationsTable(),
+        commands.CreateReportingPeriodsTable(),
+        commands.CreateStatusesTable(),
+        commands.CreateUnitsTable(),
     ]
     return tables_list
 
@@ -89,8 +85,8 @@ def populate_events() -> None:
 
     for event in events:
         try:
-            commands.AddEvent().execute(event)
-        except sqlite3.IntegrityError as e:  # Events likely in the database already.
+            commands.AddEvent().set_event(event).execute()
+        except sqlite3.IntegrityError:  # Events likely in the database already.
             pass
         else:
             counter += 1
@@ -105,8 +101,8 @@ def populate_statuses() -> None:
 
     for status in statuses:
         try:
-            commands.AddStatus().execute(status)
-        except sqlite3.IntegrityError as e:  # Statuses likely in the database already.
+            commands.AddStatus().set_status(status).execute()
+        except sqlite3.IntegrityError:  # Statuses likely in the database already.
             pass
         else:
             counter += 1
@@ -121,9 +117,8 @@ def populate_units() -> None:
 
     for unit in units:
         try:
-            commands.AddUnit().execute(unit)
-        except sqlite3.IntegrityError as e:  # Units likely in the database already.
-            print(e)
+            commands.AddUnit().set_unit(unit).execute()
+        except sqlite3.IntegrityError:  # Units likely in the database already.
             pass
         else:
             counter += 1

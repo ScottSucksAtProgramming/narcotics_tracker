@@ -1,50 +1,51 @@
 """Adds all inventory adjustments to the WLVAC Inventory."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from narcotics_tracker import commands
 from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
-from narcotics_tracker.services.service_manager import ServiceManager
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
 
 
 def main() -> None:
+    """Main Function"""
 
     adjustment_data = return_adjustments_data()
 
     adjustment_list = construct_adjustments(adjustment_data)
 
     for adjustment in adjustment_list:
-        message = commands.AddAdjustment().execute(adjustment)
+        message = commands.AddAdjustment().set_adjustment(adjustment).execute()
         print(message)
 
 
-def construct_adjustments(data: list[any]) -> list["Adjustment"]:
-    adjustment_list = []
+def construct_adjustments(data: list[Any]) -> list["Adjustment"]:
+    """Constructs adjustments returns in a list."""
+    adjustment_list: list["Adjustment"] = []
     for data_set in data:
-        adjustment = (
-            AdjustmentBuilder()
-            .set_table("inventory")
-            .set_id(data_set[0])
-            .set_created_date()
-            .set_modified_date()
-            .set_modified_by("SRK")
-            .set_adjustment_date(data_set[1])
-            .set_event_code(data_set[2])
-            .set_medication_code(data_set[3])
-            .set_adjustment_amount(data_set[4])
-            .set_reporting_period_id(data_set[5])
-            .set_reference_id(data_set[6])
-            .build()
-        )
+        adjustment_builder = AdjustmentBuilder()
+        adjustment_builder.set_table("inventory")
+        adjustment_builder.set_id(data_set[0])
+        adjustment_builder.set_created_date()
+        adjustment_builder.set_modified_date()
+        adjustment_builder.set_modified_by("SRK")
+        adjustment_builder.set_adjustment_date(data_set[1])
+        adjustment_builder.set_event_code(data_set[2])
+        adjustment_builder.set_medication_code(data_set[3])
+        adjustment_builder.set_adjustment_amount(data_set[4])
+        adjustment_builder.set_reporting_period_id(data_set[5])
+        adjustment_builder.set_reference_id(data_set[6])
+        adjustment = adjustment_builder.build()
+
         adjustment_list.append(adjustment)
 
     return adjustment_list
 
 
-def return_adjustments_data() -> list[list]:
+def return_adjustments_data() -> list[list[Any]]:
+    """Returns data to build adjustments in a list."""
     return [
         [
             None,

@@ -5,7 +5,7 @@ Classes:
         medications in the inventory.
 
 """
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from narcotics_tracker import commands, reports
 from narcotics_tracker.reports.interfaces.report import Report
@@ -31,7 +31,7 @@ class ReturnCurrentInventory(Report):
         if receiver:
             self._receiver = receiver
 
-    def run(self) -> list[dict]:
+    def run(self) -> list[dict[Any, Any]]:
         """Runs Report. Returns results as a list of dictionaries.
 
         Returns:

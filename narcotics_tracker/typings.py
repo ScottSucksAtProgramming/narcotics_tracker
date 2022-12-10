@@ -3,6 +3,16 @@
 from typing import TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
+    from narcotics_tracker.commands.table_commands import (
+        CreateEventsTable,
+        CreateInventoryTable,
+        CreateMedicationsTable,
+        CreateReportingPeriodsTable,
+        CreateStatusesTable,
+        CreateUnitsTable,
+    )
+
+if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
     from narcotics_tracker.items.events import Event
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -33,4 +43,13 @@ class NTTypes:
         "ReportingPeriod",
         "Status",
         "Unit",
+    ]
+
+    table_command_types = Union[
+        "CreateEventsTable",
+        "CreateInventoryTable",
+        "CreateMedicationsTable",
+        "CreateReportingPeriodsTable",
+        "CreateStatusesTable",
+        "CreateUnitsTable",
     ]
