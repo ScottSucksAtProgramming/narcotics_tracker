@@ -55,7 +55,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def add(self, table_name: str, data: dict[str, NTTypes.sqlite_types]):
+    def add(self, table_name: str, data: NTTypes.sqlite_types):
         """Adds a new row to the database.
 
         Args:

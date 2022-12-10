@@ -5,7 +5,7 @@ Classes:
     """
 
 
-from typing import Any, Optional, Protocol, Union
+from typing import Any, Optional, Protocol
 
 from narcotics_tracker.typings import NTTypes
 
