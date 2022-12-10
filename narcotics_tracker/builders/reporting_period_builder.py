@@ -2,14 +2,15 @@
 
 Classes:
 
-    ReportingPeriodBuilder: Assigns attributes and returns Reporting Period 
+    ReportingPeriodBuilder: Assigns attributes and returns Reporting Period
         Objects.
 """
-from typing import Union
+from typing import Optional
 
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 
 class ReportingPeriodBuilder(DataItemBuilder):
@@ -29,7 +30,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         set_status: Sets the status attribute to the passed string.
     """
 
-    _dataitem = ReportingPeriod(
+    _dataitem: ReportingPeriod = ReportingPeriod(
         table="reporting_periods",
         id=None,
         created_date=None,
@@ -55,21 +56,16 @@ class ReportingPeriodBuilder(DataItemBuilder):
 
     def build(self) -> ReportingPeriod:
         """Validates attributes and returns the ReportingPeriod Object."""
-        self._dataitem.created_date = self._service_provider.datetime.validate(
-            self._dataitem.created_date
-        )
-        self._dataitem.modified_date = self._service_provider.datetime.validate(
-            self._dataitem.modified_date
-        )
         self._dataitem.start_date = self._service_provider.datetime.validate(
             self._dataitem.start_date
         )
 
-        reporting_period = self._dataitem
         self._reset()
-        return reporting_period
+        return self._dataitem
 
-    def set_start_date(self, date: Union[int, str] = None) -> "ReportingPeriodBuilder":
+    def set_start_date(
+        self, date: Optional[NTTypes.date_types] = None
+    ) -> "ReportingPeriodBuilder":
         """Sets the start date attribute to the passed value.
 
         Args:
@@ -79,16 +75,18 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
-        if type(date) == str:
+        if isinstance(date, str):
             date = ServiceManager().datetime.convert_to_timestamp(date)
 
-        if date == None:
+        if date is None:
             raise ValueError("Must provide a start date.")
 
         self._dataitem.start_date = date
         return self
 
-    def set_end_date(self, date: int = None) -> "ReportingPeriodBuilder":
+    def set_end_date(
+        self, date: Optional[NTTypes.date_types] = None
+    ) -> "ReportingPeriodBuilder":
         """Sets the end date attribute to the passed integer.
 
         Args:
@@ -98,7 +96,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         Returns:
             self: The instance of the builder.
         """
-        if type(date) == str:
+        if isinstance(date, str):
             date = ServiceManager().datetime.convert_to_timestamp(date)
 
         self._dataitem.end_date = date

@@ -34,7 +34,7 @@ class MedicationBuilder(DataItemBuilder):
         set_status: Sets the status attribute to the passed string.
     """
 
-    _dataitem = Medication(
+    _dataitem: Medication = Medication(
         table="medications",
         id=None,
         created_date=None,
@@ -68,15 +68,8 @@ class MedicationBuilder(DataItemBuilder):
 
     def build(self) -> Medication:
         """Validates attributes and returns the Medication Object."""
-        self._dataitem.created_date = self._service_provider.datetime.validate(
-            self._dataitem.created_date
-        )
-        self._dataitem.modified_date = self._service_provider.datetime.validate(
-            self._dataitem.modified_date
-        )
 
-        if self._concentration_is_none:
-            self._dataitem.concentration = self._calculate_concentration()
+        self._dataitem.concentration = self._calculate_concentration()
 
         self._dataitem.medication_amount = self._convert_medication_amount()
 
@@ -94,6 +87,11 @@ class MedicationBuilder(DataItemBuilder):
 
     def _calculate_concentration(self) -> float:
         """Calculates and returns the medication's concentration."""
+        if (
+            self._dataitem.medication_amount is None
+            or self._dataitem.fill_amount is None
+        ):
+            raise ValueError
         return self._dataitem.medication_amount / self._dataitem.fill_amount
 
     def _convert_medication_amount(self) -> int:
@@ -167,12 +165,9 @@ class MedicationBuilder(DataItemBuilder):
         self._dataitem.preferred_unit = preferred_unit
         return self
 
-    def set_concentration(self, concentration: float = None) -> "MedicationBuilder":
+    def set_concentration(self, concentration: float) -> "MedicationBuilder":
         """Sets the concentration to the passed value, or None."""
-        if concentration:
-            self._dataitem.concentration = concentration
-        else:
-            concentration = None
+        self._dataitem.concentration = concentration
 
         return self
 

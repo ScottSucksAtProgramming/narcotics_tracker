@@ -4,6 +4,7 @@ Classes:
     ReportingPeriod: A period of time for medication tracking.
 """
 from dataclasses import dataclass
+from typing import Optional
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 from narcotics_tracker.services.service_manager import ServiceManager
@@ -22,11 +23,13 @@ class ReportingPeriod(DataItem):
 
     """
 
-    start_date: int
-    end_date: int
-    status: str
+    start_date: Optional[int]
+    end_date: Optional[int]
+    status: Optional[str]
 
     def __str__(self) -> str:
+        if self.start_date is None:
+            raise ValueError
         start_date = ServiceManager().datetime.convert_to_string(self.start_date)
         if self.end_date is not None:
             end_date = ServiceManager().datetime.convert_to_string(self.end_date)

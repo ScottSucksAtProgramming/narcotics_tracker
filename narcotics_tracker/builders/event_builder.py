@@ -29,7 +29,7 @@ class EventBuilder(DataItemBuilder):
         set_modifier: Sets the modifier attribute to the passed integer.
     """
 
-    _dataitem = Event(
+    _dataitem: Event = Event(
         table="events",
         id=None,
         created_date=None,
@@ -57,16 +57,9 @@ class EventBuilder(DataItemBuilder):
 
     def build(self) -> Event:
         """Validates attributes and returns the Event Object."""
-        self._dataitem.created_date = self._service_provider.datetime.validate(
-            self._dataitem.created_date
-        )
-        self._dataitem.modified_date = self._service_provider.datetime.validate(
-            self._dataitem.modified_date
-        )
 
-        event = self._dataitem
         self._reset()
-        return event
+        return self._dataitem
 
     def set_event_code(self, event_code: str) -> "EventBuilder":
         """Sets the event code attribute to the passed string.
