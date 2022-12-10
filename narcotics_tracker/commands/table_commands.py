@@ -19,13 +19,13 @@ Classes:
 
     CreateUnitsTable: Creates the 'units' table in the SQLite3 database.
 """
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from narcotics_tracker.commands.interfaces.command import Command
-from narcotics_tracker.services.service_manager import ServiceManager
-
-if TYPE_CHECKING:
-    from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from narcotics_tracker.services.interfaces.persistence_db import (
+    PersistenceServiceForDatabase,
+)
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
 class CreateEventsTable(Command):
@@ -35,6 +35,7 @@ class CreateEventsTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "events"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -47,17 +48,17 @@ class CreateEventsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
-            receiver (PersistenceService, optional): Object which communicates
+            receiver (PersistenceServiceForDatabase, optional): Object which communicates
                 with the data repository. Defaults to SQLiteManager.
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""
@@ -71,6 +72,7 @@ class CreateInventoryTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "inventory"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -91,17 +93,17 @@ class CreateInventoryTable(Command):
         "FOREIGN KEY (reporting_period_id) REFERENCES reporting_periods (id) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
-            receiver (PersistenceService, optional): Object which communicates
+            receiver (PersistenceServiceForDatabase, optional): Object which communicates
                 with the data repository. Defaults to SQLiteManager.
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""
@@ -119,6 +121,7 @@ class CreateMedicationsTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "medications"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -139,17 +142,17 @@ class CreateMedicationsTable(Command):
         "FOREIGN KEY (status) REFERENCES statuses (status_code) ON UPDATE CASCADE",
     ]
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
-            receiver (PersistenceService, optional): Object which communicates
+            receiver (PersistenceServiceForDatabase, optional): Object which communicates
                 with the data repository. Defaults to SQLiteManager.
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""
@@ -165,6 +168,7 @@ class CreateReportingPeriodsTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "reporting_periods"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -176,17 +180,17 @@ class CreateReportingPeriodsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
-            receiver (PersistenceService, optional): Object which communicates
+            receiver (PersistenceServiceForDatabase, optional): Object which communicates
                 with the data repository. Defaults to SQLiteManager.
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""
@@ -200,6 +204,7 @@ class CreateStatusesTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "statuses"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -211,17 +216,17 @@ class CreateStatusesTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
-            receiver (PersistenceService, optional): Object which communicates
+            receiver (PersistenceServiceForDatabase, optional): Object which communicates
                 with the data repository. Defaults to SQLiteManager.
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""
@@ -235,6 +240,7 @@ class CreateUnitsTable(Command):
         execute: Executes the command.
     """
 
+    _receiver: "PersistenceServiceForDatabase" = SQLiteManager("inventory.db")
     _table_name: str = "units"
     _column_info: dict[str, str] = {
         "id": "INTEGER PRIMARY KEY",
@@ -246,7 +252,9 @@ class CreateUnitsTable(Command):
         "modified_by": "TEXT NOT NULL",
     }
 
-    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
+    def __init__(
+        self, receiver: Optional["PersistenceServiceForDatabase"] = None
+    ) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -255,8 +263,6 @@ class CreateUnitsTable(Command):
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def execute(self):
         """Executes the command."""

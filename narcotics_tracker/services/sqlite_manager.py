@@ -12,11 +12,13 @@ import os
 import sqlite3
 from typing import Optional, Union
 
-from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from narcotics_tracker.services.interfaces.persistence_db import (
+    PersistenceServiceForDatabase,
+)
 from narcotics_tracker.typings import NTTypes
 
 
-class SQLiteManager(PersistenceService):
+class SQLiteManager(PersistenceServiceForDatabase):
     """Sends and receives information from the SQlite database.
 
     Attributes:
@@ -158,7 +160,7 @@ class SQLiteManager(PersistenceService):
     def create_table(
         self,
         table_name: str,
-        column_info: dict[str, Union[str, int, float]],
+        column_info: dict[str, str],
         foreign_key_info: Optional[list[str]] = None,
     ) -> None:
         """Adds a table to the database.
