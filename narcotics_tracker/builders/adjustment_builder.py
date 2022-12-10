@@ -64,7 +64,7 @@ class AdjustmentBuilder(DataItemBuilder):
             reporting_period_id=None,
         )
 
-    def build(self) -> NTTypes.data_item_types:
+    def build(self) -> Adjustment:
         """Validates attributes and returns the Adjustment object."""
         self._convert_adjustment_amount_to_standard()
         self._apply_event_modifier()
