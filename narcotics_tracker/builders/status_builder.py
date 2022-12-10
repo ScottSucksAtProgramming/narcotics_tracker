@@ -25,7 +25,7 @@ class StatusBuilder(DataItemBuilder):
         set_description: Sets the description attribute to the passed string.
     """
 
-    _dataitem = Status(
+    _dataitem: Status = Status(
         table="statuses",
         id=None,
         created_date=None,

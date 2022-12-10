@@ -25,7 +25,7 @@ class UnitBuilder(DataItemBuilder):
         set_decimals: Sets the decimals attribute to the passed integer.
     """
 
-    _dataitem = Unit(
+    _dataitem: Unit = Unit(
         table="units",
         id=None,
         created_date=None,
