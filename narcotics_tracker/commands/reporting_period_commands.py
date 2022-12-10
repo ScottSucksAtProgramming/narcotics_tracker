@@ -5,13 +5,13 @@ Please see the package documentation for more information.
 Classes:
     AddReportingPeriod: Adds a Reporting Period to the database.
 
-    DeleteReportingPeriod: Deletes a Reporting Period from the database by its 
+    DeleteReportingPeriod: Deletes a Reporting Period from the database by its
         ID or code.
 
     ListReportingPeriods: Returns a list of Reporting Periods.
 
-    UpdateReportingPeriod: Updates a Reporting Period with the given data and 
-        criteria. 
+    UpdateReportingPeriod: Updates a Reporting Period with the given data and
+        criteria.
 """
 from typing import TYPE_CHECKING, Optional
 

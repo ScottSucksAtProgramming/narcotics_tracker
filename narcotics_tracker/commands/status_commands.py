@@ -9,7 +9,7 @@ Classes:
 
     ListStatuses: Returns a list of Statuses.
 
-    UpdateStatus: Updates a Status with the given data and criteria.    
+    UpdateStatus: Updates a Status with the given data and criteria.
 """
 from typing import TYPE_CHECKING, Optional, Union
 
