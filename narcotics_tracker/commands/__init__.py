@@ -1,13 +1,13 @@
 """Organizes and exports commands for the Narcotics Tracker.
 
-The Command Pattern was implemented to provider greater flexibility when using 
-the Narcotics Tracker. The modules within this package contain the various 
-commands available. They have been imported into this module for easier 
+The Command Pattern was implemented to provider greater flexibility when using
+the Narcotics Tracker. The modules within this package contain the various
+commands available. They have been imported into this module for easier
 importing throughout the project.
 
 Interfaces:
 
-    Command: Defines the protocol for commands which interact with the SQLite3 
+    Command: Defines the protocol for commands which interact with the SQLite3
         database.
 
 Modules:
@@ -22,16 +22,16 @@ Modules:
 
     Status Commands: Contains the commands for Statuses.
 
-    Table Commands: Contains commands which created and modify tables in the 
+    Table Commands: Contains commands which created and modify tables in the
         SQLite3 database.
 
     Unit Commands: Contains the commands for Units.
 
 How To Use:
 
-    Commands allow for their receivers to be set in their initializer. If no 
-    receiver is passes the default service is used. Each command relies on its 
-    `execute` method trigger the command. The execute method accepts any 
+    Commands allow for their receivers to be set in their initializer. If no
+    receiver is passes the default service is used. Each command relies on its
+    `execute` method trigger the command. The execute method accepts any
     needed parameters by the receiver.
 
     ```python
@@ -44,6 +44,7 @@ How To Use:
     modifier = command.ReturnEventModifier("LOSS")
     ```
 """
+# pyright: reportUnusedImport=false
 
 from narcotics_tracker.commands.adjustment_commands import (
     AddAdjustment,
