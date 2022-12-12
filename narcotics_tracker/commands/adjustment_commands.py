@@ -144,7 +144,7 @@ class ListAdjustments(Command):
         self,
         criteria: Optional[NTTypes.sqlite_types] = None,
         order_by: Optional[str] = None,
-    ) -> list[tuple["Adjustment"]]:
+    ) -> list[tuple["NTTypes.adjustment_data_type"]]:
         """Executes the command and returns a list of Adjustments.
 
         Args:
@@ -158,6 +158,7 @@ class ListAdjustments(Command):
             criteria = {}
 
         cursor = self._receiver.read("inventory", criteria, order_by)
+        print(cursor.fetchall())
         return cursor.fetchall()
 
 

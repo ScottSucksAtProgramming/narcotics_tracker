@@ -40,6 +40,8 @@ class Medication(DataItem):
 
     def __str__(self) -> str:
         converter = ServiceManager().conversion
+        if self.medication_amount is None:
+            raise ValueError
         medication_amount = converter.to_preferred(
             self.medication_amount, self.preferred_unit
         )

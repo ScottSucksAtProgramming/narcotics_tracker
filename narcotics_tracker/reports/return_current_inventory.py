@@ -1,15 +1,16 @@
 """Returns the current stock for all active medications.
 
 Classes:
-    ReturnCurrentInventory: Returns the current stock for all active 
+    ReturnCurrentInventory: Returns the current stock for all active
         medications in the inventory.
 
 """
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
 
 from narcotics_tracker import commands, reports
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -21,7 +22,7 @@ class ReturnCurrentInventory(Report):
     _receiver = ServiceManager().persistence
     _converter = ServiceManager().conversion
 
-    def __init__(self, receiver: "PersistenceService" = None) -> None:
+    def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
 
         Args:
@@ -44,10 +45,10 @@ class ReturnCurrentInventory(Report):
 
         return self._convert_amounts_to_preferred(list_with_amounts)
 
-    def _retrieve_medications(self) -> list[dict]:
+    def _retrieve_medications(self) -> list[dict[str, str]]:
         """Returns the code, name, and unit for all active medications."""
-        medication_list = []
-        criteria = {"status": "ACTIVE"}
+        medication_list: list[dict[str, str]] = []
+        criteria: NTTypes.sqlite_types = {"status": "ACTIVE"}
         active_meds = (
             commands.ListMedications(self._receiver)
             .set_parameters(criteria, "id")
@@ -60,15 +61,22 @@ class ReturnCurrentInventory(Report):
 
         return medication_list
 
-    def _add_amounts(self, medication_info: list[dict]) -> list[dict]:
+    def _add_amounts(
+        self, medication_info: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Adds current amounts for each medication in the list and returns it."""
+        other_report: "Report" = reports.ReturnMedicationStock(self._receiver)
+
         for med in medication_info:
-            amount = reports.ReturnMedicationStock(self._receiver).run(med["code"])
+            other_report.set_medication(med["code"])
+            amount = other_report.run()
             med["amount"] = amount
 
         return medication_info
 
-    def _convert_amounts_to_preferred(self, medication_info: list[dict]) -> list[dict]:
+    def _convert_amounts_to_preferred(
+        self, medication_info: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Converts amount for each med to preferred unit and returns the list.
 
         Note: Amounts are rounded to two decimal places.

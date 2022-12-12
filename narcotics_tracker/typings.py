@@ -1,6 +1,6 @@
 """Contains type aliases used throughout the Narcotics Tracker."""
 
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from narcotics_tracker.commands.table_commands import (
@@ -25,13 +25,15 @@ if TYPE_CHECKING:
 class NTTypes:
     """Contains types used throughout the Narcotics Tracker."""
 
-    sqlite_types = dict[str, Union[str, int, float]]
+    sqlite_types = dict[str, Any]
 
     date_types = Union[int, str]
 
     medication_data_type = tuple[
         int, str, str, float, str, float, float, str, int, int, str
     ]
+
+    adjustment_data_type = tuple[int, int, str, str, float, int, str, int, int, str]
 
     reporting_period_data_type = tuple[int, int, int, str, int, int, str]
 

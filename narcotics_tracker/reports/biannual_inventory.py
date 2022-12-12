@@ -2,12 +2,13 @@
 
 Classes:
 """
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from narcotics_tracker import commands
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
@@ -23,6 +24,7 @@ class BiAnnualNarcoticsInventory(Report):
     _converter = ServiceManager().conversion
     _period: "ReportingPeriod"
     _medications: list["Medication"]
+    _report: dict[Any, Any]
 
     def __init__(
         self,
@@ -94,12 +96,16 @@ class BiAnnualNarcoticsInventory(Report):
 
     def _get_current_reporting_period(self) -> "ReportingPeriod":
         criteria = {"status": "OPEN"}
-        data = commands.ListReportingPeriods(self._receiver).execute(criteria)[-1]
+        data = (
+            commands.ListReportingPeriods(self._receiver)
+            .set_parameters(criteria)
+            .execute()[-1]
+        )
 
-        return commands.LoadReportingPeriod().execute(data)
+        return commands.LoadReportingPeriod().set_data(data).execute()
 
-    def _get_active_medications(self) -> list["Medication"]:
-        medication_list = []
+    def _get_active_medications(self) -> list[NTTypes.medication_data_type]:
+        medication_list: list[NTTypes.medication_data_type] = []
         criteria = {"status": "ACTIVE"}
         order = "medication_code"
 
@@ -110,14 +116,16 @@ class BiAnnualNarcoticsInventory(Report):
         )
 
         for med_data in active_meds:
-            medication = commands.LoadMedication().set_data(med_data).execute()
+            medication: NTTypes.medication_data_type = (
+                commands.LoadMedication().set_data(med_data).execute()
+            )
             medication_list.append(medication)
 
         return medication_list
 
-    def _build_report_dictionary(self, med_list: list["Medication"]) -> dict[dict]:
+    def _build_report_dictionary(self, med_list: list["Medication"]) -> dict[Any, Any]:
         period_id = self._period.id
-        report = {period_id: {}}
+        report: dict[Any, Any] = {period_id: {}}
 
         for medication in med_list:
             report[period_id][medication.medication_code] = {
@@ -128,14 +136,14 @@ class BiAnnualNarcoticsInventory(Report):
 
         return report
 
-    def _get_starting_amount(self, medication: "Medication") -> int:
+    def _get_starting_amount(self, medication: "Medication") -> Union[float, int]:
         """Returns the amount in milliliters."""
         criteria = {
             "event_code": "IMPORT",
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        raw_amt = (
+        raw_amt: Union[float, int] = (
             commands.ListAdjustments(self._receiver)
             .set_parameters(criteria)
             .execute()[0][4]
@@ -168,7 +176,7 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _get_amount_used(self, medication: "Medication") -> int:
+    def _get_amount_used(self, medication: "Medication") -> float:
         """Returns the total amount of medication used in ml."""
         criteria = {
             "event_code": "USE",
@@ -191,7 +199,7 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _get_amount_wasted(self, medication: "Medication") -> int:
+    def _get_amount_wasted(self, medication: "Medication") -> float:
         """Returns the total amount of medication wasted in ml."""
         criteria = {
             "event_code": "WASTE",
@@ -214,7 +222,7 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _get_amount_destroyed(self, medication: "Medication") -> int:
+    def _get_amount_destroyed(self, medication: "Medication") -> float:
         """Returns the total amount of medication destroyed in ml."""
         criteria = {
             "event_code": "DESTROY",
@@ -237,7 +245,7 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _get_amount_lost(self, medication: "Medication") -> int:
+    def _get_amount_lost(self, medication: "Medication") -> float:
         """Returns the total amount of medication lost in ml."""
         criteria = {
             "event_code": "LOSS",
@@ -260,14 +268,16 @@ class BiAnnualNarcoticsInventory(Report):
             medication.concentration,
         )
 
-    def _extract_amounts(self, adjustment_list: list["Adjustment"]) -> list[int]:
-        amounts = []
+    def _extract_amounts(
+        self, adjustment_list: list[NTTypes.adjustment_data_type]
+    ) -> list[Union[int, float]]:
+        amounts: list[Union[int, float]] = []
         for adjustment in adjustment_list:
             amounts.append(adjustment[4])
 
         return amounts
 
-    def _calculate_total_ending_amount(self) -> int:
+    def _calculate_total_ending_amount(self) -> Optional[int]:
         for medication in self._medications:
             code = medication.medication_code
             starting = self._report[self._period.id][code]["starting_amount"]

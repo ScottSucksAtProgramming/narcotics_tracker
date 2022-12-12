@@ -17,7 +17,7 @@ Classes:
     UnitConverter: Converts between different units of measurement.
 """
 
-from typing import Optional
+from typing import Optional, Union
 
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 
@@ -37,7 +37,9 @@ class ConversionManager(ConversionService):
 
     _decimals = {"std": -8, "mcg": -6, "mg": -3, "g": 0}
 
-    def to_standard(self, amount: float, preferred_unit: str) -> float:
+    def to_standard(
+        self, amount: Union[float, int], preferred_unit: Optional[str]
+    ) -> float:
         """Returns an amount of medication in the standard unit.
 
             Args:
@@ -50,6 +52,8 @@ class ConversionManager(ConversionService):
         Returns:
             float: The converted amount.
         """
+        if preferred_unit is None:
+            raise ValueError
         exponent = self._decimals[preferred_unit] - self._decimals["std"]
         result = amount * (10**exponent)
 
@@ -78,7 +82,10 @@ class ConversionManager(ConversionService):
         return round(result, 2)
 
     def to_milliliters(
-        self, amount: float, preferred_unit: str, concentration: float
+        self,
+        amount: Union[int, float],
+        preferred_unit: Optional[str],
+        concentration: Optional[float],
     ) -> float:
         """Returns the volume of a medication (in ml) using its concentration.
 
@@ -92,7 +99,10 @@ class ConversionManager(ConversionService):
         Returns:
             float: The volume of the medication in milliliters.
         """
+        if amount is None or preferred_unit is None or concentration is None:
+            raise ValueError
+
         converted_amount = self.to_preferred(amount, preferred_unit)
-        result = converted_amount / concentration
+        result: float = converted_amount / concentration
 
         return round(result, 2)
