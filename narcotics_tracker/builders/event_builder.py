@@ -57,9 +57,9 @@ class EventBuilder(DataItemBuilder):
 
     def build(self) -> Event:
         """Validates attributes and returns the Event Object."""
-
+        event = self._dataitem
         self._reset()
-        return self._dataitem
+        return event
 
     def set_event_code(self, event_code: str) -> "EventBuilder":
         """Sets the event code attribute to the passed string.

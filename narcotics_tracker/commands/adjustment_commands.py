@@ -15,11 +15,12 @@ Classes:
 from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.commands.interfaces.command import Command
+from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
-    from narcotics_tracker.items.adjustments import Adjustment
+
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
@@ -144,7 +145,7 @@ class ListAdjustments(Command):
         self,
         criteria: Optional[NTTypes.sqlite_types] = None,
         order_by: Optional[str] = None,
-    ) -> list[tuple["NTTypes.adjustment_data_type"]]:
+    ) -> list["Adjustment"]:
         """Executes the command and returns a list of Adjustments.
 
         Args:
@@ -158,7 +159,6 @@ class ListAdjustments(Command):
             criteria = {}
 
         cursor = self._receiver.read("inventory", criteria, order_by)
-        print(cursor.fetchall())
         return cursor.fetchall()
 
 
@@ -207,3 +207,51 @@ class UpdateAdjustment(Command):
         self._receiver.update("inventory", self._data, self._criteria)
 
         return "Adjustment data updated."
+
+
+class LoadAdjustment(Command):
+    """Loads a Adjustment Object from data.
+
+    Methods:
+        execute: Executes the command. Returns a Adjustment object.
+    """
+
+    _data: NTTypes.adjustment_data_type
+
+    def __init__(self, receiver: Optional["Adjustment"] = None) -> None:
+        """Initializes the command. Sets the receiver if passed.
+
+        Args:
+            receiver (Builder, optional): Object which constructs Adjustment
+                Objects. Default to AdjustmentBuilder.
+        """
+        if receiver:
+            self._receiver = receiver
+
+    def set_data(self, data: NTTypes.adjustment_data_type) -> "Command":
+        """Sets the data which will create the Adjustment
+
+        Args:
+            data (tuple[Union[str, int, float]]): A tuple of Adjustment
+                attributes retrieved from the database.
+        """
+
+        self._data = data
+
+        return self
+
+    def execute(self) -> "Adjustment":
+        """Executes the command. Returns a Adjustment object."""
+        return Adjustment(
+            table="inventory",
+            id=self._data[0],
+            adjustment_date=self._data[1],
+            event_code=self._data[2],
+            medication_code=self._data[3],
+            amount=self._data[4],
+            reporting_period_id=self._data[5],
+            reference_id=self._data[6],
+            created_date=self._data[7],
+            modified_date=self._data[8],
+            modified_by=self._data[9],
+        )

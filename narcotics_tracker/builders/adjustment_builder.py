@@ -69,8 +69,9 @@ class AdjustmentBuilder(DataItemBuilder):
         self._convert_adjustment_amount_to_standard()
         self._apply_event_modifier()
 
+        adjustment = self._dataitem
         self._reset()
-        return self._dataitem
+        return adjustment
 
     def _convert_adjustment_amount_to_standard(self) -> None:
         """Converts the adjustment amount in the standard unit."""

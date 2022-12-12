@@ -24,9 +24,13 @@ from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.items.statuses import Status
 from narcotics_tracker.items.units import Unit
-from narcotics_tracker.scripts import create_my_database, setup, wlvac_adjustment
+from narcotics_tracker.services.interfaces.persistence import PersistenceService
+from narcotics_tracker.services.interfaces.persistence_db import (
+    PersistenceServiceForDatabase,
+)
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
+from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -182,13 +186,12 @@ def delete_database(filename: str) -> None:
 @fixture
 def setup_integration_db():
     """Creates a new integration database and populates it with data."""
-    meds = []
-    periods = []
-    adjustment_list = []
+    meds: list["Medication"] = []
+    periods: list["ReportingPeriod"] = []
+    adjustment_list: list["Adjustment"] = []
     delete_database("integration_test.db")
 
-    receiver = SQLiteManager("integration_test.db")
-    dt_man = ServiceManager().datetime
+    receiver: "PersistenceService" = SQLiteManager("integration_test.db")
     create_tables(receiver)
     populate_standard_items(receiver)
 
@@ -196,7 +199,7 @@ def setup_integration_db():
     for medication in meds:
         commands.AddMedication(receiver).set_medication(medication).execute()
 
-    periods = build_reporting_periods(dt_man)
+    periods = build_reporting_periods()
     for period in periods:
         commands.AddReportingPeriod(receiver).set_reporting_period(period).execute()
 
@@ -206,7 +209,7 @@ def setup_integration_db():
         commands.AddAdjustment(receiver).set_adjustment(adjustment).execute()
 
 
-def create_tables(receiver):
+def create_tables(receiver: "PersistenceService"):
     commands_list = [
         commands.CreateEventsTable,
         commands.CreateInventoryTable,
@@ -219,9 +222,10 @@ def create_tables(receiver):
         command(receiver).execute()
 
 
-def populate_standard_items(receiver):
+def populate_standard_items(receiver: "PersistenceService"):
+    """Will add standard events, statuses and units to the database."""
     try:
-        events = None
+        events: list["Event"] = []
         events = StandardItemCreator().create_events()
         for event in events:
             event.table = "events"
@@ -234,8 +238,8 @@ def populate_standard_items(receiver):
         units = StandardItemCreator().create_units()
         for unit in units:
             commands.AddUnit(receiver).set_unit(unit).execute()
-    except sqlite3.IntegrityError as e:
-        pass
+    except sqlite3.IntegrityError as integrity_error:
+        print(integrity_error)
 
 
 def build_test_meds() -> list["Medication"]:
@@ -291,61 +295,60 @@ def build_test_meds() -> list["Medication"]:
     return test_medications
 
 
-def build_reporting_periods(
-    dt_manager: ServiceManager().datetime,
-) -> list["ReportingPeriod"]:
+def build_reporting_periods() -> list["ReportingPeriod"]:
     """Builds Reporting Period Objects for 2022 and returns them as a list."""
-    periods = []
+    periods: list["ReportingPeriod"] = []
 
-    period_builder = ReportingPeriodBuilder()
+    p_builder = ReportingPeriodBuilder()
 
-    jan_to_june_2021 = (
-        period_builder.set_start_date("01-01-2021 00:00:00")
-        .set_end_date("06-30-2021 23:59:59")
-        .set_status("CLOSED")
-        .set_id(2100000)
-        .set_created_date("01-01-2022 00:00:00")
-        .set_modified_date("01-01-2022 00:00:00")
-        .set_modified_by("SRK")
-        .build()
-    )
+    p_builder.set_start_date("01-01-2021 00:00:00")
+    p_builder.set_end_date("06-30-2021 23:59:59")
+    p_builder.set_status("CLOSED")
+    p_builder.set_id(2100000)
+    p_builder.set_created_date("01-01-2022 00:00:00")
+    p_builder.set_modified_date("01-01-2022 00:00:00")
+    p_builder.set_modified_by("SRK")
 
-    july_to_december_2021 = (
-        period_builder.set_start_date("07-01-2021 00:00:00")
-        .set_end_date("12-31-2021 23:59:59")
-        .set_status("CLOSED")
-        .set_id()
-        .set_created_date("01-01-2022 00:00:00")
-        .set_modified_date("01-01-2022 00:00:00")
-        .set_modified_by("SRK")
-        .build()
-    )
-
-    jan_to_june_2022 = (
-        period_builder.set_start_date("01-20-2022 00:00:00")
-        .set_end_date("07-22-2022 23:59:59")
-        .set_status("CLOSED")
-        .set_id(2200000)
-        .set_created_date("01-01-2022 00:00:00")
-        .set_modified_date("01-01-2022 00:00:00")
-        .set_modified_by("SRK")
-        .build()
-    )
-
-    july_to_december_2022 = (
-        period_builder.set_start_date("07-23-2022 00:00:00")
-        .set_end_date(None)
-        .set_status("OPEN")
-        .set_id()
-        .set_created_date("01-01-2022 00:00:00")
-        .set_modified_date("01-01-2022 00:00:00")
-        .set_modified_by("SRK")
-        .build()
-    )
-
+    jan_to_june_2021 = p_builder.build()
     periods.append(jan_to_june_2021)
+
+    p_builder = ReportingPeriodBuilder()
+
+    p_builder.set_start_date("07-01-2021 00:00:00")
+    p_builder.set_end_date("12-31-2021 23:59:59")
+    p_builder.set_status("CLOSED")
+    p_builder.set_id()
+    p_builder.set_created_date("01-01-2022 00:00:00")
+    p_builder.set_modified_date("01-01-2022 00:00:00")
+    p_builder.set_modified_by("SRK")
+
+    july_to_december_2021 = p_builder.build()
     periods.append(july_to_december_2021)
+
+    p_builder = ReportingPeriodBuilder()
+
+    p_builder.set_start_date("01-20-2022 00:00:00")
+    p_builder.set_end_date("07-22-2022 23:59:59")
+    p_builder.set_status("CLOSED")
+    p_builder.set_id(2200000)
+    p_builder.set_created_date("01-01-2022 00:00:00")
+    p_builder.set_modified_date("01-01-2022 00:00:00")
+    p_builder.set_modified_by("SRK")
+
+    jan_to_june_2022 = p_builder.build()
     periods.append(jan_to_june_2022)
+
+    p_builder = ReportingPeriodBuilder()
+
+    p_builder.set_start_date("07-23-2022 00:00:00")
+    p_builder.set_end_date(None)
+    p_builder.set_status("OPEN")
+    p_builder.set_id()
+    p_builder.set_created_date("01-01-2022 00:00:00")
+    p_builder.set_modified_date("01-01-2022 00:00:00")
+    p_builder.set_modified_by("SRK")
+
+    july_to_december_2022 = p_builder.build()
     periods.append(july_to_december_2022)
 
     return periods
@@ -374,7 +377,7 @@ def construct_adjustments(data: list[any]) -> list["Adjustment"]:
     return adjustment_list
 
 
-def return_adjustments_data() -> list[list]:
+def return_adjustments_data() -> list[list[NTTypes.sqlite_types]]:
     adjustment_data = []
 
     adjustment_data.append(

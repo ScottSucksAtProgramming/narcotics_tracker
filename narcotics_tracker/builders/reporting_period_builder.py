@@ -59,9 +59,9 @@ class ReportingPeriodBuilder(DataItemBuilder):
         self._dataitem.start_date = self._service_provider.datetime.validate(
             self._dataitem.start_date
         )
-
+        period = self._dataitem
         self._reset()
-        return self._dataitem
+        return period
 
     def set_start_date(
         self, date: Optional[NTTypes.date_types] = None

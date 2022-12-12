@@ -111,10 +111,17 @@ class Test_ReportingPeriodStorage:
     def test_reporting_periods_can_be_loaded_from_data(
         self, setup_integration_db
     ) -> None:
-        sq_man = SQLiteManager("integration_test.db")
-        criteria = {"id": 2200001}
         period_data = (
-            commands.ListReportingPeriods(sq_man).set_parameters(criteria).execute()[-1]
+            -77,
+            1666117887,
+            "TEST",
+            "apap",
+            9999.0,
+            -1,
+            "TestReferenceID",
+            1666117887,
+            1666117887,
+            "System",
         )
 
         period = commands.LoadReportingPeriod().set_data(period_data).execute()

@@ -97,6 +97,8 @@ class Test_AdjustmentStorage:
             {"amount": 9999}, {"id": -77}
         ).execute()
 
-        returned_adjustment = commands.ListAdjustments(sq_man).execute({"id": -77})[0]
-
+        returned_adjustment: list["Adjustment"] = (
+            commands.ListAdjustments(sq_man).set_parameters({"id": -77}).execute()[0]
+        )
+        print(returned_adjustment)
         assert returned_adjustment[4] == 9999

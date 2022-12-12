@@ -11,6 +11,7 @@ Functions:
 import sqlite3
 
 from narcotics_tracker import commands
+from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
 
 
@@ -96,7 +97,7 @@ class Test_MedicationStorage:
     def test_medications_can_be_updated_in_db(
         self, reset_database, test_medication
     ) -> None:
-        test_medication = test_medication
+        test_medication: "Medication" = test_medication
         sq_man = SQLiteManager("data_item_storage_tests.db")
         commands.CreateMedicationsTable(sq_man).execute()
         commands.AddMedication(sq_man).set_medication(test_medication).execute()
@@ -109,7 +110,7 @@ class Test_MedicationStorage:
             commands.ListMedications(sq_man).set_parameters({"id": -1}).execute()[0]
         )
 
-        assert "NEW CODE" in returned_medication
+        assert returned_medication.medication_code == "NEW CODE"
 
     def test_preferred_unit_can_be_returned(
         self, reset_database, test_medication
@@ -128,11 +129,19 @@ class Test_MedicationStorage:
         assert results == "mcg"
 
     def test_can_load_medication(self, setup_integration_db):
-        sq_man = SQLiteManager("integration_test.db")
-        criteria = {"medication_code": "fentanyl"}
-        med_data = (
-            commands.ListMedications(sq_man).set_parameters(criteria).execute()[0]
-        )
+        med_data = [
+            1,
+            "fentanyl",
+            "Fentanyl",
+            10000.0,
+            "mcg",
+            2.0,
+            50.0,
+            "ACTIVE",
+            1670884854,
+            1670884854,
+            "SRK",
+        ]
 
         medication = commands.LoadMedication().set_data(med_data).execute()
         expected = "Medication #1: Fentanyl (fentanyl) 100.0 mcg in 2.0 ml."

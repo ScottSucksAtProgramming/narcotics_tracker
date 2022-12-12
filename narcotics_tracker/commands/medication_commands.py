@@ -121,6 +121,7 @@ class ListMedications(Command):
         execute: Executes the command and returns a list of Medications.
     """
 
+    _receiver = ServiceManager().persistence
     _criteria: NTTypes.sqlite_types = {}
     _order_by: Optional[str] = None
 
@@ -133,8 +134,6 @@ class ListMedications(Command):
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def set_parameters(
         self,
@@ -158,10 +157,17 @@ class ListMedications(Command):
 
         return self
 
-    def execute(self) -> list[tuple["Medication"]]:
+    def execute(self) -> list["Medication"]:
         """Executes the command and returns a list of Medications."""
+        medication_list: list["Medication"] = []
         cursor = self._receiver.read("medications", self._criteria, self._order_by)
-        return cursor.fetchall()
+        results = cursor.fetchall()
+
+        for med_data in results:
+            returned_med = LoadMedication(self._receiver).set_data(med_data).execute()
+            medication_list.append(returned_med)
+
+        return medication_list
 
 
 class UpdateMedication(Command):

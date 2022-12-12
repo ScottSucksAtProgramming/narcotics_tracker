@@ -52,6 +52,8 @@ class StandardItemCreator:
 
     def _create_standard_events(self):
         """Builds the standard events and returns in a list."""
+        events_list: list["Event"] = []
+
         event_builder = EventBuilder()
         event_builder.set_table("events")
         event_builder.set_id(None)
@@ -66,7 +68,7 @@ class StandardItemCreator:
         event_builder.set_modifier(-1)
         destroy_event: "Event" = event_builder.build()
 
-        self._standard_events.append(destroy_event)
+        events_list.append(destroy_event)
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -82,7 +84,7 @@ class StandardItemCreator:
         event_builder.set_modifier(+1)
 
         import_event = event_builder.build()
-        self._standard_events.append(import_event)
+        events_list.append(import_event)
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -98,7 +100,7 @@ class StandardItemCreator:
         event_builder.set_modifier(-1)
 
         loss_event = event_builder.build()
-        self._standard_events.append(loss_event)
+        events_list.append(loss_event)
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -114,7 +116,7 @@ class StandardItemCreator:
         event_builder.set_modifier(+1)
 
         order_event = event_builder.build()
-        self._standard_events.append(order_event)
+        events_list.append(order_event)
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -130,7 +132,7 @@ class StandardItemCreator:
         event_builder.set_modifier(-1)
 
         use_event = event_builder.build()
-        self._standard_events.append(use_event)
+        events_list.append(use_event)
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -146,7 +148,9 @@ class StandardItemCreator:
         event_builder.set_modifier(-1)
 
         waste_event = event_builder.build()
-        self._standard_events.append(waste_event)
+        events_list.append(waste_event)
+
+        self._standard_events = events_list
 
     def _create_standard_units(self):
         """Builds the standard units and returns in a list."""

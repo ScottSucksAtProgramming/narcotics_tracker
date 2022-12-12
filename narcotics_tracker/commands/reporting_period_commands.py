@@ -57,6 +57,7 @@ class AddReportingPeriod(Command):
     def execute(self) -> str:
         """Executes add row operation, returns a success message."""
         reporting_period_info = vars(self._reporting_period)
+        print(reporting_period_info)
         table_name = reporting_period_info.pop("table")
 
         self._receiver.add(table_name, reporting_period_info)
