@@ -221,6 +221,8 @@ class StandardItemCreator:
 
     def _create_standard_statuses(self):
         """Builds the standard statuses and returns in a list."""
+        status_list: list["Status"] = []
+
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
         status_builder.set_id(None)
@@ -232,7 +234,7 @@ class StandardItemCreator:
         status_builder.set_description("Used for items which are still being used.")
 
         active_status = status_builder.build()
-        self._standard_statuses.append(active_status)
+        status_list.append(active_status)
 
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
@@ -245,7 +247,7 @@ class StandardItemCreator:
         status_builder.set_description("Used for items which are no longer being used.")
 
         inactive_status = status_builder.build()
-        self._standard_statuses.append(inactive_status)
+        status_list.append(inactive_status)
 
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
@@ -258,7 +260,7 @@ class StandardItemCreator:
         status_builder.set_description("Used for items which have not been completed.")
 
         open_status = status_builder.build()
-        self._standard_statuses.append(open_status)
+        status_list.append(open_status)
 
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
@@ -271,7 +273,7 @@ class StandardItemCreator:
         status_builder.set_description("Used for items which have been completed.")
 
         closed_status = status_builder.build()
-        self._standard_statuses.append(closed_status)
+        status_list.append(closed_status)
 
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
@@ -284,4 +286,6 @@ class StandardItemCreator:
         status_builder.set_description("Used for items which have been cancelled.")
 
         cancelled_status = status_builder.build()
-        self._standard_statuses.append(cancelled_status)
+        status_list.append(cancelled_status)
+
+        self._standard_statuses = status_list

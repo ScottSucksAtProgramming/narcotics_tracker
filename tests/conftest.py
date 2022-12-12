@@ -233,10 +233,12 @@ def populate_standard_items(receiver: "PersistenceService"):
 
         statuses = StandardItemCreator().create_statuses()
         for status in statuses:
+            status.table = "statuses"
             commands.AddStatus(receiver).set_status(status).execute()
 
         units = StandardItemCreator().create_units()
         for unit in units:
+            unit.table = "units"
             commands.AddUnit(receiver).set_unit(unit).execute()
     except sqlite3.IntegrityError as integrity_error:
         print(integrity_error)

@@ -108,17 +108,12 @@ class Test_ReportingPeriodStorage:
 
         assert "NEW STATUS" in returned_reporting_period
 
-    def test_reporting_periods_can_be_loaded_from_data(
-        self, setup_integration_db
-    ) -> None:
+    def test_reporting_periods_can_be_loaded_from_data(self) -> None:
         period_data = (
-            -77,
-            1666117887,
-            "TEST",
-            "apap",
-            9999.0,
-            -1,
-            "TestReferenceID",
+            2200001,
+            1658548800,
+            None,
+            "OPEN",
             1666117887,
             1666117887,
             "System",
