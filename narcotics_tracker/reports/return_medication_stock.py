@@ -7,6 +7,7 @@ Classes:
 from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker import commands
+from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.typings import NTTypes
@@ -53,19 +54,17 @@ class ReturnMedicationStock(Report):
     ) -> list[Union[float, int]]:
         """Returns a list of all adjustment amounts for the specified med_code."""
         criteria: NTTypes.sqlite_types = {"medication_code": self._medication_code}
-        adj_data: list[NTTypes.adjustment_data_type] = (
+        adjustment_list = (
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
 
-        return self._extract_adjustment_amounts(adj_data)
+        return self._extract_adjustment_amounts(adjustment_list)
 
-    def _extract_adjustment_amounts(
-        self, adjustments_list: list[NTTypes.adjustment_data_type]
-    ):
+    def _extract_adjustment_amounts(self, adjustments_list: list["Adjustment"]):
         """Extracts amounts from a list of adjustment data. Returns as a list."""
         amounts_list: list[Union[int, float]] = []
 
         for adjustment in adjustments_list:
-            amounts_list.append(adjustment[4])
+            amounts_list.append(adjustment.amount)
 
         return amounts_list

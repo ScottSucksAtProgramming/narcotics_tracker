@@ -155,11 +155,20 @@ class ListAdjustments(Command):
             order_by (str): The column name by which the results will be
                 sorted.
         """
+        adjustment_list: list["Adjustment"] = []
         if criteria is None:
             criteria = {}
 
         cursor = self._receiver.read("inventory", criteria, order_by)
-        return cursor.fetchall()
+        results = cursor.fetchall()
+
+        for adjustment_data in results:
+            adjustment = (
+                LoadAdjustment(self._receiver).set_data(adjustment_data).execute()
+            )
+            adjustment_list.append(adjustment)
+
+        return adjustment_list
 
 
 class UpdateAdjustment(Command):

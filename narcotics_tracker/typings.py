@@ -55,3 +55,5 @@ class NTTypes:
         "CreateStatusesTable",
         "CreateUnitsTable",
     ]
+
+    report_data = list[dict[Any, Any]]

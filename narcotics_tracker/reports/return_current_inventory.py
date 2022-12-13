@@ -5,22 +5,44 @@ Classes:
         medications in the inventory.
 
 """
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from narcotics_tracker import commands, reports
+from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
+    from narcotics_tracker.items.medications import Medication
+    from narcotics_tracker.services.interfaces.conversion import ConversionService
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
 
 
 class ReturnCurrentInventory(Report):
-    """Returns the current stock for all active medications in the inventory."""
+    """Returns the current stock for all active medications in the inventory.
 
-    _receiver = ServiceManager().persistence
-    _converter = ServiceManager().conversion
+    report = [
+        {
+            code: "fentanyl",
+            name: "Fentanyl",
+            unit: "mcg",
+            "adjustments": [1, 2, 123.21],
+            current_amount: 200
+         }
+    ]
+
+
+    Step 1: Get List of Medications.
+    Step 2: Add Medication data to Report
+    Step 3: Retrieve Adjustments for each medication add to report.
+    Step 4: Calculate Sum of Adjustments, add to report.
+    """
+
+    _active_medications: list["Medication"] = []
+    _report: NTTypes.report_data = []
+    _receiver: "PersistenceService" = ServiceManager().persistence
+    _converter: "ConversionService" = ServiceManager().conversion
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -32,7 +54,14 @@ class ReturnCurrentInventory(Report):
         if receiver:
             self._receiver = receiver
 
-    def run(self) -> list[dict[Any, Any]]:
+        self._reset()
+
+    def _reset(self) -> None:
+        """Resets the Report."""
+        self._report = []
+        self._active_medications = []
+
+    def run(self) -> NTTypes.report_data:
         """Runs Report. Returns results as a list of dictionaries.
 
         Returns:
@@ -40,39 +69,71 @@ class ReturnCurrentInventory(Report):
                 name, code, preferred unit and current total stock (in the
                 preferred unit).
         """
-        medication_list = self._retrieve_medications()
-        list_with_amounts = self._add_amounts(medication_list)
+        # Step 1: Retrieve Active Medications - Store as variable.
+        self._active_medications = self._retrieve_medications()
 
-        return self._convert_amounts_to_preferred(list_with_amounts)
+        # Step 2: Add Medication Data to Report.
+        self._add_medication_data_to_report()
 
-    def _retrieve_medications(self) -> list[dict[str, str]]:
+        # Step 3: Retrieve Adjustments for each medication add to report.
+        for medication in self._active_medications:
+            result = None
+            result = self._calculate_stock(medication)
+
+            self._add_current_amount_to_report(result, medication)
+
+        # list_with_amounts = self._add_amounts(medication_list)
+
+        # return self._convert_amounts_to_preferred(list_with_amounts)
+
+    def _retrieve_medications(self) -> list["Medication"]:
         """Returns the code, name, and unit for all active medications."""
-        medication_list: list[dict[str, str]] = []
         criteria: NTTypes.sqlite_types = {"status": "ACTIVE"}
-        active_meds = (
+        return (
             commands.ListMedications(self._receiver)
             .set_parameters(criteria, "id")
             .execute()
         )
 
-        for med_data in active_meds:
-            med_info = {"code": med_data[1], "name": med_data[2], "unit": med_data[4]}
-            medication_list.append(med_info)
+    def _add_medication_data_to_report(self) -> None:
+        """Extracts pertinent data from Active Medications adds to report."""
+        for medication in self._active_medications:
+            med_info = {
+                "code": medication.medication_code,
+                "name": medication.medication_name,
+                "unit": medication.preferred_unit,
+            }
+            self._report.append(med_info)
 
-        return medication_list
+    def _add_current_amount_to_report(
+        self, adjustment_list: float, medication: "Medication"
+    ) -> None:
+        """Adds a list of adjustments to the report dictionary."""
+        for entry in self._report:
+            if entry["code"] == medication.medication_code:
+                entry["current_amount"] = adjustment_list
 
-    def _add_amounts(
-        self, medication_info: list[dict[str, Any]]
-    ) -> list[dict[str, Any]]:
+    # def _retrieve_adjustments_for_medication(
+    #     self, medication: "Medication"
+    # ) -> list["Adjustment"]:
+    #     """Retrieves all adjustments for the given medication. Returns as a list."""
+    #     criteria: NTTypes.sqlite_types = {"medication_code": medication.medication_code}
+    #     order_by: str = "id"
+
+    #     return (
+    #         commands.ListAdjustments(self._receiver)
+    #         .set_parameters(criteria, order_by)
+    #         .execute()
+    #     )
+
+    # def _calculate_adjustment_totals(self, medication: "Medication") -> float:
+    #     """Calculate the total of all adjustments."""
+
+    def _calculate_stock(self, medication: "Medication") -> float:
         """Adds current amounts for each medication in the list and returns it."""
-        other_report: "Report" = reports.ReturnMedicationStock(self._receiver)
-
-        for med in medication_info:
-            other_report.set_medication(med["code"])
-            amount = other_report.run()
-            med["amount"] = amount
-
-        return medication_info
+        stock_report = reports.ReturnMedicationStock(self._receiver)
+        stock_report.set_medication(medication.medication_code)
+        return stock_report.run()
 
     def _convert_amounts_to_preferred(
         self, medication_info: list[dict[str, Any]]

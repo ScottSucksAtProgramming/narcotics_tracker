@@ -241,7 +241,7 @@ def populate_standard_items(receiver: "PersistenceService"):
             unit.table = "units"
             commands.AddUnit(receiver).set_unit(unit).execute()
     except sqlite3.IntegrityError as integrity_error:
-        print(integrity_error)
+        pass
 
 
 def build_test_meds() -> list["Medication"]:
@@ -258,8 +258,8 @@ def build_test_meds() -> list["Medication"]:
         .set_preferred_unit("mcg")
         .set_concentration()
         .set_status("ACTIVE")
-        .set_created_date(dt_man.return_current())
-        .set_modified_date(dt_man.return_current())
+        .set_created_date(1670891345)
+        .set_modified_date(1670891345)
         .set_modified_by("SRK")
         .build()
     )
@@ -271,8 +271,8 @@ def build_test_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration(5)
         .set_status("ACTIVE")
-        .set_created_date(dt_man.return_current())
-        .set_modified_date(dt_man.return_current())
+        .set_created_date(1670891345)
+        .set_modified_date(1670891345)
         .set_modified_by("SRK")
         .build()
     )
@@ -284,8 +284,8 @@ def build_test_meds() -> list["Medication"]:
         .set_preferred_unit("mg")
         .set_concentration(10)
         .set_status("ACTIVE")
-        .set_created_date(dt_man.return_current())
-        .set_modified_date(dt_man.return_current())
+        .set_created_date(1670891345)
+        .set_modified_date(1670891345)
         .set_modified_by("SRK")
         .build()
     )
@@ -363,8 +363,8 @@ def construct_adjustments(data: list[any]) -> list["Adjustment"]:
             AdjustmentBuilder()
             .set_table("inventory")
             .set_id(data_set[0])
-            .set_created_date()
-            .set_modified_date()
+            .set_created_date(1670896818)
+            .set_modified_date(1670896818)
             .set_modified_by("SRK")
             .set_adjustment_date(data_set[1])
             .set_event_code(data_set[2])
