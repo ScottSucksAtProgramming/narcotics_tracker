@@ -83,7 +83,7 @@ class ConversionManager(ConversionService):
 
     def to_milliliters(
         self,
-        amount: Union[int, float],
+        amount: Union[float, int, list[Union[int, float]]],
         preferred_unit: Optional[str],
         concentration: Optional[float],
     ) -> float:
@@ -102,7 +102,7 @@ class ConversionManager(ConversionService):
         if amount is None or preferred_unit is None or concentration is None:
             raise ValueError
 
-        converted_amount = self.to_preferred(amount, preferred_unit)
+        converted_amount = self.to_preferred(amount, preferred_unit)  # type: ignore
         result: float = converted_amount / concentration
 
         return round(result, 2)
