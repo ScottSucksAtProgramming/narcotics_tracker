@@ -5,10 +5,9 @@ Classes:
         medications in the inventory.
 
 """
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker import commands, reports
-from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.typings import NTTypes
