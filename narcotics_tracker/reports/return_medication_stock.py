@@ -86,7 +86,6 @@ class ReturnMedicationStock(Report):
             .set_parameters(criteria=criteria)
             .execute()
         )
-        print(adjustment_list)
 
         return self._extract_adjustment_amounts(adjustment_list)
 
