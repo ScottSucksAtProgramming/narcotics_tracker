@@ -104,6 +104,7 @@ class ListAdjustments(Command):
         execute: Executes the command and returns a list of Adjustment.
     """
 
+    _receiver: "PersistenceService" = ServiceManager().persistence
     _criteria: NTTypes.sqlite_types = {}
     _order_by: Optional[str] = None
 
@@ -116,8 +117,6 @@ class ListAdjustments(Command):
         """
         if receiver:
             self._receiver = receiver
-        else:
-            self._receiver = ServiceManager().persistence
 
     def set_parameters(
         self,
@@ -163,9 +162,7 @@ class ListAdjustments(Command):
         results = cursor.fetchall()
 
         for adjustment_data in results:
-            adjustment = (
-                LoadAdjustment(self._receiver).set_data(adjustment_data).execute()
-            )
+            adjustment = LoadAdjustment().set_data(adjustment_data).execute()
             adjustment_list.append(adjustment)
 
         return adjustment_list

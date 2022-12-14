@@ -164,7 +164,7 @@ class ListMedications(Command):
         results = cursor.fetchall()
 
         for med_data in results:
-            returned_med = LoadMedication(self._receiver).set_data(med_data).execute()
+            returned_med = LoadMedication().set_data(med_data).execute()
             medication_list.append(returned_med)
 
         return medication_list
