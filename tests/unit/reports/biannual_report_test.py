@@ -419,5 +419,4 @@ class TestBiAnnualNarcoticsInventory:
             }
         }
 
-        # print(BiAnnualNarcoticsInventory(sq_man).run())
         assert BiAnnualNarcoticsInventory(sq_man).run() == expected_dict

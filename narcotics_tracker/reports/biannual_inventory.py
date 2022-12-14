@@ -90,7 +90,7 @@ class BiAnnualNarcoticsInventory(Report):
             self._report[self._period.id][medication.medication_code][
                 "ending_amount"
             ] = ending_amount
-        print(self._report)
+
         return self._report
 
     def _get_current_reporting_period(self) -> "ReportingPeriod":
@@ -277,7 +277,6 @@ class BiAnnualNarcoticsInventory(Report):
     def _calculate_total_ending_amount(self, medication: "Medication") -> Optional[int]:
         code = medication.medication_code
         starting = self._report[self._period.id][code]["starting_amount"]
-        print(f"{code}: {starting}")
         received = self._report[self._period.id][code]["amount_received"]
         used = self._report[self._period.id][code]["amount_used"]
         wasted = self._report[self._period.id][code]["amount_wasted"]

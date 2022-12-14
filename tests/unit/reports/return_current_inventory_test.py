@@ -3,9 +3,7 @@
 Classes:
 """
 from types import FunctionType
-from typing import Union
 
-from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.reports.return_current_inventory import ReturnCurrentInventory
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
