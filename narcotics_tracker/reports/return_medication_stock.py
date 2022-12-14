@@ -11,7 +11,6 @@ from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.services.sqlite_manager import SQLiteManager
 from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
@@ -96,6 +95,7 @@ class ReturnMedicationStock(Report):
         amounts_list: list[Union[int, float]] = []
 
         for adjustment in adjustments_list:
-            amounts_list.append(adjustment.amount)
+            if adjustment.amount is not None:
+                amounts_list.append(adjustment.amount)
 
         return amounts_list
