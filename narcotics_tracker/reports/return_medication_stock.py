@@ -8,8 +8,10 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from narcotics_tracker import commands
 from narcotics_tracker.items.adjustments import Adjustment
+from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
+from narcotics_tracker.services.sqlite_manager import SQLiteManager
 from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
@@ -20,7 +22,7 @@ class ReturnMedicationStock(Report):
     """Returns the current amount on hand for a specific medication."""
 
     _receiver = ServiceManager().persistence
-    _medication_code: str
+    _medication: "Medication"
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -31,10 +33,29 @@ class ReturnMedicationStock(Report):
         """
         if receiver:
             self._receiver = receiver
+        self._reset()
 
-    def set_medication(self, med_code: str):
+    def _reset(self) -> None:
+        """Resets the report to be run again."""
+        self._medication = Medication(
+            table=None,
+            id=None,
+            created_date=None,
+            modified_by=None,
+            modified_date=None,
+            medication_amount=None,
+            medication_code=None,
+            medication_name=None,
+            fill_amount=None,
+            concentration=None,
+            preferred_unit=None,
+            status=None,
+        )
+
+    def set_medication(self, medication: "Medication") -> "Report":
         """sets the target medication by its code."""
-        self._medication_code = med_code
+        self._medication = medication
+        return self
 
     def run(self) -> float:
         """Runs the report and returns the amount of the medication on hand.
@@ -45,18 +66,28 @@ class ReturnMedicationStock(Report):
         Results:
             float: Current stock of the medication in the standard unit.
         """
-        amounts = self._return_adjustment_amounts()
+        amounts = self._return_adjustment_amounts(self._medication)
+        result = sum(amounts)
+        self._reset()
 
-        return sum(amounts)
+        return result
 
     def _return_adjustment_amounts(
-        self,
+        self, medication: "Medication"
     ) -> list[Union[float, int]]:
         """Returns a list of all adjustment amounts for the specified med_code."""
-        criteria: NTTypes.sqlite_types = {"medication_code": self._medication_code}
+        medication_code = medication.medication_code
+
+        if medication_code is None:
+            raise ValueError
+
+        criteria: NTTypes.sqlite_types = {"medication_code": medication_code}
         adjustment_list = (
-            commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
+            commands.ListAdjustments(self._receiver)
+            .set_parameters(criteria=criteria)
+            .execute()
         )
+        print(adjustment_list)
 
         return self._extract_adjustment_amounts(adjustment_list)
 

@@ -22,9 +22,24 @@ class Test_ReturnCurrentInventory:
         results = ReturnCurrentInventory(sq_man).run()
 
         expected = [
-            {"code": "fentanyl", "name": "Fentanyl", "unit": "mcg", "amount": 3790.0},
-            {"code": "midazolam", "name": "Midazolam", "unit": "mg", "amount": 288.4},
-            {"code": "morphine", "name": "Morphine", "unit": "mg", "amount": 250},
+            {
+                "code": "fentanyl",
+                "name": "Fentanyl",
+                "unit": "mcg",
+                "current_amount": 379000.0,
+            },
+            {
+                "code": "midazolam",
+                "name": "Midazolam",
+                "unit": "mg",
+                "current_amount": 28840000.0,
+            },
+            {
+                "code": "morphine",
+                "name": "Morphine",
+                "unit": "mg",
+                "current_amount": 25000000.0,
+            },
         ]
 
         assert results == expected

@@ -77,7 +77,6 @@ class ReturnCurrentInventory(Report):
 
         # Step 3: Retrieve Adjustments for each medication add to report.
         for medication in self._active_medications:
-            result = None
             result = self._calculate_stock(medication)
 
             self._add_current_amount_to_report(result, medication)
@@ -85,6 +84,8 @@ class ReturnCurrentInventory(Report):
         # list_with_amounts = self._add_amounts(medication_list)
 
         # return self._convert_amounts_to_preferred(list_with_amounts)
+
+        return self._report
 
     def _retrieve_medications(self) -> list["Medication"]:
         """Returns the code, name, and unit for all active medications."""
@@ -113,37 +114,8 @@ class ReturnCurrentInventory(Report):
             if entry["code"] == medication.medication_code:
                 entry["current_amount"] = adjustment_list
 
-    # def _retrieve_adjustments_for_medication(
-    #     self, medication: "Medication"
-    # ) -> list["Adjustment"]:
-    #     """Retrieves all adjustments for the given medication. Returns as a list."""
-    #     criteria: NTTypes.sqlite_types = {"medication_code": medication.medication_code}
-    #     order_by: str = "id"
-
-    #     return (
-    #         commands.ListAdjustments(self._receiver)
-    #         .set_parameters(criteria, order_by)
-    #         .execute()
-    #     )
-
-    # def _calculate_adjustment_totals(self, medication: "Medication") -> float:
-    #     """Calculate the total of all adjustments."""
-
     def _calculate_stock(self, medication: "Medication") -> float:
         """Adds current amounts for each medication in the list and returns it."""
         stock_report = reports.ReturnMedicationStock(self._receiver)
-        stock_report.set_medication(medication.medication_code)
+        stock_report.set_medication(medication)
         return stock_report.run()
-
-    def _convert_amounts_to_preferred(
-        self, medication_info: list[dict[str, Any]]
-    ) -> list[dict[str, Any]]:
-        """Converts amount for each med to preferred unit and returns the list.
-
-        Note: Amounts are rounded to two decimal places.
-        """
-        for med in medication_info:
-            converted_amount = self._converter.to_preferred(med["amount"], med["unit"])
-            med["amount"] = round(converted_amount, 2)
-
-        return medication_info

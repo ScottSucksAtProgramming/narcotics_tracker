@@ -156,10 +156,10 @@ class ListAdjustments(Command):
                 sorted.
         """
         adjustment_list: list["Adjustment"] = []
-        if criteria is None:
-            criteria = {}
+        if self._criteria is None:
+            self._criteria = {}
 
-        cursor = self._receiver.read("inventory", criteria, order_by)
+        cursor = self._receiver.read("inventory", self._criteria, self._order_by)
         results = cursor.fetchall()
 
         for adjustment_data in results:

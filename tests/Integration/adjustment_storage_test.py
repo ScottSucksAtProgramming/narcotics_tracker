@@ -101,4 +101,4 @@ class Test_AdjustmentStorage:
             commands.ListAdjustments(sq_man).set_parameters({"id": -77}).execute()[0]
         )
 
-        assert returned_adjustment[4] == 9999
+        assert returned_adjustment.amount == 9999
