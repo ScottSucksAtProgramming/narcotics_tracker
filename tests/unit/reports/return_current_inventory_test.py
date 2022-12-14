@@ -141,9 +141,3 @@ class TestReturnCurrentInventory:
         ]
 
         assert new_report._report == expected
-
-    def test_run_report(self, setup_integration_db: FunctionType) -> None:
-        sq_man = SQLiteManager("integration_test.db")
-        results = ReturnCurrentInventory(sq_man).run()
-
-        print(results)

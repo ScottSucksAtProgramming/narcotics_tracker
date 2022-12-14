@@ -50,7 +50,7 @@ class ConversionService(Protocol):
 
     def to_milliliters(
         self,
-        amount: Union[float, int],
+        amount: Union[float, int, list[Union[int, float]]],
         preferred_unit: Optional[str],
         concentration: Optional[float],
     ) -> float:

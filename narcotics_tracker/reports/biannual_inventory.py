@@ -8,7 +8,6 @@ from narcotics_tracker import commands
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.interfaces.conversion import ConversionService
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.adjustments import Adjustment
@@ -87,7 +86,7 @@ class BiAnnualNarcoticsInventory(Report):
             ] = amount_lost
 
         for medication in self._medications:
-            ending_amount = self._calculate_total_ending_amount()
+            ending_amount = self._calculate_total_ending_amount(medication)
             self._report[self._period.id][medication.medication_code][
                 "ending_amount"
             ] = ending_amount
@@ -104,22 +103,16 @@ class BiAnnualNarcoticsInventory(Report):
 
         return commands.LoadReportingPeriod().set_data(data).execute()
 
-    def _get_active_medications(self) -> list[NTTypes.medication_data_type]:
-        medication_list: list[NTTypes.medication_data_type] = []
+    def _get_active_medications(self) -> list["Medication"]:
+        medication_list: list["Medication"] = []
         criteria = {"status": "ACTIVE"}
         order = "medication_code"
 
-        active_meds = (
+        medication_list = (
             commands.ListMedications(self._receiver)
             .set_parameters(criteria, order)
             .execute()
         )
-
-        for med_data in active_meds:
-            medication: NTTypes.medication_data_type = (
-                commands.LoadMedication().set_data(med_data).execute()
-            )
-            medication_list.append(medication)
 
         return medication_list
 
@@ -138,16 +131,19 @@ class BiAnnualNarcoticsInventory(Report):
 
     def _get_starting_amount(self, medication: "Medication") -> Union[float, int]:
         """Returns the amount in milliliters."""
+        adjustment: "Adjustment"
         criteria = {
             "event_code": "IMPORT",
             "medication_code": medication.medication_code,
             "reporting_period_id": self._period.id,
         }
-        raw_amt: Union[float, int] = (
+
+        adjustment = (
             commands.ListAdjustments(self._receiver)
             .set_parameters(criteria)
-            .execute()[0][4]
+            .execute()[0]
         )
+        raw_amt: Union[float, int] = adjustment.amount if adjustment.amount else 0
 
         return self._converter.to_milliliters(
             raw_amt,
@@ -165,7 +161,7 @@ class BiAnnualNarcoticsInventory(Report):
         adj_list = (
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
-        if adj_list == []:
+        if not adj_list:
             return 0
 
         amounts = self._extract_amounts(adj_list)
@@ -187,7 +183,7 @@ class BiAnnualNarcoticsInventory(Report):
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
 
-        if adj_list == []:
+        if not adj_list:
             return 0
 
         amounts = self._extract_amounts(adj_list)
@@ -210,7 +206,7 @@ class BiAnnualNarcoticsInventory(Report):
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
 
-        if adj_list == []:
+        if not adj_list:
             return 0
 
         amounts = self._extract_amounts(adj_list)
@@ -233,7 +229,7 @@ class BiAnnualNarcoticsInventory(Report):
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
 
-        if adj_list == []:
+        if not adj_list:
             return 0
 
         amounts = self._extract_amounts(adj_list)
@@ -256,7 +252,7 @@ class BiAnnualNarcoticsInventory(Report):
             commands.ListAdjustments(self._receiver).set_parameters(criteria).execute()
         )
 
-        if adj_list == []:
+        if not adj_list:
             return 0
 
         amounts = self._extract_amounts(adj_list)
@@ -269,30 +265,31 @@ class BiAnnualNarcoticsInventory(Report):
         )
 
     def _extract_amounts(
-        self, adjustment_list: list[NTTypes.adjustment_data_type]
+        self, adjustment_list: list["Adjustment"]
     ) -> list[Union[int, float]]:
         amounts: list[Union[int, float]] = []
         for adjustment in adjustment_list:
-            amounts.append(adjustment[4])
+            if adjustment.amount is not None:
+                amounts.append(adjustment.amount)
 
         return amounts
 
-    def _calculate_total_ending_amount(self) -> Optional[int]:
-        for medication in self._medications:
-            code = medication.medication_code
-            starting = self._report[self._period.id][code]["starting_amount"]
-            received = self._report[self._period.id][code]["amount_received"]
-            used = self._report[self._period.id][code]["amount_used"]
-            wasted = self._report[self._period.id][code]["amount_wasted"]
-            destroyed = self._report[self._period.id][code]["amount_destroyed"]
-            lost = self._report[self._period.id][code]["amount_lost"]
+    def _calculate_total_ending_amount(self, medication: "Medication") -> Optional[int]:
+        code = medication.medication_code
+        starting = self._report[self._period.id][code]["starting_amount"]
+        print(f"{code}: {starting}")
+        received = self._report[self._period.id][code]["amount_received"]
+        used = self._report[self._period.id][code]["amount_used"]
+        wasted = self._report[self._period.id][code]["amount_wasted"]
+        destroyed = self._report[self._period.id][code]["amount_destroyed"]
+        lost = self._report[self._period.id][code]["amount_lost"]
 
-            ending_amount: int = starting
-            ending_amount += received
-            ending_amount -= used
-            ending_amount -= wasted
-            ending_amount -= destroyed
-            ending_amount -= lost
-            ending_amount = round(ending_amount, 2)
+        ending_amount: int = starting
+        ending_amount += received
+        ending_amount -= used
+        ending_amount -= wasted
+        ending_amount -= destroyed
+        ending_amount -= lost
+        ending_amount = round(ending_amount, 2)
 
-            return ending_amount
+        return ending_amount
