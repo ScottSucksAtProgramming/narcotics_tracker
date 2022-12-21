@@ -52,7 +52,7 @@ class StandardItemCreator:
 
     def _create_standard_events(self):
         """Builds the standard events and returns in a list."""
-        events_list: list["Event"] = []
+        events_list = []
 
         event_builder = EventBuilder()
         event_builder.set_table("events")
@@ -66,7 +66,7 @@ class StandardItemCreator:
             "Used when subtracting medication which was destroyed through a reverse distributor."
         )
         event_builder.set_modifier(-1)
-        destroy_event: "Event" = event_builder.build()
+        destroy_event = event_builder.build()
 
         events_list.append(destroy_event)
 
@@ -221,7 +221,7 @@ class StandardItemCreator:
 
     def _create_standard_statuses(self):
         """Builds the standard statuses and returns in a list."""
-        status_list: list["Status"] = []
+        status_list = []
 
         status_builder = StatusBuilder()
         status_builder.set_table("statuses")
