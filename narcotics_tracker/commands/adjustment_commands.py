@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, Optional
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import AdjustmentData, NTTypes, SQLiteDict
+from narcotics_tracker.typings import AdjustmentData, SQLiteDict
 
 if TYPE_CHECKING:
 

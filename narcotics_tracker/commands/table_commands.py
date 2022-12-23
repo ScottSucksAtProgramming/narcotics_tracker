@@ -60,7 +60,7 @@ class CreateEventsTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(self._table_name, self._column_info)
 
@@ -105,7 +105,7 @@ class CreateInventoryTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(
             table_name=self._table_name,
@@ -154,7 +154,7 @@ class CreateMedicationsTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(
             self._table_name, self._column_info, self._foreign_key_info
@@ -192,7 +192,7 @@ class CreateReportingPeriodsTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(self._table_name, self._column_info)
 
@@ -228,7 +228,7 @@ class CreateStatusesTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(self._table_name, self._column_info)
 
@@ -264,6 +264,6 @@ class CreateUnitsTable(Command):
         if receiver:
             self._receiver = receiver
 
-    def execute(self):
+    def execute(self) -> None:
         """Executes the command."""
         self._receiver.create_table(self._table_name, self._column_info)

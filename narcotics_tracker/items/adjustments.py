@@ -5,7 +5,6 @@ Classes:
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
 

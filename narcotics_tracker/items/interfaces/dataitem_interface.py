@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Optional
 
-from narcotics_tracker.typings import DateType, NTTypes
+from narcotics_tracker.typings import DateType
 
 # pylint: disable=[invalid-name]
 
