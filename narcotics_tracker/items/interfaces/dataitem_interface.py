@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Optional
 
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import DateTypes, NTTypes
 
 # pylint: disable=[invalid-name]
 
@@ -30,8 +30,8 @@ class DataItem(ABC):
 
     table: Optional[str]
     id: Optional[int]
-    created_date: Optional[NTTypes.date_types]
-    modified_date: Optional[NTTypes.date_types]
+    created_date: Optional[DateTypes]
+    modified_date: Optional[DateTypes]
     modified_by: Optional[str]
 
     @abstractmethod

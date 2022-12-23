@@ -25,16 +25,16 @@ if TYPE_CHECKING:
 
 
 ColumnName: TypeAlias = str
-
 ColumnValue: TypeAlias = Union[str, float]
+SQLiteDict: TypeAlias = dict[ColumnName, ColumnValue]
 
-SQLiteDict = dict[ColumnName, ColumnValue]
+FormattedString: TypeAlias = str
+UnixTimestamp: TypeAlias = int
+DateTypes: TypeAlias = Union[FormattedString, UnixTimestamp]
 
 
 class NTTypes:
     """Contains types used throughout the Narcotics Tracker."""
-
-    date_types = Union[int, str]
 
     medication_data_type = tuple[
         int, str, str, float, str, float, float, str, int, int, str

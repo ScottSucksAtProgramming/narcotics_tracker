@@ -7,7 +7,7 @@ Classes:
 from narcotics_tracker import commands
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import DateTypes, NTTypes
 
 
 class AdjustmentBuilder(DataItemBuilder):
@@ -95,7 +95,7 @@ class AdjustmentBuilder(DataItemBuilder):
 
         self._dataitem.amount = self._dataitem.amount * event_modifier
 
-    def set_adjustment_date(self, date: NTTypes.date_types) -> "AdjustmentBuilder":
+    def set_adjustment_date(self, date: DateTypes) -> "AdjustmentBuilder":
         """Sets the adjustment date to the passed value.
 
         Args:
