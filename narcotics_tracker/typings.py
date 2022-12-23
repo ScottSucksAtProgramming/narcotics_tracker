@@ -1,8 +1,8 @@
 """Contains type aliases used throughout the Narcotics Tracker."""
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Union
 
-from typing_extensions import TypeAlias
+from typing_extensions import TypeAlias  # Will be typing.TypeAlias in Python 3.11
 
 if TYPE_CHECKING:
     from narcotics_tracker.commands.table_commands import (
@@ -43,4 +43,4 @@ class NTTypes:
         "CreateUnitsTable",
     ]
 
-    report_data = list[dict[Any, Any]]
+    report_data = list[dict[object, object]]
