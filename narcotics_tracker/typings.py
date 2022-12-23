@@ -2,6 +2,8 @@
 
 from typing import TYPE_CHECKING, Any, Union
 
+from typing_extensions import TypeAlias
+
 if TYPE_CHECKING:
     from narcotics_tracker.commands.table_commands import (
         CreateEventsTable,
@@ -22,10 +24,15 @@ if TYPE_CHECKING:
     from narcotics_tracker.items.units import Unit
 
 
+ColumnName: TypeAlias = str
+
+ColumnValue: TypeAlias = Union[str, float]
+
+SQLiteDict = dict[ColumnName, ColumnValue]
+
+
 class NTTypes:
     """Contains types used throughout the Narcotics Tracker."""
-
-    sqlite_types = dict[str, Any]
 
     date_types = Union[int, str]
 

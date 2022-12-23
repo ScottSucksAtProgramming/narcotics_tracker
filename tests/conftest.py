@@ -30,7 +30,7 @@ from narcotics_tracker.services.interfaces.persistence_db import (
 )
 from narcotics_tracker.services.service_manager import ServiceManager
 from narcotics_tracker.services.sqlite_manager import SQLiteManager
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import NTTypes, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -379,7 +379,7 @@ def construct_adjustments(data: list[any]) -> list["Adjustment"]:
     return adjustment_list
 
 
-def return_adjustments_data() -> list[list[NTTypes.sqlite_types]]:
+def return_adjustments_data() -> list[list[SQLiteDict]]:
     adjustment_data = []
 
     adjustment_data.append(

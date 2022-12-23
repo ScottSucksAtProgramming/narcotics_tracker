@@ -9,7 +9,7 @@ from narcotics_tracker.builders.adjustment_builder import AdjustmentBuilder
 from narcotics_tracker.commands import adjustment_commands
 from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import NTTypes, SQLiteDict
 
 app = typer.Typer()
 
@@ -79,7 +79,7 @@ def show(
 ) -> None:
     """Prints the Adjustments currently in the inventory table."""
     command = adjustment_commands.ListAdjustments()
-    criteria: NTTypes.sqlite_types = {}
+    criteria: SQLiteDict = {}
 
     if medication:
         criteria["medication_code"] = medication.lower()

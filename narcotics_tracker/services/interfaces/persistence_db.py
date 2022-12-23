@@ -7,6 +7,8 @@ Classes:
 
 from typing import TYPE_CHECKING, Any, Optional, Protocol
 
+from narcotics_tracker.typings import SQLiteDict
+
 if TYPE_CHECKING:
     from narcotics_tracker.typings import NTTypes
 
@@ -27,16 +29,16 @@ class PersistenceServiceForDatabase(Protocol):
         update: Updates data in the repository.
     """
 
-    def add(self, table_name: str, data: "NTTypes.sqlite_types"):
+    def add(self, table_name: str, data: "SQLiteDict"):
         """Adds new data to the repository."""
 
-    def remove(self, table_name: str, criteria: "NTTypes.sqlite_types"):
+    def remove(self, table_name: str, criteria: "SQLiteDict"):
         """Deletes data from the repository."""
 
     def read(
         self,
         table_name: str,
-        criteria: "NTTypes.sqlite_types",
+        criteria: "SQLiteDict",
         order_by: Optional[str] = None,
     ) -> Any:
         """Returns data from the repository."""
@@ -44,8 +46,8 @@ class PersistenceServiceForDatabase(Protocol):
     def update(
         self,
         table_name: str,
-        data: "NTTypes.sqlite_types",
-        criteria: "NTTypes.sqlite_types",
+        data: "SQLiteDict",
+        criteria: "SQLiteDict",
     ):
         """Updates data in the repository."""
 

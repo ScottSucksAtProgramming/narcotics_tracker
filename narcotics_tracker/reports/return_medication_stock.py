@@ -11,7 +11,7 @@ from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -80,7 +80,7 @@ class ReturnMedicationStock(Report):
         if medication_code is None:
             raise ValueError
 
-        criteria: NTTypes.sqlite_types = {"medication_code": medication_code}
+        criteria: SQLiteDict = {"medication_code": medication_code}
         adjustment_list = (
             commands.ListAdjustments(self._receiver)
             .set_parameters(criteria=criteria)

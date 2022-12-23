@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Optional
 from narcotics_tracker import commands, reports
 from narcotics_tracker.reports.interfaces.report import Report
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import NTTypes, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.medications import Medication
@@ -88,7 +88,7 @@ class ReturnCurrentInventory(Report):
 
     def _retrieve_medications(self) -> list["Medication"]:
         """Returns the code, name, and unit for all active medications."""
-        criteria: NTTypes.sqlite_types = {"status": "ACTIVE"}
+        criteria: SQLiteDict = {"status": "ACTIVE"}
         return (
             commands.ListMedications(self._receiver)
             .set_parameters(criteria, "id")

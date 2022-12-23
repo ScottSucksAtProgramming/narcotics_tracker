@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes
+from narcotics_tracker.typings import NTTypes, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -76,7 +76,7 @@ class DeleteMedication(Command):
         execute: Executes the delete operation and returns a success message.
     """
 
-    _criteria: NTTypes.sqlite_types
+    _criteria: SQLiteDict
     _medication_identifier: Union[int, str]
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
@@ -122,7 +122,7 @@ class ListMedications(Command):
     """
 
     _receiver = ServiceManager().persistence
-    _criteria: NTTypes.sqlite_types = {}
+    _criteria: SQLiteDict = {}
     _order_by: Optional[str] = None
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
@@ -137,7 +137,7 @@ class ListMedications(Command):
 
     def set_parameters(
         self,
-        criteria: Optional[NTTypes.sqlite_types] = None,
+        criteria: Optional[SQLiteDict] = None,
         order_by: Optional[str] = None,
     ) -> "Command":
         """Sets the criteria and order_by column.
@@ -177,8 +177,8 @@ class UpdateMedication(Command):
         execute: Executes the update operation and returns a success message.
     """
 
-    _data: NTTypes.sqlite_types
-    _criteria: NTTypes.sqlite_types
+    _data: SQLiteDict
+    _criteria: SQLiteDict
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -192,9 +192,7 @@ class UpdateMedication(Command):
         else:
             self._receiver = ServiceManager().persistence
 
-    def set_data(
-        self, data: NTTypes.sqlite_types, criteria: NTTypes.sqlite_types
-    ) -> "Command":
+    def set_data(self, data: SQLiteDict, criteria: SQLiteDict) -> "Command":
         """Sets the data and criteria for the update.
 
         Args:
@@ -224,7 +222,7 @@ class ReturnPreferredUnit(Command):
         execute: Executes the command, returns results.
     """
 
-    _criteria: NTTypes.sqlite_types
+    _criteria: SQLiteDict
     _medication_identifier: Union[int, str]
 
     def __init__(self, receiver: Optional["PersistenceService"] = None) -> None:
