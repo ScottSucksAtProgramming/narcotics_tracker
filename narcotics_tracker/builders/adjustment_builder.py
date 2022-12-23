@@ -7,7 +7,7 @@ Classes:
 from narcotics_tracker import commands
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.adjustments import Adjustment
-from narcotics_tracker.typings import DateType, NTTypes
+from narcotics_tracker.typings import DateType
 
 
 class AdjustmentBuilder(DataItemBuilder):
