@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING, Optional
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes, SQLiteDict
+from narcotics_tracker.typings import ReportingPeriodData, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -232,7 +232,7 @@ class LoadReportingPeriod(Command):
         execute: Executes the command and returns the ReportingPeriod object.
     """
 
-    _data: NTTypes.reporting_period_data_type
+    _data: ReportingPeriodData
 
     def __init__(self, receiver: Optional["ReportingPeriod"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -244,7 +244,7 @@ class LoadReportingPeriod(Command):
         if receiver:
             self._receiver = receiver
 
-    def set_data(self, data: NTTypes.reporting_period_data_type) -> "Command":
+    def set_data(self, data: ReportingPeriodData) -> "Command":
         """Sets the data which will create the Medication
 
         Args:

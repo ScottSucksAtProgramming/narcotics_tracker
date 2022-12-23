@@ -69,11 +69,15 @@ MedicationData: TypeAlias = tuple[
     ModifiedBy,
 ]
 
+StartDate: TypeAlias = UnixTimestamp
+EndDate: TypeAlias = UnixTimestamp
+ReportingPeriodData: TypeAlias = tuple[
+    ID, StartDate, EndDate, Status, CreatedDate, ModifiedDate, ModifiedBy
+]
+
 
 class NTTypes:
     """Contains types used throughout the Narcotics Tracker."""
-
-    reporting_period_data_type = tuple[int, int, int, str, int, int, str]
 
     table_command_types = Union[
         "CreateEventsTable",
