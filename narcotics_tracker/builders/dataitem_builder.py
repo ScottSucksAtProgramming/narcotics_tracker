@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Optional
 
 from narcotics_tracker.builders.interfaces.builder import Builder
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import DateTypes
+from narcotics_tracker.typings import DateType
 
 if TYPE_CHECKING:
     from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
@@ -52,7 +52,7 @@ class DataItemBuilder(Builder):
         self._dataitem.id = id_number
         return self
 
-    def set_created_date(self, date: Optional[DateTypes] = None) -> "Builder":
+    def set_created_date(self, date: Optional[DateType] = None) -> "Builder":
         """Sets the attribute to the current datetime, unless overridden.
 
         Args:
@@ -67,7 +67,7 @@ class DataItemBuilder(Builder):
         self._dataitem.created_date = valid_date
         return self
 
-    def set_modified_date(self, date: Optional[DateTypes] = None) -> "Builder":
+    def set_modified_date(self, date: Optional[DateType] = None) -> "Builder":
         """Sets the attribute to the current datetime, unless overridden.
 
         Args:
@@ -82,7 +82,7 @@ class DataItemBuilder(Builder):
         self._dataitem.modified_date = valid_date
         return self
 
-    def _validate_date(self, raw_date: DateTypes) -> int:
+    def _validate_date(self, raw_date: DateType) -> int:
         """Runs dates through validator. Sets the instance variables correctly."""
 
         date = self._service_provider.datetime.validate(raw_date)

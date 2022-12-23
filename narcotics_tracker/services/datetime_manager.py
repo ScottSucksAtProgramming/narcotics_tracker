@@ -9,7 +9,7 @@ from typing import Optional
 import pendulum
 
 from narcotics_tracker.services.interfaces.datetime import DateTimeService
-from narcotics_tracker.typings import DateTypes, NTTypes
+from narcotics_tracker.typings import DateType, NTTypes
 
 
 class DateTimeManager(DateTimeService):
@@ -66,14 +66,14 @@ class DateTimeManager(DateTimeService):
 
         return dt_object.format("MM-DD-YYYY HH:mm:ss")  # type: ignore
 
-    def validate(self, date: DateTypes) -> int:
+    def validate(self, date: DateType) -> int:
         """Corrects invalid dates and returns them as a unix timestamp."""
         if self._date_is_invalid(date):
             return self._assign(date)
 
         return int(date)
 
-    def _date_is_invalid(self, date: DateTypes) -> bool:
+    def _date_is_invalid(self, date: DateType) -> bool:
         """Returns False if the date is a timestamp, otherwise returns True."""
         return True if (date is None or isinstance(date, str)) else False
 
@@ -81,7 +81,7 @@ class DateTimeManager(DateTimeService):
         """Returns current datetime as a timestamp, accounts for the timezone."""
         return self._datetime_package.now(tz=self._timezone)  # type: ignore
 
-    def _assign(self, date: Optional[DateTypes] = None) -> int:
+    def _assign(self, date: Optional[DateType] = None) -> int:
         """Returns the correct datetime depending on the date valued passed."""
         if date is None:
             return self.return_current()

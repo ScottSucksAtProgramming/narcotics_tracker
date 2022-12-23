@@ -10,7 +10,7 @@ from typing import Optional
 from narcotics_tracker.builders.dataitem_builder import DataItemBuilder
 from narcotics_tracker.items.reporting_periods import ReportingPeriod
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import DateTypes, NTTypes
+from narcotics_tracker.typings import DateType, NTTypes
 
 
 class ReportingPeriodBuilder(DataItemBuilder):
@@ -64,7 +64,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         return period
 
     def set_start_date(
-        self, date: Optional[DateTypes] = None
+        self, date: Optional[DateType] = None
     ) -> "ReportingPeriodBuilder":
         """Sets the start date attribute to the passed value.
 
@@ -84,9 +84,7 @@ class ReportingPeriodBuilder(DataItemBuilder):
         self._dataitem.start_date = date
         return self
 
-    def set_end_date(
-        self, date: Optional[DateTypes] = None
-    ) -> "ReportingPeriodBuilder":
+    def set_end_date(self, date: Optional[DateType] = None) -> "ReportingPeriodBuilder":
         """Sets the end date attribute to the passed integer.
 
         Args:

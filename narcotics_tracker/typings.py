@@ -30,7 +30,7 @@ SQLiteDict: TypeAlias = dict[ColumnName, ColumnValue]
 
 FormattedString: TypeAlias = str
 UnixTimestamp: TypeAlias = int
-DateTypes: TypeAlias = Union[FormattedString, UnixTimestamp]
+DateType: TypeAlias = Union[FormattedString, UnixTimestamp]
 
 
 class NTTypes:

@@ -6,7 +6,7 @@ Classes:
 
 from typing import Protocol
 
-from narcotics_tracker.typings import DateTypes, NTTypes
+from narcotics_tracker.typings import DateType, NTTypes
 
 
 class DateTimeService(Protocol):
@@ -42,6 +42,6 @@ class DateTimeService(Protocol):
         """Converts a timestamp to the formatted string."""
         return ""
 
-    def validate(self, date: DateTypes) -> int:
+    def validate(self, date: DateType) -> int:
         """Checks a date and converts it as necessary."""
         return 0
