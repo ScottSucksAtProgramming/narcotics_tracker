@@ -28,12 +28,12 @@ class Adjustment(DataItem):
         reporting_period_id (int): ID of the period adjustment occurred during.
     """
 
-    adjustment_date: Optional[int]
-    event_code: Optional[str]
-    medication_code: Optional[str]
-    amount: Optional[float]
-    reference_id: Optional[str]
-    reporting_period_id: Optional[int]
+    adjustment_date: int
+    event_code: str
+    medication_code: str
+    amount: float
+    reference_id: str
+    reporting_period_id: int
 
     def __str__(self) -> str:
         return (

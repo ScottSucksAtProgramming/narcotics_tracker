@@ -18,9 +18,35 @@ ColumnName: TypeAlias = str
 ColumnValue: TypeAlias = Union[str, float]
 SQLiteDict: TypeAlias = dict[ColumnName, ColumnValue]
 
-FormattedString: TypeAlias = str
+FormattedStringDate: TypeAlias = str
 UnixTimestamp: TypeAlias = int
-DateType: TypeAlias = Union[FormattedString, UnixTimestamp]
+DateType: TypeAlias = Union[FormattedStringDate, UnixTimestamp]
+
+TableName: TypeAlias = str
+ID: TypeAlias = int
+CreatedDate: TypeAlias = UnixTimestamp
+ModifiedDate: TypeAlias = UnixTimestamp
+UserID: TypeAlias = str
+ModifiedBy: TypeAlias = UserID
+AdjustmentDate: TypeAlias = UnixTimestamp
+EventCode: TypeAlias = str
+MedicationCode: TypeAlias = str
+Amount: TypeAlias = float
+ReportingPeriodID: TypeAlias = int
+ReferenceID: TypeAlias = str
+
+AdjustmentData: TypeAlias = tuple[
+    ID,
+    AdjustmentDate,
+    EventCode,
+    MedicationCode,
+    Amount,
+    ReportingPeriodID,
+    ReferenceID,
+    CreatedDate,
+    ModifiedDate,
+    ModifiedBy,
+]
 
 
 class NTTypes:
@@ -29,8 +55,6 @@ class NTTypes:
     medication_data_type = tuple[
         int, str, str, float, str, float, float, str, int, int, str
     ]
-
-    adjustment_data_type = tuple[int, int, str, str, float, int, str, int, int, str]
 
     reporting_period_data_type = tuple[int, int, int, str, int, int, str]
 

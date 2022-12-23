@@ -17,7 +17,7 @@ from typing import TYPE_CHECKING, Optional
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.adjustments import Adjustment
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes, SQLiteDict
+from narcotics_tracker.typings import AdjustmentData, NTTypes, SQLiteDict
 
 if TYPE_CHECKING:
 
@@ -220,7 +220,7 @@ class LoadAdjustment(Command):
         execute: Executes the command. Returns a Adjustment object.
     """
 
-    _data: NTTypes.adjustment_data_type
+    _data: AdjustmentData
 
     def __init__(self, receiver: Optional["Adjustment"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -232,7 +232,7 @@ class LoadAdjustment(Command):
         if receiver:
             self._receiver = receiver
 
-    def set_data(self, data: NTTypes.adjustment_data_type) -> "Command":
+    def set_data(self, data: AdjustmentData) -> "Command":
         """Sets the data which will create the Adjustment
 
         Args:
