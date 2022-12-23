@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from narcotics_tracker.commands.interfaces.command import Command
 from narcotics_tracker.items.medications import Medication
 from narcotics_tracker.services.service_manager import ServiceManager
-from narcotics_tracker.typings import NTTypes, SQLiteDict
+from narcotics_tracker.typings import MedicationData, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.services.interfaces.persistence import PersistenceService
@@ -262,7 +262,7 @@ class LoadMedication(Command):
         execute: Executes the command. Returns a Medication object.
     """
 
-    _data: NTTypes.medication_data_type
+    _data: MedicationData
 
     def __init__(self, receiver: Optional["Medication"] = None) -> None:
         """Initializes the command. Sets the receiver if passed.
@@ -274,7 +274,7 @@ class LoadMedication(Command):
         if receiver:
             self._receiver = receiver
 
-    def set_data(self, data: NTTypes.medication_data_type) -> "Command":
+    def set_data(self, data: MedicationData) -> "Command":
         """Sets the data which will create the Medication
 
         Args:

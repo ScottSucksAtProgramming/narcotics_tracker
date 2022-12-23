@@ -49,12 +49,29 @@ AdjustmentData: TypeAlias = tuple[
 ]
 
 
+MedicationName: TypeAlias = str
+MedicationAmount: TypeAlias = Amount
+PreferredUnit: TypeAlias = str
+FillAmount: TypeAlias = Amount
+Concentration: TypeAlias = float
+Status: TypeAlias = str
+MedicationData: TypeAlias = tuple[
+    ID,
+    MedicationCode,
+    MedicationName,
+    MedicationAmount,
+    PreferredUnit,
+    FillAmount,
+    Concentration,
+    Status,
+    CreatedDate,
+    ModifiedDate,
+    ModifiedBy,
+]
+
+
 class NTTypes:
     """Contains types used throughout the Narcotics Tracker."""
-
-    medication_data_type = tuple[
-        int, str, str, float, str, float, float, str, int, int, str
-    ]
 
     reporting_period_data_type = tuple[int, int, int, str, int, int, str]
 
