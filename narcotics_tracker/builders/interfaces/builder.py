@@ -7,7 +7,6 @@ Classes:
 from typing import Protocol
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
-from narcotics_tracker.typings import NTTypes
 
 
 class Builder(Protocol):
@@ -21,7 +20,7 @@ class Builder(Protocol):
 
     _dataitem: DataItem
 
-    def build(self) -> NTTypes.data_item_types:
+    def build(self) -> DataItem:
         """Returns the constructed DataItem Object."""
 
         return self._dataitem

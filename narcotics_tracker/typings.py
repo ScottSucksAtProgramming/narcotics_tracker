@@ -1,6 +1,6 @@
 """Contains type aliases used throughout the Narcotics Tracker."""
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from typing_extensions import TypeAlias
 
@@ -43,16 +43,6 @@ class NTTypes:
     adjustment_data_type = tuple[int, int, str, str, float, int, str, int, int, str]
 
     reporting_period_data_type = tuple[int, int, int, str, int, int, str]
-
-    data_item_types = Union[
-        "Adjustment",
-        "DataItem",
-        "Event",
-        "Medication",
-        "ReportingPeriod",
-        "Status",
-        "Unit",
-    ]
 
     table_command_types = Union[
         "CreateEventsTable",
