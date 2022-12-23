@@ -14,16 +14,6 @@ if TYPE_CHECKING:
         CreateUnitsTable,
     )
 
-if TYPE_CHECKING:
-    from narcotics_tracker.items.adjustments import Adjustment
-    from narcotics_tracker.items.events import Event
-    from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
-    from narcotics_tracker.items.medications import Medication
-    from narcotics_tracker.items.reporting_periods import ReportingPeriod
-    from narcotics_tracker.items.statuses import Status
-    from narcotics_tracker.items.units import Unit
-
-
 ColumnName: TypeAlias = str
 ColumnValue: TypeAlias = Union[str, float]
 SQLiteDict: TypeAlias = dict[ColumnName, ColumnValue]
