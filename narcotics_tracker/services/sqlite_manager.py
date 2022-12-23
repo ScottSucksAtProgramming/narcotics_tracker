@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from narcotics_tracker.services.interfaces.persistence_db import (
     PersistenceServiceForDatabase,
 )
-from narcotics_tracker.typings import SQLiteDict
+from narcotics_tracker.typings import ColumnValue, SQLiteDict
 
 if TYPE_CHECKING:
     from narcotics_tracker.typings import NTTypes
@@ -58,7 +58,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
         """Closes the database connection upon exiting the context manager."""
         self.connection.close()
 
-    def add(self, table_name: str, data: "SQLiteDict"):
+    def add(self, table_name: str, data: "SQLiteDict") -> None:
         """Adds a new row to the database.
 
         Args:
@@ -73,7 +73,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
             f"""INSERT INTO {table_name} ({column_names}) VALUES ({placeholders});"""
         )
 
-        column_values = tuple(data.values())
+        column_values = tuple(data.values()) if data.values() else None
 
         self._execute(sql_statement, column_values)
 
@@ -142,7 +142,9 @@ class SQLiteManager(PersistenceServiceForDatabase):
 
         self._execute(sql_statement, values)
 
-    def remove(self, table_name: str, criteria: dict[str, Union[str, int, float]]):
+    def remove(
+        self, table_name: str, criteria: dict[str, Union[str, int, float]]
+    ) -> None:
         """Removes a row from the database.
 
         Args:
@@ -194,7 +196,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
         self._execute(sql_statement)
 
     def _execute(
-        self, sql_statement: str, values: Optional[tuple[Union[str, int, float]]] = None
+        self, sql_statement: str, values: Optional[tuple[ColumnValue]] = None
     ) -> sqlite3.Cursor:
         """Executes the sql statement, returns a cursor with any results.
 
