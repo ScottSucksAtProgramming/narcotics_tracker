@@ -51,7 +51,7 @@ class SQLiteManager(PersistenceServiceForDatabase):
         Args:
             filename (str): The filename of the database file.
         """
-        self.connection = sqlite3.connect("data/" + filename)
+        self.connection = sqlite3.connect("../data/" + filename)
         self.filename = filename
 
     def __del__(self) -> None:

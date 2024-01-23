@@ -33,7 +33,7 @@ def _make_strings(db_totals: list[dict[str, Any]]) -> list[str]:
     strings: list[str] = []
 
     for item in db_totals:
-        string = f"{item['name']}: {item['amount']} {item['unit']}"
+        string = f"{item['name']}: {item['current_amount']} {item['unit']}"
         strings.append(string)
 
     return strings
