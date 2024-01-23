@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "narcotics-tracker"
+version = "0.2.5"
+description = "A command-line utility for tracking controlled substances for EMS agencies."
+authors = ["ScottSucksAtProgramming <scottkostolni+github@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -130,7 +130,7 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
         },
-        "editor.defaultFormatter": "ms-python.black-formatter"
+        "editor.defaultFormatter": "mikoz.black-py"
     },
     "isort.args": [
         "--profile",
