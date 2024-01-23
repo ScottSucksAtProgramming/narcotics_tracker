@@ -292,3 +292,14 @@ class BiAnnualNarcoticsInventory(Report):
         ending_amount = round(ending_amount, 2)
 
         return ending_amount
+
+
+def main() -> None:
+    """Runs Report."""
+    report = BiAnnualNarcoticsInventory()
+    data = report.run()
+    print(str(data))
+
+
+if __name__ == "__main__":
+    main()

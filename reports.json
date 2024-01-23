@@ -1,0 +1,40 @@
+{
+    "2300000": {
+        "fentanyl": {
+            "name": "Fentanyl",
+            "unit": "mcg",
+            "concentration": 50.0,
+            "starting_amount": 68.8,
+            "amount_received": 0,
+            "amount_used": 8.0,
+            "amount_wasted": 0,
+            "amount_destroyed": 0,
+            "amount_lost": 0,
+            "ending_amount": 60.8
+        },
+        "midazolam": {
+            "name": "Midazolam",
+            "unit": "mg",
+            "concentration": 5.0,
+            "starting_amount": 55.68,
+            "amount_received": 0,
+            "amount_used": 0,
+            "amount_wasted": 0,
+            "amount_destroyed": 0,
+            "amount_lost": 0,
+            "ending_amount": 55.68
+        },
+        "morphine": {
+            "name": "Morphine",
+            "unit": "mg",
+            "concentration": 10.0,
+            "starting_amount": 24.5,
+            "amount_received": 0,
+            "amount_used": 1.0,
+            "amount_wasted": 0,
+            "amount_destroyed": 0,
+            "amount_lost": 0,
+            "ending_amount": 23.5
+        }
+    }
+}

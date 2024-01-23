@@ -100,7 +100,7 @@
     ],
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.linting.enabled": true,
-    "python.formatting.provider": "black",
+    "python.formatting.provider": "none",
     "cSpell.words": [
         "Abenthy",
         "adjustmentbuilder",
@@ -124,12 +124,13 @@
         "Unobtanium",
         "wlvac"
     ],
-    "python.testing.cwd": "/Users/scottkostolni/Programming Projects/narcotics_tracker/",
+    "python.testing.cwd": "/Users/scottkostolni/programming_projects/narcotics_tracker",
     "[python]": {
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
     "isort.args": [
         "--profile",
@@ -145,5 +146,10 @@
     "explorer.sortOrder": "filesFirst",
     "vsicons.presets.hideExplorerArrows": true,
     "explorer.fileNesting.enabled": false,
-    "terminal.explorerKind": "external"
+    "terminal.explorerKind": "external",
+    "mypy.runUsingActiveInterpreter": true,
+    "terminal.integrated.cwd": "/Users/scottkostolni/programming_projects/narcotics_tracker/",
+    "python.linting.cwd": "/Users/scottkostolni/programming_projects/narcotics_tracker",
+    "terminal.integrated.splitCwd": "initial",
+    "python.defaultInterpreterPath": "python"
 }

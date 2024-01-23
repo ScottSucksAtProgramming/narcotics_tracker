@@ -269,3 +269,24 @@ class LoadReportingPeriod(Command):
             modified_date=self._data[5],
             modified_by=self._data[6],
         )
+
+
+def main():
+    new_command = AddReportingPeriod()
+    test_reporting_period = ReportingPeriod(
+        table="reporting_periods",
+        id=2300000,
+        created_date=1690749986,
+        modified_date=1690749986,
+        modified_by="SRK",
+        start_date=1672549200,
+        end_date=1688183999,
+        status="OPEN",
+    )
+    new_command.set_reporting_period(test_reporting_period).execute()
+    # remove_command = DeleteReportingPeriod()
+    # remove_command.set_id(2300000).execute()
+
+
+if __name__ == "__main__":
+    main()
