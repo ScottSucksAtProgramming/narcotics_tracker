@@ -14,6 +14,9 @@ from narcotics_tracker.typings import NTTypes, SQLiteDict
 app = typer.Typer()
 
 
+
+
+
 @app.command()
 def log(
     adjustment_date: str = typer.Argument(
@@ -236,3 +239,4 @@ def update(
 
 if __name__ == "__main__":
     app()
+
