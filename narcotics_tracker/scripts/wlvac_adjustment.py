@@ -47,38 +47,56 @@ def construct_adjustments(data: list[Any]) -> list["Adjustment"]:
 def return_adjustments_data() -> list[list[Any]]:
     """Returns data to build adjustments in a list."""
     return [
+        # [
+        #     None,
+        #     "07-05-2023 00:00:00",
+        #     "IMPORT",
+        #     "fentanyl",
+        #     304,
+        #     2300001,
+        #     "BiAnnual Narcotics Report - June 2023 - Wantagh-Levittown VAC - Final",
+        # ],
+        # [
+        #     None,
+        #     "07-05-2023 00:00:00",
+        #     "IMPORT",
+        #     "midazolam",
+        #     273.4,
+        #     2300001,
+        #     "BiAnnual Narcotics Report - June 2023 - Wantagh-Levittown VAC - Final",
+        # ],
         [
             None,
-            "01-01-2023 00:00:00",
-            "IMPORT",
-            "fentanyl",
-            344,
-            2300000,
-            "BiAnnual Narcotics Report - December 2022 - Wantagh-Levittown VAC - Final",
-        ],
-        [
-            None,
-            "01-01-2023 00:00:00",
-            "IMPORT",
-            "midazolam",
-            278.4,
-            2300000,
-            "BiAnnual Narcotics Report - December 2022 - Wantagh-Levittown VAC - Final",
-        ],
-        [
-            None,
-            "01-01-2023 00:00:00",
+            "07-05-2023 00:00:00",
             "IMPORT",
             "morphine",
-            245,
-            2300000,
-            "BiAnnual Narcotics Report - December 2022 - Wantagh-Levittown VAC - Final",
+            230,
+            2300001,
+            "BiAnnual Narcotics Report - June 2023 - Wantagh-Levittown VAC - Final",
         ],
-        [None, "03-06-2023 15:51:00", "USE", "fentanyl", 100, 2300000, "PCR# 230244"],
-        [None, "04-03-2023 23:42:54", "USE", "morphine", 5, 2300000, "PCR# 230370"],
-        [None, "04-04-2023 23:49:09", "USE", "fentanyl", 200, 2300000, "PCR# 230376"],
-        [None, "04-04-2023 07:25:37", "USE", "morphine", 5, 2300000, "PCR# 230371"],
-        [None, "04-10-2023 21:42:42", "USE", "fentanyl", 100, 2300000, "PCR# 230399"],
+        # [None, "07-05-2023 00:00:00", "ORDER", "midazolam", 100, 2300001, "ORDER# 2023-001"],
+        # [None, "07-19-2023 00:00:00", "DESTROY", "fentanyl", 14, 2300001, "RXRD# 23070500210831524"],
+        [None, "07-19-2023 00:00:00", "DESTROY", "morphine", 20, 2300001, "RXRD# 23070500210831524"],
+        # [None, "07-19-2023 00:00:00", "DESTROY", "midazolam", 133.4, 2300001, "RXRD# 23070500210831524"],
+        [None, "09-04-2023 00:00:00", "USE", "morphine", .005, 2300001, "PCR# 230904-0114-WLVAC"],
+        # [None, "09-06-2023 00:00:00", "USE", "fentanyl", 50, 2300001, "PCR# 230906-1519-WLVAC"],
+        # [None, "09-16-2023 00:00:00", "USE", "midazolam", 5, 2300001, "PCR# 230916-2201-WLVAC"],
+        # [None, "09-21-2023 00:00:00", "USE", "midazolam", 5, 2300001, "PCR# 230921-0135-WLVAC"],
+        # [None, "09-21-2023 00:00:00", "ORDER", "midazolam", 150, 2300001, "ORDER# 2023-002"],
+        # [None, "10-02-2023 00:00:00", "USE", "fentanyl", 100, 2300001, "PCR# 231002-0547-WLVAC"],
+        # [None, "10-08-2023 00:00:00", "USE", "fentanyl", 100, 2300001, "PCR# 231008-1816-WLVAC"],
+        [None, "10-11-2023 00:00:00", "USE", "morphine", .005, 2300001, "PCR# 231011-0120-WLVAC"],
+        [None, "10-20-2023 00:00:00", "USE", "morphine", .003, 2300001, "PCR# 231020-2315-WLVAC"],
+        # [None, "10-25-2023 00:00:00", "ORDER", "midazolam", 200, 2300001, "ORDER# 2023-001"],
+        # [None, "11-14-2023 00:00:00", "USE", "fentanyl", 50, 2300001, "PCR# 231114-0140-WLVAC"],
+        # [None, "12-06-2023 00:00:00", "USE", "fentanyl", 50, 2300001, "PCR# 231206-1827-WLVAC"],
+        # [None, "01-04-2024 00:00:00", "USE", "midazolam", 5, 2300001, "PCR# 240104-2043-WLVAC"],
+        # # DESTRUCTIONS
+        # # ORDERS
+        
+        
+        
+
     ]
 
 

@@ -4,9 +4,10 @@ Classes:
     Adjustment: A change which occurred to the inventory.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from narcotics_tracker.items.interfaces.dataitem_interface import DataItem
+from typing import Optional
 
 
 @dataclass
@@ -27,13 +28,14 @@ class Adjustment(DataItem):
         reporting_period_id (int): ID of the period adjustment occurred during.
     """
 
+    
     adjustment_date: int
     event_code: str
     medication_code: str
     amount: float
     reference_id: str
     reporting_period_id: int
-
+    table: str
     def __str__(self) -> str:
         return (
             f"Adjustment #{self.id}: {self.medication_code} adjusted by "
